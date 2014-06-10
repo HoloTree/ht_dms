@@ -29,3 +29,127 @@ License: GPL v2 or Later
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * **********************************************************************
  */
+
+// don't call the file directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Holo_Tree_DMS class
+ *
+ * @class Holo_Tree_DMS The class that holds the entire Holo_Tree plugin
+ */
+
+class Holo_Tree_DMS {
+
+	/**
+	 * Constructor for the Holo_Tree class
+	 *
+	 * Sets up all the appropriate hooks and actions
+	 * within our plugin.
+	 *
+	 * @uses register_activation_hook()
+	 * @uses register_deactivation_hook()
+	 * @uses is_admin()
+	 * @uses add_action()
+	 */
+	public function __construct() {
+		register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+
+		// Localize our plugin
+		add_action( 'init', array( $this, 'localization_setup' ) );
+
+		// Loads frontend scripts and styles
+		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+
+	/**
+	 * Runs on Activation
+	 */
+	public function activate() {
+
+	}
+
+	/**
+	 * Runs on deactivation.
+	 */
+	public function deactivate() {
+
+	}
+
+	/**
+	 * Initialize plugin for localization
+	 *
+	 * @uses load_plugin_textdomain()
+	 */
+	public function localization_setup() {
+		load_plugin_textdomain( 'baseplugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Enqueue admin scripts
+	 *
+	 * Allows plugin assets to be loaded.
+	 *
+	 * @uses wp_enqueue_script()
+	 * @uses wp_localize_script()
+	 * @uses wp_enqueue_style
+	 */
+	public function enqueue_scripts() {
+
+		/**
+		 * All styles goes here
+		 */
+		wp_enqueue_style( 'baseplugin-styles', plugins_url( 'css/style.css', __FILE__ ), false, date( 'Ymd' ) );
+
+		/**
+		 * All scripts goes here
+		 */
+		wp_enqueue_script( 'baseplugin-scripts', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ), false, true );
+
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.0.1
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+
+	/**
+	 * Returns the instance.
+	 *
+	 * @since  0.0.1
+	 * @access public
+	 * @return object
+	 */
+	public static function init() {
+
+		if ( !self::$instance )
+			self::$instance = new self;
+
+		return self::$instance;
+
+	}
+
+}
+
+add_action( 'plugins_loaded', 'holotree_dms', 30 );
+function holotree_dms() {
+	if ( defined( 'HT_VERSION' ) ) {
+		$GLOBALS[ 'Holo_Tree_DMS' ] = Holo_Tree_DMS::init();
+
+		/**
+		 * Action that runs right after main Holotree DMS class is initialized.
+		 *
+		 * @since 0.0.1
+		 */
+		do_action( 'holotree_DMS' );
+
+	}
+
+}
