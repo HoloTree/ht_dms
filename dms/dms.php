@@ -19,6 +19,8 @@ abstract class dms {
 	 * Must be set when extending this class using $this->set_type()
 	 *
 	 * @var string
+	 *
+	 * @since 0.0.1
 	 */
 	static public $type;
 
@@ -28,6 +30,8 @@ abstract class dms {
 	 * Default is 85321 seconds ~ 1 Day
 	 *
 	 * @var int
+	 *
+	 * @since 0.0.1
 	 */
 	static public $cache_length = 85321;
 
@@ -36,6 +40,8 @@ abstract class dms {
 	 *
 	 * object|transient|site-transient
 	 * @var string
+	 *
+	 * @since 0.0.1
 	 */
 	static public $cache_mode = 'object';
 
@@ -43,6 +49,8 @@ abstract class dms {
 	 * Set the name of the CPT
 	 *
 	 * @param 	string 	$type
+	 *
+	 * @since 0.0.1
 	 */
 	function set_type( $type ) {
 
@@ -56,6 +64,8 @@ abstract class dms {
 	 * @param 	bool 	$lower	Optional. If true, the default, value is returned in lower cases
 	 *
 	 * @return 	string			The name of the current CPT.
+	 *
+	 * @since 0.0.1
 	 */
 	function get_type( $lower = true ) {
 
@@ -73,6 +83,8 @@ abstract class dms {
 	 * Set length to cache Pods Objects
 	 *
 	 * @param 	int	$length	Time in seconds to cache.
+	 *
+	 * @since 0.0.1
 	 */
 	function set_cache_length( $length ) {
 
@@ -84,6 +96,8 @@ abstract class dms {
 	 * Set cache mode for Pods Objects
 	 *
 	 * @param 	string 	$type	object|transient|site-transient
+	 *
+	 * @since 0.0.1
 	 */
 	function set_cache_mode( $type ) {
 
@@ -99,6 +113,8 @@ abstract class dms {
 	 * @param 	null|array|int 	$params	Optional. Either the item ID, or pods::find() params
 	 *
 	 * @return 	bool|mixed|null|Pods|void
+	 *
+	 * @since 0.0.1
 	 */
 	function object( $cache = true, $params = null ) {
 		$id = null;
@@ -226,6 +242,8 @@ abstract class dms {
 	 * @param 	null|array|int 	$params_or_id	Optional. Either the item ID, or pods::find() params
 	 *
 	 * @return bool|mixed|null|Pods|void
+	 *
+	 * @since 0.0.1
 	 */
 	function null_object( $obj = null, $params_or_id = null ) {
 		if ( $this->check_obj( $obj, $params_or_id ) ) {
@@ -260,6 +278,8 @@ abstract class dms {
 	 * @param int|null	$id
 	 *
 	 * @return bool
+	 *
+	 * @since 0.0.1
 	 */
 	function check_obj( $obj, $id = null ) {
 		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === self::$type ) {
@@ -285,6 +305,8 @@ abstract class dms {
 	 * @param bool $fields
 	 *
 	 * @return bool|Pods|mixed|null|void
+	 *
+	 * @since 0.0.1
 	 */
 	function item( $obj = null, $id = null, $params = null, $cached = true, $fields = false ) {
 		if ( ! is_array( $params ) && intval( $params ) > 0 ) {
@@ -335,6 +357,8 @@ abstract class dms {
 	 * @param bool $post_title_label
 	 *
 	 * @return null|string
+	 *
+	 * @since 0.0.1
 	 */
 	function edit( $id = null, $uID = null, $obj = null, $post_title_label = false ) {
 		$uID = $this->null_user( $uID );
@@ -395,7 +419,7 @@ abstract class dms {
 		 * @param	obj			$obj	Object being used to create/edit item
 		 * @param	$uID		$uID	ID of member creating/editing item. Changing this has no effect on who are the initial members. For that use 'ht_dms_initial_members' filter.
 		 *
-		 * @since 0.0.2
+		 * @since 0.0.1
 		 */
 
 		$form_fields = apply_filters( 'ht_dms_edit_form_fields', $form_fields, $type, $oID, $id, $obj, $uID );
@@ -403,7 +427,7 @@ abstract class dms {
 		/**
 		 * Action that runs before any ht_dms form
 		 *
-		 * @since 0.0.2
+		 * @since 0.0.1
 		 */
 		$form = do_action( 'ht_dms_before_form' );
 
@@ -416,7 +440,7 @@ abstract class dms {
 		/**
 		 * Action that runs after any ht_dms form
 		 *
-		 * @since 0.0.2
+		 * @since 0.0.1
 		 */
 		$form .= do_action( 'ht_dms_after_form' );
 
@@ -424,15 +448,44 @@ abstract class dms {
 
 	}
 
+	/**
+	 * Add inline jQuery to fix form.
+	 *
+	 * Implement in inherited class.
+	 *
+	 * @return 	bool
+	 *
+	 * @since 	0.0.1
+	 */
 	function form_fix( ) {
 		return false;
 	}
 
+	/**
+	 * Loop to get values of all fields in CPT.
+	 *
+	 * Implement in inherited class.
+	 *
+	 * @param 	obj		$obj
+	 *
+     * @return 	bool
+	 *
+	 * @since 	0.0.1
+	 */
 	function field_loop( $obj ) {
 
 		return false;
 	}
 
+	/**
+	 * Fields to loop when getting a fields and in $this->edit()
+	 * 
+	 * Implement in inherited class.
+	 *
+	 * @return 	bool
+	 *
+	 * @since 	0.0.1
+	 */
 	function fields_to_loop() {
 
 		return false;

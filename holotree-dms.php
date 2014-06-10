@@ -37,6 +37,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Holo_Tree_DMS class
  *
  * @class Holo_Tree_DMS The class that holds the entire Holo_Tree plugin
+ *
+ * @since 0.0.1
  */
 
 class Holo_Tree_DMS {
@@ -51,6 +53,8 @@ class Holo_Tree_DMS {
 	 * @uses register_deactivation_hook()
 	 * @uses is_admin()
 	 * @uses add_action()
+	 *
+	 * @since 0.0.1
 	 */
 	public function __construct() {
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
@@ -66,6 +70,8 @@ class Holo_Tree_DMS {
 
 	/**
 	 * Runs on Activation
+	 *
+	 * @since 0.0.1
 	 */
 	public function activate() {
 
@@ -73,6 +79,8 @@ class Holo_Tree_DMS {
 
 	/**
 	 * Runs on deactivation.
+	 *
+	 * @since 0.0.1
 	 */
 	public function deactivate() {
 
@@ -82,6 +90,8 @@ class Holo_Tree_DMS {
 	 * Initialize plugin for localization
 	 *
 	 * @uses load_plugin_textdomain()
+	 *
+	 * @since 0.0.1
 	 */
 	public function localization_setup() {
 		load_plugin_textdomain( 'baseplugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -95,6 +105,8 @@ class Holo_Tree_DMS {
 	 * @uses wp_enqueue_script()
 	 * @uses wp_localize_script()
 	 * @uses wp_enqueue_style
+	 *
+	 * @since 0.0.1
 	 */
 	public function enqueue_scripts() {
 
@@ -113,9 +125,10 @@ class Holo_Tree_DMS {
 	/**
 	 * Holds the instance of this class.
 	 *
-	 * @since  0.0.1
 	 * @access private
 	 * @var    object
+	 *
+	 * @since 0.0.1
 	 */
 	private static $instance;
 
@@ -123,9 +136,10 @@ class Holo_Tree_DMS {
 	/**
 	 * Returns the instance.
 	 *
-	 * @since  0.0.1
 	 * @access public
 	 * @return object
+	 *
+	 * @since 0.0.1
 	 */
 	public static function init() {
 
@@ -138,9 +152,14 @@ class Holo_Tree_DMS {
 
 }
 
+/**
+ * Activate if core plugin and Pods is active.
+ *
+ * @since 0.0.1
+ */
 add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
-	if ( defined( 'HT_VERSION' ) ) {
+	if ( defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
 		$GLOBALS[ 'Holo_Tree_DMS' ] = Holo_Tree_DMS::init();
 
 		/**
