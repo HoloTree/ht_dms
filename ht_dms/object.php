@@ -272,6 +272,16 @@ abstract class object {
 	}
 
 	/**
+	 * Shorthand wrapper for $htis->null_object
+	 *
+	 * @TODO REMOVE
+	 *
+	 */
+	function null_obj( $obj = null, $params_or_id = null ) {
+		return $this->null_object( $obj, $params_or_id );
+	}
+
+	/**
 	 * Validates a Pods object to ensure it is the correct one to use.
 	 *
 	 * @param obj 		$obj	Object to check.

@@ -57,7 +57,7 @@ abstract class dms extends object {
 			}
 			else {
 
-				return $this->field_loop( $obj );
+				return $this->field_loop( $id, $obj );
 
 			}
 		}
@@ -99,9 +99,7 @@ abstract class dms extends object {
 
 		$obj = $this->null_object( $obj, $params );
 
-		$fields = (array) $this->fields_to_loop();
-
-
+		$fields = (array) $this->fields_to_loop( $obj, false );
 
 		foreach ( $fields as $k => $v ) {
 			$form_fields[ $k ] = array( 'label' => $v[ 'label' ] );
@@ -134,15 +132,17 @@ abstract class dms extends object {
 		 * @param 	array 	$fields		Parameters for pods::form
 		 * 		@see http://pods.io/docs/code/pods/form/
 		 *
-		 * @param	string		$type	The prefixed CPT name.
+		 * @param	bool		$new	If is a new item or not.
 		 * @param 	int|null	$id  	ID of item being edited. When creating ID is null. Can not be used to set ID.
+		 * @param	int			$oID	ID of organization item is a part of.
 		 * @param	obj			$obj	Object being used to create/edit item
-		 * @param	$uID		$uID	ID of member creating/editing item. Changing this has no effect on who are the initial members. For that use 'ht_dms_initial_members' filter.
+		 * @param	int			$uID	ID of member creating/editing item. Changing this has no effect on who are the initial members. For that use 'ht_dms_initial_members' filter.
+		 * @param	string		$type	The prefixed CPT name.
 		 *
 		 * @since 0.0.1
 		 */
 
-		$form_fields = apply_filters( 'ht_dms_edit_form_fields', $form_fields, $type, $oID, $id, $obj, $uID );
+		$form_fields = apply_filters( "{$this->get_type()}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
 
 		/**
 		 * Action that runs before any ht_dms form
@@ -152,7 +152,12 @@ abstract class dms extends object {
 		$form = do_action( 'ht_dms_before_form' );
 
 		if ( $this->form_fix() ) {
-			$form .= $this->form_fix();
+			if ( $type === HT_DMS_DECISION_CPT_NAME && $new ) {
+				$form .= $this->form_fix( $new );
+			}
+			else {
+				$form .= $this->form_fix();
+			}
 		}
 
 		$form .= $obj->form( $form_fields );
@@ -186,29 +191,50 @@ abstract class dms extends object {
 	 *
 	 * Implement in inherited class.
 	 *
+	 * @param 	int|null 	$id
 	 * @param 	obj		$obj
+	 * @param	bool	$all	Optional. Whether to to return all fields or selected fields.
 	 *
      * @return 	bool
 	 *
 	 * @since 	0.0.1
 	 */
-	function field_loop( $obj ) {
+	function field_loop( $id = null, $obj, $all = false ) {
 
 		return false;
 	}
 
 	/**
-	 * Fields to loop when getting a fields and in $this->edit()
+	 * Fields to loop when getting fields and in $this->edit()
 	 *
 	 * Implement in inherited class.
+	 *
+	 * @param 	obj		$obj
+	 * @param	bool	$all	Optional. Whether to to return all fields or selected fields.
 	 *
 	 * @return 	bool
 	 *
 	 * @since 	0.0.1
 	 */
-	function fields_to_loop() {
+	function fields_to_loop( $obj = null, $all = false ) {
+		$obj = $this->null_object( $obj );
 
-		return false;
+		/**
+		 * Filter for setting the select fields, when all === false.
+		 *
+		 * @since 0.0.1
+		 */
+		$fields = apply_filters( "{$this->get_type()}_select_fields", null );
+
+		if ( $all || is_null( $fields ) ) {
+			$fields_array = $obj->fields();
+			foreach ( $fields_array as $key => $value ) {
+				$fields[ $key ] = $key;
+			}
+
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -227,6 +253,31 @@ abstract class dms extends object {
 
 		return $id;
 
+	}
+
+	/**
+	 * Update an item
+	 *
+	 *
+	 * @param 	int 		$id 	ID of item to update
+	 * @param 	string 		$field	Field to update.
+	 * @param 	mixed		$value	New value
+	 * @params	obj|null	$obj	Optional. Pods Obj
+	 *
+	 * @return 	int 		ID
+	 *
+	 * @since 	0.0.1
+	 */
+	public function update( $id, $field, $value, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+		if ( $field === 'consensus' ) {
+			$value = serialize( $value );
+		}
+
+		$id = $obj->save( $field, $value );
+		//$this->reset_cache( $id );
+
+		return $id;
 	}
 
 }
