@@ -33,9 +33,17 @@ License: GPL v2 or Later
 // don't call the file directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+
+/**
+ * Define constants
+ * 
+ * @since 0.0.1
+ */
 define( 'HT_DMS_SLUG', plugin_basename( __FILE__ ) );
-define( 'HT_DMS_URL', plugin_dir_url( __FILE__ ) );
-define( 'HT_DMS_DIR', plugin_dir_path( __FILE__ ) );
+define( 'HT_DMS_ROOT_URL', plugin_dir_url( __FILE__ ) );
+define( 'HT_DMS_ROOT_DIR', plugin_dir_path( __FILE__ ) );
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/constants.php' );
+
 
 /**
  * Holo_Tree_DMS class
@@ -176,15 +184,15 @@ function holotree_dms() {
 		/**
 		 * Setup Auto Loader
 		 */
-		require_once( trailingslashit( HT_DMS_DIR ) . 'ClassLoader.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
 		$classLoader = new Ht_DMS_ClassLoader();
-		$classLoader->addDirectory( trailingslashit( HT_DMS_DIR ) . 'ht_dms' );
+		$classLoader->addDirectory( trailingslashit( HT_DMS_ROOT_DIR ) . 'ht_dms' );
 		$classLoader->register();
 
 		/**
 		 * Include class/ item functions
 		 */
-		require_once( trailingslashit( HT_DMS_DIR ) . 'inc/dms.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
 
 	}
 
