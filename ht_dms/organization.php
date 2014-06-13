@@ -19,6 +19,60 @@ class organization extends dms {
 	}
 
 
+
+	/**
+	 * Loop to get values of all fields in CPT.
+	 *
+	 * Implement in inherited class.
+	 *
+	 * @param 	int|null 	$id
+	 * @param 	obj		$obj
+	 * @param	bool	$all	Optional. Whether to to return all fields or selected fields.
+	 *
+	 * @return 	bool
+	 *
+	 * @since 	0.0.1
+	 */
+	function field_loop( $id = null, $obj ) {
+		if ( is_null( $id ) ) {
+			if ( $obj->total() > 0 ) {
+				while ( $obj->fetch() ) {
+					$fields = $obj->fields();
+					foreach ( $fields as $key => $value ) {
+						$organization[ $key ] = $obj->field( $key );
+						$organizations[ $obj->id() ] = $organization;
+					}
+				}
+
+				return $organizations;
+
+			}
+		}
+		else {
+			$fields = $this->fields_to_loop( $obj, true );
+			$fields[ 'ID' ] = null;
+			$fields[ 'id' ] = null;
+			$fields[ 'post_title' ] = null;
+			$fields[ 'post_author' ] = null;
+			foreach ( $fields as $key => $value ) {
+				$organization[ $key ] = $obj->field( $key );
+			}
+
+			if ( !is_null( $id ) ) {
+				$organizations = array();
+				$organizations[ $obj->id() ] = $organization;
+				return $organizations;
+			}
+			else {
+
+				return $organization;
+
+			}
+
+		}
+
+	}
+
 	/**
 	 * Set which Pod for this class
 	 *
