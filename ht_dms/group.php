@@ -168,7 +168,7 @@ class group extends dms {
 	 * @since 	0.0.1
 	 */
 	function all_facilitators( $id, $obj = null ) {
-		$obj = $this->group( $id, false, false, $obj );
+		$obj = $this->null_object( $obj, $id );
 		$user_ids = $obj->field( 'facilitators.ID' );
 
 		return $user_ids;
@@ -220,7 +220,7 @@ class group extends dms {
 	 * @since 	0.0.1
 	 */
 	function get_pending( $id, $obj = null ) {
-		$obj = $this->group( $id, true, false, $obj );
+		$obj = $this->null_object( $obj, $id );
 		$pending = $obj->field( 'pending_members.ID' );
 
 		return $pending;
@@ -229,7 +229,7 @@ class group extends dms {
 
 	function is_pending( $uID = null, $id, $obj = null ) {
 		$uID = $this->null_user( $uID );
-		$obj = $this->group( $id, true, false, $obj );
+		$obj = $this->null_object( $obj, $id );
 
 		if ( is_array( $this->get_pending( $id, $obj ) ) ) {
 			return in_array( $uID, $this->get_pending( $id, $obj ) );

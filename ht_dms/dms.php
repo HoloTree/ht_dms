@@ -152,7 +152,7 @@ abstract class dms extends object {
 		$form = do_action( 'ht_dms_before_form' );
 
 		if ( $this->form_fix() ) {
-			if ( $type === HT_DMS_DECISION_CPT_NAME && $new ) {
+			if ( ( $type === HT_DMS_DECISION_CPT_NAME || HT_DMS_TASK_CT_NAME ) && $new ) {
 				$form .= $this->form_fix( $new );
 			}
 			else {

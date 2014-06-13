@@ -272,7 +272,7 @@ abstract class object {
 	}
 
 	/**
-	 * Shorthand wrapper for $htis->null_object
+	 * Shorthand wrapper for $this->null_object
 	 *
 	 * @TODO REMOVE
 	 *

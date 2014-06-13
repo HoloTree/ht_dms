@@ -17,7 +17,7 @@ class decision extends dms {
 	function __construct() {
 		add_action( 'pods_api_post_save_pod_item_ht_dms_decision', array( $this, 'user_fix'), 11, 3 );
 		add_filter( "{$this->get_type()}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		add_filterr( "{$this->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+		add_filter( "{$this->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
 	}
 
 
@@ -109,7 +109,7 @@ class decision extends dms {
 	}
 
 	/**
-	 * Set ields to loop when getting a fields and in $this->edit() and $all = false
+	 * Set fields to loop when getting a fields and in $this->edit() and $all = false
 	 *
 	 * @return 	bool
 	 *
