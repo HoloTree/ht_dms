@@ -39,6 +39,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * 
  * @since 0.0.1
  */
+define( 'HT_DMS_VERSION', '0.0.1' );
 define( 'HT_DMS_SLUG', plugin_basename( __FILE__ ) );
 define( 'HT_DMS_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'HT_DMS_ROOT_DIR', plugin_dir_path( __FILE__ ) );
@@ -56,7 +57,7 @@ require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/constants.php' );
 class Holo_Tree_DMS {
 
 	/**
-	 * Constructor for the Holo_Tree class
+	 * Constructor for the Holo_Tree_DMS class
 	 *
 	 * Sets up all the appropriate hooks and actions
 	 * within our plugin.
@@ -74,6 +75,8 @@ class Holo_Tree_DMS {
 
 		// Localize our plugin
 		add_action( 'init', array( $this, 'localization_setup' ) );
+
+		add_action( 'init', array( $this, 'theme') );
 
 		// Loads frontend scripts and styles
 		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -162,6 +165,19 @@ class Holo_Tree_DMS {
 
 	}
 
+	function theme() {
+		if ( defined( 'HT_DMS_THEME' ) ) {
+			if ( HT_DMS_THEME ) {
+				include_once( 'dms/theme-setup.php' );
+				return new \dms\Theme_Setup();
+
+			}
+			else {
+				wp_die( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'holotree' ) );
+			}
+		}
+	}
+
 }
 
 /**
@@ -169,7 +185,7 @@ class Holo_Tree_DMS {
  *
  * @since 0.0.1
  */
-add_action( 'plugins_loaded', 'holotree_dms', 30 );
+//add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
 	if ( defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
 		$GLOBALS[ 'Holo_Tree_DMS' ] = Holo_Tree_DMS::init();

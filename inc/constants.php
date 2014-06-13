@@ -41,3 +41,7 @@ if ( !defined( 'HT_DMS_NOTIFICATION_NAME' ) ) {
 if ( !defined( 'HT_DMS_ORGANIZATION_NAME' ) ) {
 	define( 'HT_DMS_ORGANIZATION_NAME', 'ht_dms_organization' );
 }
+
+if ( !defined( 'HT_HT_DMS_USE' ) ) {
+	define( 'HT_HT_DMS_USE', true );
+}
