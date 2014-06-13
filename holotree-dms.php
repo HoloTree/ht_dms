@@ -47,17 +47,17 @@ require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/constants.php' );
 
 
 /**
- * Holo_Tree_DMS class
+ * HoloTree_DMS class
  *
- * @class Holo_Tree_DMS The class that holds the entire Holo_Tree plugin
+ * @class HoloTree_DMS The class that holds the entire Holo_Tree plugin
  *
  * @since 0.0.1
  */
 
-class Holo_Tree_DMS {
+class HoloTree_DMS {
 
 	/**
-	 * Constructor for the Holo_Tree_DMS class
+	 * Constructor for the HoloTree_DMS class
 	 *
 	 * Sets up all the appropriate hooks and actions
 	 * within our plugin.
@@ -168,12 +168,12 @@ class Holo_Tree_DMS {
 	function theme() {
 		if ( defined( 'HT_DMS_THEME' ) ) {
 			if ( HT_DMS_THEME ) {
-				include_once( 'dms/theme-setup.php' );
-				return new \dms\Theme_Setup();
+
+				return new ht_dms\helper\theme_setup();
 
 			}
 			else {
-				wp_die( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'holotree' ) );
+				holotree_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'holotree' ) );
 			}
 		}
 	}
@@ -188,7 +188,7 @@ class Holo_Tree_DMS {
 //add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
 	if ( defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
-		$GLOBALS[ 'Holo_Tree_DMS' ] = Holo_Tree_DMS::init();
+		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
 
 		/**
 		 * Action that runs right after main Holotree DMS class is initialized.
