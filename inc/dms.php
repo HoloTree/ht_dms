@@ -179,13 +179,17 @@ function holotree_membership_class() {
  * @since 	0.0.1
  */
 function holotree_common_class() {
- 
+
 	return ht_dms\helper\common::init();
 
 }
 
+/**
+ * Get an instance of the ui class.
+ *
+ * @return \ht_dms\ui\ui
+ */
 function holotree_dms_ui() {
-	include_once( trailingslashit( HT_DMS_UI_DIR ) . 'ui.php' );
 
 	return ht_dms\ui\ui::init();
 

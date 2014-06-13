@@ -1,0 +1,106 @@
+<?php
+/**
+ * @TODO What this does.
+ *
+ * @package   @TODO
+ * @author    Josh Pollock <Josh@JoshPress.net>
+ * @license   GPL-2.0+
+ * @link      
+ * @copyright 2014 Josh Pollock
+ */
+
+namespace ht_dms\ui;
+
+
+class ui {
+
+	function __construct() {
+		add_filter( 'the_content', array( $this->view_loaders(), 'view_loader' ) );
+		add_filter( 'template_include', array( $this->view_loaders(), 'task_view') );
+		if ( ! is_user_logged_in() ) {
+			add_filter( 'template_include', array ( $this->login(), 'force_login' ) );
+		}
+
+		//don't show titles!
+		if ( !is_admin() ) {
+			add_filter( 'the_title', '__return_false' );
+		}
+	}
+
+	/**
+	 * Initializes the UI() class
+	 *
+	 * Checks for an existing UI() instance
+	 * and if it doesn't find one, creates it.
+	 *
+	 * @since 0.0.1
+	 */
+	public static function init() {
+		static $instance = false;
+
+		if ( ! $instance ) {
+			$instance = new \ht_dms\uiui();
+		}
+
+		return $instance;
+
+	}
+
+	function group_widget() {
+		$this->file( 'group_widget', 'build' );
+
+		return new \ht_dms\ui\build\group_widget();
+	}
+
+	function my_stuff() {
+		$this->file( 'my_stuff', 'build' );
+
+		return new \ht_dms\ui\build\my_stuff();
+	}
+
+	function views() {
+		$this->file( 'views', 'build' );
+
+		return new \ht_dms\ui\build\views();
+	}
+
+	function login() {
+		$this->file( 'login', 'build' );
+
+		return new \ht_dms\ui\build\login();
+	}
+
+	function tags() {
+		$this->file( 'views', 'build' );
+
+		return new \ht_dms\ui\build\tags();
+
+	}
+
+	function add_modify() {
+		$this->file( 'add_modify', 'output' );
+
+		return new \ht_dms\ui\output\add_modify();
+	}
+
+	function elements() {
+		$this->file( 'elements', 'output' );
+		
+		return new \ht_dms\ui\output\elements;
+
+	}
+
+	function view_loaders() {
+		$this->file( 'view_loaders', 'output' );
+
+		return new \ht_dms\ui\output\view_loaders();
+
+	}
+
+	private function file( $file, $dir  ) {
+		require_once( trailingslashit( HT_DMS_UI_DIR ) ). trailingslashit( $dir ). $file .'.php';
+	}
+
+
+
+}
