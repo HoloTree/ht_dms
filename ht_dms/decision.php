@@ -202,7 +202,8 @@ class decision extends dms {
 			'default' => $defaults[ 'organization_id']
 		);
 
-		return $form_fields
+		return $form_fields;
+
 	}
 
 	/**

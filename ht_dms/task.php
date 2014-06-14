@@ -68,7 +68,7 @@ class task extends dms {
 		$form_fields[ 'blocking' ] = array(
 			'label' => __( 'Tasks that can only be completed after this task is completed.', 'holotree' )
 		);
-		$form_fields[ 'organization' ]=> array(
+		$form_fields[ 'organization' ] =  array(
 			'default' 	=> $oID,
 		);
 
@@ -454,7 +454,7 @@ class task extends dms {
 			$limit = -1;
 		}
 
-		$obj = $this->pods_object()->find( array( 'where' => $where, 'limit' => $limit ) ) ;
+		$obj = $this->item( null, null, array( 'where' => $where, 'limit' => $limit ) );
 		if ( $obj->total() > 0 ) {
 			while( $obj->fetch() ) {
 				if ( $return === 'ids' ) {

@@ -695,7 +695,8 @@ class views {
 	 */
 	function group_loop( $obj = null, $limit = 5, $mine = false, $public = true, $oID = false, $obj = null ) {
 		if ( $mine ) {
-			$obj = holotree_group_class()->users_groups_obj( get_current_user_id(), $obj, $limit, $oID );
+			$obj = holotree_group_class()->users_groups_obj( get_current_user_id(), null, $limit, $oID );
+			$params = 'xx';
 		}
 		else {
 			$params = array( 'limit' => $limit );
@@ -724,12 +725,13 @@ class views {
 				$params[ 'where' ] = $where;
 			}
 
-			//@TODO use supplied $obj once group null object is refactored.
-			$obj = holotree_group_class()->pods_object()->find( $params );
+
+			$obj = holotree_group_class()->item( null, $obj, $params );
 
 		}
 
 		if ( !is_object( $obj ) ) {
+			holotree_error( print_c3( array( $params, $oID ) ) );
 			holotree_error( 'No Object in: ', __METHOD__ );
 		}
 
@@ -748,7 +750,7 @@ class views {
 				
 			}
 			else {
-				return _( 'Not a member of any groups', 'holotree' );
+				return __( 'Not a member of any groups', 'holotree' );
 			}
 
 		}

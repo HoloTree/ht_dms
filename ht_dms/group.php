@@ -357,7 +357,9 @@ class group extends dms {
 				else {
 					$groups[ $id ] = $id;
 				}
+
 			}
+
 		}
 
 		if ( ! empty( $groups ) ) {
@@ -383,118 +385,85 @@ class group extends dms {
 
 		$uID = $this->null_user( $uID );
 
-		if ( $this->user_exists( $uID ) ) {
-			$key = 'users_group_'.$uID;
-			if ( $oID !== false && ! is_array( $oID ) ) {
-				$key .= '_oID-'.$oID;
-			}
-			if ( $oID !== false && is_array( $oID ) ) {
-				$key .= '_oID-'.implode( '_', $oID );
-			}
+		$where = 'members.ID = "'.$uID.'"';
 
-			$group = 'ht_dms_group';
-
-			//@TODO cache when using oID once cache clear is resolved for that.
-			if ( $oID !== false ) {
-				$cached_value = pods_cache_get( $key, $group );
+		if ( $oID  ) {
+			if ( is_array( $oID ) ) {
+				$where .= ' AND organization.ID = "IN( ' . implode( ',', $oID ) . ')" ';
 			}
 			else {
-				$cached_value = false;
-			}
-
-			if ( $cached_value !== false && is_object( $cached_value  ) ) {
-				return $cached_value;
-
-			}
-			else {
-
-				$where = 'members.ID = "'.$uID.'"';
-
-				if ( $oID !== false ) {
-					if ( is_array( $oID ) ) {
-						$where .= ' AND organization.ID = "IN( ' . implode( ',', $oID ) . ')" ';
-					}
-					else {
-						$where .= ' AND organization.ID = "' . $oID . '" ';
-
-					}
-
-				}
-
-				$obj = holotree_dms_class()->null_obj( 'group', null, $obj );
-				$params = array(
-					'where' => $where,
-					'limit'	=> $limit,
-				);
-				$obj = $obj->find( $params );
-
-				pods_cache_set(  $key, $obj, $group, DAY_IN_SECONDS );
-				return $obj;
+				$where .= ' AND organization.ID = "' . $oID . '" ';
 
 			}
 
 		}
 
-		/**
-		 * Check if a group has open access.
-		 *
-		 * @param   int   		$id
-		 * @param 	obj|null 	$obj
-		 *
-		 * @return 	bool			Whether or not group is "open access"
-		 */
-		function open_access( $id, $obj = null ) {
+		$params[ 'where' ] = $where;
 
-			return holotree_membership_class()->open_access( $id, $obj, true );
+		$obj = holotree_group_class()->null_obj( $obj, $params );
 
-		}
+		return $obj;
 
-		/**
-		 * Update user fields related to this post type.
-		 *
-		 * Workaround for Pods issue #1945
-		 * @see https://github.com/pods-framework/pods/issues/1945
-		 *
-		 * @param $pieces
-		 * @param $is_new_item
-		 * @param $id
-		 *
-		 * @uses 'pods_api_post_save_pod_item_' hook
-		 *
-		 * @return mixed
-		 *
-		 * @since 0.0.1
-		 */
-		function user_fix( $pieces, $is_new_item, $id ) {
+	}
 
-			if ( isset( $pieces[ 'fields' ][ 'members' ][ 'value' ] ) ) {
-				$uID = (int)$pieces[ 'fields' ][ 'members' ][ 'value' ];
-				if ( is_int( $uID ) ) {
-					$this->user_meta( $id, $uID );
-				}
-			}
+	/**
+	 * Check if a group has open access.
+	 *
+	 * @param   int   		$id
+	 * @param 	obj|null 	$obj
+	 *
+	 * @return 	bool			Whether or not group is "open access"
+	 */
+	function open_access( $id, $obj = null ) {
 
-			return $pieces;
-		}
+		return holotree_membership_class()->open_access( $id, $obj, true );
 
-		/**
-		 * Updates user meta manually.
-		 *
-		 * Part of workaround for Pods issue #1945
-		 *
-		 * @param 	int	$id		ID of group change is from.
-		 * @param 	int	$uID	IF of user to update meta of
-		 *
-		 * @since	0.0.1
-		 */
-		function user_meta( $id, $uID ) {
-			if ( get_user_by( 'id', $uID ) !== false ) {
-				$groups = get_user_meta(  $uID, 'groups.ID' );
-				$groups[] = $id;
-				update_user_meta( $uID, 'groups', $groups );
+	}
+
+	/**
+	 * Update user fields related to this post type.
+	 *
+	 * Workaround for Pods issue #1945
+	 * @see https://github.com/pods-framework/pods/issues/1945
+	 *
+	 * @param $pieces
+	 * @param $is_new_item
+	 * @param $id
+	 *
+	 * @uses 'pods_api_post_save_pod_item_' hook
+	 *
+	 * @return mixed
+	 *
+	 * @since 0.0.1
+	 */
+	function user_fix( $pieces, $is_new_item, $id ) {
+
+		if ( isset( $pieces[ 'fields' ][ 'members' ][ 'value' ] ) ) {
+			$uID = (int)$pieces[ 'fields' ][ 'members' ][ 'value' ];
+			if ( is_int( $uID ) ) {
+				$this->user_meta( $id, $uID );
 			}
 		}
 
+		return $pieces;
+	}
+
+	/**
+	 * Updates user meta manually.
+	 *
+	 * Part of workaround for Pods issue #1945
+	 *
+	 * @param 	int	$id		ID of group change is from.
+	 * @param 	int	$uID	IF of user to update meta of
+	 *
+	 * @since	0.0.1
+	 */
+	function user_meta( $id, $uID ) {
+		if ( get_user_by( 'id', $uID ) !== false ) {
+			$groups = get_user_meta(  $uID, 'groups.ID' );
+			$groups[] = $id;
+			update_user_meta( $uID, 'groups', $groups );
+		}
 	}
 
 } 
