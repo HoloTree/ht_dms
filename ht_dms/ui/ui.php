@@ -39,7 +39,7 @@ class ui {
 		static $instance = false;
 
 		if ( ! $instance ) {
-			$instance = new \ht_dms\uiui();
+			$instance = new \ht_dms\ui\ui();
 		}
 
 		return $instance;

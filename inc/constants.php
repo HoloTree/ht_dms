@@ -11,7 +11,7 @@
 
 
 if ( !defined ( 'HT_DMS_DIR' )  ) {
-	define( 'HT_DMS_DIR', trailingslashit( HT_DMS_ROOT_DIR ) . 'dms' );
+	define( 'HT_DMS_DIR', trailingslashit( HT_DMS_ROOT_DIR ) . 'ht_dms' );
 }
 
 if ( !defined ( 'HT_DMS_UI_DIR' ) && defined( 'HT_DMS_DIR' ) ) {

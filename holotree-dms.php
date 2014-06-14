@@ -197,13 +197,18 @@ function holotree_dms() {
 		 */
 		do_action( 'holotree_DMS' );
 
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
+		require_once(  trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 		/**
 		 * Setup Auto Loader
 		 */
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
-		$classLoader = new Ht_DMS_ClassLoader();
+		$classLoader = new HT_DMS_ClassLoader();
 		$classLoader->addDirectory( trailingslashit( HT_DMS_ROOT_DIR ) . 'ht_dms' );
+		$classLoader->addDirectory( HT_DMS_UI_DIR );
 		$classLoader->register();
+
+		holotree_dms_ui();
 
 		/**
 		 * Include class/ item functions

@@ -14,7 +14,7 @@
  * </code>
  *
  */
-class Ht_DMS_ClassLoader {
+class HT_DMS_ClassLoader {
 
 	private $directoriesPrefixed = array();
 

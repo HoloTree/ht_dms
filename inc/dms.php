@@ -36,7 +36,8 @@ function holotree_decision( $id = true, $cached = true, $fields = false, $obj = 
  */
 function holotree_decision_class() {
 
-	return ht_dms\decision::init();
+	return decision::init();
+	//return htdms\decision::init();
 
 }
 
@@ -68,7 +69,8 @@ function holotree_group( $id = true, $cached = true, $fields = false, $obj = nul
  */
 function holotree_group_class() {
 
-	return ht_dms\group::init();
+	return group::init();
+	//return ht_dms\group::init();
 
 }
 
@@ -83,7 +85,8 @@ function holotree_group_class() {
  */
 function holotree_task_class() {
 
-	return ht_dms\task::init();
+	return task::init();
+	//return ht_dms\task::init();
 
 }
 
