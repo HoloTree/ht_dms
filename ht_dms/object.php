@@ -262,7 +262,7 @@ abstract class object {
 
 				}
 				else {
-					pods_error( 'Can not build object '.__CLASS__.__METHOD__.__LINE__ );
+					pods_error( 'Can not build '.self::$type.' object - '.__CLASS__.__METHOD__.__LINE__ );
 				}
 
 			}

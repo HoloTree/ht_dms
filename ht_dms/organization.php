@@ -15,7 +15,7 @@
 class organization extends dms {
 
 	function __construct() {
-
+		$this->set_type( HT_DMS_ORGANIZATION_NAME );
 	}
 
 
@@ -70,19 +70,6 @@ class organization extends dms {
 			}
 
 		}
-
-	}
-
-	/**
-	 * Set which Pod for this class
-	 *
-	 * @return string
-	 *
-	 * @since  0.0.1
-	 */
-	function set_type() {
-
-		return HT_DMS_ORGANIZATION_NAME;
 
 	}
 

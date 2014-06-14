@@ -15,21 +15,8 @@
 class group extends dms {
 
 	function __construct() {
+		$this->set_type( HT_DMS_GROUP_CPT_NAME );
 		add_action( 'pods_api_post_save_pod_item_ht_dms_group', array( $this, 'user_fix'), 9, 3 );
-	}
-
-
-	/**
-	 * Set which Pod for this class
-	 *
-	 * @return string
-	 *
-	 * @since  0.0.1
-	 */
-	function set_type() {
-
-		return HT_DMS_GROUP_CPT_NAME;
-
 	}
 
 	/**

@@ -16,22 +16,9 @@ class task extends dms {
 
 
 	function __construct() {
+		$this->set_type( HT_DMS_TASK_CT_NAME );
 		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
 		add_filter( "{$this->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
-
-	}
-
-
-	/**
-	 * Set which Pod for this class
-	 *
-	 * @return string
-	 *
-	 * @since  0.0.1
-	 */
-	function set_type() {
-
-		return HT_DMS_TASK_CT_NAME;
 
 	}
 
