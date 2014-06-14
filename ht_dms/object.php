@@ -293,11 +293,8 @@ abstract class object {
 	 */
 	function check_obj( $obj, $id = null ) {
 		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === self::$type ) {
-			if ( is_null( $id ) || ( !is_null( $id ) && $id === $obj->id() ) ) {
 
 				return true;
-
-			}
 
 		}
 
