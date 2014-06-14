@@ -13,16 +13,16 @@
  * Return decision object or field array
  *
  * @param 	int|bool	$id 	Optional. ID of decision. Default is true, which returns complete object for post type.
+ * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
- * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  * @return 	obj|array			Decision Pods object or field array.
  *
  * @since 	0.0.1
  */
-function holotree_decision( $id = true, $cached = true, $fields = false, $obj = null ) {
+function holotree_decision( $id = true, $obj = null, $cached = true, $fields = false ) {
 	$dms_decision = holotree_decision_class();
-	$decision = $dms_decision->decision( $id, $cached, $fields, $obj );
+	$decision = $dms_decision->decision( $id, $obj, null, $cached, $fields );
 
 	return $decision;
 }
@@ -45,17 +45,17 @@ function holotree_decision_class() {
  * Return group object or field array
  *
  * @param 	int|bool	$id 	Optional. ID of group. Default is true, which returns complete object for post type.
+ * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
- * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  *
  * @return 	obj|array			Group Pods object or field array.
  *
  * @since 	0.0.1
  */
-function holotree_group( $id = true, $cached = true, $fields = false, $obj = null ) {
+function holotree_group( $id = true, $obj = null, $cached = true, $fields = false ) {
 	$dms_group = holotree_group_class();
-	$group = $dms_group->group( $id, $cached, $fields, $obj );
+	$group = $dms_group->group( $id, $obj, null, $cached, $fields );
 
 	return $group;
 }
@@ -94,17 +94,17 @@ function holotree_task_class() {
  * Return task object or field array
  *
  * @param 	int|bool	$id 	Optional. ID of task. Default is true, which returns complete object for post type.
+ * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
- * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  *
  * @return 	obj|array			Task Pods object or field array.
  *
  * @since 	0.0.1
  */
-function holotree_task( $id = true, $cached = true, $fields = false, $obj = null ) {
+function holotree_task( $id = true, $obj = null, $cached = true, $fields = false ) {
 	$dms_task = holotree_task_class();
-	$task = $dms_task->task( $id, $cached, $fields, $obj );
+	$task = $dms_task->task( $id, $obj, null, $cached, $fields );
 
 	return $task;
 }
@@ -145,7 +145,8 @@ function holotree_consensus( $dID ) {
  */
 function holotree_organization_class() {
 
-	return ht_dms\organization::init();
+	return organization::init();
+	//return ht_dms\organization::init();
 
 }
 
@@ -164,7 +165,7 @@ function holotree_organization_class() {
  */
 function holotree_organization( $id = true, $obj = false, $cached = true, $fields = false ) {
 	
-	return holotree_organization_class()->organization( $id, $obj, $cached, $fields );
+	return holotree_organization_class()->organization( $id, $obj, null, $cached, $fields );
 
 }
 

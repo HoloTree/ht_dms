@@ -28,15 +28,15 @@ abstract class dms extends object {
 	 *
 	 * @since 0.0.1
 	 */
-	function item( $obj = null, $id = null, $params = null, $cached = true, $fields = false ) {
-		if ( ! is_array( $params ) && intval( $params ) > 0 ) {
-			$id = $params;
-			$params = null;
+	function item( $id = null, $obj = null, $params = null, $cached = true, $fields = false ) {
+		if ( ! is_array( $params ) && intval( $params ) === 0 ) {
+			$params = $id;
 		}
+
 		$obj = $this->null_object( $obj, $params );
 
 		if ( $fields ) {
-			if ( ! $this->field_loop( $obj ) ) {
+			if ( ! $this->field_loop( $id, $obj ) ) {
 
 				if ( $this->fields_to_loop() !== false ) {
 					$fields_to_loop = $this->fields_to_loop();
@@ -49,10 +49,11 @@ abstract class dms extends object {
 				}
 
 				foreach( $fields_to_loop as $name  ) {
-					$fields[ $name ] = $obj->field ( $name );
+					var_dump ( $name );
+					$the_fields[ $name ] = $obj->field ( $name );
 				}
 
-				return $fields;
+				return $the_fields;
 
 			}
 			else {
@@ -61,10 +62,46 @@ abstract class dms extends object {
 
 			}
 		}
-		else {
 
-			return $obj;
+		return $obj;
+
+	}
+
+	/**
+	 * Use magical __call to turn type functions into $this->item()
+	 *
+	 * For example, allows $this->group() to pass through to $this->item()
+	 *
+	 * @param 	$method
+	 * @param 	$args
+	 *
+	 * @return 	bool|mixed|null|Pods|void
+	 *
+	 * @since	0.0.1
+	 */
+	function __call( $method, $args ) {
+
+		if ( $method === $this->short_name() ) {
+
+			return $this->item( $args[0], $args[1], $args[2], $args[3], $args[4] );
+
 		}
+	}
+
+	/**
+	 * Removes prefix from self::$type
+	 *
+	 * Example if prefix is "ht_dms" and type is "ht_dms_group", "group" is returned.
+	 *
+	 * @return    string
+	 *
+	 * @since	0.0.1
+	 */
+	function short_name() {
+		//@TODO ht_dms prefix needs to be set dynamically everywhere.
+		$prefix = 'ht_dms';
+		$prefix = $prefix.'_';
+		return str_replace( $prefix, '', self::$type );
 
 	}
 
