@@ -64,6 +64,20 @@ class ui {
 		return new \ht_dms\ui\build\views();
 	}
 
+	function models() {
+		$this->file( 'models', 'build' );
+
+		return \ht_dms\ui\build\models::init();
+
+	}
+
+	function build_elements() {
+		$this->file( 'elements', 'build' );
+
+		return \ht_dms\ui\build\elements::init();
+
+	}
+
 	function login() {
 		$this->file( 'login', 'build' );
 

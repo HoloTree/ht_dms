@@ -192,6 +192,55 @@ class view_loaders {
 		return $out;
 	}
 
+	function magic_template( $view, $obj, $cache_args = null ) {
+
+		if (  file_exists( $view ) && class_exists( 'Pods_Templates' ) ) {
+			$view = file_get_contents( $view );
+
+			if (  is_null( $cache_args )  || !is_array( $cache_args ) ) {
+				$expires = DAY_IN_SECONDS;
+				$cache_mode = 'transient';
+			}
+			else {
+				extract( $cache_args );
+			}
+
+			if ( $obj->total > 0 ) {
+				while ( $obj->fetch() ) {
+					$out[] = $this->template( $view, $obj );
+				}
+
+				if ( isset( $out ) && ( is_array( $out )) ) {
+					return implode( '<br>', $out );
+				}
+
+			}
+			elseif( is_int( $obj->id() ) ) {
+				$out = $this->template( $view, $obj );
+
+				//@TODO SHOULD BE APPENDING ACTIONS ONCE THAT IS REDONE
+				$out .= $this->ui()->build_elements()->foo();
+				return $out;
+			}
+			else {
+				return __( 'Not items to display', 'holotree' );
+			}
+
+		}
+		pods_error(__LINE__.$view);
+
+	}
+
+	function type_view( $view, $args ) {
+
+	}
+
+	private function template( $view, $obj ) {
+		return \Pods_Templates::do_template( $view, $obj );
+	}
+
+
+
 	/**
 	 * Get instance of UI class
 	 *

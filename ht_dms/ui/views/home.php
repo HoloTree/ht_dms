@@ -20,7 +20,7 @@ $ui = holotree_dms_ui();
 
 $uID = get_current_user_id();
 
-$gObj = holotree_group_class()->null_object();
+$gObj = holotree_group_class()->object();
 
 $tabs = array(
 	array(

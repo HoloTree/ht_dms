@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\u\ioutput;
+namespace ht_dms\ui\output;
 
 class elements {
 	/**

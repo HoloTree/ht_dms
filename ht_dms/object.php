@@ -247,8 +247,18 @@ abstract class object {
 	 */
 	function null_object( $obj = null, $params_or_id = null ) {
 		if ( $this->check_obj( $obj, $params_or_id ) ) {
+			if ( ! is_null( $params_or_id ) ) {
+				if ( !is_array( $params_or_id ) ) {
+					$params_or_id = (int) $params_or_id;
+					$params_or_id = array( 'where' => 't.id = " '.$params_or_id.' "' );
+				}
+				$obj = $obj->find( $params_or_id );
+			}
+
 			return $obj;
+
 		}
+
 		else {
 			$obj = $this->object( true, $params_or_id );
 			if ( $this->check_obj( $obj, $params_or_id ) ) {

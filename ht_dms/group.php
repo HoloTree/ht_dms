@@ -388,13 +388,7 @@ class group extends dms {
 		$where = 'members.ID = "'.$uID.'"';
 
 		if ( $oID  ) {
-			if ( is_array( $oID ) ) {
-				$where .= ' AND organization.ID = "IN( ' . implode( ',', $oID ) . ')" ';
-			}
-			else {
-				$where .= ' AND organization.ID = "' . $oID . '" ';
-
-			}
+			$where .= ' AND organization.ID = "' . $oID . '" ';
 
 		}
 

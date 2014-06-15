@@ -11,7 +11,7 @@
 		?>
 				<li>Task Blocked By This Task:
 					<ul>
-						<?php echo holotree_dms_ui()->views()->block( $blocks  ); ?>
+						<?php echo holotree_dms_ui()->build_elements()->block( $blocks  ); ?>
 					</ul>
 				</li>
 		<?php
@@ -22,7 +22,7 @@
 		?>
 			<li>Task That Are Blocked By This Task:
 				<ul>
-				<?php echo holotree_dms_ui()->views()->block( $blocking );	?>
+				<?php echo holotree_dms_ui()->build_elements()->block( $blocking );	?>
 			</ul>
 		</li>
 		<?php endif; ?>

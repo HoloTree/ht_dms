@@ -49,7 +49,6 @@ abstract class dms extends object {
 				}
 
 				foreach( $fields_to_loop as $name  ) {
-					var_dump ( $name );
 					$the_fields[ $name ] = $obj->field ( $name );
 				}
 
@@ -266,7 +265,7 @@ abstract class dms extends object {
 		if ( $all || is_null( $fields ) ) {
 			$fields_array = $obj->fields();
 			foreach ( $fields_array as $key => $value ) {
-				$fields[ $key ] = $key;
+				$fields[ $key ] = $value;
 			}
 
 		}
