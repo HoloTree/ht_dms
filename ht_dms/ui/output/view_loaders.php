@@ -231,7 +231,10 @@ class view_loaders {
 
 	}
 
-	function type_view( $view, $args ) {
+	function type_view( $type, $args ) {
+		$model = $this->ui()->models();
+
+		return call_user_func_array( array( $model, $type ), $args );
 
 	}
 
