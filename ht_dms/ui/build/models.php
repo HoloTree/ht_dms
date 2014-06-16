@@ -188,6 +188,16 @@ class models {
 				}
 			}
 
+			if ( is_null( $status ) ) {
+				$status_where = 'd.task_status = "'.$status.'"';
+				if ( isset ( $where ) ) {
+					$where = $where . ' AND ' . $status_where;
+				}
+				else {
+					$where = $status_where;
+				}
+			}
+
 			if ( isset( $where ) ) {
 				$params[ 'where' ] = $where;
 			}

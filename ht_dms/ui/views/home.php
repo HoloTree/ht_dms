@@ -50,4 +50,5 @@ $tabs = array(
 	),
 
 );
+
 return $ui->elements()->tab_maker( $tabs );
