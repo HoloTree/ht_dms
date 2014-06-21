@@ -49,8 +49,8 @@ $tabs = array(
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
 		'content'	=> $ui->views()->public_groups( $gObj ),
-
 	),
+
 
 );
 
