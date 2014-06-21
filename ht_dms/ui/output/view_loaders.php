@@ -23,6 +23,7 @@ class view_loaders {
 
 		if ( is_home() || is_front_page() ) {
 			$content = $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
+			$content = '<div style="margin-top:200px">ff</div>';
 		}
 		elseif ( $post_type === HT_DMS_GROUP_CPT_NAME || $post_type === HT_DMS_DECISION_CPT_NAME || HT_DMS_ORGANIZATION_NAME ) {
 			if ( is_singular( $post_type ) ) {
@@ -56,7 +57,7 @@ class view_loaders {
 			}
 
 		}
-
+//$content = '<div style="margin-top:200px">ff</div>';
 
 
 		return $content;
@@ -188,7 +189,7 @@ class view_loaders {
 		$out .=do_action( 'ht_after_ht' );
 
 		$out .= '</div>';
-
+$out = '<div style="margin-top:200px">ff</div>';
 		return $out;
 	}
 
@@ -204,9 +205,13 @@ class view_loaders {
 			else {
 				extract( $cache_args );
 			}
+			$obj->total();
 
 			if ( $obj->total > 0 ) {
 				while ( $obj->fetch() ) {
+
+					//reset id
+					$obj->id = $obj->id();
 					$out[] = $this->template( $view, $obj );
 				}
 
@@ -214,13 +219,6 @@ class view_loaders {
 					return implode( '<br>', $out );
 				}
 
-			}
-			elseif( is_int( $obj->id() ) ) {
-				$out = $this->template( $view, $obj );
-
-				//@TODO SHOULD BE APPENDING ACTIONS ONCE THAT IS REDONE
-				$out .= $this->ui()->build_elements()->foo();
-				return $out;
 			}
 			else {
 				return __( 'Not items to display', 'holotree' );
