@@ -31,25 +31,22 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 
 	$gObj = $gObj->find( array( 'where' => 'organization.ID = "'.$id.'" ' ) );
 
-	//@TODO Make each of these work right here and in home.php given organizations.
 	$tabs = array (
 		array (
 			'label'   => __( 'My Groups In Organization', 'holotree' ),
-			'content' => '',
-			//'content' => $ui->views()->group_loop( $gObj, 5, true, false, $id ),
+			'content' => $ui->views()->users_groups( $gObj, $uID, $id ),
 		),
 		array (
 			'label'   => __( 'Public Groups In Organization', 'holotree' ),
-			'content' => $ui->views()->group_loop( $gObj, 5, false, true, $id ),
+			'content' => $ui->views()->public_groups( $gObj, $id ),
 		),
-		//@TODO My in org or loose?
 		array (
 			'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
-			'content' => $ui->views()->all_tasks( false, null, $uID, 5, true, $id ),
+			'content' => $ui->views()->assigned_tasks( null, $uID, $id );
 		),
 		array (
 			'label'   => __( 'New Group In Organization', 'holotree' ),
-			'content' => $ui->add_modify()->new_group( $id, $uID, null ),
+			'content' => $ui->add_modify()->new_group(  $id, $uID ),
 		),
 		array(
 			'label'		=> __( 'Edit Organization', 'holotree' ),
