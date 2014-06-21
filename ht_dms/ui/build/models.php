@@ -53,7 +53,7 @@ class models {
 	function group( 		$obj = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
 		$g = holotree_group_class();
 
-
+		$params = null;
 		if ( $preview && intval( $preview ) !== 0 ) {
 			$params = (int) $preview;
 		}
@@ -85,7 +85,7 @@ class models {
 		}
 
 		$obj = $g->null_object( $obj, $params );
-
+print_c3( $params );
 		$view = $this->path( 'group', $preview );
 
 		return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
@@ -153,9 +153,10 @@ class models {
 		}
 		else {
 			if ( $mine  ) {
-				if ( !is_int( $mine ) || intval( $mine ) == 0 ) {
+				if ( is_null( $mine ) || !is_int( $mine ) || intval( $mine ) == 0 ) {
 					$mine = get_current_user_id();
 				}
+
 				$where = 'assigned_user.ID = "'.$mine.'"';
 			}
 			elseif ( !is_null( $in ) ) {
@@ -232,7 +233,7 @@ class models {
 
 		$view = $dir.$view;
 		if ( $preview && file_exists( $view.'_preview.'.$extension ) ) {
-			$view = $view.'_preview';
+			$view = $view.'_preview'.'.'.$extension;
 		}
 		else {
 			$view = $view.'.'.$extension;

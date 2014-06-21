@@ -19,6 +19,30 @@ class views {
 		return models::init();
 	}
 
+	function users_groups( $obj = null, $uID = null, $in = false, $preview = true, $limit = 5  ) {
+
+		return $this->model()->group( $obj, $preview, $in, $uID, $limit, false );
+
+	}
+
+	function public_groups( $obj = null, $in = false, $preview = true, $limit = 5 ) {
+
+		return $this->model( $obj, $preview, $in, false, $limit );
+
+	}
+
+	function assigned_tasks( $obj = null, $uID = null, $in = false, $preview = true , $limit = 5 ) {
+
+		return $this->model()->task( $obj, $preview, $in, $uID, $limit, null );
+
+	}
+
+	function users_organizations( $obj = null, $oID, $uID = null, $preview = true, $limit = 5 ) {
+
+		return $this->model()->organization( $obj, $preview, $oID, $uID, $limit, false );
+
+	}
+
 	/**
 	 * Holds the instance of this class.
 	 *

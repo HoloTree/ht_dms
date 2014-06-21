@@ -22,18 +22,20 @@ $uID = get_current_user_id();
 
 $gObj = holotree_group_class()->object();
 
+
+
 $tabs = array(
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
-		'content'	=> $ui->views()->group_loop( $gObj, 5, true ),
+		'content'	=> $ui->views()->users_groups( $gObj, $uID ),
 	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),
-		'content'	=> '\w/',
+		'content'	=> $ui->views()->users_organizations( null, false, $uID ),
 	),
 	array(
 		'label'		=> __( 'Assigned Tasks', 'holotree' ),
-		'content'	=> $ui->views()->all_tasks( false, null, (int) get_current_user_id(), 5, false, false ),
+		'content'	=> $ui->views()->assigned_tasks( null, $uID ),
 	),
 	array(
 		'label'		=> __( 'Notifications', 'holotree' ),
@@ -46,8 +48,9 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
-		'content'	=> $ui->views()->group_loop( $gObj, 5, false ),
-	),
+		//'content'	=> $ui->views()->public_groups( $gObj ),
+		'content'	=> '',
+	),*/
 
 );
 
