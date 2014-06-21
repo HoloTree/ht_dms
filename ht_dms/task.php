@@ -54,6 +54,8 @@ class task extends dms {
 			$oID = (int) $obj->display( 'organization.ID' );
 		}
 
+		$dID = (int) $obj->display( 'decision.ID' );
+
 		$form_fields[ 'decision' ] = array(
 			'default'	=> $dID,
 			//'type'		=> 'hidden',

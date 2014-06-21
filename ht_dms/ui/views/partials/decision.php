@@ -4,7 +4,7 @@
 		<div class="description">{@decision_description}</div>
 		<ul>
 			<li>Status: {@decision_status}</li>
-			<li>Manger: {@manager}</li>
+			<li>Manager: {@manager}</li>
 			<li>Proposed By: {@proposed_by}</li>
 		</ul>
 	</div>

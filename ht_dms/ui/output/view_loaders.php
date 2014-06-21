@@ -23,7 +23,7 @@ class view_loaders {
 
 		if ( is_home() || is_front_page() ) {
 			$content = $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
-			$content = '<div style="margin-top:200px">ff</div>';
+
 		}
 		elseif ( $post_type === HT_DMS_GROUP_CPT_NAME || $post_type === HT_DMS_DECISION_CPT_NAME || HT_DMS_ORGANIZATION_NAME ) {
 			if ( is_singular( $post_type ) ) {
@@ -189,7 +189,7 @@ class view_loaders {
 		$out .=do_action( 'ht_after_ht' );
 
 		$out .= '</div>';
-$out = '<div style="margin-top:200px">ff</div>';
+
 		return $out;
 	}
 
@@ -225,7 +225,7 @@ $out = '<div style="margin-top:200px">ff</div>';
 			}
 
 		}
-		pods_error(__LINE__.$view);
+		pods_error( __METHOD__.' can not load view - '.$view);
 
 	}
 

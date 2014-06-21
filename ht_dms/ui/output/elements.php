@@ -178,7 +178,12 @@ class elements {
 		foreach ( $tabs as $key => $value ) {
 			if ( $key != 0 ) {
 				$out .= '<div class="content" id="'.$tab_prefix.$i.'">';
-				$out .= $value[ 'content' ];
+				if ( is_string( $value[ 'content' ] ) ) {
+					$out .= $value[ 'content' ];
+				}
+				else {
+					holotree_error( __( 'Non-string used as tab content', 'holotree' ), print_c3( array( 'iteration' => $i, 'attempted-content' => $value[ 'content' ] ) ) );
+				}
 				$out .= '</div><!--#'.$tab_prefix.$i.'-->';
 				$i++;
 			}

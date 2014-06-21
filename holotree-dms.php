@@ -185,7 +185,7 @@ class HoloTree_DMS {
  *
  * @since 0.0.1
  */
-//add_action( 'plugins_loaded', 'holotree_dms', 30 );
+add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
 	if ( defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
 		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
@@ -213,11 +213,18 @@ function holotree_dms() {
 
 		holotree_dms_ui();
 
+
+
 		/**
 		 * Include class/ item functions
 		 */
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
 
+		return ht_dms\ui\ui::init();
+
 	}
 
+
 }
+
+
