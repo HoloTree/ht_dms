@@ -148,6 +148,6 @@ class Theme_Setup {
 	}
 
 	function left_menu() {
-		echo holotree_dms_ui()->views()->menu();
+		echo holotree_dms_ui()->build_elements()->menu();
 	}
 }
