@@ -194,7 +194,7 @@ class view_loaders {
 	}
 
 	function magic_template( $view, $obj, $cache_args = null ) {
-
+		$no_items = __( 'No items to display', 'holotree' );
 		if (  file_exists( $view ) && class_exists( 'Pods_Templates' ) ) {
 			$view = file_get_contents( $view );
 
@@ -221,11 +221,18 @@ class view_loaders {
 
 			}
 			else {
+				$obj->id = $obj->id();
+				if ( (int) $obj->id() < 1 ) {
+
+					return $no_items;
+
+				}
+
 				$out =  $this->template( $view, $obj );
 			}
 
 			if ( empty( $out ) ) {
-				return __( 'Not items to display', 'holotree' );
+				return $no_items;
 			}
 
 			return $out;
