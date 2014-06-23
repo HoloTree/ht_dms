@@ -43,6 +43,38 @@ class views {
 
 	}
 
+	function organization( $obj = null, $id ) {
+
+		return $this->model()->organization( $obj, $id );
+		
+	}
+
+	function group( $obj = null, $id ) {
+
+		return $this->model()->group( $obj, $id );
+
+	}
+
+	function decision( $obj = null, $id ) {
+
+		return $this->model()->decision( $obj, $id );
+
+	}
+
+	function task( $obj = null, $id ) {
+
+		return $this->model()->task( $obj, $id );
+
+	}
+
+	function docs(  $obj = null, $which = false, $id = false ) {
+
+		return __( 'Docs functionality not yet implemented.', 'holotree' );
+
+	}
+
+
+
 	/**
 	 * Holds the instance of this class.
 	 *
