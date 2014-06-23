@@ -119,12 +119,13 @@ abstract class object {
 	function object( $cache = true, $params = null ) {
 		$id = null;
 
-		if ( ! is_array( $params ) && intval( $params ) > 0 ) {
+		if ( ! is_array( $params ) && (int) $params > 0 ) {
 			$id = $params;
 			$params = null;
 		}
 
-		return $this->get_pods_object( $id, $params, $cache );
+		return pods( self::$type, $params );
+		//return $this->get_pods_object( $id, $params, $cache );
 
 	}
 
@@ -246,12 +247,14 @@ abstract class object {
 	 * @since 0.0.1
 	 */
 	function null_object( $obj = null, $params_or_id = null ) {
-		if ( $this->check_obj( $obj, $params_or_id ) ) {
+
+		if ( $this->check_obj( $obj ) ) {
 			if ( ! is_null( $params_or_id ) ) {
 				if ( !is_array( $params_or_id ) ) {
 					$params_or_id = (int) $params_or_id;
 					if ( self::$type !== HT_DMS_TASK_CT_NAME ) {
 						$params_or_id = array ( 'where' => 't.id = " ' . $params_or_id . ' "' );
+
 					}
 					else {
 						$params_or_id = array ( 'where' => 't.term_id = " ' . $params_or_id . ' "' );
@@ -265,22 +268,10 @@ abstract class object {
 		}
 
 		else {
-			$obj = $this->object( true, $params_or_id );
-			if ( $this->check_obj( $obj, $params_or_id ) ) {
-				return $obj;
 
-			}
-			else {
-				$obj = $this->object( false, $params_or_id );
-				if ( $this->check_obj( $obj, $params_or_id ) ) {
-					return $obj;
+			$obj = $this->object( true );
 
-				}
-				else {
-					pods_error( 'Can not build '.self::$type.' object - '.__CLASS__.__METHOD__.__LINE__ );
-				}
-
-			}
+			return $obj;
 
 		}
 
@@ -306,7 +297,7 @@ abstract class object {
 	 *
 	 * @since 0.0.1
 	 */
-	function check_obj( $obj, $id = null ) {
+	function check_obj( $obj ) {
 		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === self::$type ) {
 
 				return true;
