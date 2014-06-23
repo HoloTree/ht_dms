@@ -17,13 +17,11 @@ htdms_theme_header(); ?>
 			<?php
 
 			$t = holotree_task_class();
-			$obj = $t->single_task_object( get_queried_object_id() );
+
+			$obj = $t->item( get_queried_object_id() );
 			$id = $obj->id();
 
-
-
-			$dID = $obj->field( 'decision' );
-			$dID = $dID[ 'ID' ];
+			$dID = (int) $obj->display( 'decision.ID' );
 
 			$ui = holotree_dms_ui();
 
@@ -32,15 +30,15 @@ htdms_theme_header(); ?>
 			$tabs = array(
 				array(
 					'label' 	=> __( 'Task Details', 'holotree'),
-					'content'	=> $ui->views()->task( $id, $preview = false, $obj ),
+					'content'	=> $ui->views()->task( $obj, $id  ),
 				),
 				array(
 					'label' 	=> __( 'Task Documents', 'holotree'),
-					'content'	=> $ui->views()->task_docs( $id, $obj ),
+					'content'	=> $ui->views()->docs( $obj, 'task', $id ),
 				),
 				array(
 					'label'		=> __( 'Decision', 'holtree' ),
-					'content'	=> $ui->views()->decision( $dID ),
+					'content'	=> $ui->views()->decision( null, $dID ),
 				),
 				array(
 					'label'		=> __( 'Edit Task', 'holotree' ),

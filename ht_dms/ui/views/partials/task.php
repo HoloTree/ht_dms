@@ -5,27 +5,26 @@
         <li>Responsible Member: {@assigned_user.display_name}</li>
         <li>Description: {@task_description}</li>
         <li>Status: {@task_status}</li>
-		<?php
-			$blocks = holotree_task_class()->blocking( $id, $obj );
-			if ( is_array( $blocks ) ) :
-		?>
-				<li>Task Blocked By This Task:
-					<ul>
-						<?php echo holotree_dms_ui()->build_elements()->block( $blocks  ); ?>
-					</ul>
-				</li>
-		<?php
-			endif;
-			$blocking = holotree_task_class()->blocked_by( $id, $obj );
-
-			if ( is_array( $blocking ) ) :
-		?>
-			<li>Task That Are Blocked By This Task:
+		[if blockers]
+			<li>Task That This Task Is Blocking:
 				<ul>
-				<?php echo holotree_dms_ui()->build_elements()->block( $blocking );	?>
+					[each blocker]
+						<li>{@name}</li>
+					[/each]
+				</ul>
+			</li>
+		[/if]
+
+		[if blocking]
+		<li>Task That Are Blocked By This Task:
+			<ul>
+				[each blocking]
+				<li>{@name}</li>
+				[/each]
 			</ul>
 		</li>
-		<?php endif; ?>
+		[/if]
+
     </ul>
-	<?php echo holotree_dms_ui()->views()->task_actions( $id, $obj ); ?>
+
 </div>
