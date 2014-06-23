@@ -358,7 +358,7 @@ class elements {
 			$name .= ' - ' .$decision;
 		}
 		elseif( get_post_type( $id ) === HT_DMS_DECISION_CPT_NAME ) {
-			$obj = holotree_decision( $id, true, false, $obj );
+			$obj = holotree_decision( $id, $obj );
 			$group = $obj->field( 'group' );
 			$title = get_the_title( $id );
 			$decision = $this->link( $id, 'permalink', $title );
@@ -368,7 +368,7 @@ class elements {
 			$name .= ' - ' .$decision. ' - ' . $group ;
 		}
 		elseif ( $task ) {
-			$obj = holotree_task( $id, true, false, $obj );
+			$obj = holotree_task( $id, $obj );
 			$name .= ' - '. $obj->field( 'name' );
 			$dID = $obj->field( 'decision' );
 			$dID = $dID[ 'ID' ];
