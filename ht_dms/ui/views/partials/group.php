@@ -1,4 +1,4 @@
-<div>
+<div class="group">
 	<h3>{@post_title}</h3>
 	<div class="details">
 		<div>{@group_description}</div>

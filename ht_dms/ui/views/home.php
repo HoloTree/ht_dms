@@ -23,12 +23,12 @@ $uID = get_current_user_id();
 $gObj = holotree_group_class()->object();
 
 
-
 $tabs = array(
+	/*
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
 		'content'	=> $ui->views()->users_groups( $gObj, $uID ),
-	),
+	),*/
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),
 		'content'	=> $ui->views()->users_organizations( null, false, $uID ),
@@ -44,11 +44,12 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'New Organization', 'holotree' ),
-		'content'	=> $ui->add_modify()->new_organization( $uID ),
+		//'content'	=> $ui->add_modify()->new_organization( $uID ),
+		'content' => ':('
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
-		'content'	=> $ui->views()->public_groups( $gObj ),
+		'content'	=> $ui->models()->group( ),
 	),
 
 

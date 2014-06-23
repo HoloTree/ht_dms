@@ -19,27 +19,27 @@ class views {
 		return models::init();
 	}
 
-	function users_groups( $obj = null, $uID = null, $in = false, $preview = true, $limit = 5  ) {
+	function users_groups( $obj = null, $uID = null, $in = false, $limit = 5  ) {
 
-		return $this->model()->group( $obj, $preview, $in, $uID, $limit, false );
-
-	}
-
-	function public_groups( $obj = null, $in = false, $preview = true, $limit = 5 ) {
-
-		return $this->model( $obj, $preview, $in, false, $limit );
+		return $this->model()->group( $obj, true, $in, $uID, $limit, false );
 
 	}
 
-	function assigned_tasks( $obj = null, $uID = null, $in = false, $preview = true , $limit = 5 ) {
+	function public_groups( $obj = null, $in = false, $limit = 5 ) {
 
-		return $this->model()->task( $obj, $preview, $in, $uID, $limit, null );
+		return $this->model()->group( $obj, true, $in, false, $limit );
 
 	}
 
-	function users_organizations( $obj = null, $oID, $uID = null, $preview = true, $limit = 5 ) {
+	function assigned_tasks( $obj = null, $uID = null, $in = false, $limit = 5 ) {
 
-		return $this->model()->organization( $obj, $preview, $oID, $uID, $limit, false );
+		return $this->model()->task( $obj, true, $in, $uID, $limit, null );
+
+	}
+
+	function users_organizations( $obj = null, $uID = null, $limit = 5 ) {
+
+		return $this->model()->organization( $obj, true, false, $uID, $limit, false );
 
 	}
 

@@ -182,7 +182,10 @@ class elements {
 					$out .= $value[ 'content' ];
 				}
 				else {
-					holotree_error( __( 'Non-string used as tab content', 'holotree' ), print_c3( array( 'iteration' => $i, 'attempted-content' => $value[ 'content' ] ) ) );
+					$out .= __( "Tab maker content in iteration {$i} is not a string", 'holotree' );
+					if (HT_DEV_MODE ) {
+						$out .= var_dump( array( "tab{$i}" => $value[ 'content' ] ) );
+					}
 				}
 				$out .= '</div><!--#'.$tab_prefix.$i.'-->';
 				$i++;

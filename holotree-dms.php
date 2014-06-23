@@ -178,6 +178,21 @@ class HoloTree_DMS {
 		}
 	}
 
+	function helper() {
+		$helpers = array(
+			'common',
+			'consensus',
+			'membership',
+		);
+		foreach ( $helpers as $helper ) {
+			include_once( trailingslashit( HT_DMS_DIR ).$helper.'.php' );
+		}
+
+		new ht_dms\helper\common();
+
+
+	}
+
 }
 
 /**
@@ -198,17 +213,20 @@ function holotree_dms() {
 		do_action( 'holotree_DMS' );
 
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
-		require_once(  trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
+		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 		require_once( trailingslashit( HT_DMS_DIR ) . 'helper/theme_setup.php' );
 		new ht_dms\helper\Theme_Setup();
 
 		/**
 		 * Setup Auto Loader
+		 *
+		 * @TODO MAKE THIS WORK RIGHT
 		 */
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
 		$classLoader = new HT_DMS_ClassLoader();
 		$classLoader->addDirectory( trailingslashit( HT_DMS_ROOT_DIR ) . 'ht_dms' );
 		$classLoader->addDirectory( HT_DMS_UI_DIR );
+		$classLoader->addDirectory( trailingslashit( HT_DMS_DIR ) . 'helper' );
 		$classLoader->register();
 
 		holotree_dms_ui();

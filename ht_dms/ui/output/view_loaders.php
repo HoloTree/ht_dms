@@ -205,27 +205,29 @@ class view_loaders {
 			else {
 				extract( $cache_args );
 			}
-			$obj->total();
 
-			if ( $obj->total > 0 ) {
+			$total = $obj->total();
+
+			if ( $total > 0 ) {
+				$out = '';
 				while ( $obj->fetch() ) {
 
 					//reset id
 					$obj->id = $obj->id();
-					$out[] = $this->template( $view, $obj );
-				}
 
-				if ( isset( $out ) && ( is_array( $out )) ) {
-					return implode( '<br>', $out );
+					$out .= $this->template( $view, $obj );
 				}
+				return $out;
 
 			}
 			else {
-				return __( 'Not items to display', 'holotree' );
+
+					return __( 'Not items to display', 'holotree' );
+
 			}
 
 		}
-		pods_error( __METHOD__.' can not load view - '.$view);
+		//pods_error( __METHOD__.' can not load view - '.$view);
 
 	}
 
@@ -237,7 +239,14 @@ class view_loaders {
 	}
 
 	private function template( $view, $obj ) {
-		return \Pods_Templates::do_template( $view, $obj );
+		$template = '<div class="ht_dms_template" style="border:1px solid black">';
+		if ( HT_DEV_MODE ) {
+			$template .= '<span style="float:right">'.$obj->ID().'</span>';
+		}
+		$template .= $obj->template( '', $view );
+		$template .= '</div>';
+
+		return $template;
 	}
 
 

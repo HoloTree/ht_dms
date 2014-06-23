@@ -16,7 +16,7 @@ class models {
 	function organization( 	$obj = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
 		$params = null;
 
-		if ( $preview && intval( $preview ) !== 0 ) {
+		if ( $preview === true && is_int( $preview ) ) {
 			$params = (int) $preview;
 		}
 		else {
@@ -54,7 +54,7 @@ class models {
 		$g = holotree_group_class();
 
 		$params = null;
-		if ( $preview && intval( $preview ) !== 0 ) {
+		if ( $preview === true && is_int( $preview ) ) {
 			$params = (int) $preview;
 		}
 		elseif ( $mine ) {
@@ -85,10 +85,10 @@ class models {
 		}
 
 		$obj = $g->null_object( $obj, $params );
-print_c3( $params );
+
 		$view = $this->path( 'group', $preview );
 
-		return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
+		return $this->ui()->view_loaders()->magic_template( $view, $obj );
 
 
 
@@ -98,7 +98,7 @@ print_c3( $params );
 		$id = null;
 		$params = null;
 
-		if ( $preview && intval( $preview ) !== 0 ) {
+		if ( $preview === true && is_int( $preview ) ) {
 			$params = (int) $preview;
 		}
 		else {
@@ -148,7 +148,7 @@ print_c3( $params );
 
 		$params = null;
 
-		if ( $preview && intval( $preview ) !== 0 ) {
+		if ( $preview === true && is_int( $preview ) ) {
 			$params = (int) $preview;
 		}
 		else {
@@ -189,7 +189,7 @@ print_c3( $params );
 				}
 			}
 
-			if ( is_null( $status ) ) {
+			if ( !is_null( $status ) ) {
 				$status_where = 'd.task_status = "'.$status.'"';
 				if ( isset ( $where ) ) {
 					$where = $where . ' AND ' . $status_where;
@@ -239,6 +239,7 @@ print_c3( $params );
 			$view = $view.'.'.$extension;
 		}
 
+		//return trailingslashit( HT_DMS_VIEW_DIR ).'partials/foo.php';
 		return $view;
 
 	}
