@@ -597,8 +597,10 @@ class elements {
 		}
 
 
-		$out = '<a href="'.$url.'" text="'.$title.'">'.$text.'</a>';
-		return $out;
+		if ( is_string( $url ) && is_string( $title ) && is_string( $text ) ) {
+			$out = '<a href="' . $url . '" text="' . $title . '">' . $text . '</a>';
+			return $out;
+		}
 
 	}
 
