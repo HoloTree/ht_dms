@@ -87,7 +87,7 @@ class elements {
 	}
 
 	function action_buttons( $what, $id, $obj = null ) {
-		$obj = holotree_decision( $id, true, false, $obj );
+		$obj = holotree_decision( $id, $obj );
 
 		$is_change = false;
 		if ( $obj->field( 'decision_type')  === 'change' ) {
@@ -284,6 +284,20 @@ class elements {
 		$out .= '</ul>';
 
 		return $out;
+	}
+
+	/**
+	 * Get instance of UI class
+	 *
+	 * @return 	\holotree\ui
+	 *
+	 * @since 	0.0.1
+	 */
+	function ui(){
+		$ui = holotree_dms_ui();
+
+		return $ui;
+
 	}
 
 

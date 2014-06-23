@@ -104,7 +104,7 @@ class Theme_Setup {
 					$decision_title = $title;
 					$dID = $post->ID;
 					$dTitle = $title;
-					$obj = holotree_pods_object( 'decision', $post->ID );
+					$obj = holotree_decision( $dID );
 					$gID = $obj->field( 'group.ID' );
 					$gID = $gID[ 0 ];
 					$gTitle = get_the_title( $gID );

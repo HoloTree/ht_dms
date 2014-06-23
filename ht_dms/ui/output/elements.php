@@ -579,12 +579,23 @@ class elements {
 
 		if ( is_null( $text ) ) {
 			$term = get_term( $id, HT_DMS_TASK_CT_NAME );
-			$text = $term->name;
+			if ( is_object( $term ) && ! is_a( $term, 'WP_Error' ) ) {
+				$text = $term->name;
+			}
+			if ( is_a( $term, 'WP_Error' ) ) {
+				$text = 'task';
+			}
+
 		}
 
 		if ( is_null( $title ) ) {
+			if ( is_null( $text ) || is_object( $text ) || ! is_string( $text ) ) {
+				$text = 'Task';
+			}
+
 			$title = 'View '.$text;
 		}
+
 
 		$out = '<a href="'.$url.'" text="'.$title.'">'.$text.'</a>';
 		return $out;

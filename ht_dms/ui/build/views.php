@@ -73,6 +73,29 @@ class views {
 
 	}
 
+	function action_buttons( $obj, $id, $what ) {
+
+		if ( $what === 'task' || $what === HT_DMS_TASK_CT_NAME ) {
+
+			return $this->ui()->build_elements()->task_actions( $id, $obj );
+
+		}
+		else {
+
+			return $this->ui()->build_elements()->action_buttons( $what, $id, $obj );
+
+		}
+
+	}
+
+	function decisions_tasks( $tObj, $id ) {
+		$in[ 'what' ] = HT_DMS_DECISION_CPT_NAME;
+		$in[ 'ID' ] = $id;
+
+		return $this->model()->task( $tObj, true, $in );
+
+	}
+
 
 
 	/**

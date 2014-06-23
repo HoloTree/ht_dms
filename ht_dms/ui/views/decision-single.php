@@ -19,19 +19,19 @@ if ( $d->get_action_var() === 'changing' ) {
 
 }
 else {
-	$obj = $d->single_decision_object( $id );
+	$obj = $d->item( $id );
 	if ( !is_object( $obj) ) {
 		holotree_error( 'Not an object!', __FILE__ );
 	}
 	else {
-		$current = $ui->views()->decision( NULL, $obj );
+		$current = $ui->views()->decision( $obj, $id );
 		$status = $obj->field( 'decision_status' );
 		$status = strtolower( $status );
 		if ( $status === 'new' ) {
 			$status = 'open';
 		}
 		$what = $status.'-decision';
-		$current .= $ui->views()->action_buttons( $what, $id );
+		$current .= $ui->views()->action_buttons( $obj, $id, $what );
 
 
 
@@ -46,7 +46,7 @@ else {
 			),
 			array(
 				'label'	 	=> __( 'View Tasks' , 'holotree' ),
-				'content' 	=> $ui->views()->all_tasks( $id, $obj ),
+				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),

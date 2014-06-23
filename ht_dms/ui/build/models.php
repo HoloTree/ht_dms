@@ -164,7 +164,7 @@ class models {
 				$where = 'assigned_user.ID = "'.$mine.'"';
 			}
 			elseif ( !is_null( $in ) ) {
-				if ( $in[0] === 'multi' ) {
+				if (  $in === 'multi'   ) {
 					//@TODO in more than one thing
 				}
 				else {
