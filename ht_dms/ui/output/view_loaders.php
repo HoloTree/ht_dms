@@ -220,6 +220,9 @@ class view_loaders {
 				return $out;
 
 			}
+			elseif ( (int) $obj->id() > 0 ) {
+				return $this->template( $view, $obj );
+			}
 			else {
 
 					return __( 'Not items to display', 'holotree' );

@@ -45,25 +45,25 @@ class views {
 
 	function organization( $obj = null, $id ) {
 
-		return $this->model()->organization( $obj, $id );
+		return $this->model()->organization( $obj, (int) $id );
 		
 	}
 
 	function group( $obj = null, $id ) {
 
-		return $this->model()->group( $obj, $id );
+		return $this->model()->group( $obj, (int) $id );
 
 	}
 
 	function decision( $obj = null, $id ) {
 
-		return $this->model()->decision( $obj, $id );
+		return $this->model()->decision( $obj, (int) $id );
 
 	}
 
 	function task( $obj = null, $id ) {
 
-		return $this->model()->task( $obj, $id );
+		return $this->model()->task( $obj, (int) $id );
 
 	}
 

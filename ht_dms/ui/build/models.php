@@ -16,8 +16,9 @@ class models {
 	function organization( 	$obj = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
 		$params = null;
 
-		if ( $preview === true && is_int( $preview ) ) {
-			$params = (int) $preview;
+		if ( is_int( $preview ) ) {
+			$params = 't.term_id = "'.$preview.'" ';
+			$preview = false;
 		}
 		else {
 			if ( $mine ) {
@@ -54,8 +55,9 @@ class models {
 		$g = holotree_group_class();
 
 		$params = null;
-		if ( $preview === true && is_int( $preview ) ) {
-			$params = (int) $preview;
+		if ( is_int( $preview ) ) {
+			$params = 't.term_id = "'.$preview.'" ';
+			$preview = false;
 		}
 		elseif ( $mine ) {
 			$obj = $g->users_groups_obj( $mine, $obj, $limit, $in );
@@ -98,8 +100,9 @@ class models {
 		$id = null;
 		$params = null;
 
-		if ( $preview === true && is_int( $preview ) ) {
-			$params = (int) $preview;
+		if ( is_int( $preview ) ) {
+			$params = 't.term_id = "'.$preview.'" ';
+			$preview = false;
 		}
 		else {
 			if ( !is_null( $status ) ) {
@@ -148,8 +151,9 @@ class models {
 
 		$params = null;
 
-		if ( $preview === true && is_int( $preview ) ) {
+		if ( is_int( $preview ) ) {
 			$params = 't.term_id = "'.$preview.'" ';
+			$preview = false;
 		}
 		else {
 			if ( $mine  ) {
