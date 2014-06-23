@@ -245,6 +245,14 @@ class view_loaders {
 	function type_view( $type, $args ) {
 		$model = $this->ui()->models();
 
+		for ( $i = 0; $i < 5; $i++ ) {
+			if ( !isset( $args[ $i ]) ) {
+				$args[ $i ] = null;
+			}
+		}
+
+		ksort( $args );
+
 		return call_user_func_array( array( $model, $type ), $args );
 
 	}
