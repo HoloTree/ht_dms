@@ -82,9 +82,14 @@ abstract class dms extends object {
 
 		if ( $method === $this->short_name() ) {
 
+			if ( !isset( $args[4] ) ) {
+				$args[4] = null;
+			}
+
 			return $this->item( $args[0], $args[1], $args[2], $args[3], $args[4] );
 
 		}
+
 	}
 
 	/**

@@ -250,7 +250,12 @@ abstract class object {
 			if ( ! is_null( $params_or_id ) ) {
 				if ( !is_array( $params_or_id ) ) {
 					$params_or_id = (int) $params_or_id;
-					$params_or_id = array( 'where' => 't.id = " '.$params_or_id.' "' );
+					if ( self::$type !== HT_DMS_TASK_CT_NAME ) {
+						$params_or_id = array ( 'where' => 't.id = " ' . $params_or_id . ' "' );
+					}
+					else {
+						$params_or_id = array ( 'where' => 't.term_id = " ' . $params_or_id . ' "' );
+					}
 				}
 				$obj = $obj->find( $params_or_id );
 			}

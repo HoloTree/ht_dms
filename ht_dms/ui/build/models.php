@@ -149,7 +149,7 @@ class models {
 		$params = null;
 
 		if ( $preview === true && is_int( $preview ) ) {
-			$params = (int) $preview;
+			$params = 't.term_id = "'.$preview.'" ';
 		}
 		else {
 			if ( $mine  ) {
