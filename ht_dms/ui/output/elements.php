@@ -570,15 +570,20 @@ class elements {
 
 	}
 
-	function task_link( $id, $text = null, $title = null, $obj = null ) {
+	function task_link( $id = null, $text = null, $title = null ) {
+
+		if ( is_null( $id ) ) {
+			$id = get_queried_object_id();
+		}
 		$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
 
 		if ( is_null( $text ) ) {
-			$obj = holotree_task( $id, true, false, $obj );
-			$text = $obj->field( 'name' );
+			$term = get_term( $id, HT_DMS_TASK_CT_NAME );
+			$text = $term->name;
 		}
+
 		if ( is_null( $title ) ) {
-			$title = $text;
+			$title = 'View '.$text;
 		}
 
 		$out = '<a href="'.$url.'" text="'.$title.'">'.$text.'</a>';

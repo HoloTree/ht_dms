@@ -42,7 +42,7 @@ htdms_theme_header(); ?>
 				),
 				array(
 					'label'		=> __( 'Edit Task', 'holotree' ),
-					'content'	=> $ui->add_modify()->edit_task( $dID, $obj->id() ),
+					'content'	=> $ui->add_modify()->edit_task( $dID, $id ),
 				),
 			);
 

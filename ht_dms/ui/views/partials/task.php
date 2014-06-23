@@ -1,6 +1,5 @@
-<?php $id = $obj->id(); ?>
 <div class="task task-single">
-    <h5><a href="<?php echo get_term_link( $id, HT_DMS_TASK_CT_NAME ); ?>" title="View task {@name}">{@name}</a></h5>
+    <h5><?php echo holotree_dms_ui()->elements()->task_link(); ?></h5>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>
         <li>Description: {@task_description}</li>

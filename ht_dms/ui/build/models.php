@@ -17,7 +17,7 @@ class models {
 		$params = null;
 
 		if ( is_int( $preview ) ) {
-			$params = 't.term_id = "'.$preview.'" ';
+			$params = $preview;
 			$preview = false;
 		}
 		else {
@@ -56,7 +56,7 @@ class models {
 
 		$params = null;
 		if ( is_int( $preview ) ) {
-			$params = 't.term_id = "'.$preview.'" ';
+			$params = $preview;
 			$preview = false;
 		}
 		elseif ( $mine ) {
@@ -101,7 +101,7 @@ class models {
 		$params = null;
 
 		if ( is_int( $preview ) ) {
-			$params = 't.term_id = "'.$preview.'" ';
+			$params = $preview;
 			$preview = false;
 		}
 		else {
