@@ -13,12 +13,11 @@ namespace ht_dms\ui\build;
 
 
 class models {
-	function organization( 	$obj = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
-		$params = null;
+	function organization( 	$obj = null, $id = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
 
-		if ( is_int( $preview ) ) {
-			$params = $preview;
-			$preview = false;
+		$params = null;
+		if ( is_int( $id ) || (int) $id > 1 ) {
+			$params = $id;
 		}
 		else {
 			if ( $mine ) {
@@ -51,13 +50,12 @@ class models {
 
 	}
 
-	function group( 		$obj = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
+	function group( 		$obj = null, $id = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
 		$g = holotree_group_class();
 
 		$params = null;
-		if ( is_int( $preview ) ) {
-			$params = $preview;
-			$preview = false;
+		if ( is_int( $id ) || (int) $id > 1 ) {
+			$params = $id;
 		}
 		elseif ( $mine ) {
 			$obj = $g->users_groups_obj( $mine, $obj, $limit, $in );
@@ -96,13 +94,11 @@ class models {
 
 	}
 
-	function decision( 		$obj = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
-		$id = null;
-		$params = null;
+	function decision( 		$obj = null, $id = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
 
-		if ( is_int( $preview ) ) {
-			$params = $preview;
-			$preview = false;
+		$params = null;
+		if ( is_int( $id ) || (int) $id > 1 ) {
+			$params = $id;
 		}
 		else {
 			if ( !is_null( $status ) ) {
@@ -147,13 +143,11 @@ class models {
 
 	}
 
-	function task( 			$obj = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
+	function task( 			$obj = null, $id = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
 
 		$params = null;
-
-		if ( is_int( $preview ) ) {
-			$params = 't.term_id = "'.$preview.'" ';
-			$preview = false;
+		if ( is_int( $id ) || (int) $id > 1 ) {
+			$params = $id;
 		}
 		else {
 			if ( $mine  ) {
