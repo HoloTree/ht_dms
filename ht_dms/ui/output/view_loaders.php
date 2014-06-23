@@ -217,17 +217,18 @@ class view_loaders {
 
 					$out .= $this->template( $view, $obj );
 				}
-				return $out;
 
-			}
-			elseif ( (int) $obj->id() > 0 ) {
-				return $this->template( $view, $obj );
+
 			}
 			else {
-
-					return __( 'Not items to display', 'holotree' );
-
+				$out =  $this->template( $view, $obj );
 			}
+
+			if ( empty( $out ) ) {
+				return __( 'Not items to display', 'holotree' );
+			}
+
+			return $out;
 
 		}
 		//pods_error( __METHOD__.' can not load view - '.$view);
