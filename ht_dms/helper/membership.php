@@ -31,26 +31,14 @@ class membership {
 		}
 
 		if ( $group ) {
-			$name = 'group';
+			$name = HT_DMS_GROUP_CPT_NAME;
 		}
 		else {
-			$name = 'organization';
+			$name = HT_DMS_ORGANIZATION_NAME;
 		}
 
-		if ( is_array( $id_or_params ) ) {
-			$params = $id_or_params;
-			$id = null;
-		}
-		elseif( intval( $id_or_params ) > 0 ) {
-			$id = $id_or_params;
-			$params = null;
-		}
-		else {
-			$id = null;
-			$params = null;
-		}
 
-		return holotree_pods_object( $name, $id , $expire = HOUR_IN_SECONDS, true, $params );
+		return pods( $name, $id_or_params );
 
 
 	}
@@ -216,14 +204,13 @@ class membership {
 	 */
 	function null_user( $uID ) {
 
-		return holotree_dms_class()->null_user( $uID );
+		return holotree_common_class()->null_user( $uID );
 
 	}
 
 	/**
 	 * Check if a user exists
 	 *
-	 * Alias of HoloTree_DMS::user_exists()
 	 *
 	 * @param 	int	$uID	A user ID.
 	 *
@@ -233,7 +220,7 @@ class membership {
 	 */
 	function user_exists( $uID ) {
 
-		return holotree_dms_class()->user_exists( $uID );
+		return holotree_common_class()->user_exists( $uID );
 
 	}
 

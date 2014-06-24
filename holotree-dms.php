@@ -77,6 +77,7 @@ class HoloTree_DMS {
 		add_action( 'init', array( $this, 'localization_setup' ) );
 
 		add_action( 'init', array( $this, 'theme') );
+		add_action( 'init', array( $this, 'helper' ) );
 
 		// Loads frontend scripts and styles
 		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -185,7 +186,7 @@ class HoloTree_DMS {
 			'membership',
 		);
 		foreach ( $helpers as $helper ) {
-			include_once( trailingslashit( HT_DMS_DIR ).$helper.'.php' );
+			include_once( trailingslashit( HT_DMS_DIR ).'helper/'.$helper.'.php' );
 		}
 
 		new ht_dms\helper\common();

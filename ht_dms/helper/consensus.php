@@ -49,7 +49,7 @@ class consensus {
 	 * @since 	0.0.1
 	 */
 	function create( $dID, $obj = null, $dont_set = false ) {
-		$obj = holotree_decision( $dID, false, false, $obj );
+		$obj = holotree_decision( $dID, $obj );
 		if ( !is_object( $obj ) ) {
 			holotree_error( 'No object in', __METHOD__ );
 		}
@@ -82,7 +82,7 @@ class consensus {
 				}
 				else {
 					$id = $obj->save( 'consensus', serialize( $consensus ) );
-					holotree_decision_class()->reset_cache( $id );
+					//holotree_decision_class()->reset_cache( $id );
 
 					return $id;
 
@@ -105,7 +105,7 @@ class consensus {
 	 * @since 0.0.1
 	 */
 	function get( $dID, $obj = null, $unserialized = true ) {
-		$obj = holotree_decision_class()->null_obj( $dID, $obj );
+		$obj = holotree_decision( $dID, $obj );
 		$consensus =  $obj->field( 'consensus' );
 		if ( $unserialized ) {
 			return unserialize( $consensus );
@@ -236,8 +236,8 @@ class consensus {
 	 * @since 0.0.1
 	 */
 	function null_user( $uID ) {
-		$dms = holotree_dms_class();
-		$uID = $dms->null_user( $uID );
+		$class = new \ht_dms\helper\common();
+		$uID = $class->null_user( $uID );
 
 		return $uID;
 	}

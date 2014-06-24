@@ -18,6 +18,7 @@ namespace ht_dms\helper;
 class common {
 
 	function __construct() {
+
 		add_action( 'plugins_loaded', array( $this, 'dms' ) );
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -35,21 +36,7 @@ class common {
 		add_action( 'ht_before_ht', array( $this, 'message' ) );
 
 	}
-	/**
-	 * Initializes the Holo_Tree_DMS() class
-	 *
-	 * Checks for an existing Holo_Tree_DMS() instance
-	 * and if it doesn't find one, creates it.
-	 */
-	public static function init() {
-		static $instance = false;
 
-		if ( ! $instance ) {
-			$instance = new dms();
-		}
-
-		return $instance;
-	}
 
 	function enqueue_scripts() {
 		if ( !is_admin() ) {
@@ -218,7 +205,8 @@ class common {
 
 		}
 
-		if ( $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME ) {
+
+		if ( is_object( $pieces['params'] ) && isset( $pieces['params']->pod ) && $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME ) {
 
 			holotree_consensus( $id );
 
@@ -362,6 +350,42 @@ class common {
 			return true;
 
 		}
+
+	}
+
+	function null_user( $uID = null ) {
+
+		if ( is_null( $uID ) ) {
+			$uID = get_current_user_id();
+
+		}
+
+		return $uID;
+
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.0.1
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+
+	/**
+	 * Returns the instance.
+	 *
+	 * @since  0.0.1
+	 * @access public
+	 * @return object
+	 */
+	public static function init() {
+		if ( !self::$instance )
+			self::$instance = new self;
+
+		return self::$instance;
 
 	}
 
