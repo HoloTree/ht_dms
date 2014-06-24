@@ -206,36 +206,43 @@ class view_loaders {
 				extract( $cache_args );
 			}
 
-			$total = $obj->total();
 
-			if ( $total > 0 ) {
-				$out = '';
-				while ( $obj->fetch() ) {
+			if ( is_object( $obj ) && is_pod( $obj ) ) {
+				if ( $obj->total() > 1 ) {
+					$out = '';
+					while ( $obj->fetch() ) {
 
-					//reset id
-					$obj->id = $obj->id();
+						//reset id
+						$obj->id = $obj->id();
 
-					$out .= $this->template( $view, $obj );
+						$out .= $this->template( $view, $obj );
+					}
+
+
 				}
+				elseif ( is_int( $obj->id() ) ) {
 
+					if ( (int)$obj->id() < 1 ) {
 
+						return $no_items;
+
+					}
+
+					$out = $this->template( $view, $obj );
+				}
 			}
 			else {
-				$obj->id = $obj->id();
-				if ( (int) $obj->id() < 1 ) {
-
-					return $no_items;
-
+				if ( HT_DEV_MODE ) {
+					return 'No object for template loader...';
 				}
-
-				$out =  $this->template( $view, $obj );
-			}
-
-			if ( empty( $out ) ) {
 				return $no_items;
 			}
 
-			return $out;
+			if ( ! empty( $out ) ) {
+				return $out;
+			}
+
+
 
 		}
 		//pods_error( __METHOD__.' can not load view - '.$view);
@@ -245,7 +252,7 @@ class view_loaders {
 	function type_view( $type, $args ) {
 		$model = $this->ui()->models();
 
-		for ( $i = 0; $i < 5; $i++ ) {
+		for ( $i = 0; $i < 7; $i++ ) {
 			if ( !isset( $args[ $i ]) ) {
 				$args[ $i ] = null;
 			}

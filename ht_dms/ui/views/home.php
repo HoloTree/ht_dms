@@ -24,14 +24,13 @@ $gObj = holotree_group_class()->object();
 
 
 $tabs = array(
-	/*
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
 		'content'	=> $ui->views()->users_groups( $gObj, $uID ),
-	),*/
+	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),
-		'content'	=> $ui->views()->users_organizations( null, false, $uID ),
+		'content'	=> $ui->views()->users_organizations( null, $uID ),
 	),
 	array(
 		'label'		=> __( 'Assigned Tasks', 'holotree' ),
@@ -49,7 +48,7 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
-		'content'	=> $ui->models()->group( ),
+		'content'	=> $ui->views()->public_groups( ),
 	),
 
 
