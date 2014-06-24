@@ -21,10 +21,9 @@
  * @since 	0.0.1
  */
 function holotree_decision( $id = true, $obj = null, $cached = true, $fields = false ) {
-	$dms_decision = holotree_decision_class();
-	$decision = $dms_decision->decision( $id, $obj, null, $cached, $fields );
 
-	return $decision;
+	return holotree_decision_class()->item( $id, $obj, null, $cached, $fields );
+
 }
 
 /**
@@ -54,10 +53,9 @@ function holotree_decision_class() {
  * @since 	0.0.1
  */
 function holotree_group( $id = true, $obj = null, $cached = true, $fields = false ) {
-	$dms_group = holotree_group_class();
-	$group = $dms_group->group( $id, $obj, null, $cached, $fields );
 
-	return $group;
+	return holotree_group_class()->item( $id, $obj, null, $cached, $fields );
+
 }
 
 /**
@@ -103,10 +101,9 @@ function holotree_task_class() {
  * @since 	0.0.1
  */
 function holotree_task( $id = true, $obj = null, $cached = true, $fields = false ) {
-	$dms_task = holotree_task_class();
-	$task = $dms_task->task( $id, $obj, null, $cached, $fields );
 
-	return $task;
+	return holotree_task_class()->item( $id, $obj, null, $cached, $fields );
+
 }
 
 /**
@@ -165,7 +162,7 @@ function holotree_organization_class() {
  */
 function holotree_organization( $id = true, $obj = false, $cached = true, $fields = false ) {
 	
-	return holotree_organization_class()->organization( $id, $obj, null, $cached, $fields );
+	return holotree_organization_class()->item( $id, $obj, null, $cached, $fields );
 
 }
 
