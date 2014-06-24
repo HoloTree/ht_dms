@@ -195,3 +195,21 @@ function holotree_dms_ui() {
 	return ht_dms\ui\ui::init();
 
 }
+
+function holotree_dms_ui_build_elements() {
+
+	return holotree_dms_ui()->build_elements();
+
+}
+
+function holotree_dms_ui_output_elements() {
+
+	return holotree_dms_ui()->output_elements();
+
+}
+
+function holotree_dms_common_class() {
+
+	return ht_dms\helper\common::init();
+
+}

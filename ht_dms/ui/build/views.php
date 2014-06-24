@@ -28,69 +28,93 @@ class views {
 
 	function users_groups( $obj = null, $uID = null, $oID = null, $limit = 5  ) {
 		$args = array(
-			'obj' 	=> $obj,
-			'mine' 	=> $uID,
-			'in'	=> $oID,
-			'limit' => $limit,
+			'obj' 		=> $obj,
+			'mine' 		=> $uID,
+			'in'		=> $oID,
+			'limit' 	=> $limit,
+			'preview' 	=> true,
 		);
 
-		return $this->type_view( 'group', $args );
+		return $this->models()->group( $args );
 
 	}
 
 	function public_groups( $obj = null, $oID = null, $limit = 5 ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'in'	=> $oID,
-			'limit' => $limit,
+			'obj' 		=> $obj,
+			'in'		=> $oID,
+			'limit' 	=> $limit,
+			'preview' 	=> true,
 		);
 
-		return $this->type_view( 'group', $args );
+		return $this->models()->group( $args );
 
 	}
 
 	function assigned_tasks( $obj = null, $uID = null, $oID = null, $limit = 5 ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'mine' 	=> $uID,
-			'in'	=> $oID,
-			'limit' => $limit,
+			'obj' 		=> $obj,
+			'mine' 		=> $uID,
+			'in'		=> $oID,
+			'limit' 	=> $limit,
+			'preview' 	=> true,
 		);
 
-		return $this->type_view( 'task', $args );
+		return $this->models()->task( $args );
 
 	}
 
 	function users_organizations( $obj = null, $uID = null, $limit = 5 ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'mine' 	=> $uID,
-			'limit' => $limit,
+			'obj' 		=> $obj,
+			'mine' 		=> $uID,
+			'limit' 	=> $limit,
+			'preview' 	=> true,
 		);
 
-		return $this->type_view( 'organization', $args );
+		return $this->models()->organization( $args );
+
+	}
+
+	function decisions_tasks( $obj, $id, $limit = 5 ) {
+
+		$in = array(
+			'id' 	=> $id,
+			'what' 	=> HT_DMS_DECISION_CPT_NAME,
+		);
+
+		$args = array(
+			'obj' 		=> $obj,
+			'in'		=> $in,
+			'limit' 	=> $limit,
+			'preview' 	=> true,
+		);
+
+		return $this->models()->task( $args );
 
 	}
 
 	function organization( $obj = null, $id ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'id'	=> $id,
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
 		);
 
-		return $this->type_view( __FUNCTION__, $args );
+		return $this->models()->organization( $args );
 		
 	}
 
 	function group( $obj = null, $id ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'id'	=> $id,
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
 		);
 
 		return $this->models()->group( $args );
@@ -100,22 +124,24 @@ class views {
 	function decision( $obj = null, $id ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'id'	=> $id,
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
 		);
 
-		return $this->type_view( __FUNCTION__, $args );
+		return $this->models()->decision( $args );
 
 	}
 
 	function task( $obj = null, $id ) {
 
 		$args = array(
-			'obj' 	=> $obj,
-			'id'	=> $id,
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
 		);
 
-		return $this->type_view( __FUNCTION__, $args );
+		return $this->models()->task( $args );
 
 	}
 
@@ -140,13 +166,6 @@ class views {
 
 	}
 
-	function decisions_tasks( $tObj, $id ) {
-		$in[ 'what' ] = HT_DMS_DECISION_CPT_NAME;
-		$in[ 'ID' ] = $id;
-
-		return $this->models()->task( $tObj, true, $in );
-
-	}
 
 
 

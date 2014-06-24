@@ -23,7 +23,9 @@ class elements {
 	 * @return	array					Tabs array to pass to the tab maker.
 	 */
 	function decisions_by_status_tabs( $statuses = null, $gID, $dObj= null  ) {
-		$dObj = holotree_decision( false, $dObj );
+		if ( is_null( $dObj ) || !is_object( $dObj ) ) {
+			$dObj = pods( HT_DMS_DECISION_CPT_NAME );
+		}
 		if ( is_null( $statuses ) || ! is_array( $statuses ) ) {
 			$statuses = array ( 'New', 'Blocked', 'Passed' );
 		}
@@ -43,42 +45,51 @@ class elements {
 			}
 
 			if ( $dObj->total() > 0 ) {
-				$decisions[ $status ] = '<div id="' . $status . '-decisions-list" class="decisions-list">';
-				$heading = $status.' Decisions';
-				$decisions[ $status ] = '<h3>' . $heading . '</h3>';
-				while ( $dObj->fetch() ) {
-					$item = array();
-					$fields = $ui->views()->decision_output_fields();
-					foreach ( $fields as $field ) {
-						$item[ $field ] = $dObj->field( $field );
-					} //endforeach fields
-					$decision_fields[] =  $item;
-					$decisions[ $status ] = $decision_fields;
-				} //endwhile pods loop
+
+				$view_loaders = holotree_dms_ui()->view_loaders();
+				$view =  holotree_dms_ui()->models()->path( 'decision', true  );
+				$d_s = $view_loaders->magic_template( $view, $dObj );
+				$decisions[ $status ] = $d_s;
+
+
 			} //endif have pods
 
-			$decision_fields = array();
+
 
 		}
 
 		$tabs = array( );
-		foreach ( $statuses as $status  ) {
-			if ( isset( $decisions[ $status ] ) ) {
-				$ds = $decisions[ $status ];
-				$content = '';
-				foreach ( $ds as $item ) {
-					$content .= $ui->views()->decision_preview( $item, $status );
-				}
-				$tabs[] = array(
-					'label'		=> __( $status. ' Decisions', 'holotree' ),
-					'content'	=> $content,
-				);
 
-			}
+		if ( isset( $decisions ) && is_array( $decisions ) ) {
+			$content = '';
+			foreach ( $statuses as $status  ) {
+
+				if ( isset( $decisions[ $status ] ) ) {
+					$content = '';
+					$content .= '<div id="' . $status . '-decisions-list" class="decisions-list">';
+					$heading = $status . ' Decisions';
+					$content .= '<h3>' . $heading . '</h3>';
+					$content .= $decisions[ $status ];
+					$content .= '</div>';
+
+					$tabs[ ] = array (
+						'label'   => __( $status . ' Decisions', 'holotree' ),
+						'content' => $content,
+					);
+
+					unset( $content );
+				}
+
+				}
+
 
 		}
 
-		return $tabs;
+		if ( isset( $tabs ) && is_array( $tabs ) ) {
+
+			return $tabs;
+
+		}
 
 	}
 
@@ -191,7 +202,7 @@ class elements {
 	function task_actions( $tID, $obj = null ) {
 		$elements = $this->ui()->elements();
 		$id = $tID;
-		$obj = holotree_task( $id, true, false, $obj );
+		$obj = holotree_task( $id, $obj );
 
 		$fields = array(
 			'blockers'	=> array( 'label' => __( 'Add tasks that must be completed before this task is completed.', 'holotree' ),
@@ -285,6 +296,95 @@ class elements {
 
 		return $out;
 	}
+
+	/**
+	 * View for blockers or blocking
+	 *
+	 * Used by $this->task for blockers & blocking view.
+	 *
+	 * @param	array   $block_array	Field array for blockers or blocking fields in task CT
+	 * @param 	bool 	$li				Whether to add li tags
+	 *
+	 * @return 	string					The view.
+	 *
+	 * @since 	0.0.1
+	 */
+	function block( $block_array, $li = true, $before = null, $after = null ) {
+		if ( is_array( $block_array ) ) {
+
+			$out = '';
+			if ( !is_null( $before ) ) {
+				$out .= $before;
+			}
+
+			foreach ( $block_array as $block ) {
+				if ( $li ) {
+					$out .= '<li>';
+				}
+				$out .= $this->ui()->elements()->task_link( intval( $block[ 'term_id' ] ),  $block['name'] );
+
+				if ( HT_DEV_MODE ) {
+					$out .= '<span style="float:right">' . $block[ 'term_id' ] . '</span>';
+				}
+				if ( $li ) {
+					$out .= '</li>';
+				}
+
+			}
+
+			if ( !is_null( $after ) ) {
+				$out .= $after;
+			}
+
+			if ( !empty( $out ) ) {
+				return $out;
+			}
+		}
+	}
+
+	/**
+	 * All of the group psuedo-widgets.
+	 *
+	 * @param 	int		$gID	ID of group.
+	 *
+	 * @return 	string	$out	Content
+	 *
+	 * @since	0.0.1
+	 */
+	function group_sidebar_widgets( $gID ) {
+		$out = do_action( 'ht_dms_before_group_widgets' );
+		$out .= do_action( 'ht_dms_before_widgets' );
+
+		if ( HT_DEV_MODE ) {
+			$out .= "gID = ". $gID;
+		}
+		if ( ! holotree_group_class()->is_member( $gID ) ) {
+			$out .= $this->ui()->group_widget()->join_group_widget( $gID );
+		}
+
+		$out .= $this->ui()->group_widget()->group_members_widget( $gID );
+		if ( holotree_common_class()->is_facilitator( null, $gID, null ) ) {
+			$out .= $this->ui()->group_widget()->group_approve_widget( $gID );
+		}
+
+		$out .= do_action( 'ht_dms_after_widgets' );
+		$out .= do_action( 'ht_dms_after_group_widgets' );
+
+		$output = $out;
+
+		/**
+		 * Set the content of the group sidebar
+		 *
+		 * @param	$string	$output The content
+		 *
+		 * @since	0.0.1
+		 */
+		$output = apply_filters( 'ht_dms_display_group_sidebar', $output );
+
+		return $output;
+
+	}
+
 
 	/**
 	 * Get instance of UI class

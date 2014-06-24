@@ -59,7 +59,10 @@ class models {
 
 		}
 
-		$obj = holotree_organization_class()->item( $id, $obj, $params );
+		if ( is_null( $obj) || ! is_pod( $obj ) ) {
+			$obj = pods( HT_DMS_ORGANIZATION_NAME, $params );
+		}
+
 
 		$view = $this->path( 'organization', $preview );
 
@@ -104,7 +107,10 @@ class models {
 			$params[ 'limit' ] = $limit;
 		}
 
-		$obj = $g->null_object( $obj, $params );
+		if ( is_null( $obj) || ! is_pod( $obj ) ) {
+			$obj = pods( HT_DMS_GROUP_CPT_NAME, $params );
+		}
+
 
 		$view = $this->path( 'group', $preview );
 
@@ -157,7 +163,10 @@ class models {
 
 		}
 
-		$obj = holotree_decision_class()->item( $id, $obj, $params );
+
+		if ( is_null( $obj) || ! is_pod( $obj ) ) {
+			$obj = pods( HT_DMS_DECISION_CPT_NAME, $params );
+		}
 
 		$view = $this->path( 'decision', $preview );
 
@@ -199,7 +208,7 @@ class models {
 						holotree_error();
 					}
 
-					$in_where = $in_where.' "'.$in[ 'ID' ].'"';
+					$in_where = $in_where.' "'.$in[ 'id' ].'"';
 
 					if ( isset ( $where ) ) {
 						$where = $where . ' AND ' . $in_where;
@@ -229,7 +238,10 @@ class models {
 
 		}
 
-		$obj = holotree_task_class()->item( $id, $obj, $params );
+		if ( is_null( $obj) || ! is_pod( $obj ) ) {
+			$obj = pods( HT_DMS_TASK_CT_NAME, $params );
+		}
+
 
 		$view = $this->path( 'task', $preview );
 
@@ -247,7 +259,8 @@ class models {
 	 *
 	 * @return string
 	 */
-	private function path( $view, $preview = false, $partial = true, $extension = 'php' ) {
+	function path( $view, $preview = false, $partial = true, $extension = 'php' ) {
+
 		$dir = trailingslashit( HT_DMS_VIEW_DIR );
 		if ( $partial ) {
 			$dir = trailingslashit( $dir . 'partials' );

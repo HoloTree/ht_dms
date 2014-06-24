@@ -119,7 +119,7 @@ class group_widget {
 	function group_approve_widget( $gID ) {
 
 		$dms = holotree_group_class();
-		if ( holotree_dms_class()->is_facilitator( null, $gID ) ) {
+		if ( holotree_common_class()->is_facilitator( null, $gID ) ) {
 			$pending = holotree_group_class()->get_pending( $gID );
 			//@todo what does a lack of pending members actually look like?
 			if ( $pending != '' ) {

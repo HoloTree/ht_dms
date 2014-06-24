@@ -270,6 +270,7 @@ class view_loaders {
 			$template .= '<span style="float:right">'.$obj->ID().'</span>';
 		}
 		$template .= \Pods_Templates::do_template( $view, $obj );
+		//$template = $obj->template( '', $view );
 		$template .= '</div>';
 
 		return $template;

@@ -588,7 +588,7 @@ class decision extends dms {
 	 */
 	function propose_modify ( $id, $single_obj = null, $full_obj = null ) {
 		//get object of current item to get existing from
-		$obj = $this->decision( $id, false, false, $single_obj );
+		$obj = $this->item( $id, $single_obj );
 		$gID = $obj->field( 'group' );
 		$gID = (string) $gID[0][ 'ID' ];
 
@@ -649,7 +649,7 @@ class decision extends dms {
 
 
 		//get object to create new item with
-		$obj = $this->decision( true, false, false, $full_obj );
+		$obj = $this->item( null, $full_obj );
 
 		/**
 		 * Override the fields for the propose modify decision form
@@ -696,11 +696,11 @@ class decision extends dms {
 	 * @since 	0.0.1
 	 */
 	function accept_modify( $id, $obj = null ) {
-		$obj =  $this->decision( $id, true, false, $obj );
+		$obj =  $this->item( $id, $obj );
 
-		$orignal_id = (int) $obj->field( 'change_to.ID' );
+		$original_id = (int) $obj->display( 'change_to' );
 		//get ID of original item and create seprate object for that.
-		$original_obj = $this->decision( $orignal_id  );
+		$original_obj = $this->item( $original_id  );
 
 		//if accepting user is the original
 		if ( (int) $original_obj->field( 'post_author' ) === ( $uID = (int) get_current_user_id()  ) ) {
@@ -725,7 +725,7 @@ class decision extends dms {
 			$data[ 'decision_type' ] = 'modified';
 
 			//get a new consensus array, set $uID as accepting, and prepare it to save.
-			$data[ 'consensus'] = holotree_consensus_class()->create( (int) $obj->field( 'change_to.ID' ), null, true );
+			$data[ 'consensus'] = holotree_consensus_class()->create( (int) $obj->display( 'change_to' ), null, true );
 			$data[ 'consensus'][ $uID ][ 'value' ] = 1;
 			$data[ 'consensus'] = serialize( $data[ 'consensus'] );
 
@@ -769,36 +769,39 @@ class decision extends dms {
 	 * @since	0.0.1
 	 */
 	function has_proposed_modification( $id, $obj = null, $skip_closed = true, $bool = true ) {
-		$obj = $this->decision( null, true, false, $obj );
-		$where = 'change_to.ID = "'.$id.'"';
-		if ( $skip_closed ) {
-			$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
+		if ( 1==1 ) {
+			return false;
 		}
-		$params[ 'where' ] = $where;
+			$obj = $this->item( $id, $obj );
+			$where = 'd.change_to = "'.$id.'"';
+			if ( $skip_closed ) {
+				$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
+			}
+			$params[ 'where' ] = $where;
 
-		$obj = $obj->find( $params );
-		$total = $obj->total();
-		if ( $bool ) {
-			if ( !is_null( $total ) && (int)$total > 0 ) {
-				return true;
+			$obj = $obj->find( $params );
+			$total = $obj->total();
+			if ( $bool ) {
+				if ( !is_null( $total ) && (int)$total > 0 ) {
+					return true;
+
+				}
+				else {
+					return false;
+
+				}
 
 			}
 			else {
-				return false;
+				if ( $total > 0 ) {
+					return $this->fields_loop( $id, $obj, true );
 
+				}
+				else {
+					return false;
+
+				}
 			}
-
-		}
-		else {
-			if ( $total > 0 ) {
-				return $this->decision_fields_loop( $id, $obj, true );
-
-			}
-			else {
-				return false;
-
-			}
-		}
 
 
 	}

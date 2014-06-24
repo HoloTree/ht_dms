@@ -1,5 +1,5 @@
 <div class="organization organization-single">
-	<h3>{@post_title}</h3>
+	<h3><?php echo holotree_link( $obj->id ); ?></h3>
 	<p>Description: {@description}</p>
 	[if groups]
 	<div class="organizations-groups">

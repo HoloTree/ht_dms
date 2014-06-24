@@ -494,6 +494,13 @@ class elements {
 			$url = $id;
 		}
 
+		if ( ( $text = 'view' || is_null( $text ) ) && ( $type === 'permalink' || $type === 'post' ) ) {
+			$post = get_post( $id );
+			if ( is_object( $post ) && is_string( $post->post_title ) && !empty( $post->post_title ) ) {
+				$text = $post->post_title;
+			}
+		}
+
 		$class = '';
 		if ( $classes !== FALSE ) {
 			$class = $classes;
@@ -601,6 +608,31 @@ class elements {
 			$out = '<a href="' . $url . '" text="' . $title . '">' . $text . '</a>';
 			return $out;
 		}
+
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.0.1
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+
+	/**
+	 * Returns the instance.
+	 *
+	 * @since  0.0.1
+	 * @access public
+	 * @return object
+	 */
+	public static function init() {
+		if ( !self::$instance )
+			self::$instance = new self;
+
+		return self::$instance;
 
 	}
 

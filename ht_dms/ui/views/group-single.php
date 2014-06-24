@@ -18,9 +18,9 @@ $uID = get_current_user_id();
 
 $oID = (int) $obj->display( 'organization.ID' );
 
-$dObj = holotree_decision( false );
+
 $statuses = array( 'New', 'Blocked', 'Passed' );
-$tabs = $ui->views()->decisions_by_status_tabs( $statuses, $id, $dObj );
+$tabs = $ui->build_elements()->decisions_by_status_tabs( $statuses, $id, null );
 
 
 $tabs[] = array(
@@ -29,13 +29,14 @@ $tabs[] = array(
 );
 $tabs[] = array(
 	'label'		=>  __( 'Membership' , 'holotree' ),
-	'content'	=> $ui->views()->group_sidebar_widgets( $id ),
+	'content'	=> $ui->build_elements()->group_sidebar_widgets( $id ),
 );
 //only show edit group if member & facilitator.
 if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
 		'label'   => __( 'Edit Group', 'holotree' ),
-		'content' => $ui->add_modify()->edit_group( $id, $uID, $obj, $oID ),
+		//'content' => $ui->add_modify()->edit_group( $id, $uID, $obj, $oID ),
+		'content' => ':(',
 	);
 }
 
@@ -43,7 +44,8 @@ if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) )
 if ( $g->is_member( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
 		'label'   => __( 'Create New Decision', 'holotree' ),
-		'content' => $ui->add_modify()->new_decision( null, null, $oID ),
+		//'content' => $ui->add_modify()->new_decision( null, null, $oID ),
+		'content' => ':(',
 	);
 }
 

@@ -97,10 +97,19 @@ class ui {
 		return new \ht_dms\ui\output\add_modify();
 	}
 
-	function elements() {
+	function output_elements() {
 		$this->file( 'elements', 'output' );
 		
 		return new \ht_dms\ui\output\elements;
+
+	}
+
+	function elements( $output = true ) {
+		if ( $output ) {
+			return $this->output_elements();
+		}
+
+		return $this->build_elements();
 
 	}
 

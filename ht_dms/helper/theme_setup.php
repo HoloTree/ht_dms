@@ -14,6 +14,7 @@ namespace ht_dms\helper;
 class Theme_Setup {
 
 	function __construct() {
+		add_filter( 'htdms_theme_no_sidebar', '__return_true' );
 		if ( wp_is_mobile() ) {
 			add_filter( 'htdms_theme_no_sidebar', '__return_true' );
 			if ( is_singular( HT_DMS_GROUP_CPT_NAME ) ) {

@@ -1,29 +1,13 @@
 <div class="task task-single">
-    <h5><?php echo holotree_dms_ui()->elements()->task_link(); ?></h5>
+    <h5><?php echo holotree_dms_ui_output_elements()->task_link( $obj->id ); ?></h5>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>
         <li>Description: {@task_description}</li>
         <li>Status: {@task_status}</li>
-		[if blockers]
-			<li>Task That This Task Is Blocking:
-				<ul>
-					[each blocker]
-						<li>{@name}</li>
-					[/each]
-				</ul>
-			</li>
-		[/if]
-
-		[if blocking]
-		<li>Task That Are Blocked By This Task:
-			<ul>
-				[each blocking]
-				<li>{@name}</li>
-				[/each]
-			</ul>
-		</li>
-		[/if]
-
+		<?php
+			echo holotree_dms_ui_build_elements()->block( $obj->field( 'blockers' ), true, '<li>Task That This Task Is Blocking: <ul>', '</ul></li>' );
+			echo holotree_dms_ui_build_elements()->block( $obj->field( 'blocking' ), true, '<li>Task That Are Blocked By This Task: <ul>', '</ul></li>' );
+		?>
     </ul>
 
 </div>

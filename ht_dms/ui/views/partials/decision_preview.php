@@ -1,4 +1,4 @@
-<div class="decision">
+<div class="decision-preview">
 	<h5><?php echo holotree_link( $obj->id ); ?></h5>
 	<div class="details">
 		<div class="description">{@decision_description}</div>
