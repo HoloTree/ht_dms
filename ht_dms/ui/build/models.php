@@ -13,7 +13,24 @@ namespace ht_dms\ui\build;
 
 
 class models {
-	function organization( 	$obj = null, $id = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
+
+	/**
+	 * PARAMS FOR ALL MODELS
+	 *
+	 * @param $args['obj'] Pods|obj|null Default is null.
+	 * @param $args['id'] int|null. Set an ID to show single item. Default is false.
+	 * @param $args['preview'] bool Default is false
+	 * @param $args['in'] Default is null.
+	 * @param $args['mine'] int|bool Only for one user if true( current user) or use a user ID. Default is false
+	 * @param $args['limit'] int Default is 5.
+	 * @param $args['status'] string|null decision/task status. Default is null.
+	 */
+
+
+
+	function organization( $args ) {
+		$args = $this->args( $args );
+		extract( $args );
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
@@ -50,8 +67,11 @@ class models {
 
 	}
 
-	function group( 		$obj = null, $id = null, $preview = false, $in = false, $mine = false, $limit = 5, $public = true ) {
+	function group( $args ) {
 		$g = holotree_group_class();
+
+		$args = $this->args( $args );
+		extract( $args );
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
@@ -94,7 +114,9 @@ class models {
 
 	}
 
-	function decision( 		$obj = null, $id = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
+	function decision( $args ) {
+		$args = $this->args( $args );
+		extract( $args );
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
@@ -143,7 +165,9 @@ class models {
 
 	}
 
-	function task( 			$obj = null, $id = null, $preview = false, $in = null, $mine = false, $limit = 5, $status = null ) {
+	function task( $args ) {
+		$args = $this->args( $args );
+		extract( $args );
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
@@ -281,4 +305,49 @@ class models {
 
 	}
 
+	private function args( $args ) {
+		$params = array(
+			0 => 'obj',
+			1 => 'id',
+			2 => 'preview',
+			3 => 'in',
+			4 => 'mine',
+			5 => 'limit',
+			6 => 'public',
+			7 => 'status',
+		);
+
+		for ( $i = 0; $i < 8; $i++ ) {
+			$key = $params[ $i ];
+			if ( !isset( $args[ $i ]) ) {
+
+				if ( in_array( $key, array( 'obj', 'id', 'in', 'status' ) )  ) {
+					$value = null;
+				}
+				elseif( $key === 'limit' ) {
+					$value = 5;
+				}
+				else {
+					$value = false;
+				}
+
+				if ( !isset( $args[ $key ] ) ) {
+
+					$args[ $key ] = $value;
+				}
+
+			}
+
+
+
+		}
+
+		if ( isset( $args) && is_array( $args ) ) {
+
+			return $args;
+			
+		}
+
+	}
+	
 } 
