@@ -59,7 +59,7 @@ class models {
 
 		}
 
-		$obj = holotree_organization_class()->null_object( $obj, $params );
+		$obj = holotree_organization_class()->item( $id, $obj, $params );
 
 		$view = $this->path( 'organization', $preview );
 
@@ -157,7 +157,7 @@ class models {
 
 		}
 
-		$obj = holotree_decision_class()->null_object( $obj, $params );
+		$obj = holotree_decision_class()->item( $id, $obj, $params );
 
 		$view = $this->path( 'decision', $preview );
 
@@ -229,7 +229,7 @@ class models {
 
 		}
 
-		$obj = holotree_task_class()->null_object( $obj, $params );
+		$obj = holotree_task_class()->item( $id, $obj, $params );
 
 		$view = $this->path( 'task', $preview );
 
