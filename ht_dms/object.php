@@ -116,15 +116,34 @@ abstract class object {
 	 *
 	 * @since 0.0.1
 	 */
-	function object( $cache = true, $params = null ) {
-		$id = null;
+	function object( $cache = true, $params_or_id = null ) {
 
-		if ( ! is_array( $params ) && (int) $params > 0 ) {
-			$id = $params;
-			$params = null;
+		if ( is_int( $params_or_id ) || intval( $params_or_id ) > 1 || !is_array( $params_or_id ) ) {
+			if ( self::$type !== HT_DMS_TASK_CT_NAME ) {
+				$params[ 'where' ] = 't.id = "' . $params_or_id . '"';
+			}
+			else {
+				$params[ 'where' ] = 't.term_id = "' . $params_or_id . '"';
+			}
+
 		}
 
-		return pods( self::$type, $params );
+		if ( $cache ) {
+			$params[ 'cache_mode' ] = self::$cache_mode;
+			$params[ 'expires'] 	= self::$cache_length;
+		}
+
+
+		$obj = pods( self::$type, $params );
+
+		if ( is_pod( $obj ) ) {
+
+			return $obj;
+
+		}
+		else {
+			holotree_error();
+		}
 		//return $this->get_pods_object( $id, $params, $cache );
 
 	}
@@ -248,32 +267,13 @@ abstract class object {
 	 */
 	function null_object( $obj = null, $params_or_id = null ) {
 
-		if ( $this->check_obj( $obj ) ) {
-			if ( ! is_null( $params_or_id ) ) {
-				if ( !is_array( $params_or_id ) ) {
-					$params_or_id = (int) $params_or_id;
-					if ( self::$type !== HT_DMS_TASK_CT_NAME ) {
-						$params_or_id = array ( 'where' => 't.id = " ' . $params_or_id . ' "' );
+		if ( !$this->check_obj( $obj ) ) {
 
-					}
-					else {
-						$params_or_id = array ( 'where' => 't.term_id = " ' . $params_or_id . ' "' );
-					}
-				}
-				$obj = $obj->find( $params_or_id );
-			}
-
-			return $obj;
+			$obj = $this->object( true, $params_or_id );
 
 		}
 
-		else {
-
-			$obj = $this->object( true );
-
-			return $obj;
-
-		}
+		return $obj;
 
 	}
 

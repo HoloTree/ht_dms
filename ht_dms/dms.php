@@ -29,11 +29,13 @@ abstract class dms extends object {
 	 * @since 0.0.1
 	 */
 	function item( $id = null, $obj = null, $params = null, $cached = true, $fields = false ) {
-		if ( ! is_array( $params ) && intval( $params ) === 0 ) {
-			$params = $id;
-		}
 
+		if ( is_int( $params ) || intval( $params ) > 1 || is_null( $params ) || !is_array( $params ) ) {
+			$params = (int) $id;
+		}
+		
 		$obj = $this->null_object( $obj, $params );
+
 
 		if ( $fields ) {
 			if ( ! $this->field_loop( $id, $obj ) ) {
