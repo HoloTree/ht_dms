@@ -80,11 +80,15 @@ class models {
 		if ( is_int( $id ) || (int) $id > 1 ) {
 			$params = $id;
 		}
-		elseif ( $mine ) {
-			$obj = $g->users_groups_obj( $mine, $obj, $limit, $in );
-		}
 		else {
+
 			$params = null;
+			$where = array();
+
+			if ( $mine ) {
+				$where[] = 'members.ID = "'.$mine.'"';
+			}
+
 			if ( is_array( $in ) || is_int( $in ) ) {
 				if ( is_array( $in ) ) {
 					if ( isset( $in[ 'ID' ] ) ) {
@@ -94,18 +98,26 @@ class models {
 						$in = $in[ 0 ];
 					}
 				}
+				$where[]= 'organization.ID = "'.$in.'"';
 
-				$params[ 'where' ] = 'organization.ID = "'.$in.'"';
+
+			}
+
+
+			if ( $public ) {
+				$where[] = 'd.visibility = "public"';
+			}
+
+			if ( count( $where ) > 1 ) {
+				$params[ 'where' ] = implode( ' AND ', $where );
 			}
 			else {
-
-				if ( $public ) {
-					$params[ 'where' ] = 'd.visibility = "public"';
-				}
+				$params[ 'where' ] = $where;
 			}
 
 			$params[ 'limit' ] = $limit;
 		}
+
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
 			$obj = pods( HT_DMS_GROUP_CPT_NAME, $params );
@@ -115,8 +127,6 @@ class models {
 		$view = $this->path( 'group', $preview );
 
 		return $this->ui()->view_loaders()->magic_template( $view, $obj );
-
-
 
 	}
 

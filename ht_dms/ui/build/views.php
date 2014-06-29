@@ -52,6 +52,7 @@ class views {
 
 	}
 
+
 	function assigned_tasks( $obj = null, $uID = null, $oID = null, $limit = 5 ) {
 
 		$args = array(
@@ -79,7 +80,7 @@ class views {
 
 	}
 
-	function decisions_tasks( $obj, $id, $limit = 5 ) {
+	function _decisions_tasks( $obj, $id, $limit = 5 ) {
 
 		$in = array(
 			'id' 	=> $id,
@@ -94,6 +95,23 @@ class views {
 		);
 
 		return $this->models()->task( $args );
+
+	}
+
+	function decisions_tasks( $obj = null, $id, $limit = 5 ) {
+		$params[ 'where' ] = 'decision.ID = "'.$id.'"';
+		$params[ 'limit'] = $limit;
+		$obj = pods( HT_DMS_TASK_CT_NAME, $params );
+
+		if ( $obj->total() > 0 ) {
+			$view_loaders = holotree_dms_ui()->view_loaders();
+			$view =  holotree_dms_ui()->models()->path( 'task', true  );
+
+			return $view_loaders->magic_template( $view, $obj );
+
+		}
+
+		return __( 'This decision has no tasks', 'holotree' );
 
 	}
 
