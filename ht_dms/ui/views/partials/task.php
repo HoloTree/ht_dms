@@ -1,5 +1,5 @@
 <div class="task task-single">
-    <h5><?php echo holotree_dms_ui_output_elements()->task_link( $obj->id ); ?></h5>
+    <h5><?php echo holotree_dms_ui_output_elements()->task_link( $obj->id() ); ?></h5>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>
         <li>Description: {@task_description}</li>

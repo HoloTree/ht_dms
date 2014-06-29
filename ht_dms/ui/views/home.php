@@ -26,7 +26,7 @@ $gObj = holotree_group_class()->object();
 $tabs = array(
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
-		'content'	=> $ui->views()->users_groups( $gObj, $uID ),
+		'content'	=> $ui->views()->users_groups( null, $uID ),
 	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),

@@ -15,6 +15,27 @@ namespace ht_dms\ui\build;
 class models {
 
 	/**
+	 * The length to cache Pods Objects
+	 *
+	 * Default is 85321 seconds ~ 1 Day
+	 *
+	 * @var int
+	 *
+	 * @since 0.0.1
+	 */
+	static public $cache_length = 85321;
+
+	/**
+	 * Cache mode for Pods Objects
+	 *
+	 * object|transient|site-transient
+	 * @var string
+	 *
+	 * @since 0.0.1
+	 */
+	static public $cache_mode = 'object';
+
+	/**
 	 * PARAMS FOR ALL MODELS
 	 *
 	 * @param $args['obj'] Pods|obj|null Default is null.
@@ -34,7 +55,7 @@ class models {
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
-			$params = $id;
+			$params = $this->id_params( $id );
 		}
 		else {
 			if ( $mine ) {
@@ -59,6 +80,8 @@ class models {
 
 		}
 
+		$params = $this->cache_args( $params );
+
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
 			$obj = pods( HT_DMS_ORGANIZATION_NAME, $params );
 		}
@@ -78,7 +101,7 @@ class models {
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
-			$params = $id;
+			$params = $this->id_params( $id );
 		}
 		else {
 
@@ -118,6 +141,7 @@ class models {
 			$params[ 'limit' ] = $limit;
 		}
 
+		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
 			$obj = pods( HT_DMS_GROUP_CPT_NAME, $params );
@@ -136,7 +160,7 @@ class models {
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
-			$params = $id;
+			$params = $this->id_params( $id );
 		}
 		else {
 			if ( !is_null( $status ) ) {
@@ -173,6 +197,7 @@ class models {
 
 		}
 
+		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
 			$obj = pods( HT_DMS_DECISION_CPT_NAME, $params );
@@ -190,7 +215,7 @@ class models {
 
 		$params = null;
 		if ( is_int( $id ) || (int) $id > 1 ) {
-			$params = $id;
+			$params = $this->id_params( $id, true );
 		}
 		else {
 			if ( $mine  ) {
@@ -248,6 +273,8 @@ class models {
 
 		}
 
+		$params = $this->cache_args( $params );
+
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
 			$obj = pods( HT_DMS_TASK_CT_NAME, $params );
 		}
@@ -286,6 +313,45 @@ class models {
 
 		//return trailingslashit( HT_DMS_VIEW_DIR ).'partials/foo.php';
 		return $view;
+
+	}
+
+	/**
+	 * Used to add cache args to Pods query.
+	 *
+	 * @param $params
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.1
+	 */
+	private function cache_args( $params ) {
+		if ( self::$cache_mode ) {
+			$params[ 'cache_mode' ] = self::$cache_mode;
+			$params[ 'expire' ] = self::$cache_length;
+		}
+
+		return $params;
+
+	}
+
+	/**
+	 * Sets pods:;find() params for single item query.
+	 *
+	 * @param      $id
+	 * @param bool $task
+	 *
+	 * @return string
+	 */
+	private function id_params( $id, $task = false ) {
+		if ( ! $task  ) {
+			$params[ 'where' ] = 't.ID = "'.$id.'" ';
+		}
+		else {
+			$params[ 'where' ] = 't.term_id = "'.$id.'" ';
+		}
+
+		return $params;
 
 	}
 
