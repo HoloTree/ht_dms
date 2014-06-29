@@ -130,13 +130,13 @@ abstract class object {
 
 		if ( $cache ) {
 			$params[ 'cache_mode' ] = self::$cache_mode;
-			$params[ 'expires'] 	= self::$cache_length;
+			$params[ 'expires' ] 	= self::$cache_length;
 		}
 
 
 		$obj = pods( self::$type, $params );
 
-		if ( is_pod( $obj ) ) {
+		if ( $this->check_obj( $obj ) )  {
 
 			return $obj;
 
@@ -144,113 +144,7 @@ abstract class object {
 		else {
 			holotree_error();
 		}
-		//return $this->get_pods_object( $id, $params, $cache );
 
-	}
-
-	/**
-	 * Get a Pods object For ht_dms content types
-	 *
-	 * @param 	null 				$id
-	 * @param 	null|array|int 	$params	Optional. Either the item ID, or pods::find() params.
-	 * @param 	bool 			$cache	Optional. Whether to attempt to get cached object or not.
-	 *
-	 * @return 	bool|mixed|null|\Pods|void
-	 *
-	 * @since	0.0.1
-	 */
-	private function get_pods_object( $id = null, $params = null, $cache = true ) {
-
-		if ( ! $cache ) {
-			return self::build_pods_object( self::$type, $id, $params );
-		}
-
-		$key_group = self::key_group( self::$type, $id );
-		$key = $group = null;
-		if ( $key_group !== false ) {
-			//sets $key and $group
-			extract( $key_group );
-		}
-		if ( ! is_null( $key )  ) {
-			$value = pods_view_get( $key, self::$cache_mode, $group );
-			if ( ! $value ) {
-				$value = self::build_pods_object( self::$type, $id, $params );
-
-				pods_view_set( $key, $value, self::$cache_length, self::$cache_mode, $group );
-
-			}
-
-			return $value;
-
-		}
-		else {
-
-			return self::build_pods_object( self::$type, $id, $params );
-
-		}
-
-	}
-
-	/**
-	 * Build Pods object
-	 *
-	 * @param 	string  $pod_name	Name of content type decision|group|task|notification|organization
-	 * @param 	null 	$id			Optional. ID of item. Not used if params isset.
-	 * @param 	null 	$params		Optional.pods::find() params
-	 *
-	 * @return 	bool|\Pods
-	 *
-	 * @since	0.0.1
-	 */
-	private function build_pods_object( $pod_name, $id = null, $params = null ) {
-		if ( is_null( $params ) ) {
-			if ( is_null( $id ) ) {
-				$obj = pods( $pod_name );
-			}
-			else {
-				$obj = pods( $pod_name, $id );
-			}
-		}
-		else {
-			$obj = pods( $pod_name, $params );
-		}
-
-		return $obj;
-
-	}
-
-	/**
-	 * Build key group for caching
-	 *
-	 * @param 	string	$name	Name of content type.
-	 * @param 	int		$id		ID of item.
-	 *
-	 * @return 	array|bool
-	 *
-	 * @since	0.0.1
-	 */
-	private function key_group( $name, $id ) {
-		$prefix = apply_filters( 'ht_dms_cache_prefix', 'ht_dms_') ;
-		if ( is_array( $id ) && isset( $id[0] ) ) {
-			$id = intval( $id[0] );
-		}
-
-		if ( is_array( $id ) ) {
-			return false;
-		}
-
-		if ( !is_null( $id ) ) {
-			$key = $prefix.$name.'_'.$id;
-		}
-		else {
-			$key = $prefix.$name;
-		}
-
-		$group = $prefix.$name;
-
-		$key_group = array( 'key' => $key, 'group' => $group );
-
-		return $key_group;
 
 	}
 
@@ -267,7 +161,7 @@ abstract class object {
 	 */
 	function null_object( $obj = null, $params_or_id = null ) {
 
-		if ( !$this->check_obj( $obj ) ) {
+		if ( ! $this->check_obj( $obj ) ) {
 
 			$obj = $this->object( true, $params_or_id );
 
@@ -284,7 +178,9 @@ abstract class object {
 	 *
 	 */
 	function null_obj( $obj = null, $params_or_id = null ) {
+
 		return $this->null_object( $obj, $params_or_id );
+
 	}
 
 	/**
