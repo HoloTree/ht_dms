@@ -43,8 +43,7 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'New Organization', 'holotree' ),
-		//'content'	=> $ui->add_modify()->new_organization( $uID ),
-		'content' => ':('
+		'content'	=> $ui->add_modify()->new_organization( $uID ),
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),

@@ -37,9 +37,8 @@ htdms_theme_header(); ?>
 					'content'	=> $ui->views()->docs( $obj, 'task', $id ),
 				),
 				array(
-					'label'		=> __( 'Decision', 'holtree' ),
-					//'content'	=> $ui->views()->decision( holotree_decision( $dID ), $dID ),
-					'content'	=> $ui->views()->decision( null, $dID ),
+					'label'		=> __( 'Decision', 'holotree' ),
+					'content'	=> $ui->views()->decision( holotree_decision( $dID ), $dID ),
 				),
 				array(
 					'label'		=> __( 'Edit Task', 'holotree' ),

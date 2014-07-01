@@ -51,18 +51,17 @@ else {
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),
-				//'content' => $ui->add_modify()->new_task(  $id ),
-				'content' => ':)',
+				'content' => $ui->add_modify()->new_task(  $id ),
 			),
 			array (
 				'label'   => __( 'Propose Modification', 'holotree' ),
-				//'content' => $ui->add_modify()->modify_decision(  $id, $obj, null ),
-'content' => ';)',
+				'content' => $ui->add_modify()->modify_decision(  $id, $obj, null ),
 			),
 
 		);
 
-		if ( 1==1 ) { //rebuild object as full decision object
+		if ( 1==1 ) {
+		 //rebuild object as full decision object
 			$obj = holotree_decision( NULL );
 			$content = '';
 			if ( $d->has_proposed_modification( $id, $obj ) ) {

@@ -25,7 +25,6 @@ class views {
 
 	}
 
-
 	function users_groups( $obj = null, $uID = null, $oID = null, $limit = 5  ) {
 		$args = array(
 			'obj' 		=> $obj,
