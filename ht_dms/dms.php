@@ -33,9 +33,8 @@ abstract class dms extends object {
 		if ( is_int( $params ) || intval( $params ) > 1 || is_null( $params ) || !is_array( $params ) ) {
 			$params = (int) $id;
 		}
-		
-		$obj = $this->null_object( $obj, $params );
 
+		$obj = $this->null_object( $obj, $params );
 
 		if ( $fields ) {
 			if ( ! $this->field_loop( $id, $obj ) ) {
@@ -123,7 +122,7 @@ abstract class dms extends object {
 	 *
 	 * @since 0.0.1
 	 */
-	function edit( $id = null, $uID = null, $obj = null, $post_title_label = false ) {
+	function edit( $id = null, $uID = null, $obj = null, $dID = null, $post_title_label = false ) {
 		$uID = $this->null_user( $uID );
 
 		$new = false;
@@ -165,6 +164,17 @@ abstract class dms extends object {
 		}
 		else {
 			$oID = (int) $obj->display( 'organization.ID' );
+		}
+
+		if ( $type === HT_DMS_TASK_CT_NAME ) {
+			if ( !is_null( $dID ) ) {
+				$form_fields[ 'decision' ] = $dID;
+			}
+			else {
+				holotree_error( __( 'You must set decision ID when editing/creating tasks.', 'holotree') );
+
+			}
+
 		}
 
 		remove_filter( 'the_title', '__return_false' );

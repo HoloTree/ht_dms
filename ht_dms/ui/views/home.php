@@ -20,7 +20,7 @@ $ui = holotree_dms_ui();
 
 $uID = get_current_user_id();
 
-$gObj = holotree_group_class()->object();
+//$gObj = holotree_group_class()->object();
 
 
 $tabs = array(
@@ -38,12 +38,11 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'Notifications', 'holotree' ),
-		//'content'	=> $ui->views()->notifications( null ),
-		'content'	=> ':)',
+		'content'	=> $ui->views()->notifications( null ),
 	),
 	array(
 		'label'		=> __( 'New Organization', 'holotree' ),
-		'content'	=> $ui->add_modify()->new_organization( $uID ),
+		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),

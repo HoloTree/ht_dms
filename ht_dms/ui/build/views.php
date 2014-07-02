@@ -183,6 +183,9 @@ class views {
 
 	}
 
+	function notifications() {
+		return '@TODO === this:(';
+	}
 
 
 

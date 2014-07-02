@@ -24,9 +24,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function new_decision ( $oID = null, $obj = null ) {
-		
-		return holotree_decision_class()->new_decision( null, $obj, $oID );
+	function new_decision ( $obj = null, $uID = null ) {
+
+		return holotree_decision_class()->edit( null, $uID, $obj );
 
 	}
 
@@ -39,9 +39,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function edit_decision( $id, $oID = null, $obj = null  ) {
+	function edit_decision( $id, $obj = null  ) {
 
-		return holotree_decision_class()->new_decision( $id, $obj, $oID );
+		return holotree_decision_class()->edit( $id, null, $obj );
 
 	}
 
@@ -74,9 +74,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function new_group( $oID, $uID = null, $obj = null ) {
+	function new_group( $obj = null, $uID = null ) {
 		
-		return holotree_group_class()->new_group( null, $uID, $obj, $oID );
+		return holotree_group_class()->edit( null, $uID, $obj );
 
 	}
 
@@ -87,9 +87,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function edit_group( $id, $oID = null, $uID = null, $obj = null  ) {
+	function edit_group( $id, $obj = null ) {
 		
-		return holotree_group_class()->new_group( $id, $uID, $obj, $oID );
+		return holotree_group_class()->edit( $id, null, $obj );
 
 	}
 
@@ -102,9 +102,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function new_task( $dID, $oID = null ) {
+	function new_task( $obj = null, $uID = null, $dID ) {
 		
-		$form = holotree_task_class()->new_task( null, $dID, $oID );
+		$form = holotree_task_class()->edit( null, $uID, $obj, $dID );
 
 		return $form;
 	}
@@ -118,9 +118,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function edit_task( $dID, $id, $oID = null ) {
+	function edit_task( $id, $obj = null, $dID ) {
 		
-		return holotree_task_class()->new_task( $dID, $id, $oID );
+		return holotree_task_class()->new_task( $id, null, $obj, $dID );
 
 	}
 
@@ -144,9 +144,9 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function edit_organization( $id, $uID = null, $obj = null ) {
+	function edit_organization( $id, $obj = null ) {
 
-		return holotree_organization_class()->edit( $id, $uID, $obj );
+		return holotree_organization_class()->edit( $id, null, $obj );
 	}
 
 	/**

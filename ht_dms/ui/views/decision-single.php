@@ -51,7 +51,7 @@ else {
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),
-				'content' => $ui->add_modify()->new_task(  $id ),
+				'content' => $ui->add_modify()->new_task(  null, , $id ),
 			),
 			array (
 				'label'   => __( 'Propose Modification', 'holotree' ),
@@ -61,15 +61,15 @@ else {
 		);
 
 		if ( 1==1 ) {
-		 //rebuild object as full decision object
-			$obj = holotree_decision( NULL );
+		 	//rebuild object as full decision object
+			$obj = holotree_decision( null );
 			$content = '';
 			if ( $d->has_proposed_modification( $id, $obj ) ) {
-				$changes =  $d->has_proposed_modification( $id, $obj, TRUE, FALSE );
+				$changes =  $d->has_proposed_modification( $id, $obj, true, false );
 
 					foreach ( $changes as $change ) {
 						if ( $change[ 'ID'] !== $id ){
-							$content .= $ui->views()->decision_preview( $change, 'decision' );
+							$content .= $ui->views()->decision( $obj, $change );
 						}
 
 					}
