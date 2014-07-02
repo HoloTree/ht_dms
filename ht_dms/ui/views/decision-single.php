@@ -40,7 +40,6 @@ else {
 				'label'   => __( 'Decision Information', 'holotree' ),
 				'content' => $current
 			),
-
 			array(
 				'label'	 	=> __( 'Discussion' , 'holotree' ),
 				'content' 	=> $ui->elements()->discussion( $id, 5, true ),
@@ -51,7 +50,7 @@ else {
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),
-				'content' => $ui->add_modify()->new_task(  null, , $id ),
+				'content' => $ui->add_modify()->new_task(  null, null, $id ),
 			),
 			array (
 				'label'   => __( 'Propose Modification', 'holotree' ),

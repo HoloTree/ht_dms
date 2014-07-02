@@ -204,14 +204,7 @@ abstract class dms extends object {
 		 */
 		$form = do_action( 'ht_dms_before_form' );
 
-		if ( $this->form_fix() ) {
-			if ( ( $type === HT_DMS_DECISION_CPT_NAME || HT_DMS_TASK_CT_NAME ) && $new ) {
-				$form .= $this->form_fix( $new );
-			}
-			else {
-				$form .= $this->form_fix();
-			}
-		}
+		$form .= $this->form_fix( $new, $type );
 
 		$form .= $obj->form( $form_fields );
 
@@ -235,8 +228,37 @@ abstract class dms extends object {
 	 *
 	 * @since 	0.0.1
 	 */
-	function form_fix( ) {
-		return false;
+	function form_fix( $new = true, $type ) {
+
+		/**
+		 * Set jQuery to fix up forms, but content type
+		 *
+		 * Note: script tags and jQuery no conflict wrapper is added automatically.
+		 *
+		 * @param string|null $jQuery The jQuery to use. Defaults to null.
+		 *
+		 * @param bool $new Whether this script is for a new item or not.
+		 *
+		 * @return string|null The jQuery or null
+		 */
+		$jQuery = apply_filters( "ht_dms_{$type}_form_fix_jQuery", null, $new  );
+
+		if ( is_null( $jQuery ) ) {
+			return '';
+		}
+
+		$script = "
+		<script type='text/javascript'>
+		jQuery(document).ready(function($) {
+		//Fix for hidden fields
+		";
+		$script .= $jQuery;
+		$script .= "
+});
+		</script>
+		";
+
+		return $script;
 	}
 
 	/**

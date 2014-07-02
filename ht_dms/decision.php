@@ -16,9 +16,12 @@ class decision extends dms {
 
 	function __construct() {
 		$this->set_type( HT_DMS_DECISION_CPT_NAME );
+		$type = $this->get_type( false );
 		add_action( 'pods_api_post_save_pod_item_ht_dms_decision', array( $this, 'user_fix'), 11, 3 );
-		add_filter( "{$this->get_type()}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		add_filter( "{$this->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
+		add_filter( "ht_dms_{$type}->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+
+		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
 
@@ -261,31 +264,24 @@ class decision extends dms {
 	}
 
 
-	function form_fix( $new = true ) {
-		//fix for propose-modify form
-		$jquery = "//fix for propose-modify form
-		$( 'li.pods-form-ui-row-name-decision-status, li.pods-form-ui-row-name-decision-type, li.pods-form-ui-row-name-manager, li.pods-form-ui-row-name-group, li.pods-form-ui-row-name-change-to' ).hide();
-		";
+	function form_fix_jQuery( $jquery, $new ) {
 
 		if ( $new  ) {
 			//fix for new decision form
-			$jquery = "//fix for new decision form
+			$jQuery = "//fix for new decision form
 			$( 'li.pods-form-ui-row-name-decision-status, li.pods-form-ui-row-name-proposed-by, li.pods-form-ui-row-name-decision-type, li.pods-form-ui-row-name-group, li.pods-form-ui-row-name-change-to, li.pods-form-ui-row-name-organization' ).hide();
 		";
 		}
-
-		$script = "
-		<script type='text/javascript'>
-		jQuery(document).ready(function($) {
-		//Fix for hidden fields
+		else {
+			//fix for propose-modify form
+			$jQuery =  "//fix for propose-modify form
+		$( 'li.pods-form-ui-row-name-decision-status, li.pods-form-ui-row-name-decision-type, li.pods-form-ui-row-name-manager, li.pods-form-ui-row-name-group, li.pods-form-ui-row-name-change-to' ).hide();
 		";
-		$script .= $jquery;
-		$script .= "
-});
-		</script>
-		";
+		}
 
-		return $script;
+		return $jQuery;
+
+
 	}
 
 

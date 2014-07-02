@@ -16,7 +16,9 @@ class group extends dms {
 
 	function __construct() {
 		$this->set_type( HT_DMS_GROUP_CPT_NAME );
+		$type = $this->get_type( false );
 		add_action( 'pods_api_post_save_pod_item_ht_dms_group', array( $this, 'user_fix'), 9, 3 );
+		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
 	/**
@@ -313,21 +315,11 @@ class group extends dms {
 
 	}
 
-	function form_fix() {
-		$jquery = "$( 'li.pods-form-ui-row-name-members' ).hide();";
+	function form_fix_jQuery( $jQuery, $new ) {
 
-		$script = "
-		<script type='text/javascript'>
-		jQuery(document).ready(function($) {
-		//Fix for hidden fields
-		";
-		$script .= $jquery;
-		$script .= "
-});
-		</script>
-		";
+		$jQuery =  "$( 'li.pods-form-ui-row-name-members, li.pods-form-ui-row-name-pending-members, li.pods-form-ui-row-name-decisions, li.pods-form-ui-row-name-organization' ).hide();";
 
-		return $script;
+		return $jQuery;
 	}
 
 	/**

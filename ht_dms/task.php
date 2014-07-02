@@ -17,9 +17,10 @@ class task extends dms {
 
 	function __construct() {
 		$this->set_type( HT_DMS_TASK_CT_NAME );
+		$type = $this->get_type( false );
 		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
-		add_filter( "{$this->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
-
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
 	/**
@@ -78,31 +79,21 @@ class task extends dms {
 
 	}
 
-	function form_fix( $new = true ) {
-		//fix for propose-modify form
-		$jquery = "//fix for propose-modify form
-		$( 'li.pods-form-ui-row-name-decision-group, li.pods-form-ui-row-name-decision' ).hide();
-		";
-
+	function form_fix_jQuery( $jQuery, $new = true ) {
 		if ( $new  ) {
 			//fix for new decision form
-			$jquery = "//fix for new decision form
+			$jQuery = "//fix for new decision form
 			$( 'li.pods-form-ui-row-name-decision-group, li.pods-form-ui-row-name-decision' ).hide();
 			";
 		}
-
-		$script = "
-		<script type='text/javascript'>
-		jQuery(document).ready(function($) {
-		//Fix for hidden fields
+		else {
+			//fix for propose-modify form
+			$jQuery = "//fix for propose-modify form
+		$( 'li.pods-form-ui-row-name-decision-group, li.pods-form-ui-row-name-decision' ).hide();
 		";
-		$script .= $jquery;
-		$script .= "
-});
-		</script>
-		";
+		}
 
-		return $script;
+		return $jQuery;
 
 	}
 
