@@ -109,7 +109,7 @@ abstract class object {
 	/**
 	 * Object of this CPT
 	 *
-	 * @param 	bool 			$cache	Optional. Whether to attempt to get cached object or not.
+	 * @param 	bool 			$cache	Optional. Whether to use cache or not.
 	 * @param 	null|array|int 	$params	Optional. Either the item ID, or pods::find() params
 	 *
 	 * @return 	bool|mixed|null|Pods|void
@@ -126,6 +126,9 @@ abstract class object {
 				$params[ 'where' ] = 't.term_id = "' . $params_or_id . '"';
 			}
 
+		}
+		else {
+			$params = $params_or_id;
 		}
 
 		if ( $cache ) {
