@@ -760,48 +760,34 @@ class decision extends dms {
 	 * Find if a decision has any active proposed changes. Optional return fields of those changes.
 	 *
 	 * @param 	int     $id				ID of decision to check for proposed modifications of.
-	 * @param 	null 	$obj			Optional. Full decision object.
 	 * @param 	bool 	$skip_closed	Optional. If true, which is the default, only active proposed changes will be returned.
-	 * @param 	bool 	$bool			Optional. If true, which is the default, returns true or false. If set to false, will return the proposed modifications' fields, or false if there are none to return.
+
 	 *
-	 * @return 	bool|mixed				bool or decision fields
+	 * @return 	bool|mixed				bool or array of ids that are modifications to the decision.
 	 *
 	 * @since	0.0.1
 	 */
-	function has_proposed_modification( $id, $obj = null, $skip_closed = true, $bool = true ) {
-		if ( 1==1 ) {
-			return false;
+	function has_proposed_modification( $id, $skip_closed = true ) {
+
+		$where = 'change_to.ID = "'.$id.'"';
+		if ( $skip_closed ) {
+			$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
 		}
-			$obj = $this->item( $id, $obj );
-			$where = 'd.change_to = "'.$id.'"';
-			if ( $skip_closed ) {
-				$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
+		$params[ 'where' ] = $where;
+
+		$obj = $this->object( true, $params );
+
+		$total = $obj->total();
+
+		if ( $total > 0 ) {
+			while( $obj->fetch()  ) {
+				$ids[] = $obj->id();
 			}
-			$params[ 'where' ] = $where;
 
-			$obj = $obj->find( $params );
-			$total = $obj->total();
-			if ( $bool ) {
-				if ( !is_null( $total ) && (int)$total > 0 ) {
-					return true;
+			return $ids;
+		}
 
-				}
-				else {
-					return false;
 
-				}
-
-			}
-			else {
-				if ( $total > 0 ) {
-					return $this->fields_loop( $id, $obj, true );
-
-				}
-				else {
-					return false;
-
-				}
-			}
 
 
 	}
