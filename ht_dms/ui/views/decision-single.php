@@ -33,8 +33,6 @@ else {
 		$what = $status.'-decision';
 		$current .= $ui->views()->action_buttons( $obj, $id, $what );
 
-
-
 		$tabs = array (
 			array (
 				'label'   => __( 'Decision Information', 'holotree' ),
@@ -54,38 +52,19 @@ else {
 			),
 			array (
 				'label'   => __( 'Propose Modification', 'holotree' ),
-				'content' => $ui->add_modify()->modify_decision(  $id, $obj, null ),
+				'content' => $ui->add_modify()->modify_decision(  $id, $obj ),
 			),
-
 		);
 
-		if ( 1==1 ) {
-		 	//rebuild object as full decision object
-			$obj = holotree_decision( null );
-			$content = '';
-			if ( $d->has_proposed_modification( $id, $obj ) ) {
-				$changes =  $d->has_proposed_modification( $id, $obj, true, false );
-
-					foreach ( $changes as $change ) {
-						if ( $change[ 'ID'] !== $id ){
-							$content .= $ui->views()->decision( $obj, $change );
-						}
-
-					}
-
-
-
-			}
-
-			if ( $content !== '' ) {
-				$tabs[ ] = array (
-					'label'   => __( 'Proposed Modifications', 'holotree' ),
-					'content' => $content,
-				);
-			}
+		$proposed_modifications = $ui->views()->proposed_modifications( $id );
+		if ( is_string( $proposed_modifications ) ) {
+			$tabs[ ] = array (
+				'label'   => __( 'Proposed Modifications', 'holotree' ),
+				'content' => $proposed_modifications,
+			);
 		}
 
-
 		return $ui->elements()->tab_maker( $tabs );
+
 	}
 }

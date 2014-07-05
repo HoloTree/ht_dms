@@ -28,6 +28,8 @@ class group extends dms {
 
 		add_action( 'pods_api_post_save_pod_item_ht_dms_group', array( $this, 'user_fix'), 9, 3 );
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ) );
 	}
 
 	/**
@@ -381,6 +383,12 @@ class group extends dms {
 			return $groups;
 
 		}
+
+	}
+
+	function form_fields( $form_fields ) {
+
+		return $form_fields;
 
 	}
 

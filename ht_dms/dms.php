@@ -125,21 +125,30 @@ abstract class dms extends object {
 	function edit( $id = null, $uID = null, $obj = null, $dID = null, $post_title_label = false ) {
 		$uID = $this->null_user( $uID );
 
+		$type = $this->get_type( false );
+
 		$new = false;
-		if ( is_null( $id ) ) {
+		if ( is_null( $id ) || $type !== HT_DMS_DECISION_CPT_NAME ) {
 			$new = true;
 		}
 
 		$params = null;
-		if ( !$new && $this->get_type() !== HT_DMS_GROUP_CPT_NAME ) {
+		if ( ! $new && $this->get_type() !== HT_DMS_TASK_CT_NAME ) {
 			$params = array( 'where' => 't.id = " ' . $id . ' " ' );
 		}
+		else{
+			$params = $id;
+		}
 
-		$type = $this->get_type( false );
 
 		$params = apply_filters( 'ht_dms_edit_params', $params, $type );
 
-		$obj = $this->null_object( $obj, $params );
+		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
+			$obj = $this->null_object( $obj, $params );
+		}
+		else {
+			$obj = holotree_decision_class()->object();
+		}
 
 		$fields = (array) $this->fields_to_loop( $obj, false );
 
@@ -147,7 +156,7 @@ abstract class dms extends object {
 			$form_fields[ $k ] = array( 'label' => $v[ 'label' ] );
 		}
 
-		$form_fields[ 'post_title' ] = array( 'label' => $post_title_label );
+		//$form_fields[ 'post_title' ] = array( 'label' => $post_title_label );
 
 		if ( $new ) {
 			if ( isset( $form_fields[ 'members' ] ) ) {
@@ -164,15 +173,18 @@ abstract class dms extends object {
 		}
 		else {
 			$oID = (int) $obj->display( 'organization.ID' );
+			$form_fields[ 'organization' ] = $oID;
 		}
 
 		if ( $type === HT_DMS_TASK_CT_NAME ) {
 			if ( !is_null( $dID ) ) {
 				$form_fields[ 'decision' ] = $dID;
+
 			}
 			else {
-				holotree_error( __( 'You must set decision ID when editing/creating tasks.', 'holotree') );
-
+				if ( is_null( $id ) ) {
+					holotree_error( __( 'Decision ID must be set when creating new tasks.', 'holotree' ) );
+				}
 			}
 
 		}
@@ -195,7 +207,7 @@ abstract class dms extends object {
 		 * @since 0.0.1
 		 */
 
-		$form_fields = apply_filters( "{$this->get_type()}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
+		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
 
 		/**
 		 * Action that runs before any ht_dms form
@@ -204,7 +216,7 @@ abstract class dms extends object {
 		 */
 		$form = do_action( 'ht_dms_before_form' );
 
-		$form .= $this->form_fix( $new, $type );
+		//$form .= $this->form_fix( $new, $type );
 
 		$form .= $obj->form( $form_fields );
 

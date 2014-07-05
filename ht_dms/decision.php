@@ -22,15 +22,16 @@ class decision extends dms {
 	 * @since 0.0.1
 	 */
 	public static $type = HT_DMS_DECISION_CPT_NAME;
-	
+
 	function __construct() {
 		$type = $this->get_type();
 
 		add_action( 'pods_api_post_save_pod_item_ht_dms_decision', array( $this, 'user_fix'), 11, 3 );
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		add_filter( "ht_dms_{$type}->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+
 	}
 
 	/**
@@ -201,28 +202,46 @@ class decision extends dms {
 	}
 
 
-	function edit_fields_changes( $form_fields, $new, $id, $obj, $oID, $uID  ) {
-
+	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
 		$defaults = $this->default_values( $id, $obj, $oID, $uID );
 
-		$form_fields[ 	'decision_type' ] = array(
-			'default' => $defaults[ 'decision_type' ],
+
+		$form_fields = array(
+			'post_title'           => array (
+				'label' => 'Decision Name',
+			),
+			'decision_description',
+			'tasks',
+			'decision_type' => array (
+				'default' => $defaults[ 'decision_type' ],
+			),
+			'decision_status' => array (
+				'default' => $defaults[ 'status' ],
+			),
+			'manager' => array (
+				'default' => $defaults[ 'user_id' ],
+			),
+			'proposed_by' => array (
+				'default' => $defaults[ 'user_id' ],
+			),
+			'group' => array (
+				'default' => $defaults[ 'group_id' ],
+			),
+			'organization' => array (
+				'default' => $defaults[ 'organization_id'],
+			),
 		);
-		$form_fields[ 'decision_status' ] =	 array(
-			'default' => $defaults[ 'status' ],
-		);
-		$form_fields[ 'manager' ] =	 array(
-			'default' => $defaults[ 'user_id'],
-		);
-		$form_fields[ 'proposed_by'	] = array(
-			'default' => $defaults[ 'user_id'],
-		);
-		$form_fields[ 'group'] = array(
-			'default' => $defaults[ 'group_id']
-		);
-		$form_fields[ 'organization' ] = array(
-			'default' => $defaults[ 'organization_id']
-		);
+		if ( ! $new ) {
+
+			$form_fields['change_to' ] =  array(
+					'default' => (string) $id,
+			);
+			$form_fields[ 'reason_for_change']  = array ();
+			$form_fields[ 'decision_type' ] = array(
+				'default' => 'change',
+			);
+
+		}
 
 		return $form_fields;
 
@@ -243,12 +262,11 @@ class decision extends dms {
 			$gID = $post->ID;
 		}
 		else {
-			$gID = $obj->field( 'group.ID' );
-			$gID = $gID[0];
+			$gID = (int) $obj->display( 'group.ID' );
 		}
 
 		if ( is_null( $oID ) ) {
-			$oID = $obj->field( 'organization.ID' );
+			$oID = (int) $obj->display( 'organization.ID' );
 			if ( empty( $oID ) ) {
 				$gObj = holotree_group( $gID );
 				$oID = (int) $gObj->display( 'organization.ID' );
@@ -593,109 +611,18 @@ class decision extends dms {
 	/**
 	 * Form for proposing a modification to a decision
 	 *
+	 * @TODO REMOVE THIS!
+	 *
 	 * @param 	int			$id			ID of decision to propose modification to.
 	 * @param	obj|null	$single_obj	Optional. Decision object of single item that is being modified. If isn't a Pods Object for whole class, bad things will happen.
-	 * @param	obj|null	$full_obj	Optional. Full decisions object. If isn't a Pods Object for whole class, bad things will happen.
 	 *
 	 * @return 	string				Pods form
 	 *
 	 * @since 	0.0.1
 	 */
-	function propose_modify ( $id, $single_obj = null, $full_obj = null ) {
-		//get object of current item to get existing from
-		$obj = $this->item( $id, $single_obj );
-		$gID = $obj->field( 'group' );
-		$gID = (string) $gID[0][ 'ID' ];
+	function propose_modify ( $id, $obj ) {
 
-		$fields = array(
-			'post_title'			=> array(
-				'label' 	=> 'Decision Name',
-			),
-			'decision_status' 		=> array(
-				'type' 		=> 'hidden',
-				'default'	=> 'new',
-			),
-			'decision_type'			=> array(
-				'type'		=> 'hidden',
-				'default'	=> 'change',
-			),
-			'decision_description'	=> array(
-			),
-			'manager'				=> array(
-			),
-			'proposed_by'			=> array(
-				'type'		=> 'hidden',
-				'default' => get_current_user_id(),
-			),
-			'group'					=> array(
-				'type'		=> 'hidden',
-				'default' => (int) $gID,
-			),
-			'change_to'				=> array(
-				'type'				=> 'hidden',
-				'default'			=> (string) $id,
-			),
-			'reason_for_change' => array(
-			),
-
-		);
-
-		//set the rest of the defaults
-		foreach ( $fields as $key => $value ) {
-			if ( $key !== 'reason_for_change' && ! isset( $fields[ $key ][ 'default' ] ) ) {
-
-				if ( $key === 'manager' ) {
-					$field = $obj->field( $key );
-					$fields[ $key ][ 'default' ] = $field[ 'ID' ];
-
-				}
-				else {
-					$fields[ $key ][ 'default' ] = $obj->field( $key );
-
-				}
-			}
-
-			if ( HT_DEV_MODE  || 1==1) {
-				if ( isset ( $fields[$key][ 'type' ] ) &&  $fields[$key][ 'type' ] === 'hidden' ) {
-					unset( $fields[$key][ 'type' ] );
-				}
-			}
-		}
-
-
-		//get object to create new item with
-		$obj = $this->item( null, $full_obj );
-
-		/**
-		 * Override the fields for the propose modify decision form
-		 *
-		 * @param array $fields	Parameters for pods::form
-		 * @see http://pods.io/docs/code/pods/form/
-		 * @param int 	$id 	ID of decision being modified.
-		 * @param obj 	$obj	Decision Pods object/
-		 * @param int	$gID 	ID of group decision belongs to.
-		 *
-		 * @since 0.0.1
-		 */
-		$fields = apply_filters( 'ht_dms_modify_decision_fields', $fields, $id, $obj, $gID );
-
-		remove_filter( 'the_title', '__return_false' );
-		$url = holotree_dms_ui()->elements()->current_page_url();
-		$form = '';
-
-		$form .= do_action( 'ht_dms_before_form' );
-		$form .= $this->form_fix( false );
-		if ( pods_v( 'dms_action', 'get') == 'changing' ) {
-			$form = '<h3>'.__('Propose Modified Decision', 'holotree' ).'</h3>';
-			$url = get_permalink( $id );
-
-		}
-
-		$url = holotree_dms_ui()->elements()->action_append( $url, 'change-proposed', $id );
-		$form .= $obj->form( $fields, 'Submit', $url );
-		add_filter( 'the_title', '__return_false' );
-
-		return $form;
+		return $this->edit( $id, null, $obj );
 
 	}
 
@@ -789,7 +716,7 @@ class decision extends dms {
 			$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
 		}
 		$params[ 'where' ] = $where;
-		pods_error( $this->get_type());
+
 		$obj = $this->object( true, $params );
 
 		$total = $obj->total();
@@ -800,9 +727,8 @@ class decision extends dms {
 			}
 
 			return $ids;
+
 		}
-
-
 
 
 	}
@@ -982,6 +908,24 @@ class decision extends dms {
 		return $notifications_sent;
 
 	}
+
+	/**
+	 * Get the organization this decision belongs to.
+	 *
+	 * @param 	int   			$id		ID of decision.
+	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
+	 *
+	 * @return  int|null                Either the organization ID, or null if none is set.
+	 *
+	 * @since	0.0.1
+	 */
+	function get_organization( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return (int) $obj->display( 'organization.ID' );
+	}
+
+
 
 	/**
 	 * Update user fields related to this post type.

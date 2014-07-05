@@ -187,7 +187,22 @@ class views {
 		return '@TODO === this:(';
 	}
 
+	function proposed_modifications( $id ) {
+		$ids = holotree_decision_class()->has_proposed_modification( $id, true );
 
+		if ( is_array( $ids ) ) {
+			$obj = holotree_decision_class()->object();
+			foreach ( $ids as $id ) {
+				$proposed_changes[ $id ] = $this->decision( $obj, $id );
+			}
+
+			if ( is_array( $proposed_changes ) ) {
+				$proposed_changes = implode( '<br>', $proposed_changes );
+
+				return $proposed_changes;
+			}
+		}
+	}
 
 	/**
 	 * Holds the instance of this class.

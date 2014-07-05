@@ -26,7 +26,7 @@ class task extends dms {
 	function __construct() {
 		$type = $this->get_type();
 		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
-		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
@@ -69,22 +69,42 @@ class task extends dms {
 
 	}
 
-	function edit_fields_changes( $form_fields, $new, $id, $obj, $oID, $uID  ) {
-		$gID = (int) $obj->display( 'group.ID' );
-		if ( is_null( $oID) ) {
-			$oID = (int) $obj->display( 'organization.ID' );
+	/**
+	 * Set the form fields for editing/ creating
+	 *
+	 * parameters are documented in ht_dms/dms.php
+	 *
+	 * @see dms::edit()
+	 *
+	 * @return 	array
+	 *
+	 * @since	0.0.1
+	 */
+	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
+
+
+		if ( $new ) {
+			if ( $form_fields[ 'decision' ] ) {
+				$dID = $form_fields[ 'decision' ];
+			}
+
+
+			if ( $form_fields[ 'organization' ] ) {
+				$oID = $form_fields[ 'organization' ];
+			}
+			else {
+				$oID = $this->get_organization( $id, $obj, $dID, false );
+			}
+
 		}
+		var_dump( $oID );
 
-		$dID = (int) $obj->display( 'decision.ID' );
+		unset( $form_fields );
 
-		$form_fields[ 'decision' ] = array(
-			'default'	=> $dID,
-			//'type'		=> 'hidden',
+		$form_fields[ 'name' ] = array(
+
 		);
-		$form_fields[ 'decision_group' ] = array(
-			'default'	=> $gID,
-			//'type'		=> 'hidden',
-		);
+		$form_fields[ 'task_description' ] = array();
 		$form_fields[ 'blockers' ] = array(
 			'label' => __( 'Tasks that must be completed before this task is completed.', 'holotree' ),
 		);
@@ -94,11 +114,34 @@ class task extends dms {
 		$form_fields[ 'organization' ] =  array(
 			'default' 	=> $oID,
 		);
+		$form_fields[ 'decision_group' ] = array(
+
+		);
+		$form_fields[ 'decision' ] = array();
+		$form_fields[ 'organization' ] = array();
+
+		if ( $new  ) {
+			$form_fields[ 'decision' ][ 'default' ] = $dID;
+			$form_fields[ 'organization' ][ 'default' ] = $oID;
+			$form_fields[ 'decision_group' ][ 'default' ] = $this->get_group( $id, $obj, $dID, false );
+		}
+		var_DumP( $this->get_group( $id, $obj, $dID, false));
 
 		return $form_fields;
 
 	}
 
+	/**
+	 * Hide form fields.
+	 *
+	 * parameters are documented in ht_dms/dms.php
+	 *
+	 * @see dms::edit()
+	 *
+	 * @return 	string
+	 *
+	 * @since 	0.0.1
+	 */
 	function form_fix_jQuery( $jQuery, $new = true ) {
 		if ( $new  ) {
 			//fix for new decision form
@@ -533,6 +576,90 @@ class task extends dms {
 			$link = get_term_link( $id, HT_DMS_TASK_CT_NAME );
 			return $link;
 		}
+
+	}
+
+	/**
+	 * Get group this task belongs to.
+	 *
+	 * Will update value if it isn't set, based on the decision field.
+	 *
+	 * @param 	int     		$id		Task ID.
+	 * @param 	null|obj|Pods 	$obj	Optional. Task object.
+	 * @param 	int|null		$dID	Optional. Decision ID. Needed for setting decision for new decisions.
+	 * @param	bool			$fix	Optional. Whether to attempt to fix if not set. Defaults to true.
+	 *
+	 * @return 	int|null
+	 *
+	 * @since	0.0.1
+	 */
+	function get_group( $id, $obj = null, $dID = null, $fix = true ) {
+		$obj = $this->null_object( $obj, $id );
+		$gID = (int) $obj->display( 'group.ID' );
+		if ( ! $gID ) {
+
+			$dObj = holotree_decision( $dID );
+
+			$gID = (int) $dObj->display( 'group.ID' );
+
+			if ( $fix ) {
+				$this->update( $id, 'decision_group', $dID );
+			}
+
+		}
+
+		return $gID;
+
+	}
+
+	/**
+	 * Get decision this task belongs to.
+	 *
+	 * @param 	int     		$id		Task ID.
+	 * @param 	null|obj|Pods 	$obj	Optional. Task object.
+	 *
+	 * @return 	int|null
+	 *
+	 * @since	0.0.1
+	 */
+	function get_decision( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return (int) $obj->display( 'decision.ID' );
+	}
+
+	/**
+	 * Get organization this task belongs to.
+	 *
+	 * Will update value if it isn't set, based on the decision field.
+	 *
+	 * @param 	int     		$id		Task ID.
+	 * @param 	null|obj|Pods 	$obj	Optional. Task object.
+	 * @param 	int|null		$dID	Optional. Decision ID. Needed for setting decision for new decisions.
+	 * @param	bool			$fix	Optional. Whether to attempt to fix if not set. Defaults to true.
+	 *
+	 * @return 	int|null
+	 *
+	 * @since	0.0.1
+	 */
+	function get_organization( $id, $obj = null, $dID = null, $fix = true ) {
+		$obj = $this->null_object( $obj, $id );
+		$oID = (int) $obj->display( 'organization.ID' );
+		if ( ! $oID ) {
+			if ( is_null( $dID ) ) {
+				holotree_error();
+			}
+
+			$dObj = holotree_decision( $dID );
+			$oID = (int) $dObj->display( 'organization.ID' );
+
+			if ( $fix ) {
+				$this->update( $id, 'organization', $oID, $obj );
+			}
+
+		}
+
+		return $oID;
 
 	}
 

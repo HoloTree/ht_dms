@@ -56,10 +56,10 @@ class add_modify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function modify_decision( $id, $single_obj = null, $full_object = null ) {
+	function modify_decision( $id, $obj = null ) {
 		
 		$dms_decision = holotree_decision_class();
-		$form = $dms_decision->propose_modify( $id );
+		$form = $dms_decision->propose_modify( $id, $obj );
 		$out = '<div class="modify-decision" id="modify-'.$id.'">';
 		$out .= $form;
 		$out .= '</div><!--.modify-decision-->';
