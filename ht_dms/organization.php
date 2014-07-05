@@ -14,10 +14,32 @@
 
 class organization extends dms {
 
+	/**
+	 * Set name of CPT this class is for.
+	 *
+	 * @var string
+	 *
+	 * @since 0.0.1
+	 */
+	public static $type = HT_DMS_ORGANIZATION_NAME;
+
 	function __construct() {
-		$this->set_type( HT_DMS_ORGANIZATION_NAME );
+		$type = $this->get_type( );
+
 	}
 
+	/**
+	 * Set the name of the CPT
+	 *
+	 * @param 	string 	$type
+	 *
+	 * @since 0.0.1
+	 */
+	function set_type() {
+
+		return self::$type;
+
+	}
 
 
 	/**

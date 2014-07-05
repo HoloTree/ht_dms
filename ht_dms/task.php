@@ -14,13 +14,33 @@
 
 class task extends dms {
 
+	/**
+	 * Set name of CPT this class is for.
+	 *
+	 * @var string
+	 *
+	 * @since 0.0.1
+	 */
+	public static $type = HT_DMS_TASK_CT_NAME;
 
 	function __construct() {
-		$this->set_type( HT_DMS_TASK_CT_NAME );
-		$type = $this->get_type( false );
+		$type = $this->get_type();
 		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+	}
+
+	/**
+	 * Set the name of the CPT
+	 *
+	 * @param 	string 	$type
+	 *
+	 * @since 0.0.1
+	 */
+	function set_type() {
+
+		return self::$type;
+
 	}
 
 	/**

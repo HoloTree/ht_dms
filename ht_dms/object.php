@@ -13,16 +13,6 @@
 
 abstract class object {
 
-	/**
-	 * The name of the Pod
-	 *
-	 * Must be set when extending this class using $this->set_type()
-	 *
-	 * @var string
-	 *
-	 * @since 0.0.1
-	 */
-	static public $type;
 
 	/**
 	 * The length to cache Pods Objects
@@ -43,7 +33,7 @@ abstract class object {
 	 *
 	 * @since 0.0.1
 	 */
-	static public $cache_mode = 'object';
+	static public $cache_mode = 'cache';
 
 	/**
 	 * Set the name of the CPT
@@ -52,9 +42,9 @@ abstract class object {
 	 *
 	 * @since 0.0.1
 	 */
-	function set_type( $type ) {
+	function set_type( $type = null ) {
 
-		self::$type = $type;
+		return $type;
 
 	}
 
@@ -69,13 +59,15 @@ abstract class object {
 	 */
 	function get_type( $lower = true ) {
 
+		$type = $this->set_type();
+
 		if ( $lower ) {
 
-			return strtolower( self::$type );
+			$type = strtolower( $type );
 
 		}
 
-		return self::$type;
+		return $type;
 
 	}
 
@@ -119,7 +111,7 @@ abstract class object {
 	function object( $cache = true, $params_or_id = null ) {
 
 		if ( is_int( $params_or_id ) || intval( $params_or_id ) > 1 || !is_array( $params_or_id ) ) {
-			if ( self::$type !== HT_DMS_TASK_CT_NAME ) {
+			if ( $this->get_type() !== HT_DMS_TASK_CT_NAME ) {
 				$params[ 'where' ] = 't.id = "' . $params_or_id . '"';
 			}
 			else {
@@ -137,7 +129,7 @@ abstract class object {
 		}
 
 
-		$obj = pods( self::$type, $params );
+		$obj = pods( $this->get_type(), $params );
 
 		if ( $this->check_obj( $obj ) )  {
 
@@ -145,7 +137,7 @@ abstract class object {
 
 		}
 		else {
-			holotree_error();
+			holotree_error( );
 		}
 
 
@@ -197,7 +189,7 @@ abstract class object {
 	 * @since 0.0.1
 	 */
 	function check_obj( $obj ) {
-		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === self::$type ) {
+		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === $this->get_type() ) {
 
 				return true;
 

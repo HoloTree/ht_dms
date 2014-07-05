@@ -14,9 +14,18 @@
 
 class decision extends dms {
 
+	/**
+	 * Set name of CPT this class is for.
+	 *
+	 * @var string
+	 *
+	 * @since 0.0.1
+	 */
+	public static $type = HT_DMS_DECISION_CPT_NAME;
+	
 	function __construct() {
-		$this->set_type( HT_DMS_DECISION_CPT_NAME );
-		$type = $this->get_type( false );
+		$type = $this->get_type();
+
 		add_action( 'pods_api_post_save_pod_item_ht_dms_decision', array( $this, 'user_fix'), 11, 3 );
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
 		add_filter( "ht_dms_{$type}->get_type()}_edit_form_fields", array( $this, 'edit_fields_changes' ), 10, 6 );
@@ -24,6 +33,16 @@ class decision extends dms {
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
+	/**
+	 * Set the name of the CPT
+	 *
+	 * @param 	string 	$type
+	 *
+	 * @since 0.0.1
+	 */
+	function set_type( ) {
+		return self::$type;
+	}
 
 	/**
 	 * Holds the instance of this class.
@@ -45,7 +64,7 @@ class decision extends dms {
 	public static function init() {
 
 		if ( !self::$instance )
-			self::$instance = new self;
+			self::$instance = new decision();
 
 		return self::$instance;
 
@@ -770,7 +789,7 @@ class decision extends dms {
 			$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
 		}
 		$params[ 'where' ] = $where;
-
+		pods_error( $this->get_type());
 		$obj = $this->object( true, $params );
 
 		$total = $obj->total();

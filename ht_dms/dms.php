@@ -94,7 +94,7 @@ abstract class dms extends object {
 	}
 
 	/**
-	 * Removes prefix from self::$type
+	 * Removes prefix from $this->get_type()
 	 *
 	 * Example if prefix is "ht_dms" and type is "ht_dms_group", "group" is returned.
 	 *
@@ -106,7 +106,7 @@ abstract class dms extends object {
 		//@TODO ht_dms prefix needs to be set dynamically everywhere.
 		$prefix = 'ht_dms';
 		$prefix = $prefix.'_';
-		return str_replace( $prefix, '', self::$type );
+		return str_replace( $prefix, '', $this->get_type() );
 
 	}
 
@@ -131,7 +131,7 @@ abstract class dms extends object {
 		}
 
 		$params = null;
-		if ( !$new && self::$type !== HT_DMS_GROUP_CPT_NAME ) {
+		if ( !$new && $this->get_type() !== HT_DMS_GROUP_CPT_NAME ) {
 			$params = array( 'where' => 't.id = " ' . $id . ' " ' );
 		}
 
