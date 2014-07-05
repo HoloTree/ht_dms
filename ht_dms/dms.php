@@ -370,7 +370,7 @@ abstract class dms extends object {
 		}
 		$obj = $this->object();
 
-		return $this->form( $obj, $form_fields, false, $id, $obj, $oID, $uID, $type )
+		return $this->form( $obj, $form_fields, false, $id, $obj, $oID, $uID, $type );
 
 	}
 
