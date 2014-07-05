@@ -128,7 +128,7 @@ abstract class dms extends object {
 		$type = $this->get_type( false );
 
 		$new = false;
-		if ( is_null( $id ) || $type !== HT_DMS_DECISION_CPT_NAME ) {
+		if ( is_null( $id )  ) {
 			$new = true;
 		}
 
@@ -140,15 +140,14 @@ abstract class dms extends object {
 			$params = $id;
 		}
 
+		if ( $new && $type === HT_DMS_DECISION_CPT_NAME ) {
+			$params = array( 'pod' => HT_DMS_DECISION_CPT_NAME, 'id' => 278 );
+			$id = $params = pods_api()->duplicate_pod_item( $params );
+		}
 
 		$params = apply_filters( 'ht_dms_edit_params', $params, $type );
 
-		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
-			$obj = $this->null_object( $obj, $params );
-		}
-		else {
-			$obj = holotree_decision_class()->object();
-		}
+		$obj = $this->null_object( $obj, $params );
 
 		$fields = (array) $this->fields_to_loop( $obj, false );
 

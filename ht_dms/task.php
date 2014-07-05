@@ -97,7 +97,6 @@ class task extends dms {
 			}
 
 		}
-		var_dump( $oID );
 
 		unset( $form_fields );
 
@@ -125,7 +124,7 @@ class task extends dms {
 			$form_fields[ 'organization' ][ 'default' ] = $oID;
 			$form_fields[ 'decision_group' ][ 'default' ] = $this->get_group( $id, $obj, $dID, false );
 		}
-		var_DumP( $this->get_group( $id, $obj, $dID, false));
+
 
 		return $form_fields;
 

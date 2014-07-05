@@ -52,7 +52,7 @@ else {
 			),
 			array (
 				'label'   => __( 'Propose Modification', 'holotree' ),
-				'content' => $ui->add_modify()->modify_decision(  $id, $obj ),
+				//'content' => $ui->add_modify()->modify_decision(  $id, $obj ),
 			),
 		);
 

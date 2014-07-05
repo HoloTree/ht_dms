@@ -620,9 +620,42 @@ class decision extends dms {
 	 *
 	 * @since 	0.0.1
 	 */
-	function propose_modify ( $id, $obj ) {
+	function propose_modify ( $id, $obj = null ) {
 
 		return $this->edit( $id, null, $obj );
+
+		$form_fields = array(
+			'post_title',
+			'decision_description',
+			'tasks',
+			'decision_status',
+			'manager',
+			'proposed_by',
+			'group',
+			'organization',
+		);
+
+		foreach( $form_fields as $field ) {
+			if ( $field === 'post_title' || 'decision_description' || 'decision_status' ) {
+				$field[ 'default' ] = $obj->field( $field );
+			}
+			elseif ( $field === 'group' ) {
+				$field[ 'default' ] = $this->get_group( $id, $obj );
+			}
+			elseif( $field === 'manager' ) {
+				$field[ 'default' ] = (int) $obj->field( 'manager.ID' );
+			}
+			elseif( $field === 'proposed_by' ) {
+
+			}
+		}
+		$form_fields ['change_to' ] =  array(
+			'default' => (string) $id,
+		);
+		$form_fields [ 'reason_for_change' ] = array (
+				'required' => true,
+		);
+
 
 	}
 
@@ -923,6 +956,23 @@ class decision extends dms {
 		$obj = $this->null_object( $obj, $id );
 
 		return (int) $obj->display( 'organization.ID' );
+	}
+
+	/**
+	 * Get the group this decision belongs to.
+	 *
+	 * @param 	int   			$id		ID of decision.
+	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
+	 *
+	 * @return  int|null                Either the group ID, or null if none is set.
+	 *
+	 * @since	0.0.1
+	 */
+	function get_group( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return (int) $obj->display( 'group.ID' );
+
 	}
 
 
