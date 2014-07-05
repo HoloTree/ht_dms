@@ -620,7 +620,7 @@ class decision extends dms {
 	 *
 	 * @since 	0.0.1
 	 */
-	function propose_modify ( $id, $obj = null ) {
+	function _propose_modify ( $id, $obj = null ) {
 
 		return $this->edit( $id, null, $obj );
 
@@ -942,38 +942,6 @@ class decision extends dms {
 
 	}
 
-	/**
-	 * Get the organization this decision belongs to.
-	 *
-	 * @param 	int   			$id		ID of decision.
-	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
-	 *
-	 * @return  int|null                Either the organization ID, or null if none is set.
-	 *
-	 * @since	0.0.1
-	 */
-	function get_organization( $id, $obj = null ) {
-		$obj = $this->null_object( $obj, $id );
-
-		return (int) $obj->display( 'organization.ID' );
-	}
-
-	/**
-	 * Get the group this decision belongs to.
-	 *
-	 * @param 	int   			$id		ID of decision.
-	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
-	 *
-	 * @return  int|null                Either the group ID, or null if none is set.
-	 *
-	 * @since	0.0.1
-	 */
-	function get_group( $id, $obj = null ) {
-		$obj = $this->null_object( $obj, $id );
-
-		return (int) $obj->display( 'group.ID' );
-
-	}
 
 
 

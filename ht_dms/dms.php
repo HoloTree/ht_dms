@@ -188,45 +188,7 @@ abstract class dms extends object {
 
 		}
 
-		remove_filter( 'the_title', '__return_false' );
-
-		/**
-		 * Override form fields for add/edit  form
-		 *
-		 * @param 	array 	$fields		Parameters for pods::form
-		 * 		@see http://pods.io/docs/code/pods/form/
-		 *
-		 * @param	bool		$new	If is a new item or not.
-		 * @param 	int|null	$id  	ID of item being edited. When creating ID is null. Can not be used to set ID.
-		 * @param	int			$oID	ID of organization item is a part of.
-		 * @param	obj			$obj	Object being used to create/edit item
-		 * @param	int			$uID	ID of member creating/editing item. Changing this has no effect on who are the initial members. For that use 'ht_dms_initial_members' filter.
-		 * @param	string		$type	The prefixed CPT name.
-		 *
-		 * @since 0.0.1
-		 */
-
-		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
-
-		/**
-		 * Action that runs before any ht_dms form
-		 *
-		 * @since 0.0.1
-		 */
-		$form = do_action( 'ht_dms_before_form' );
-
-		//$form .= $this->form_fix( $new, $type );
-
-		$form .= $obj->form( $form_fields );
-
-		/**
-		 * Action that runs after any ht_dms form
-		 *
-		 * @since 0.0.1
-		 */
-		$form .= do_action( 'ht_dms_after_form' );
-
-		return $form;
+		return $this->form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type );
 
 	}
 
@@ -366,4 +328,127 @@ abstract class dms extends object {
 		return $id;
 	}
 
+	function propose_modify( $id, $obj, $uID ) {
+		$obj = $this->null_object( $obj, $id );
+		$uID = $this->null_user( $uID );
+
+		$old = $obj->fields();
+
+		unset( $old[ 'reason_for_change' ] );
+		unset( $old[ 'change_to' ] );
+		unset( $old[ 'proposed_by' ] );
+		foreach( $old as $field => $value ) {
+			$form_fields[ $field ][ 'default' ] = $obj->field( $field );
+		}
+
+		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
+		$form_fields[ 'reason_for_change' ] = array();
+		$form_fields[ 'change_to' ] = array();
+		$form_fields[ 'proposed_by' ][ 'default' ]= $uID;
+
+		$type = $old->pod;
+
+		if ( $type !== 'ht_dms_decision' ) {
+			holotree_error( __METHOD__, __('only supports decisions. For now...', 'holotree' ) );
+		}
+
+		$oID = $dID = $gID = null;
+
+		if ( isset( $old[ 'organization' ] ) ) {
+			$oID = $form_fields[ 'organization' ][ 'default' ] = $this->get_organization( $id, $obj );
+		}
+		else {
+			$oID = $id;
+		}
+
+		if ( isset( $old[ 'group' ] ) ) {
+			$gID = $form_fields[ 'group' ][ 'defualt' ] = $this->get_group( $id, $obj );
+			$dID = $id;
+		}
+		else{
+			$gID = $id;
+		}
+		$obj = $this->object();
+
+		return $this->form( $obj, $form_fields, false, $id, $obj, $oID, $uID, $type )
+
+	}
+
+	private function form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type ) {
+
+		remove_filter( 'the_title', '__return_false' );
+
+		/**
+		 * Override form fields for add/edit  form
+		 *
+		 * @param 	array 	$fields		Parameters for pods::form
+		 * 		@see http://pods.io/docs/code/pods/form/
+		 *
+		 * @param	bool		$new	If is a new item or not.
+		 * @param 	int|null	$id  	ID of item being edited. When creating ID is null. Can not be used to set ID.
+		 * @param	int			$oID	ID of organization item is a part of.
+		 * @param	obj			$obj	Object being used to create/edit item
+		 * @param	int			$uID	ID of member creating/editing item. Changing this has no effect on who are the initial members. For that use 'ht_dms_initial_members' filter.
+		 * @param	string		$type	The prefixed CPT name.
+		 *
+		 * @since 0.0.1
+		 */
+
+		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
+
+		/**
+		 * Action that runs before any ht_dms form
+		 *
+		 * @since 0.0.1
+		 */
+		$form = do_action( 'ht_dms_before_form' );
+
+		//$form .= $this->form_fix( $new, $type );
+
+		$form .= $obj->form( $form_fields );
+
+		/**
+		 * Action that runs after any ht_dms form
+		 *
+		 * @since 0.0.1
+		 */
+		$form .= do_action( 'ht_dms_after_form' );
+
+		return $form;
+	}
+
+	/**
+	 * Get the organization this decision/group/task belongs to.
+	 *
+	 * @param 	int   			$id		ID of decision.
+	 * @param 	null|obj|Pods  	$obj	Optional. Pods object.
+	 *
+	 * @return  int|null                Either the organization ID, or null if none is set.
+	 *
+	 * @since	0.0.1
+	 */
+	function get_organization( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return (int) $obj->display( 'organization.ID' );
+	}
+
+	/**
+	 * Get the group this decision/task belongs to.
+	 *
+	 * @param 	int   			$id		ID of decision.
+	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
+	 *
+	 * @return  int|null                Either the group ID, or null if none is set.
+	 *
+	 * @since	0.0.1
+	 */
+	function get_group( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return (int) $obj->display( 'group.ID' );
+
+	}
+
 }
+
