@@ -13,7 +13,37 @@ namespace ht_dms\ui\output;
 
 class view_loaders {
 
-	function view_loader( $content ) {
+
+	function view_loaders( $view ) {
+		$post_type = get_post_type();
+		$context = $this->view_context( $post_type );
+
+		if ( $context === 'home' ) {
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
+		}
+
+		if ( $context === 'single' ) {
+			$post_type = str_replace( HT_DMS_PREFIX.'_', '', $post_type );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ) );
+		}
+
+		if ( $context === 'task' ) {
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ) );
+		}
+	}
+
+	/**
+	 * View loaders based on the content filter.
+	 *
+	 * Not used if app_starter is current theme.
+	 *
+	 * @TODO Clean up using $this->view_context() or delete.
+	 *
+	 * @param $content
+	 *
+	 * @return mixed|string
+	 */
+	function generic_view_loader( $content ) {
 
 
 		$post_type = get_post_type();
@@ -50,7 +80,7 @@ class view_loaders {
 		else {
 			global $wp_query;
 			if ( isset( $wp_query->query_vars[ 'taxonomy'] ) ) {
-				$taxonomy = $wp_query->query_vars[ 'taxonomy'];
+				$taxonomy = $wp_query->query_vars[ 'taxonomy' ];
 				if ( $taxonomy === 'task' ) {
 					$content = include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-list.php' );
 				}
@@ -61,6 +91,49 @@ class view_loaders {
 
 
 		return $content;
+	}
+
+	/**
+	 * Determine view context for DMS
+	 *
+	 * @return 	null|string single|home|null
+	 *
+	 * @since 	0.0.1
+	 */
+	function view_context( $post_type ) {
+		if ( ! $post_type  ) {
+			$post_type = get_post_type();
+		}
+		if ( HT_DEV_MODE ) {
+			echo $post_type;
+		}
+
+		if ( is_home() || is_front_page() ) {
+			$context = 'home';
+
+		}
+		elseif ( $post_type === HT_DMS_GROUP_CPT_NAME || $post_type === HT_DMS_DECISION_CPT_NAME || HT_DMS_ORGANIZATION_NAME ) {
+			if ( is_singular( $post_type ) ) {
+				$context = 'single';
+			}
+			elseif ( is_post_type_archive( $post_type ) ) {
+				//@TODO DO we ever use these views?
+				//$context = 'list';
+				$context = null;
+			}
+			else {
+				$context = null;
+			}
+		}
+		elseif( is_tax( HT_DMS_TASK_CT_NAME ) ) {
+			$context = 'task';
+		}
+		else {
+			$context = null;
+		}
+
+		return $context;
+
 	}
 
 	/**

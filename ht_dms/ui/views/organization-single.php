@@ -42,7 +42,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 		),
 		array (
 			'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
-			'content' => $ui->views()->assigned_tasks( null, $uID, $id );
+			'content' => $ui->views()->assigned_tasks( null, $uID, $id ),
 		),
 		array (
 			'label'   => __( 'New Group In Organization', 'holotree' ),

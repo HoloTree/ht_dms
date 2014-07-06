@@ -45,3 +45,7 @@ if ( !defined( 'HT_DMS_ORGANIZATION_NAME' ) ) {
 if ( !defined( 'HT_HT_DMS_USE' ) ) {
 	define( 'HT_HT_DMS_USE', true );
 }
+
+if ( !defined( 'HT_DMS_PREFIX' ) ) {
+	define( 'HT_DMS_PREFIX', 'ht_dms' );
+}

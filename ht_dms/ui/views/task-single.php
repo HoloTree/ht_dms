@@ -1,57 +1,36 @@
 <?php
-/**
- * @TODO What this does.
- *
- * @package   @TODO
- * @author    Josh Pollock <Josh@JoshPress.net>
- * @license   GPL-2.0+
- * @link      
- * @copyright 2014 Josh Pollock
- */
 
-htdms_theme_header(); ?>
 
-	<div id="primary" class="content-area <?php htdms_theme_primary_class(); ?>">
-		<main id="main" class="site-main <?php htdms_theme_main_class(); ?>" role="main">
+	$t = holotree_task_class();
 
-			<?php
+	$obj = $t->item( get_queried_object_id() );
+	$id = $obj->id();
 
-			$t = holotree_task_class();
+	$dID = (int) $obj->display( 'decision.ID' );
 
-			$obj = $t->item( get_queried_object_id() );
-			$id = $obj->id();
+	$ui = holotree_dms_ui();
 
-			$dID = (int) $obj->display( 'decision.ID' );
+	echo '<h2>'.$ui->elements()->title( $id, $obj, true  ).'</h2>';
 
-			$ui = holotree_dms_ui();
+	$tabs = array(
+		array(
+			'label' 	=> __( 'Task Details', 'holotree'),
+			'content'	=> $ui->views()->task( $obj, $id  ),
+		),
+		array(
+			'label' 	=> __( 'Task Documents', 'holotree'),
+			'content'	=> $ui->views()->docs( $obj, 'task', $id ),
+		),
+		array(
+			'label'		=> __( 'Decision', 'holotree' ),
+			'content'	=> $ui->views()->decision( null, $dID ),
 
-			echo '<h2>'.$ui->elements()->title( $id, $obj, true  ).'</h2>';
+		),
+		array(
+			'label'		=> __( 'Edit Task', 'holotree' ),
+			//'content'	=> $ui->add_modify()->edit_task( $id, $obj, $dID ),
+			'content'  => '',
+		),
+	);
 
-			$tabs = array(
-				array(
-					'label' 	=> __( 'Task Details', 'holotree'),
-					'content'	=> $ui->views()->task( $obj, $id  ),
-				),
-				array(
-					'label' 	=> __( 'Task Documents', 'holotree'),
-					'content'	=> $ui->views()->docs( $obj, 'task', $id ),
-				),
-				array(
-					'label'		=> __( 'Decision', 'holotree' ),
-					'content'	=> $ui->views()->decision( holotree_decision( $dID ), $dID ),
-				),
-				array(
-					'label'		=> __( 'Edit Task', 'holotree' ),
-					'content'	=> $ui->add_modify()->edit_task( $id, $obj, $dID ),
-				),
-			);
-
-			echo $ui->elements()->output_container( $tabs );
-
-			?>
-
-		</main><!-- #main -->
-		<?php htdms_theme_sidebar( 'task' ); ?>
-	</div><!-- #primary -->
-
-<?php htdms_theme_footer(); ?>
+	echo $ui->elements()->output_container( $tabs );

@@ -175,20 +175,25 @@ class elements {
 		$out .= $tabs[ 0 ][ 'content' ];
 		$out .= '</div><!--#'.$tab_prefix.$i.'-->';
 		$i = 1;
-		foreach ( $tabs as $key => $value ) {
-			if ( $key != 0 ) {
-				$out .= '<div class="content" id="'.$tab_prefix.$i.'">';
-				if ( is_string( $value[ 'content' ] ) ) {
-					$out .= $value[ 'content' ];
-				}
-				else {
-					$out .= __( "Tab maker content in iteration {$i} is not a string", 'holotree' );
-					if (HT_DEV_MODE ) {
-						$out .= var_dump( array( "tab{$i}" => $value[ 'content' ] ) );
+		foreach ( $tabs as $key => $tab ) {
+			if ( isset( $tab[ 'content' ] ) && isset( $tab[ 'label' ] ) ) {
+				if ( $key != 0 ) {
+					$out .= '<div class="content" id="' . $tab_prefix . $i . '">';
+					if ( is_string( $tab[ 'content' ] ) ) {
+						$out .= $tab[ 'content' ];
 					}
+					else {
+						$out .= __( "Tab maker content in iteration {$i} is not a string", 'holotree' );
+						if ( HT_DEV_MODE ) {
+							$out .= var_dump( array ( "tab{$i}" => $tab[ 'content' ] ) );
+						}
+					}
+					$out .= '</div><!--#' . $tab_prefix . $i . '-->';
+					$i++;
 				}
-				$out .= '</div><!--#'.$tab_prefix.$i.'-->';
-				$i++;
+			}
+			else {
+				$out .= __( "Tab  {$i} is not properly configured", 'holotree' );
 			}
 
 		}
@@ -235,24 +240,30 @@ class elements {
 		return $out;
 	}
 	function accordion_foundation( $panels, $prefix= 'panel', $class = '' ) {
-		$out = '<dl class="accordion '.$class.'" data-accordion>';
-		$i = 0;
-		foreach ( $panels as $panel ) {
-			$out .= '<dd>';
-			$out .= '<a href="#'.$prefix.$i.'">'.$panel[ 'label' ].'</a>';
-			$out .= '<div id="'.$prefix.$i.'" class="content';
-			if ( $i === 0 ) {
-				$out .= ' accActive';
+
+			$out = '<dl class="accordion ' . $class . '" data-accordion>';
+			$i = 0;
+			foreach ( $panels as $panel ) {
+				if ( ! isset( $panels[ 'content' ] )  && ! isset( $panels[ 'label' ] ) ) {
+					holotree_error();
+				}
+
+				$out .= '<dd>';
+				$out .= '<a href="#' . $prefix . $i . '">' . $panel[ 'label' ] . '</a>';
+				$out .= '<div id="' . $prefix . $i . '" class="content';
+				if ( $i === 0 ) {
+					$out .= ' accActive';
+				}
+				$out .= '">';
+				$out .= $panel[ 'content' ];
+				$out .= '</div></dd><!---' . $prefix . $i . '-->';
+
+				$i++;
 			}
-			$out .= '">';
-			$out .= $panel[ 'content' ];
-			$out .= '</div></dd><!---'.$prefix.$i.'-->';
+			$out .= '</dl><!--' . $class . ' accordion-->';
 
-			$i++;
-		}
-		$out .= '</dl><!--'.$class.' accordion-->';
+			return $out;
 
-		return $out;
 
 	}
 

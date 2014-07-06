@@ -108,7 +108,7 @@ class Theme_Setup {
 				if ( is_tax( HT_DMS_TASK_CT_NAME ) ) {
 					$out .= '<span class="decision-title-in-header" id="task-title-in-header-'.$tID.'">'.holotree_link( $tID, 'tax', $tTitle, $tTitle ).'</span>';
 				}
-				echo $out;
+				return $out;
 			}	//endif $title has a value
 
 		} //endif is group/ decision singular
@@ -116,6 +116,7 @@ class Theme_Setup {
 	}
 
 	function footer_text() {
+		$prefix = $this->prefix();
 		if ( false !== ( $text = apply_filters( "{$prefix}_footer_text", false ) ) ) {
 			return $text;
 
