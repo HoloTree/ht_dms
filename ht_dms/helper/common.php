@@ -39,7 +39,7 @@ class common {
 
 
 	function enqueue_scripts() {
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			wp_enqueue_style( 'HoloTree-DMS', plugins_url( 'css/HT-DMS.css', __FILE__ ) );
 			wp_enqueue_script( 'HoloTree-DMS', plugins_url( 'js/HT-DMS.js', __FILE__), array( 'jquery'), false, true );
 			wp_enqueue_script( 'jquery' );
