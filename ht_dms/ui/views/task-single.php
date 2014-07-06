@@ -46,7 +46,7 @@ htdms_theme_header(); ?>
 				),
 			);
 
-			echo $ui->elements()->tab_maker( $tabs );
+			echo $ui->elements()->output_container( $tabs );
 
 			?>
 

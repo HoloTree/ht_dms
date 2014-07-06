@@ -14,38 +14,25 @@ namespace ht_dms\helper;
 class Theme_Setup {
 
 	function __construct() {
-		add_filter( 'htdms_theme_no_sidebar', '__return_true' );
-		if ( wp_is_mobile() ) {
-			add_filter( 'htdms_theme_no_sidebar', '__return_true' );
-			if ( is_singular( HT_DMS_GROUP_CPT_NAME ) ) {
-				add_action( 'htdms_theme_before_off_canvas_right', array( $this, 'group_sidebar' ) );
+		$prefix = $this->prefix();
+		add_filter( "{$prefix}_theme_no_sidebar", '__return_true' );
 
+		add_filter(  "{$prefix}_theme_use_off_canvas_right", '__return_false' );
 
-			}
-			else {
-				add_filter( 'htdms_theme_offcanvas_right_widget_area', array ( $this, 'right_widgets' ) );
-			}
+		add_filter( "{$prefix}_theme_get_sidebar", array( $this, 'sidebars' ) );
 
-		}
-		else {
-			add_filter(  'htdms_theme_use_off_canvas_right', '__return_false' );
-		}
-		add_filter( 'htdms_theme_get_sidebar', array( $this, 'sidebars' ) );
+		add_action( "{$prefix}_theme_after_title", array( $this, 'after_title') );
 
-		add_action( 'init', array( $this, 'no_right_oc_widgets') );
+		add_action( "{$prefix}_ht_dms_site_info", array( $this, 'footer_text' ) );
 
-		add_action( 'htdms_theme_after_title', array( $this, 'after_title') );
+		add_action( "{$prefix}_theme_main_class", array( $this, 'main_class') );
 
-		add_action( 'ht_dms_site_info', array( $this, 'footer_text' ) );
+		add_filter( "{$prefix}_theme_use_off_canvas_menu_left", '__return_false' );
 
-		add_action( 'htdms_theme_main_class', array( $this, 'main_class') );
-
-		add_filter( 'htdms_theme_use_off_canvas_menu_left', '__return_false' );
-
-		add_action( 'htdms_theme_after_off_canvas_left', array( $this, 'left_menu' ) );
+		add_action( "{$prefix}_theme_after_off_canvas_left", array( $this, 'left_menu' ) );
 
 		if ( ! is_user_logged_in() ) {
-			add_filter( 'htdms_theme_use_off_canvas_left', '__return_false' );
+			add_filter( "{$prefix}_theme_use_off_canvas_left", '__return_false' );
 		}
 	}
 
@@ -79,14 +66,6 @@ class Theme_Setup {
 		}
 
 		return $name;
-	}
-
-	/**
-	 *
-	 * @TODO Why not just remove widget area from theme?
-	 */
-	function no_right_oc_widgets() {
-		remove_action( 'htdms_theme_after_off_canvas_right', 'htdms_theme_off_canvas_widgets_right' );
 	}
 
 	function after_title() {
@@ -137,7 +116,7 @@ class Theme_Setup {
 	}
 
 	function footer_text() {
-		if ( false !== ( $text = apply_filters( 'ht_dms_footer_text', false ) ) ) {
+		if ( false !== ( $text = apply_filters( "{$prefix}_footer_text", false ) ) ) {
 			return $text;
 
 		}
@@ -150,5 +129,14 @@ class Theme_Setup {
 
 	function left_menu() {
 		echo holotree_dms_ui()->build_elements()->menu();
+	}
+
+	function prefix() {
+		if ( get_stylesheet() == 'ht_dms_theme' ) {
+			return 'htdms';
+		}
+
+		return 'app_starter';
+
 	}
 }

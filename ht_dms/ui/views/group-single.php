@@ -47,4 +47,4 @@ if ( $g->is_member( $id, $uID, $obj ) ) {
 	);
 }
 
-return $ui->elements()->tab_maker( $tabs );
+return $ui->elements()->output_container( $tabs );

@@ -64,7 +64,7 @@ else {
 			);
 		}
 
-		return $ui->elements()->tab_maker( $tabs );
+		return $ui->elements()->output_container( $tabs );
 
 	}
 }

@@ -55,7 +55,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 
 	);
 
-	return $ui->elements()->tab_maker( $tabs );
+	return $ui->elements()->output_container( $tabs );
 
 }
 else {
