@@ -55,7 +55,7 @@ class organization extends dms {
 	 *
 	 * @since 	0.0.1
 	 */
-	function field_loop( $id = null, $obj ) {
+	function field_loop( $id, $obj, $all = false ) {
 		if ( is_null( $id ) ) {
 			if ( $obj->total() > 0 ) {
 				while ( $obj->fetch() ) {

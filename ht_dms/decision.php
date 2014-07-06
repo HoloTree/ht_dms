@@ -79,7 +79,7 @@ class decision extends dms {
 	 *
 	 * @return mixed
 	 */
-	function field_loop( $id = null, $obj ) {
+	function field_loop( $id, $obj, $all = false ) {
 		if ( is_null( $id ) ) {
 			if ( $obj->total() > 0 ) {
 				while ( $obj->fetch() ) {
