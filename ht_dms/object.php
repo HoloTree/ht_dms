@@ -36,19 +36,6 @@ abstract class object {
 	static public $cache_mode = 'cache';
 
 	/**
-	 * Set the name of the CPT
-	 *
-	 * @param 	string 	$type
-	 *
-	 * @since 0.0.1
-	 */
-	function set_type( $type = null ) {
-
-		return $type;
-
-	}
-
-	/**
 	 * Get value of self::$type
 	 *
 	 * @param 	bool 	$lower	Optional. If true, the default, value is returned in lower cases
