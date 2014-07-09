@@ -338,7 +338,7 @@ class view_loaders {
 	}
 
 	private function template( $view, $obj ) {
-		$template = '<div class="ht_dms_template" style="border:1px solid black">';
+		$template = '<div class="ht_dms_template" style="">';
 		if ( HT_DEV_MODE ) {
 			$template .= '<span style="float:right">'.$obj->ID().'</span>';
 		}
