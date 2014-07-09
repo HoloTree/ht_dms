@@ -121,6 +121,10 @@ class elements {
 	 * @since 	0.0.1
 	 */
 	function tab_maker( $tabs, $tab_prefix = 'tab_', $class = '' ) {
+		if ( ! $tab_prefix ) {
+			$tab_prefix = 'tab_';
+		}
+
 		if ( HT_FOUNDATION ) {
 			return $this->tab_maker_foundation( $tabs, $tab_prefix );
 
@@ -207,7 +211,11 @@ class elements {
 	}
 
 
-	function accordion(  $panels, $prefix= 'panel', $class = '' ) {
+	function accordion(  $panels, $prefix = 'panel_', $class = '' ) {
+		if ( ! $prefix  ) {
+			$prefix = 'panel_';
+		}
+		
 		if ( HT_FOUNDATION ) {
 			return $this->accordion_foundation( $panels, $prefix, $class );
 
@@ -244,21 +252,21 @@ class elements {
 			$out = '<dl class="accordion ' . $class . '" data-accordion>';
 			$i = 0;
 			foreach ( $panels as $panel ) {
-				if ( ! isset( $panels[ 'content' ] )  && ! isset( $panels[ 'label' ] ) ) {
-					holotree_error();
-				}
+				if ( isset( $panel[ 'content' ] )  && isset( $panel[ 'label' ] ) ) {
 
-				$out .= '<dd>';
-				$out .= '<a href="#' . $prefix . $i . '">' . $panel[ 'label' ] . '</a>';
-				$out .= '<div id="' . $prefix . $i . '" class="content';
-				if ( $i === 0 ) {
-					$out .= ' accActive';
-				}
-				$out .= '">';
-				$out .= $panel[ 'content' ];
-				$out .= '</div></dd><!---' . $prefix . $i . '-->';
 
-				$i++;
+					$out .= '<dd>';
+					$out .= '<a href="#' . $prefix . $i . '">' . $panel[ 'label' ] . '</a>';
+					$out .= '<div id="' . $prefix . $i . '" class="content';
+					if ( $i === 0 ) {
+						$out .= ' accActive';
+					}
+					$out .= '">';
+					$out .= $panel[ 'content' ];
+					$out .= '</div></dd><!---' . $prefix . $i . '-->';
+
+					$i++;
+				}
 			}
 			$out .= '</dl><!--' . $class . ' accordion-->';
 
