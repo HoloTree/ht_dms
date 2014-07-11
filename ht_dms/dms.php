@@ -171,7 +171,7 @@ abstract class dms extends object {
 			$oID = $id;
 		}
 		else {
-			
+
 			$oID = $obj->field( 'organization' );
 			$form_fields[ 'organization' ] = $oID;
 		}
@@ -329,8 +329,28 @@ abstract class dms extends object {
 		return $id;
 	}
 
-	function propose_modify( $id, $obj, $uID ) {
+	/**
+	 * Propose a modification to any organization, decision, group or task.
+	 *
+	 * NOTE: As of now, only works for decisions.
+	 *
+	 * @param 	int				$id 	ID of decision to propose modification to.
+	 * @param 	obj|Pods|null	$obj	Optional. Single Pods object of item proposing modification to.
+	 * @param 	int|null		$uID	Optional. ID of user proposing modification.
+	 *
+	 * @return 	null|string				Form for proposing modification
+	 *
+	 * @since	0.0.2
+	 */
+	function propose_modify( $id, $obj = null, $uID ) {
 		$obj = $this->null_object( $obj, $id );
+
+		$type = $obj->pod;
+
+		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
+			holotree_error( __METHOD__, __('only supports decisions. For now...', 'holotree' ) );
+		}
+
 		$uID = $this->null_user( $uID );
 
 		$old = $obj->fields();
@@ -338,20 +358,21 @@ abstract class dms extends object {
 		unset( $old[ 'reason_for_change' ] );
 		unset( $old[ 'change_to' ] );
 		unset( $old[ 'proposed_by' ] );
+		unset( $old[ 'consensus' ] );
+		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
+
 		foreach( $old as $field => $value ) {
 			$form_fields[ $field ][ 'default' ] = $obj->field( $field );
 		}
 
-		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
-		$form_fields[ 'reason_for_change' ] = array();
-		$form_fields[ 'change_to' ] = array();
-		$form_fields[ 'proposed_by' ][ 'default' ]= $uID;
+		$form_fields[ 'reason_for_change' ] = array(
+			'required' => 'true'
+		);
+		$form_fields[ 'change_to' ] = array(
+			'default' => $id )
+		;
+		$form_fields[ 'proposed_by' ][ 'default' ] = $uID;
 
-		$type = $old->pod;
-
-		if ( $type !== 'ht_dms_decision' ) {
-			holotree_error( __METHOD__, __('only supports decisions. For now...', 'holotree' ) );
-		}
 
 		$oID = $dID = $gID = null;
 
@@ -371,7 +392,7 @@ abstract class dms extends object {
 		}
 		$obj = $this->object();
 
-		return $this->form( $obj, $form_fields, false, $id, $obj, $oID, $uID, $type );
+		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type );
 
 	}
 
@@ -396,7 +417,7 @@ abstract class dms extends object {
 		 */
 
 		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
-
+		var_Dump( $obj->ID() );
 		/**
 		 * Action that runs before any ht_dms form
 		 *
@@ -406,7 +427,12 @@ abstract class dms extends object {
 
 		//$form .= $this->form_fix( $new, $type );
 
-		$form .= $obj->form( $form_fields );
+		if ( $new !== 'modify' ) {
+			$form .= $obj->form( $form_fields );
+		}
+		else {
+			$form .= $obj->form( $form_fields, 'Propose Change', get_permalink( $id ) );
+		}
 
 		/**
 		 * Action that runs after any ht_dms form

@@ -49,17 +49,17 @@ class add_modify {
 	 * Modify Decision Form
 	 *
 	 * @param 	int			$id			ID of decision to propose modification to.
-	 * @param	obj|null	$single_obj	Optional. Decision object of single item that is being modified. If isn't a Pods Object for whole class, bad things will happen.
-	 * @param	obj|null	$full_obj	Optional. Full decisions object. If isn't a Pods Object for whole class, bad things will happen.
+	 * @param	obj|Pods	$obj
+	 * @param	int|null	$uID
 	 *
 	 * @return 	string		Form
 	 *
 	 * @since 	0.0.1
 	 */
-	function modify_decision( $id, $obj = null ) {
+	function modify_decision( $id, $obj = null, $uID = null ) {
 		
 		$dms_decision = holotree_decision_class();
-		$form = $dms_decision->propose_modify( $id, $obj );
+		$form = $dms_decision->propose_modify( $id, $obj, $uID );
 		$out = '<div class="modify-decision" id="modify-'.$id.'">';
 		$out .= $form;
 		$out .= '</div><!--.modify-decision-->';

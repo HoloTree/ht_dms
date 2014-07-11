@@ -201,46 +201,63 @@ class decision extends dms {
 
 	}
 
-
+	/**
+	 * Modifies the form fields for decisions forms.
+	 *
+	 * @uses "ht_dms_ht_dms_decision_form_fields" filter
+	 *
+	 * @param $form_fields
+	 * @param $new
+	 * @param $id
+	 * @param $obj
+	 * @param $oID
+	 * @param $uID
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.2
+	 */
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
-		$defaults = $this->default_values( $id, $obj, $oID, $uID );
+		if ( $new !== 'modify' ) {
+			$defaults = $this->default_values( $id, $obj, $oID, $uID );
 
 
-		$form_fields = array(
-			'post_title'           => array (
-				'label' => 'Decision Name',
-			),
-			'decision_description',
-			'tasks',
-			'decision_type' => array (
-				'default' => $defaults[ 'decision_type' ],
-			),
-			'decision_status' => array (
-				'default' => $defaults[ 'status' ],
-			),
-			'manager' => array (
-				'default' => $defaults[ 'user_id' ],
-			),
-			'proposed_by' => array (
-				'default' => $defaults[ 'user_id' ],
-			),
-			'group' => array (
-				'default' => $defaults[ 'group_id' ],
-			),
-			'organization' => array (
-				'default' => $defaults[ 'organization_id'],
-			),
-		);
-		if ( ! $new ) {
-
-			$form_fields['change_to' ] =  array(
-					'default' => (string) $id,
+			$form_fields = array (
+				'post_title'      => array (
+					'label' => 'Decision Name',
+				),
+				'decision_description',
+				'tasks',
+				'decision_type'   => array (
+					'default' => $defaults[ 'decision_type' ],
+				),
+				'decision_status' => array (
+					'default' => $defaults[ 'status' ],
+				),
+				'manager'         => array (
+					'default' => $defaults[ 'user_id' ],
+				),
+				'proposed_by'     => array (
+					'default' => $defaults[ 'user_id' ],
+				),
+				'group'           => array (
+					'default' => $defaults[ 'group_id' ],
+				),
+				'organization'    => array (
+					'default' => $defaults[ 'organization_id' ],
+				),
 			);
-			$form_fields[ 'reason_for_change']  = array ();
-			$form_fields[ 'decision_type' ] = array(
-				'default' => 'change',
-			);
+			if ( !$new ) {
 
+				$form_fields[ 'change_to' ] = array (
+					'default' => (string)$id,
+				);
+				$form_fields[ 'reason_for_change' ] = array ();
+				$form_fields[ 'decision_type' ] = array (
+					'default' => 'change',
+				);
+
+			}
 		}
 
 		return $form_fields;

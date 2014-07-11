@@ -13,17 +13,16 @@ global $post;
 $id = $post->ID;
 $d = holotree_decision_class();
 $ui = holotree_dms_ui();
+$obj = $d->item( $id );
+if ( !is_object( $obj) ) {
+	holotree_error( 'Not an object!', __FILE__ );
+}
 
 if ( $d->get_action_var() === 'changing' ) {
-	return $ui->add_modify()->modify_decision( $id );
+	return $ui->add_modify()->modify_decision( $id, $obj, null );
 
 }
 else {
-	$obj = $d->item( $id );
-	if ( !is_object( $obj) ) {
-		holotree_error( 'Not an object!', __FILE__ );
-	}
-	else {
 		$current = $ui->views()->decision( $obj, $id );
 		$status = $obj->field( 'decision_status' );
 		$status = strtolower( $status );
@@ -50,10 +49,6 @@ else {
 				'label'   => __( 'Add Task', 'holotree' ),
 				'content' => $ui->add_modify()->new_task(  null, null, $id ),
 			),
-			array (
-				'label'   => __( 'Propose Modification', 'holotree' ),
-				//'content' => $ui->add_modify()->modify_decision(  $id, $obj ),
-			),
 		);
 
 		$proposed_modifications = $ui->views()->proposed_modifications( $id );
@@ -66,5 +61,5 @@ else {
 
 		return $ui->elements()->output_container( $tabs );
 
-	}
+
 }
