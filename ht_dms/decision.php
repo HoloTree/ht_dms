@@ -812,6 +812,26 @@ class decision extends dms {
 	}
 
 	/**
+	 * Check if a decision is a proposed modification.
+	 *
+	 * @param 	int     		$id		ID of decision to see proposed changes of.
+	 * @param 	Pods|obj|null 	$obj	Optional. Single Pods Object
+	 *
+	 * @return 	bool					True if decision is a proposed modification to another decision. False if not.
+	 *
+	 * @since	0.0.2
+	 */
+	function is_proposed_modification( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		if ( $obj->field( 'change_to' ) ) {
+			return true;
+
+		}
+
+	}
+
+	/**
 	 * Check if a decision is blocked.
 	 *
 	 * @param 	int	$id	ID of decision to test.

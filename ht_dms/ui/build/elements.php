@@ -100,7 +100,7 @@ class elements {
 	function action_buttons( $what, $id, $obj = null ) {
 		$obj = holotree_decision( $id, $obj );
 
-		$is_change = false;
+		$is_change = holotree_decision_class()->is_proposed_modification( $id, $obj );
 		if ( $obj->field( 'decision_type')  === 'change' ) {
 			$is_change = true;
 		}
