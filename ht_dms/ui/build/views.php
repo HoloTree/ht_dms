@@ -187,19 +187,34 @@ class views {
 		return '@TODO === this:(';
 	}
 
-	function proposed_modifications( $id ) {
-		$ids = holotree_decision_class()->has_proposed_modification( $id, true );
+	/**
+	 * View proposed modifications to current decision.
+	 *
+	 * @param 	int     		$id		ID of decision to see proposed changes of.
+	 * @param 	Pods|obj|null 	$obj	Optional. Single Pods Object
+	 *
+	 * @return string					Decision view.
+	 *
+	 * @since 0.0.2
+	 */
+	function proposed_modifications( $id, $obj = null ) {
+		$decision_class = holotree_decision_class();
+		$obj = $decision_class->null_object( $obj, $id );
+		if ( $decision_class->has_proposed_modification( $id, $obj, true ) ) {
 
-		if ( is_array( $ids ) ) {
-			$obj = holotree_decision_class()->object();
-			foreach ( $ids as $id ) {
-				$proposed_changes[ $id ] = $this->decision( $obj, $id );
-			}
+			$ids = $decision_class->proposed_modifications( $id, $obj, true );
 
-			if ( is_array( $proposed_changes ) ) {
-				$proposed_changes = implode( '<br>', $proposed_changes );
+			if ( is_array( $ids ) ) {
 
-				return $proposed_changes;
+				foreach ( $ids as $id ) {
+					$proposed_changes[ $id ] = $this->decision( null, $id );
+				}
+
+				if ( isset( $proposed_changes ) && is_array( $proposed_changes ) ) {
+					$proposed_changes = implode( '<br>', $proposed_changes );
+
+					return $proposed_changes;
+				}
 			}
 		}
 	}

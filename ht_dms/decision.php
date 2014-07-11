@@ -749,7 +749,9 @@ class decision extends dms {
 	}
 
 	/**
-	 * Find if a decision has any active proposed changes. Optional return fields of those changes.
+	 * Find if a decision has any active proposed changes.
+	 *
+	 * @TODO Skip closed param.
 	 *
 	 * @param 	int     $id				ID of decision to check for proposed modifications of.
 	 * @param 	bool 	$skip_closed	Optional. If true, which is the default, only active proposed changes will be returned.
@@ -759,27 +761,53 @@ class decision extends dms {
 	 *
 	 * @since	0.0.1
 	 */
-	function has_proposed_modification( $id, $skip_closed = true ) {
+	function has_proposed_modification( $id, $obj = null, $skip_closed = true ) {
 
-		$where = 'change_to.ID = "'.$id.'"';
-		if ( $skip_closed ) {
-			$where .= ' AND d.decision_type <> "accepted_change" AND d.decision_status <> "failed"';
+		$obj = $this->null_object( $obj, $id );
+
+		$changes = $this->proposed_modifications( $id, $obj );
+
+		if ( $changes ) {
+			return true;
 		}
-		$params[ 'where' ] = $where;
 
-		$obj = $this->object( true, $params );
 
-		$total = $obj->total();
+	}
 
-		if ( $total > 0 ) {
-			while( $obj->fetch()  ) {
-				$ids[] = $obj->id();
+	/**
+	 * Get all proposed changes to a decision.
+	 *
+	 * Returns either all fields, or just IDs of all proposed changes to a decision.
+	 *
+	 * @param 	int     		$id		ID of decision to see proposed changes of.
+	 * @param 	Pods|obj|null 	$obj	Optional. Single Pods Object
+	 * @param 	bool 			$ids	Optional. Whether to return the whole field array for each decision (the default, false) or to just return IDs (true).
+	 *
+	 * @return array|bool|mixed|null
+	 */
+	function proposed_modifications( $id, $obj = null, $ids = false ) {
+		$obj = $this->null_object( $obj, $id );
+
+		$changes = $obj->field( 'proposed_changes' );
+
+		if ( ! empty( $changes) ) {
+			if ( ! $ids ) {
+				return $changes;
+			}
+			else {
+				$ids = array();
+				foreach( $changes as $change ) {
+					$ids[] = $change[ 'ID' ];
+				}
+
+				if ( isset( $ids ) && is_array( $ids ) ) {
+					return $ids;
+
+				}
+
 			}
 
-			return $ids;
-
 		}
-
 
 	}
 
