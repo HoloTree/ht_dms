@@ -195,7 +195,7 @@ class common {
 	 */
 	function post_edit( $pieces, $is_new_item, $id ) {
 		remove_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ) );
-		if  ( $is_new_item && ( $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME || $pieces['params']->pod === HT_DMS_GROUP_CPT_NAME  ) )  {
+		if  ( $is_new_item && isset( $pieces['params']->pod ) && ( $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME || $pieces['params']->pod === HT_DMS_GROUP_CPT_NAME  ) )  {
 
 			$new_post = array ();
 			$new_post[ 'ID' ] = $id;

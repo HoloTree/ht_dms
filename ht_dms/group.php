@@ -29,7 +29,7 @@ class group extends dms {
 		add_action( 'pods_api_post_save_pod_item_ht_dms_group', array( $this, 'user_fix'), 9, 3 );
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
-		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ) );
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6  );
 	}
 
 	/**
@@ -386,7 +386,20 @@ class group extends dms {
 
 	}
 
-	function form_fields( $form_fields ) {
+	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID ) {
+		if ( $new ) {
+			$initial_members = $form_fields[ 'members' ];
+		}
+		unset( $form_fields );
+		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
+		$form_fields[ 'group_description' ] = array();
+		$form_fields[ 'visibility' ] = array();
+		$form_fields[ 'open_access' ] = array();
+		$form_fields[ 'facilitators' ] = array();
+		$form_fields[ 'organization' ] = $oID;
+		if ( $new  ) {
+			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
+		}
 
 		return $form_fields;
 

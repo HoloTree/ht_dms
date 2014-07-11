@@ -171,7 +171,8 @@ abstract class dms extends object {
 			$oID = $id;
 		}
 		else {
-			$oID = (int) $obj->display( 'organization.ID' );
+			
+			$oID = $obj->field( 'organization' );
 			$form_fields[ 'organization' ] = $oID;
 		}
 
@@ -362,7 +363,7 @@ abstract class dms extends object {
 		}
 
 		if ( isset( $old[ 'group' ] ) ) {
-			$gID = $form_fields[ 'group' ][ 'defualt' ] = $this->get_group( $id, $obj );
+			$gID = $form_fields[ 'group' ][ 'default' ] = $this->get_group( $id, $obj );
 			$dID = $id;
 		}
 		else{
