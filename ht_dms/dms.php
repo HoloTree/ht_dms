@@ -140,11 +140,6 @@ abstract class dms extends object {
 			$params = $id;
 		}
 
-		if ( $new && $type === HT_DMS_DECISION_CPT_NAME ) {
-			$params = array( 'pod' => HT_DMS_DECISION_CPT_NAME, 'id' => 278 );
-			$id = $params = pods_api()->duplicate_pod_item( $params );
-		}
-
 		$params = apply_filters( 'ht_dms_edit_params', $params, $type );
 
 		$obj = $this->null_object( $obj, $params );
