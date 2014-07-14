@@ -164,17 +164,30 @@ abstract class dms extends object {
 
 		if ( $type === HT_DMS_ORGANIZATION_NAME ) {
 			$oID = $id;
-		}
-		else {
 
+		}
+		elseif ( ! $new ) {
 			$oID = $obj->field( 'organization' );
 			$form_fields[ 'organization' ] = $oID;
+		}
+		else {
+			global $post;
+
+			if ( $post->post_type === HT_DMS_ORGANIZATION_NAME ) {
+
+				$oID = $post->ID;
+				$form_fields[ 'organization' ] = $oID;
+
+			}
+			else {
+
+				holotree_error();
+			}
 		}
 
 		if ( $type === HT_DMS_TASK_CT_NAME ) {
 			if ( !is_null( $dID ) ) {
 				$form_fields[ 'decision' ] = $dID;
-
 			}
 			else {
 				if ( is_null( $id ) ) {
@@ -306,16 +319,22 @@ abstract class dms extends object {
 	 * @param 	int 		$id 	ID of item to update
 	 * @param 	string 		$field	Field to update.
 	 * @param 	mixed		$value	New value
-	 * @params	obj|null	$obj	Optional. Pods Obj
+	 * @param	obj|null	$obj	Optional. Pods Obj
+	 * @param	bool		$add	Optional. To add to existing values (true) or overwrite existing values (false).
 	 *
 	 * @return 	int 		ID
 	 *
 	 * @since 	0.0.1
 	 */
-	public function update( $id, $field, $value, $obj = null ) {
+	public function update( $id, $field, $value, $obj = null, $add = false ) {
 		$obj = $this->null_object( $obj, $id );
 		if ( $field === 'consensus' ) {
 			$value = serialize( $value );
+		}
+
+		if ( $add ) {
+			$old_values = $obj->field( $field );
+			$value = array_merge( $old_values, $value );
 		}
 
 		$id = $obj->save( $field, $value );
@@ -367,7 +386,7 @@ abstract class dms extends object {
 			'default' => $id )
 		;
 		$form_fields[ 'proposed_by' ][ 'default' ] = $uID;
-
+		$form_fields[ 'decision_type' ][ 'default' ] = 'change';
 
 		$oID = $dID = $gID = null;
 
@@ -377,7 +396,6 @@ abstract class dms extends object {
 		else {
 			$oID = $id;
 		}
-
 		if ( isset( $old[ 'group' ] ) ) {
 			$gID = $form_fields[ 'group' ][ 'default' ] = $this->get_group( $id, $obj );
 			$dID = $id;

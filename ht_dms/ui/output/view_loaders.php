@@ -87,7 +87,6 @@ class view_loaders {
 			}
 
 		}
-//$content = '<div style="margin-top:200px">ff</div>';
 
 
 		return $content;
@@ -259,7 +258,7 @@ class view_loaders {
 		 *
 		 * @since 0.0.1
 		 */
-		$out .=do_action( 'ht_after_ht' );
+		$out .= do_action( 'ht_after_ht' );
 
 		$out .= '</div>';
 

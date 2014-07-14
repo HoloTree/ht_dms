@@ -25,7 +25,7 @@ $org_class = holotree_organization_class();
 $uID = get_current_user_id();
 
 
-if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
+if ( 1==1 || $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
 	$ui = holotree_dms_ui();
 	$gObj = pods( HT_DMS_GROUP_CPT_NAME );
 
@@ -54,7 +54,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 		),
 
 	);
-
+unset( $tabs[1] );
 	return $ui->elements()->output_container( $tabs );
 
 }

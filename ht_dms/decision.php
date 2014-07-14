@@ -26,12 +26,13 @@ class decision extends dms {
 	function __construct() {
 		$type = $this->get_type();
 
-		add_action( 'pods_api_post_save_pod_item_ht_dms_decision', array( $this, 'user_fix'), 11, 3 );
+		add_filter( "pods_api_post_save_pod_item_{$type}", array( $this, 'user_fix'), 11, 3 );
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
+		add_filter( "pods_api_pre_save_pod_item_{$type}", array( $this, 'save_proposed_modification' ) );
 	}
 
 	/**
@@ -247,10 +248,10 @@ class decision extends dms {
 					'default' => $defaults[ 'organization_id' ],
 				),
 			);
-			if ( !$new ) {
+			if ( ! $new ) {
 
 				$form_fields[ 'change_to' ] = array (
-					'default' => (string)$id,
+					'default' => (string) $id,
 				);
 				$form_fields[ 'reason_for_change' ] = array ();
 				$form_fields[ 'decision_type' ] = array (
@@ -831,6 +832,18 @@ class decision extends dms {
 
 	}
 
+	function save_proposed_modification( $pieces ) {
+		$change_to = pods_v( 'dms_id', 'get', false, false );
+
+		if ( isset ( $pieces[ 'fields' ][ 'change_to' ][ 'value' ] ) ) {
+			$change_to = $pieces[ 'fields' ][ 'change_to' ][ 'value' ];
+			$id = $change_to[ 'ID' ];
+			$this->update( $id, 'proposed_changes', $change_to, true );
+
+		}
+
+	}
+
 	/**
 	 * Check if a decision is blocked.
 	 *
@@ -1049,6 +1062,7 @@ class decision extends dms {
 
 
 		return $pieces;
+
 	}
 
 

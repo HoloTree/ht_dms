@@ -26,7 +26,7 @@ class group_widget {
 	 */
 	function join_group_widget( $gID, $obj = null ) {
 		if ( is_null( $obj ) ) {
-			$obj = holotree_group_class()->single_group_object( $gID );
+			$obj = holotree_group_class()->null_object( $obj, $gID );
 		}
 		$access = $obj->field( 'open_access' );
 

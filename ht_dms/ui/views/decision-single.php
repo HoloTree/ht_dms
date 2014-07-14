@@ -18,7 +18,7 @@ if ( !is_object( $obj) ) {
 	holotree_error( 'Not an object!', __FILE__ );
 }
 
-if ( $d->get_action_var() === 'changing' ) {
+if ( pods_v( 'dms_action', 'get', false, true ) === 'changing' ) {
 	return $ui->add_modify()->modify_decision( $id, $obj, null );
 
 }

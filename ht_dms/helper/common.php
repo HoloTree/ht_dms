@@ -159,13 +159,20 @@ class common {
 	}
 
 
-
+	/**
+	 * Redirects for proposed changes.
+	 *
+	 * @since 0.0.1
+	 */
 	function redirect() {
 
 		$change = pods_v( 'dms_action', 'get' );
 		if ( $change === 'propose-change' ) {
 			$id = intval( pods_v( 'dms_id', 'get' ) );
-			wp_redirect( get_permalink( $id ) .'&dms_action=changing'  );
+			$link = get_permalink( $id );
+			$output_elements = holotree_dms_ui()->output_elements();
+			$link = $output_elements->action_append( $link, 'changing', $id );
+			wp_redirect( $link );
 			exit;
 		}
 

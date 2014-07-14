@@ -265,7 +265,7 @@ class group extends dms {
 	 */
 	function pending( $id, $uID = null, $all = false, $approve = true ) {
 		$uID = $this->null_user( $uID );
-		$obj = $this->single_group_object( $id, $cached = false );
+		$obj = $this->null_object( null, $id  );
 
 		if ( $all ) {
 			if ( $this->user_exists( $uID )) {
@@ -397,8 +397,14 @@ class group extends dms {
 		$form_fields[ 'open_access' ] = array();
 		$form_fields[ 'facilitators' ] = array();
 		$form_fields[ 'organization' ] = $oID;
+
 		if ( $new  ) {
-			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
+			foreach ( $initial_members as $key => $id ) {
+				$initial_members_ids[ $id ] = $id;
+			}
+
+			//@TODO Figure out why this was needed. It's why there can be only one initial member
+			//$form_fields[ 'members' ] = array ( 'default' => key( $initial_members_ids ) );
 		}
 
 		return $form_fields;
