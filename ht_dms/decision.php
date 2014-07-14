@@ -32,7 +32,8 @@ class decision extends dms {
 
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
-		add_filter( "pods_api_pre_save_pod_item_{$type}", array( $this, 'save_proposed_modification' ) );
+
+		//add_filter( "pods_api_pre_save_pod_item_{$type}", array( $this, 'save_proposed_modification' ), 15, 3 );
 	}
 
 	/**

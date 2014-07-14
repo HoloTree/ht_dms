@@ -178,7 +178,7 @@ abstract class dms extends object {
 				$pods = pods( $calling_type, $post->ID );
 				$oID = $pods->field( 'organization.ID' );
 				$form_fields[ 'organization' ] = $oID;
-
+				unset( $pods );
 			}
 
 		}
@@ -374,10 +374,14 @@ abstract class dms extends object {
 
 		$old = $obj->fields();
 
+		$manager = $obj->field( 'manager.ID' );
+
+		unset( $old[ 'manager' ] );
 		unset( $old[ 'reason_for_change' ] );
 		unset( $old[ 'change_to' ] );
 		unset( $old[ 'proposed_by' ] );
 		unset( $old[ 'consensus' ] );
+		unset( $old[ 'proposed_changes' ] );
 		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
 
 		foreach( $old as $field => $value ) {
@@ -387,11 +391,13 @@ abstract class dms extends object {
 		$form_fields[ 'reason_for_change' ] = array(
 			'required' => 'true'
 		);
+
+		unset($form_fields[ 'change_to' ]);
 		$form_fields[ 'change_to' ] = array(
 			'default' => $id )
 		;
+		$form_fields[ 'manager' ][ 'default' ] = $manager;
 		$form_fields[ 'proposed_by' ][ 'default' ] = $uID;
-		$form_fields[ 'decision_type' ][ 'default' ] = 'change';
 
 		$oID = $dID = $gID = null;
 
@@ -408,7 +414,7 @@ abstract class dms extends object {
 		else{
 			$gID = $id;
 		}
-		$obj = $this->object();
+
 
 		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type );
 
@@ -435,7 +441,7 @@ abstract class dms extends object {
 		 */
 
 		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
-		var_Dump( $obj->ID() );
+
 		/**
 		 * Action that runs before any ht_dms form
 		 *
@@ -449,7 +455,12 @@ abstract class dms extends object {
 			$form .= $obj->form( $form_fields );
 		}
 		else {
-			$form .= $obj->form( $form_fields, 'Propose Change', get_permalink( $id ) );
+			$ui = holotree_dms_ui();
+
+			$link = $ui->output_elements()->action_append( get_permalink( $id ), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
+			$link = $link.'&pmid=X_ID_X';
+
+			$form .= $obj->form( $form_fields, 'Propose Change', $link );
 		}
 
 		/**

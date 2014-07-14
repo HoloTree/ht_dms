@@ -106,6 +106,7 @@ class common {
 
 
 	function dms_actions() {
+
 		$action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
@@ -117,8 +118,15 @@ class common {
 
 		}
 
-		if ( false !== $action && $id ) {
+		if ( false !== $action && $id  && $action !== 'changing' ) {
 
+			//special handling for proposed changes
+			if ( $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
+
+				$pod = holotree_decision_class()->object();
+				$pod->save( $pmid, 'proposed_changes', $id  );
+				pods_redirect( get_permalink( $id ) );
+			}
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
 				self::$message_text = $take_action->decision( $action, $id );
