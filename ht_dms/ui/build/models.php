@@ -83,7 +83,7 @@ class models {
 		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = pods( HT_DMS_ORGANIZATION_NAME, $params );
+			$obj = holotree_organization_class()->object( true, $params );
 		}
 
 
@@ -144,7 +144,7 @@ class models {
 		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = pods( HT_DMS_GROUP_CPT_NAME, $params );
+			$obj = holotree_group_class()->object( true, $params );
 		}
 
 
@@ -200,7 +200,7 @@ class models {
 		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = pods( HT_DMS_DECISION_CPT_NAME, $params );
+			holotree_decision_class()->object( true, $params );
 		}
 
 		$view = $this->path( 'decision', $preview );
@@ -276,7 +276,7 @@ class models {
 		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = pods( HT_DMS_TASK_CT_NAME, $params );
+			$obj = holotree_task_class()->object( true, $params );
 		}
 
 
