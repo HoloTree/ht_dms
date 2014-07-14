@@ -144,13 +144,17 @@ abstract class dms extends object {
 
 		$obj = $this->null_object( $obj, $params );
 
+		if ( ! $post_title_label ) {
+			$post_title_label = $this->display_names( $type );
+			$post_title_label = $post_title_label. ' Name';
+		}
+		$form_fields[ 'post_title' ] = array( 'label' => $post_title_label );
+
 		$fields = (array) $this->fields_to_loop( $obj, false );
 
 		foreach ( $fields as $k => $v ) {
 			$form_fields[ $k ] = array( 'label' => $v[ 'label' ] );
 		}
-
-		//$form_fields[ 'post_title' ] = array( 'label' => $post_title_label );
 
 		if ( $new ) {
 			if ( isset( $form_fields[ 'members' ] ) ) {
@@ -503,6 +507,39 @@ abstract class dms extends object {
 		$obj = $this->null_object( $obj, $id );
 
 		return (int) $obj->display( 'group.ID' );
+
+	}
+
+	/**
+	 * Gives the short "display" name for DMS content types.
+	 *
+	 *
+	 * @param 	string 			$type Full name of content type.
+	 *
+	 * @return 	string|false		 The display name of content type, or false if input invalid.
+	 *
+	 * @since 	0.0.2
+	 */
+	function display_names( $type ) {
+		$display_names = array(
+			HT_DMS_ORGANIZATION_NAME 	=> 'Organization',
+			HT_DMS_GROUP_CPT_NAME 		=> 'Group',
+			HT_DMS_DECISION_CPT_NAME 	=> 'Decision',
+			HT_DMS_TASK_CT_NAME			=> 'Task',
+		);
+
+		/**
+		 * Change the display names for the DMS content types.
+		 *
+		 * @param array $display_names Array of 'full name' => 'display name'
+		 *
+		 * @return Array of display names.
+		 *
+		 * @since 0.0.2
+		 */
+		$display_names = apply_filters( 'ht-dms_display_names', $display_names );
+
+		return pods_v( $type, $display_names, false, true );
 
 	}
 
