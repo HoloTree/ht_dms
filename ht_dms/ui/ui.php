@@ -15,8 +15,9 @@ namespace ht_dms\ui;
 class ui {
 
 	function __construct() {
-		if ( has_filter( 'app_starter_content_part_view') ) {
-			add_filter( 'app_starter_content_part_view', array ( $this->view_loaders(), 'view_loader' ) );
+
+		if ( defined( 'APP_STARTER_VERSION' ) ) {
+			add_filter( 'app_starter_content_part_view', array ( $this->view_loaders(), 'view_loaders' ) );
 		}
 		else {
 			add_filter( 'the_content', array ( $this->view_loaders(), 'generic_view_loader' ) );
