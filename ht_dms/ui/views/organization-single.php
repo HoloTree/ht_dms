@@ -54,7 +54,7 @@ if ( 1==1 || $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access
 		),
 
 	);
-unset( $tabs[1] );
+
 	return $ui->elements()->output_container( $tabs );
 
 }

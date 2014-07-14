@@ -97,7 +97,10 @@ class task extends dms {
 			}
 
 		}
-
+		if ( is_array( $oID ) ) {
+			$oID = $oID[ 0 ];
+		}
+	
 		unset( $form_fields );
 
 		$form_fields[ 'name' ] = array(

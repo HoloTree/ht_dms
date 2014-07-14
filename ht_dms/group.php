@@ -387,6 +387,7 @@ class group extends dms {
 	}
 
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID ) {
+
 		if ( $new ) {
 			$initial_members = $form_fields[ 'members' ];
 		}
@@ -396,16 +397,21 @@ class group extends dms {
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
 		$form_fields[ 'facilitators' ] = array();
-		$form_fields[ 'organization' ] = $oID;
+
 
 		if ( $new  ) {
+			$form_fields[ 'organization' ] = $oID;
 			foreach ( $initial_members as $key => $id ) {
 				$initial_members_ids[ $id ] = $id;
 			}
 
 			//@TODO Figure out why this was needed. It's why there can be only one initial member
-			//$form_fields[ 'members' ] = array ( 'default' => key( $initial_members_ids ) );
+			$form_fields[ 'members' ] = array ( 'default' => key( $initial_members_ids ) );
 		}
+		else {
+			$form_fields[ 'organization' ] = array();
+		}
+
 
 		return $form_fields;
 
