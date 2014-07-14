@@ -404,7 +404,7 @@ class group extends dms {
 			}
 
 			//@TODO Figure out why this was needed. It's why there can be only one initial member
-			//$form_fields[ 'members' ] = array ( 'default' => key( $initial_members_ids ) );
+			$form_fields[ 'members' ] = array ( 'default' => key( $initial_members_ids ) );
 		}
 
 		return $form_fields;
