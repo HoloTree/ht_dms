@@ -166,26 +166,27 @@ abstract class dms extends object {
 			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
 		}
 
-		if ( $type === HT_DMS_ORGANIZATION_NAME ) {
-			$oID = $id;
 
-		}
-		else{
-			//find what content type we're on
-			$calling_type = holotree_get_content_type();
+		//find what content type we're on
+		$calling_type = holotree_get_content_type();
 
-			if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
+		if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
+			if ( ! $new  ) {
 				$oID = $id;
 			}
-			else {
+			else{
 				global $post;
-				$pods = pods( $calling_type, $post->ID );
-				$oID = $pods->field( 'organization.ID' );
-				$form_fields[ 'organization' ] = $oID;
-				unset( $pods );
+				$oID = $post->ID;
 			}
-
 		}
+		else {
+			global $post;
+			$pods = pods( $calling_type, $post->ID );
+			$oID = $pods->field( 'organization.ID' );
+			$form_fields[ 'organization' ] = $oID;
+			unset( $pods );
+		}
+
 
 		if ( $new && $type == HT_DMS_ORGANIZATION_NAME  ) {
 

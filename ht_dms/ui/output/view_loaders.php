@@ -13,23 +13,19 @@ namespace ht_dms\ui\output;
 
 class view_loaders {
 
-
+	/**
+	 * Loads the HoloTree DMS Content
+	 *
+	 * @param $view
+	 *
+	 * @return bool|mixed|null|string|void
+	 */
 	function view_loaders( $view ) {
 		$post_type = get_post_type();
 		$context = $this->view_context( $post_type );
 
-		if ( $context === 'home' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
-		}
+		return $this->view_cache( $context, $post_type );
 
-		if ( $context === 'single' ) {
-			$post_type = str_replace( HT_DMS_PREFIX.'_', '', $post_type );
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ) );
-		}
-
-		if ( $context === 'task' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ) );
-		}
 	}
 
 	/**
@@ -90,6 +86,68 @@ class view_loaders {
 
 
 		return $content;
+
+	}
+
+	/**
+	 * Gets views from the view cache or gets view and caches it.
+	 *
+	 * @param        $context
+	 * @param string $cache_mode
+	 * @param null   $id
+	 *
+	 * @return bool|mixed|null|string|void
+	 */
+	function view_cache( $context, $post_type, $cache_mode = 'cache', $id = null ) {
+		if ( is_null( $id ) ) {
+			if ( is_home() || is_front_page() ) {
+				$id = 00;
+			}
+			else {
+				$id = get_queried_object_id();
+			}
+		}
+
+		$uID = get_current_user_id();
+
+		$key = array( $context, $id, $uID );
+		$key = implode( '_', $key );
+
+		$group = 'ht_dms_front_end_views';
+
+		if ( false === ( $value = pods_view_get( $key, $cache_mode, $group ) ) ) {
+			$value = $this->view_get( $context, $post_type );
+			pods_view_set( $key, $value, 0, $cache_mode, $group );
+		}
+
+		return $value;
+
+	}
+
+	/**
+	 * Loads the view based on context and post type
+	 *
+	 * @param $context
+	 * @param $post_type
+	 *
+	 * @return string
+	 */
+	function view_get( $context, $post_type ) {
+		
+		if ( $context === 'home' ) {
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
+		}
+
+		if ( $context === 'single' ) {
+			$post_type = str_replace( HT_DMS_PREFIX.'_', '', $post_type );
+
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ) );
+		}
+
+		if ( $context === 'task' ) {
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ) );
+		}
+
 	}
 
 	/**
