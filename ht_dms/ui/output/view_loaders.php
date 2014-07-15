@@ -133,7 +133,7 @@ class view_loaders {
 	 * @return string
 	 */
 	function view_get( $context, $post_type ) {
-		
+
 		if ( $context === 'home' ) {
 			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
 		}
@@ -278,9 +278,7 @@ class view_loaders {
 	}
 
 	function content_wrap( $content ) {
-		global $post;
-		$id = $post->ID;
-
+		$id = get_queried_object_id();
 
 		$out = '<div class="holotree" id="'.$id.'">';
 		/**
@@ -293,7 +291,7 @@ class view_loaders {
 		$out .= do_action( 'ht_before_ht' );
 
 		if ( apply_filters( 'ht_dms_view_title', true ) ) {
-			$name = $this->ui()->elements()->title( $id, null );
+			$name = $this->ui()->output_elements()->title( $id, null );
 			$class = 'entry-title';
 
 			/**

@@ -69,49 +69,8 @@ class Theme_Setup {
 	}
 
 	function title_in_tab_bar() {
-		$out = '';
-
-		if ( is_singular( HT_DMS_GROUP_CPT_NAME ) || is_singular( HT_DMS_DECISION_CPT_NAME ) ) {
-			global $post;
-			$title = $post->post_title;
-			if ( $title != '' || empty( $title ) ) {
-				if ( is_singular( HT_DMS_GROUP_CPT_NAME ) ) {
-						$gID= $post->ID;
-						$gTitle = $title;
-
-				}
-				elseif ( is_singular( HT_DMS_DECISION_CPT_NAME ) ) {
-					$decision_title = $title;
-					$dID = $post->ID;
-					$dTitle = $title;
-					$obj = holotree_decision( $dID );
-					$gID = $obj->field( 'group.ID' );
-					$gID = $gID[ 0 ];
-					$gTitle = get_the_title( $gID );
-				}
-				elseif( is_tax( HT_DMS_TASK_CT_NAME ) ) {
-					$task = holotree_task( get_queried_object_id(), true, true );
-					$tID = $task[ 'term_id' ];
-					$tTitle = $task[ 'name' ];
-					$dID = $task[ 'decision' ][ 'ID' ];
-					$d = holotree_decision( $dID );
-					$dTitle = $d[ 'post_title' ];
-					$gID = $d[ 'group' ][ 0 ][ 'ID' ];
-					$gTitle = get_the_title( $gID );
-				}
-
-
-				//$out = '<span class="group-title-in-header" id="group-title-in-header-'.$gID.'">'.holotree_link( $gID, 'permalink', $gTitle, $gTitle ).'</span>';
-				if ( is_singular( HT_DMS_DECISION_CPT_NAME ) || is_tax( HT_DMS_TASK_CT_NAME ) ) {
-					$out .= '<span class="decision-title-in-header" id="decision-title-in-header-'.$dID.'">'.holotree_link( $dID, 'permalink', $dTitle, $dTitle ).'</span>';
-				}
-				if ( is_tax( HT_DMS_TASK_CT_NAME ) ) {
-					$out .= '<span class="decision-title-in-header" id="task-title-in-header-'.$tID.'">'.holotree_link( $tID, 'tax', $tTitle, $tTitle ).'</span>';
-				}
-				return $out;
-			}	//endif $title has a value
-
-		} //endif is group/ decision singular
+		$title = holotree_dms_ui()->output_elements()->title( get_queried_object_id(), null, false, ' ' );
+		return apply_filters( 'ht_dms_top_bar_content', $title );
 
 	}
 

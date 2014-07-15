@@ -367,14 +367,15 @@ class elements {
 	 *
 	 * @since	0.0.1
 	 */
-	function title( $id, $obj = null, $task = false ) {
+	function title( $id, $obj = null, $task = false, $separator = ' - ' ) {
 		remove_filter( 'the_title', '__return_false' );
 		$name = apply_filters( 'ht_dms_name', 'HoloTree' );
-		$name = $this->link ( site_url( ), null, $name );
+		$name = $this->link( null, 'front', $name );
+
 		if ( get_post_type( $id ) === HT_DMS_GROUP_CPT_NAME ) {
 			$title = get_the_title( $id );
 			$decision = $this->link( $id, 'permalink', $title );
-			$name .= ' - ' .$decision;
+			$name .= $separator .$decision;
 		}
 		elseif( get_post_type( $id ) === HT_DMS_DECISION_CPT_NAME ) {
 			$obj = holotree_decision( $id, $obj );
@@ -384,18 +385,18 @@ class elements {
 			$title = get_the_title( (int) $group[0]['ID'] );
 			$group = $this->link((int) $group[0]['ID'], 'permalink', $title );
 
-			$name .= ' - ' .$decision. ' - ' . $group ;
+			$name .= $separator . $decision . $separator . $group ;
 		}
 		elseif ( $task ) {
 			$obj = holotree_task( $id, $obj );
-			$name .= ' - '. $obj->field( 'name' );
+			$name .= $separator . $obj->field( 'name' );
 			$dID = $obj->field( 'decision' );
 			$dID = $dID[ 'ID' ];
-			$name .= ' - '. get_the_title( $dID );
+			$name .= $separator . get_the_title( $dID );
 		}
 		add_filter( 'the_title', '__return_false' );
 
-		$name = apply_filters( 'ht_dms_title_overide', $name, $id );
+		$name = apply_filters( 'ht_dms_title_override', $name, $id );
 		return $name;
 
 	}
@@ -476,7 +477,7 @@ class elements {
 	 *
 	 * @return null|string
 	 */
-	function link( $id, $type = 'permalink', $text= 'view', $title= null, $button = false, $classes = false, $link_id = false, $append = false  ) {
+	function link( $id, $type = 'permalink', $text = 'view', $title = null, $button = false, $classes = false, $link_id = false, $append = false  ) {
 		if ( is_object( $type ) ) {
 			$type = 'post';
 		}
@@ -484,7 +485,9 @@ class elements {
 		if ( is_object( $id ) ) {
 			return false;
 		}
-
+		elseif( $type === 'home' || $type === 'front' ) {
+			$url = site_url();
+		}
 		elseif ( intval( $id ) !== 0 ) {
 			if ( $type === 'permalink' || $type === 'post' ) {
 				$url = get_permalink( $id );
@@ -513,7 +516,7 @@ class elements {
 			$url = $id;
 		}
 
-		if ( ( $text = 'view' || is_null( $text ) ) && ( $type === 'permalink' || $type === 'post' ) ) {
+		if ( ( $text === 'view' || is_null( $text ) ) && ( $type === 'permalink' || $type === 'post' ) ) {
 			$post = get_post( $id );
 			if ( is_object( $post ) && is_string( $post->post_title ) && !empty( $post->post_title ) ) {
 				$text = $post->post_title;
