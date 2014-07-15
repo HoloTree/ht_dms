@@ -111,7 +111,29 @@ class common {
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
 
-		if ( false !== $action  ) {
+		//special handling for proposed changes
+		if (  $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
+			if ( ! $pmid || intval( $pmid  ) === 0 ) {
+				holotree_error( );
+			}
+
+			$pod = pods( HT_DMS_DECISION_CPT_NAME, $id );
+			$pod->save( 'proposed_changes', $pmid  );
+
+			$ui = holotree_dms_ui();
+
+			$link = $ui->output_elements()->action_append( '/f', 'add-consensus', $pmid );
+			$link .= '&thengo='.get_permalink( $id );
+			pods_redirect( $link );
+			$action = false;
+
+		}
+		elseif ( $action === 'add-consensus' ) {
+			holotree_consensus( $id );
+			pods_redirect( pods_v( 'thengo', 'get', site_url(), true ) );
+		}
+
+		elseif ( false !== $action  ) {
 			include_once( 'take_action.php' );
 
 			$take_action = take_action::init();
@@ -120,13 +142,7 @@ class common {
 
 		if ( false !== $action && $id  && $action !== 'changing' ) {
 
-			//special handling for proposed changes
-			if ( $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
 
-				$pod = holotree_decision_class()->object();
-				$pod->save( $pmid, 'proposed_changes', $id  );
-				pods_redirect( get_permalink( $id ) );
-			}
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
 				self::$message_text = $take_action->decision( $action, $id );
@@ -220,11 +236,16 @@ class common {
 
 		}
 
+		if ( 'changing' !== pods_v( 'dms_action', 'get', false, true ) ) {
 
-		if ( is_object( $pieces['params'] ) && isset( $pieces['params']->pod ) && $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME ) {
+		}
+		elseif (  ! isset( $_GET[ 'pmid '] ) ||  ! isset( $_GET[ 'thengo' ]  ) ) {
 
-			holotree_consensus( $id );
+			if ( is_object( $pieces[ 'params' ] ) && isset( $pieces[ 'params' ]->pod ) && $pieces[ 'params' ]->pod === HT_DMS_DECISION_CPT_NAME ) {
 
+				holotree_consensus( $id );
+
+			}
 		}
 
 		add_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ), 25, 3 );

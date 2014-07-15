@@ -419,6 +419,7 @@ abstract class dms extends object {
 			$gID = $id;
 		}
 
+		$obj->ID = $obj->data->id = $obj->data->field_id = 0;
 
 		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type );
 
@@ -444,7 +445,9 @@ abstract class dms extends object {
 		 * @since 0.0.1
 		 */
 
-		$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
+		if ( $new !== 'modify' ) {
+			$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
+		}
 
 		/**
 		 * Action that runs before any ht_dms form
@@ -456,13 +459,16 @@ abstract class dms extends object {
 		//$form .= $this->form_fix( $new, $type );
 
 		if ( $new !== 'modify' ) {
+
 			$form .= $obj->form( $form_fields );
 		}
 		else {
+			//pods_error( var_dump( array( $obj->ID(), $obj->total() ) ) );
 			$ui = holotree_dms_ui();
 
-			$link = $ui->output_elements()->action_append( get_permalink( $id ), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
+			$link = $ui->output_elements()->action_append( '/f', 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
+			$link = $link.'&XDEBUG_PROFILE';
 
 			$form .= $obj->form( $form_fields, 'Propose Change', $link );
 		}

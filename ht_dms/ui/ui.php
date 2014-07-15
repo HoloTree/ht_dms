@@ -16,7 +16,7 @@ class ui {
 
 	function __construct() {
 
-		if ( defined( 'APP_STARTER_VERSION' ) ) {
+		if ( 1==1 || defined( 'APP_STARTER_VERSION' ) ) {
 			add_filter( 'app_starter_content_part_view', array ( $this->view_loaders(), 'view_loaders' ) );
 		}
 		else {
