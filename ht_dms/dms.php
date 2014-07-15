@@ -458,17 +458,23 @@ abstract class dms extends object {
 
 		//$form .= $this->form_fix( $new, $type );
 
-		if ( $new !== 'modify' ) {
+		$ui = holotree_dms_ui();
 
-			$form .= $obj->form( $form_fields );
+		if ( $new !== 'modify' ) {
+			$link = $ui->output_elements()->action_append( '/f', 'new', 'X_ID_X' );
+			if ( $new ) {
+				$label = __( 'Create', 'holotree' );
+			}
+			else {
+				$label = __( 'Edit', 'holotree' );
+			}
+
+			$label = $label. ' '.$this->display_names( $type );
+			$form .= $obj->form( $form_fields, $label, $link );
 		}
 		else {
-			//pods_error( var_dump( array( $obj->ID(), $obj->total() ) ) );
-			$ui = holotree_dms_ui();
-
 			$link = $ui->output_elements()->action_append( '/f', 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
-			$link = $link.'&XDEBUG_PROFILE';
 
 			$form .= $obj->form( $form_fields, 'Propose Change', $link );
 		}
