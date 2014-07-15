@@ -132,7 +132,9 @@ class common {
 			holotree_consensus( $id );
 			pods_redirect( pods_v( 'thengo', 'get', site_url(), true ) );
 		}
-
+		elseif( $action === 'new' ) {
+			pods_redirect( $id );
+		}
 		elseif ( false !== $action  ) {
 			include_once( 'take_action.php' );
 
@@ -141,8 +143,6 @@ class common {
 		}
 
 		if ( false !== $action && $id  && $action !== 'changing' ) {
-
-
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
 				self::$message_text = $take_action->decision( $action, $id );

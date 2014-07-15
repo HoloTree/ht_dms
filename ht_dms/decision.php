@@ -690,62 +690,150 @@ class decision extends dms {
 	 * @since 	0.0.1
 	 */
 	function accept_modify( $id, $obj = null ) {
-		$obj =  $this->item( $id, $obj );
 
-		$original_id = (int) $obj->display( 'change_to' );
+		$obj =  $this->null_object( $obj, $id );
+
+		$original_id = $obj->field( 'change_to.ID' );
 		//get ID of original item and create seprate object for that.
 		$original_obj = $this->item( $original_id  );
 
-		//if accepting user is the original
+		//proceed directly to acceptance if accepting user is the original
 		if ( (int) $original_obj->field( 'post_author' ) === ( $uID = (int) get_current_user_id()  ) ) {
-			$data = '';
-			$fields = $obj->fields();
-			$unsets = array (
-				'id',
-				'group',
-				'consensus',
-			);
-
-			foreach ( $unsets as $unset ) {
-				unset( $fields[ $unset ] );
+			$make_mod = true;
+		}
+		else {
+			$id = $this->accept( $id, $uID, $obj );
+			if ( $this->has_consent( $id, $obj ) ) {
+				$make_mod = true;
 			}
 
-			$fields[ 'post_title' ] = '';
+		}
 
-			foreach ( $fields as $key => $value ) {
-				$data[ $key ] = $obj->field( $key );
+		if ( $make_mod ) {
+			$this->make_modification( $id, $original_id, $obj, $uID, $original_obj );
+			return true;
+
+		}
+
+		return $id;
+
+	}
+
+	/**
+	 * Make modifications once accepted.
+	 *
+	 * @param $id
+	 * @param $original_id
+	 * @param $obj
+	 * @param $uID
+	 * @param $original_obj
+	 *
+	 * @return mixed
+	 */
+	function make_modification( $id, $original_id, $obj, $uID, $original_obj ) {
+
+		$data = false;
+
+		$unsets = array (
+			'id',
+			'ID',
+			'consensus',
+			'post_date',
+			'post_date_gmt',
+			'guid',
+			'decision_status',
+			'decision_type',
+			'post_modified',
+			'post_modified_gmt'
+		);
+
+		$data = $obj->row();
+
+
+		foreach ( $unsets as $unset ) {
+			unset( $data[ $unset ] );
+		}
+
+
+		//get a new consensus array, set $uID as accepting, and prepare it to save.
+		$data[ 'consensus'] = holotree_consensus_class()->create( $id , $obj, true );
+		$data[ 'consensus'][ $uID ][ 'value' ] = 1;
+		$data[ 'consensus'] = serialize( $data[ 'consensus'] );
+
+		$data[ 'decision_status' ] = 'new';
+		$data[ 'decision_type' ] = 'modified';
+
+		if ( is_array( $data ) ) {
+			$updated_id = $original_obj->save( $data );
+
+			if ( $original_id === $updated_id ) {
+				$finished = $this->finish_proposed_change( $id, $obj );
+			}
+			else {
+				holotree_error();
 			}
 
-			$data[ 'decision_type' ] = 'modified';
+			return $updated_id;
 
-			//get a new consensus array, set $uID as accepting, and prepare it to save.
-			$data[ 'consensus'] = holotree_consensus_class()->create( (int) $obj->display( 'change_to' ), null, true );
-			$data[ 'consensus'][ $uID ][ 'value' ] = 1;
-			$data[ 'consensus'] = serialize( $data[ 'consensus'] );
+		}
 
-			if ( is_array( $data ) ) {
-				//update original item
-				$id = $original_obj->save( $data );
-				$this->reset_cache( $orignal_id );
+	}
 
-				//then mark proposed change as having been accepted
-				//do it in this order so error in first save prevents second.
-				unset( $data );
-				$data[ 'decision_type' ] = 'accepted_change';
-				$data[ 'decision_status'] = 'completed';
-				$obj->save( $data );
-				$this->reset_cache( $id );
+	/**
+	 * Marks an accepted modification as being completed.
+	 *
+	 * @todo Change actual post status?
+	 *
+	 * @param      $id
+	 * @param null $obj
+	 *
+	 * @return int
+	 */
+	function finish_proposed_change( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+		$id = $obj->save(
+			array(
+				'decision_type' 	=> 'accepted_change',
+				'decision_status' 	=> 'completed',
+			)
+		);
 
+		return $id;
 
-				return $id;
+	}
+
+	/**
+	 * Check if a group has consented to a decision.
+	 *
+	 * @param      $id
+	 * @param null $obj
+	 *
+	 * @return bool
+	 */
+	function has_consent( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		if ( $this->status( $id, $obj ) === 'completed' ) {
+			return true;
+		}
+		else {
+			$consensus = $this->get_consensus( $id );
+			$values = wp_list_pluck( $consensus, 'value' );
+			if ( ! in_array( 0, $values ) || ! in_array( 2, $values ) ) {
+				return true;
 
 			}
 
 		}
-		else {
-			$this->accept( $id, $uID, $obj );
 
-			return true;
+	}
+
+	function get_consensus( $id ) {
+		$consensus = holotree_consensus( $id );
+
+		if ( is_array( $consensus ) ) {
+			return $consensus;
+
 		}
 
 	}

@@ -9,6 +9,13 @@
  * @copyright 2014 Josh Pollock
  */
 
+/**
+ * In consensus arrays:
+ *
+ * 0 represents no opinion expressed
+ * 1 represents acceptance
+ * 2 represents objection
+ */
 namespace ht_dms\helper;
 
 class consensus {
