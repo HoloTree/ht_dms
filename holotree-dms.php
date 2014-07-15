@@ -80,7 +80,7 @@ class HoloTree_DMS {
 		add_action( 'init', array( $this, 'helper' ) );
 
 		// Loads frontend scripts and styles
-		//add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 
@@ -125,17 +125,9 @@ class HoloTree_DMS {
 	 * @since 0.0.1
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * All styles goes here
-		 */
-		wp_enqueue_style( 'baseplugin-styles', plugins_url( 'css/style.css', __FILE__ ), false, date( 'Ymd' ) );
-
-		/**
-		 * All scripts goes here
-		 */
-		wp_enqueue_script( 'baseplugin-scripts', plugins_url( 'js/script.js', __FILE__ ), array( 'jquery' ), false, true );
-
+		wp_enqueue_style( 'pods-select2' );
+		wp_enqueue_script( 'pods-select2' );
+		wp_enqueue_style( 'pods-form' );
 	}
 
 	/**
