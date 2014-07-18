@@ -113,16 +113,18 @@ abstract class dms extends object {
 	/**
 	 * Edit or create items of this type
 	 *
-	 * @param null $id
-	 * @param null $uID
-	 * @param null $obj
-	 * @param bool $post_title_label
+	 * @param 	int|null	$id
+	 * @param 	int|nulll 	$uID
+	 * @param 	int|null 	$obj
+	 * @param 	int|null	$oID
+	 * @param 	int|null	$dID
+	 * @param 	string|bool $post_title_label
 	 *
-	 * @return null|string
+	 * @return 	null|string
 	 *
-	 * @since 0.0.1
+	 * @since 	0.0.1
 	 */
-	function edit( $id = null, $uID = null, $obj = null, $dID = null, $post_title_label = false ) {
+	function edit( $id = null, $uID = null, $obj = null, $oID = null, $dID = null,  $post_title_label = false ) {
 		$uID = $this->null_user( $uID );
 
 		$type = $this->get_type( false );
@@ -167,26 +169,33 @@ abstract class dms extends object {
 		}
 
 
-		//find what content type we're on
-		$calling_type = holotree_get_content_type();
+		if ( is_null( $oID ) && ( ! $new && $type !== HT_DMS_ORGANIZATION_NAME ) ) {
+			//find what content type we're on
+			$calling_type = holotree_get_content_type();
 
-		if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
-			if ( ! $new  ) {
-				$oID = $id;
+			if ( in_array( $calling_type, $this->content_types()) ) {
+				if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
+					if ( !$new ) {
+						$oID = $id;
+					}
+					else {
+						global $post;
+						$oID = $post->ID;
+					}
+				}
+				else {
+					global $post;
+					$pods = pods( $calling_type, $post->ID );
+					$oID = $pods->field( 'organization.ID' );
+					$form_fields[ 'organization' ] = $oID;
+					unset( $pods );
+				}
 			}
-			else{
-				global $post;
-				$oID = $post->ID;
+			else {
+				holotree_error( __( sprintf( 'When using %d in this context you must specify organization ID in $oID', __METHOD__ ), 'holotree' ) );
 			}
-		}
-		else {
-			global $post;
-			$pods = pods( $calling_type, $post->ID );
-			$oID = $pods->field( 'organization.ID' );
-			$form_fields[ 'organization' ] = $oID;
-			unset( $pods );
-		}
 
+		}
 
 		if ( $new && $type == HT_DMS_ORGANIZATION_NAME  ) {
 
@@ -535,24 +544,49 @@ abstract class dms extends object {
 	 */
 	function display_names( $type ) {
 		$display_names = array(
-			HT_DMS_ORGANIZATION_NAME 	=> 'Organization',
-			HT_DMS_GROUP_CPT_NAME 		=> 'Group',
-			HT_DMS_DECISION_CPT_NAME 	=> 'Decision',
-			HT_DMS_TASK_CT_NAME			=> 'Task',
+			'Organization',
+			'Group',
+			'Decision',
+			'Task',
 		);
 
 		/**
 		 * Change the display names for the DMS content types.
 		 *
-		 * @param array $display_names Array of 'full name' => 'display name'
+		 * @param array $display_names Array of display names
 		 *
-		 * @return Array of display names.
+		 * @return Array of display names. Will be merged with output of $this->content_types()
 		 *
 		 * @since 0.0.2
 		 */
 		$display_names = apply_filters( 'ht-dms_display_names', $display_names );
 
+		$names = $this->content_types();
+
+		if ( is_array( $names ) ) {
+			$display_names = array_combine( $names, $display_names );
+		}
+
 		return pods_v( $type, $display_names, false, true );
+
+	}
+
+	/**
+	 * Get the name of the DMS content types.
+	 *
+	 * This method intentionally does not have a filter. You may change the names by redefining the vales of these constants.
+	 *
+	 * @return 	array
+	 *
+	 * @since 	0.0.2
+	 */
+	function content_types() {
+		return array(
+			HT_DMS_ORGANIZATION_NAME,
+			HT_DMS_GROUP_CPT_NAME,
+			HT_DMS_DECISION_CPT_NAME,
+			HT_DMS_TASK_CT_NAME,
+		);
 
 	}
 
