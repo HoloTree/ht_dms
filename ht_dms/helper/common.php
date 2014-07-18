@@ -53,13 +53,40 @@ class common {
 
 	}
 
-	function clear_dms_cache( $object = true ) {
-		$cache_groups = array(
-			'decision',
-			'group',
-			'task',
-		);
-		holotree_cache_clear( $name, null, $object );
+	/**
+	 * Clear view cache or the whole cache.
+	 *
+	 * @param bool     $view_cache
+	 * @param bool $full
+	 *
+	 * @since 0.0.2
+	 */
+	function clear_dms_cache( $view_cache, $full = false ) {
+		$clear = false;
+		//@TODO Can we target only DMS related?
+		if ( $full ) {
+			pods_cache_clear();
+			pods_transient_clear();
+			$clear = true;
+		}
+		elseif( $view_cache && ! $full ) {
+			foreach ( array( 'cache', 'transient') as $mode  ) {
+				pods_view_clear( true, $mode, 'ht_dms_front_end_views'  );
+			}
+			$clear = true;
+		}
+
+
+		if ( $clear ) {
+			/**
+			 * Fires after DMS cache is cleared via this method.
+			 *
+			 * Note: Cache can be cleared via other means.
+			 *
+			 * @since 0.0.1
+			 */
+			do_action( 'ht_dms_post_clear_cache' );
+		}
 
 	}
 
@@ -147,7 +174,7 @@ class common {
 				$take_action->notification( $action, $id );
 			}
 			elseif ( $action === 'clear-dms-cache' ) {
-				$this->big_delete();
+				$this->clear_dms_cache( null, false );
 			}
 			elseif ( $action === 'task-updated' ) {
 				self::$message_text = __( 'Task Updated.', 'holotree' );
@@ -274,7 +301,7 @@ class common {
 					$facilitators[] = $uID;
 					$id = $obj->save( 'facilitators', $facilitators );
 					if ( is_int( $id ) ) {
-						$class->reset_cache( $id );
+
 						return $id;
 					}
 				}
@@ -286,7 +313,7 @@ class common {
 						}
 						$id = $obj->save( 'facilitators', $facilitators );
 						if ( is_int( $id ) ) {
-							$class->reset_cache( $id );
+
 							return $id;
 						}
 					}
