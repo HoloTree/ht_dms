@@ -18,17 +18,10 @@ namespace ht_dms\helper;
 class common {
 
 	function __construct() {
-
-		add_action( 'plugins_loaded', array( $this, 'dms' ) );
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		//reset transients on group or decison update
-		//add_action( 'pods_api_post_save_pod_item_decision', array( $this, 'reset_cache'), 11, 3 );
-		//add_action( 'pods_api_post_save_pod_item_group', array( $this, 'reset_cache'), 11, 3 );
-
 		add_action( 'init', array( $this, 'dms_actions'), 35 );
-		add_action( 'init', array( $this, 'redirect'), 30 );
 
 		//on update make sure to publish item/ decisions have consensus
 		add_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ), 25, 3 );
@@ -182,36 +175,6 @@ class common {
 
 	}
 
-
-	/**
-	 * Redirects for proposed changes.
-	 *
-	 * @since 0.0.1
-	 */
-	function redirect() {
-
-		$change = pods_v( 'dms_action', 'get' );
-		if ( $change === 'propose-change' ) {
-			$id = intval( pods_v( 'dms_id', 'get' ) );
-			$link = get_permalink( $id );
-			$output_elements = holotree_dms_ui()->output_elements();
-			$link = $output_elements->action_append( $link, 'changing', $id );
-			wp_redirect( $link );
-			exit;
-		}
-
-	}
-
-	function notification( $uID, $message, $subject, $email = true ) {
-		if ( $this->user_exists( $uID ) ) {
-			$notification_pref = get_user_meta( $uID, 'notification_prefrence' );
-			if ( $email === true && in_array( 'email', $notification_pref ) ) {
-				$user = get_userdata( $uID );
-				wp_mail( $user->user_email, $subject, $message );
-			}
-			//add dashboard message as well.
-		}
-	}
 
 	/**
 	 * After a new decision or group is created set its status to publish and if is a decision create consensus. On any save ensure decision has a consensus.
@@ -381,14 +344,27 @@ class common {
 
 	}
 
-	function user_exists( $id ) {
-		if ( get_user_by( 'id', $id ) !== false ) {
+	/**
+	 * Check if a user exists
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function user_exists( $uID ) {
+		if ( get_user_by( 'id', $uId )  ) {
 			return true;
 
 		}
 
 	}
 
+	/**
+	 * Pass null or user ID, returns same ID or current user ID if null
+	 *
+	 * @param null $uID
+	 *
+	 * @return int|null
+	 */
 	function null_user( $uID = null ) {
 
 		if ( is_null( $uID ) ) {
