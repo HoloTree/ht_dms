@@ -14,7 +14,7 @@ namespace ht_dms\ui\output;
 class add_modify {
 
 	function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'form_style' ) );
+
 	}
 
 	/**
@@ -174,10 +174,6 @@ class add_modify {
 
 		return $ui;
 
-	}
-
-	function form_style() {
-		wp_enqueue_style( 'pods-form', false, array(), false, false );
 	}
 
 
