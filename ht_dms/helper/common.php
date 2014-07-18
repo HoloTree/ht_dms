@@ -98,30 +98,27 @@ class common {
 
 	}
 
-	/**
-	 * A message to be outputted before dms content
-	 *
-	 * @var bool|string
-	 *
-	 * @since 0.0.1
-	 */
-	static $message_text = false;
 
 	/**
 	 * Callback for action that runs at top of ht content
 	 *
-	 * @uses self::$message_text
+	 * @uses $message_text
 	 *
-	 * @return false|string Return self::$message_text if it isn't false.
+	 * @return false|string Return $message_text if it isn't false.
 	 *
 	 * @since 0.0.1
 	 */
 	function message( ) {
-		//if ( self::$message_text !== false ) {
-			return holotree_dms_ui()->elements()->alert( self::$message_text, 'success' );
+		//if ( $message_text !== false ) {
+
+
 
 		//}
 
+	}
+
+	function set_message( $message ) {
+		update_option( 'ht_dms_action_message', $message );
 	}
 
 
@@ -144,7 +141,9 @@ class common {
 
 			$link = $ui->output_elements()->action_append( '/f', 'add-consensus', $pmid );
 			$link .= '&thengo='.get_permalink( $id );
-			pods_redirect( $link );
+
+			$this->message( __( 'Proposed modification created.', 'holotree' ) );
+			$this->redirect( $link, true );
 			$action = false;
 
 		}
@@ -165,10 +164,10 @@ class common {
 		if ( false !== $action && $id  && $action !== 'changing' ) {
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
-				self::$message_text = $take_action->decision( $action, $id );
+				$message_text = $take_action->decision( $action, $id );
 			}
 			elseif( $action === 'join-group' || 'approve-pending' || 'reject_pending' ) {
-				self::$message_text = $take_action->group( $action, $id );
+				$message_text = $take_action->group( $action, $id );
 			}
 			elseif( $action === 'mark-notification' ||  'archive-notification' ) {
 				$take_action->notification( $action, $id );
@@ -177,10 +176,10 @@ class common {
 				$this->clear_dms_cache( null, false );
 			}
 			elseif ( $action === 'task-updated' ) {
-				self::$message_text = __( 'Task Updated.', 'holotree' );
+				$message_text = __( 'Task Updated.', 'holotree' );
 			}
 			elseif( $action === 'change-proposed' ) {
-				self::$message_text = __( 'Change Proposed', 'holotree' );
+				$message_text = __( 'Change Proposed', 'holotree' );
 			}
 			elseif ( $action === 'add-blocker' || 'add-blocking' || 'completed' ) {
 				//@todo still needed?
@@ -199,7 +198,25 @@ class common {
 			$take_action->comment(  pods_v( 'dms_id', 'post' ) );
 		}
 
+		$this->set_message( $message_text );
 
+
+	}
+
+	/**
+	 * Redirect with option to flag for alert output
+	 *
+	 * @param string    $destination 	URL to redirect to.
+	 * @param bool 		$alert			Option to add get var to trigger alert message.
+	 *
+	 * @since 0.0.2
+	 */
+	function redirect( $destination, $message = false ) {
+		if ( $message  ) {
+			$destination = holotree_dms_ui()->output_elements()->action_append( $destination, array ( 'var' => 'dms_message', 'value' => true ) );
+		}
+		pods_redirect( $destination );
+		
 	}
 
 

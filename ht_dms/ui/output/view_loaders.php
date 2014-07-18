@@ -289,6 +289,7 @@ class view_loaders {
 		 * @since 0.0.1
 		 */
 		$out .= do_action( 'ht_before_ht' );
+		$out .= $this->alert();
 
 		if ( apply_filters( 'ht_dms_view_title', true ) ) {
 			$name = $this->ui()->output_elements()->title( $id, null );
@@ -402,6 +403,21 @@ class view_loaders {
 		$template .= '</div>';
 
 		return $template;
+	}
+
+	/**
+	 * Outputs an alert if 'dms-alert' get var is set and true.
+	 *
+	 * @uses get_option( 'ht_dms_action_message')
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.2
+	 */
+	private function alert() {
+		if ( pods_v( 'dms-alert', 'get', false, true ) ) {
+			return holotree_dms_ui()->elements()->alert( get_option( 'ht_dms_action_message', '' ), 'success' );
+		}
 	}
 
 

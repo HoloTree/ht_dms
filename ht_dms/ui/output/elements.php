@@ -436,15 +436,28 @@ class elements {
 	 *
 	 * @TODO Impliment this throughout.
 	 *
-	 * @param 	string	$url	Base URL
-	 * @param 	string	$action	Variables, first one with no ? or &
+	 * @param 	string			$url	Base URL
+	 * @param 	string|array	$action	Variable to append. If string should be value for 'dms_action'. To set action and value pass array.
+	 *   Array arguments {
+	 * 		@type string var 	The name of the variable to append.
+	 * 		@type string value	The value of the variable.
+	 *   }
 	 *
-	 * @return 	string			URL
+	 * @return 	string					URL
 	 *
 	 * @since 	0.0.1
 	 */
 	function action_append( $url, $action, $id = false ) {
-		$action_name = apply_filters( 'ht_dms_action_name', 'dms_action' );
+		if ( is_array( $action ) ) {
+			$action_name = pods_v( 'var', $action, false, true );
+			$action = pods_v( 'value', $action, false, true );
+			if ( ! $action || ! $action_name ) {
+				holotree_error();
+			}
+		}
+		else {
+			$action_name = apply_filters( 'ht_dms_action_name', 'dms_action' );
+		}
 		$action_name = $action_name.'=';
 		if ( strpos( $url, '?' ) !== false ) {
 			$url = $url.'&'.$action_name.$action;
