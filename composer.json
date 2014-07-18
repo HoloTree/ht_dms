@@ -1,0 +1,29 @@
+{
+    "name": "holotree/ht_dms",
+    "description": "HoloTree Decision Making System.",
+    "keywords": ["wordpress", "plugin", "holotree", "gus"],
+    "homepage": "http://holotree.com/",
+    "license": "GPL v2+",
+    "authors": [
+        {
+            "name": "Josh Pollock",
+            "email": "Josh@Joshpress.net",
+            "homepage": "http://JoshPress.net",
+            "role" : "Lead Developer"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=5.4",
+        "composer/installers": "v1.0.6",
+        "holotree/holotree"
+    },
+    "extra" : {
+        "installer-name" : "ht_dms"
+    },
+    "homepage" : "http://holotree.com/",
+    "support": {
+        "issues": "https://github.com/holotree/ht_dms/issues",
+        "source": "https://github.com/holotree/ht_dms/"
+    }
+}
