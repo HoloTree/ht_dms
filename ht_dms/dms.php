@@ -201,7 +201,6 @@ abstract class dms extends object {
 			}
 
 		}
-
 		if ( $type === HT_DMS_TASK_CT_NAME ) {
 			if ( !is_null( $dID ) ) {
 				$form_fields[ 'decision' ] = $dID;
