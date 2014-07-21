@@ -123,8 +123,7 @@ class common {
 
 
 	function dms_actions() {
-
-		$action = $id = false;
+		$message_text = $action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
 
