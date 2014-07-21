@@ -104,7 +104,7 @@ class add_modify {
 	 */
 	function new_task( $obj = null, $uID = null, $dID, $oID = null ) {
 		
-		$form = holotree_task_class()->edit( null, $uID, $obj, $dID, $oID );
+		$form = holotree_task_class()->edit( null, $uID, $obj, $oID, $dID );
 
 		return $form;
 	}

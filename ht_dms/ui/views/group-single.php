@@ -43,7 +43,7 @@ if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) )
 if ( $g->is_member( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
 		'label'   => __( 'Create New Decision', 'holotree' ),
-		'content' => $ui->add_modify()->new_decision( null, $uID ),
+		'content' => $ui->add_modify()->new_decision( null, $uID, $oID ),
 	);
 }
 
