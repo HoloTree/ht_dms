@@ -207,7 +207,8 @@ class views {
 			if ( is_array( $ids ) ) {
 
 				foreach ( $ids as $id ) {
-					$proposed_changes[ $id ] = $this->decision( null, $id );
+					$pObj = holotree_decision( $id );
+					$proposed_changes[ $id ] = $this->decision( $pObj, $id );
 				}
 
 				if ( isset( $proposed_changes ) && is_array( $proposed_changes ) ) {
