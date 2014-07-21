@@ -148,7 +148,7 @@ class common {
 		}
 		elseif ( $action === 'add-consensus' ) {
 			holotree_consensus( $id );
-			pods_redirect( pods_v( 'thengo', 'get', site_url(), true ) );
+			$this->redirect( pods_v( 'thengo', 'get', site_url(), true ), __( 'Adding Consensus.', 'holotree' ) );
 		}
 		elseif( $action === 'new' ) {
 			$url = get_permalink( $id );
@@ -162,9 +162,16 @@ class common {
 		}
 
 		if ( false !== $action && $id  && $action !== 'changing' ) {
+			$output_elements = holotree_dms_ui()->output_elements();
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
 				$message_text = $take_action->decision( $action, $id );
+				if ( $action === 'propose-change' ) {
+					$link = get_permalink( $id );
+					$link = $output_elements->action_append( $link, 'changing', $id );
+
+					$this->redirect( $link, sprintf( __( 'Propose a change to %s.', 'holotree'), get_the_title( $id ) ) );
+				}
 			}
 			elseif( $action === 'join-group' || 'approve-pending' || 'reject_pending' ) {
 				$message_text = $take_action->group( $action, $id );
