@@ -151,7 +151,8 @@ class common {
 			pods_redirect( pods_v( 'thengo', 'get', site_url(), true ) );
 		}
 		elseif( $action === 'new' ) {
-			pods_redirect( $id );
+			$url = get_permalink( $id );
+			$this->redirect( $url, sprintf( __( 'New %s created.', 'holotree'), 'NEED TO DEFINE TYPE' ) );
 		}
 		elseif ( false !== $action  ) {
 			include_once( 'take_action.php' );
@@ -394,7 +395,7 @@ class common {
 	 * @return bool
 	 */
 	function user_exists( $uID ) {
-		if ( get_user_by( 'id', $uId )  ) {
+		if ( get_user_by( 'id', $uID )  ) {
 			return true;
 
 		}
