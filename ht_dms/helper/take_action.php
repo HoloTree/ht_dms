@@ -244,10 +244,10 @@ class take_action {
 			if ( $action !== 'accept-change' ) {
 				$title = $this->title( $id, $what );
 
-				$text = 'You have ' . $action . 'ed ' . $title;
+				$text = __( sprintf( 'You have %1s %22s', $action, $title ), 'holotree' );
 			}
 			else {
-				$text = __( 'Propose Modification Accepted', 'holotree' );
+				$text = __( 'Proposed Modification Accepted', 'holotree' );
 			}
 		}
 		elseif ( 'g' === $what ) {
@@ -257,17 +257,17 @@ class take_action {
 			if ( 'join-group'  === $action ) {
 				$access = $obj->field( 'open_access' );
 				if ( $access == 1 ) {
-					$text = 'You have joined '.$title;
+					$text = __( sprintf( 'You have joined %1s', $title ), 'holotree' );
 				}
 				else {
-					$text = 'Your request to join '.get_the_title( $id ).' is pending';
+					$text = __( sprintf( 'Your request to join %1s is pending', $title ), 'holotree' );
 				}
 			}
 			if ( 'reject-pending' === $action ) {
 				$user = get_userdata( $id );
 				if ( is_object( $user ) ) {
 					$user = $user->display_name;
-					$text = 'You have rejected the membership of ' . $user;
+					$text = __( sprintf( 'You have rejected the membership of %1s', $user ), 'holotree' );
 				}
 			}
 
