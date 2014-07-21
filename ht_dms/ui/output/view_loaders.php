@@ -99,6 +99,11 @@ class view_loaders {
 	 * @return bool|mixed|null|string|void
 	 */
 	function view_cache( $context, $post_type, $cache_mode = 'cache', $id = null ) {
+		//bypass cache in dev mode
+		if ( HT_DEV_MODE ) {
+			return $this->view_get( $context, $post_type );
+		}
+
 		if ( is_null( $id ) ) {
 			if ( is_home() || is_front_page() ) {
 				$id = 00;
@@ -115,7 +120,7 @@ class view_loaders {
 
 		$group = 'ht_dms_front_end_views';
 
-		if ( false === ( $value = pods_view_get( $key, $cache_mode, $group ) ) ) {
+		if (  false === ( $value = pods_view_get( $key, $cache_mode, $group ) ) ) {
 			$value = $this->view_get( $context, $post_type );
 			pods_view_set( $key, $value, 0, $cache_mode, $group );
 		}

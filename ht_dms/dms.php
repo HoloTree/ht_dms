@@ -168,14 +168,13 @@ abstract class dms extends object {
 			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
 		}
 
-
-		if ( is_null( $oID ) && ( ! $new && $type !== HT_DMS_ORGANIZATION_NAME ) ) {
+		if ( is_null( $oID ) &&  $type !== HT_DMS_ORGANIZATION_NAME  ) {
 			//find what content type we're on
 			$calling_type = holotree_get_content_type();
 
 			if ( in_array( $calling_type, $this->content_types()) ) {
 				if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
-					if ( !$new ) {
+					if ( ! $new ) {
 						$oID = $id;
 					}
 					else {
@@ -197,9 +196,6 @@ abstract class dms extends object {
 
 		}
 
-		if ( $new && $type == HT_DMS_ORGANIZATION_NAME  ) {
-
-		}
 		elseif ( ! isset( $oID ) || ! $oID  )  {
 			holotree_error( );
 		}
@@ -480,6 +476,7 @@ abstract class dms extends object {
 			}
 
 			$label = $label. ' '.$this->display_names( $type );
+
 			$form .= $obj->form( $form_fields, $label, $link );
 		}
 		else {
