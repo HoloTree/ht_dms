@@ -186,7 +186,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		return $this->output( $return, HT_DMS_GROUP_DECISION_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_DECISION_CPT_NAME, $params, $preview, $obj );
 
 	}
 
