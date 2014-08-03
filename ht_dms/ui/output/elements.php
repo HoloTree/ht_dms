@@ -647,7 +647,7 @@ class elements {
 	}
 
 	function output_container( $content, $prefix = null, $class = '' ) {
-		if ( ( function_exists( 'is_phone' ) && is_phone() ) || wp_is_mobile() || ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) ) {
+		if ( ( function_exists( 'is_phone' ) && is_phone() ) || ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) ) {
 			return $this->accordion( $content, $prefix, $class );
 		}
 		else {
