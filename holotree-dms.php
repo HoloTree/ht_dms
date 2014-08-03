@@ -236,8 +236,15 @@ function holotree_dms() {
 			add_filter( $filter, '__return_true' );
 		}
 
+		/**
+		 * Check and correct Permalinks
+		 */
+		global $wp_rewrite;
 
-
+		if ( $wp_rewrite->permalink_structure !== '/%postname%/') {
+			$wp_rewrite->set_permalink_structure('/%postname%/');
+			$wp_rewrite->flush_rules();
+		}
 
 		/**
 		 * Include class/ item functions
