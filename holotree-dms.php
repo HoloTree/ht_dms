@@ -225,6 +225,19 @@ function holotree_dms() {
 		holotree_dms_ui();
 
 
+		/**
+		 * Make REST API not require auth
+		 *
+		 * THIS MUST GET REPLACED WITH PROPER AUTH!
+		 */
+
+		$filters = array( 'pods_json_api_access_pods', 'pods_json_api_access_api' );
+		foreach ( $filters as $filter ) {
+			add_filter( $filter, '__return_true' );
+		}
+
+
+
 
 		/**
 		 * Include class/ item functions

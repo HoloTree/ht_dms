@@ -45,6 +45,7 @@ class models {
 	 * @param $args['mine'] int|bool Only for one user if true( current user) or use a user ID. Default is false
 	 * @param $args['limit'] int Default is 5.
 	 * @param $args['status'] string|null decision/task status. Default is null.
+	 * @param $args['return'] string What to return. Either the results as a template, as a Pods object, as JSON object via the REST API, or URL string to pass to the REST API  template|Pods|JSON|urlstring
 	 */
 
 
@@ -82,14 +83,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = holotree_organization_class()->object( true, $params );
-		}
-
-
-		$view = $this->path( 'organization', $preview );
-
-		return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
+		return $this->output( $return, HT_DMS_ORGANIZATION_NAME, $params, $preview, $obj );
 
 	}
 
@@ -143,14 +137,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = holotree_group_class()->object( true, $params );
-		}
-
-
-		$view = $this->path( 'group', $preview );
-
-		return $this->ui()->view_loaders()->magic_template( $view, $obj );
+		return $this->output( $return, HT_DMS_GROUP_CPT_NAME, $params, $preview, $obj );
 
 	}
 
@@ -199,13 +186,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			holotree_decision_class()->object( true, $params );
-		}
-
-		$view = $this->path( 'decision', $preview );
-
-		return $this->ui()->view_loaders()->magic_template( $view, $obj );
+		return $this->output( $return, HT_DMS_GROUP_DECISION_NAME, $params, $preview, $obj );
 
 	}
 
@@ -282,7 +263,7 @@ class models {
 
 		$view = $this->path( 'task', $preview );
 
-		return $this->ui()->view_loaders()->magic_template( $view, $obj );
+		return $this->output( $return, HT_DMS_TASK_CT_NAME, $params, $preview, $obj );
 
 	}
 
@@ -404,14 +385,18 @@ class models {
 			5 => 'limit',
 			6 => 'public',
 			7 => 'status',
+			8 => 'return',
 		);
 
-		for ( $i = 0; $i < 8; $i++ ) {
+		for ( $i = 0; $i < 9; $i++ ) {
 			$key = $params[ $i ];
 			if ( !isset( $args[ $i ]) ) {
 
 				if ( in_array( $key, array( 'obj', 'id', 'in', 'status' ) )  ) {
 					$value = null;
+				}
+				elseif ( $key === 'return' ) {
+					$value = 'template';
 				}
 				elseif( $key === 'limit' ) {
 					$value = 5;
@@ -436,6 +421,79 @@ class models {
 			return $args;
 			
 		}
+
+	}
+
+	/**
+	 * Handles Model output
+	 *
+	 * @param 	string 		$return 	What to return. Either the results as a template, as a Pods object, as JSON object via the REST API, or URL string to pass to the REST API  template|Pods|JSON|urlstring
+	 * @param 	string  	$type		Content type
+	 * @param 	array   	$params		Pods::find() params
+	 * @param 	bool 		$preview	Optional. Defaults to false. Used if returning a template.
+	 * @param 	null|Pods 	$obj		Optional. Used if returning template or Pods object. If null, an object will be built.
+	 *
+	 * @since 	0.0.2
+	 *
+	 * @return null|string|bool|Pods|JSON
+	 */
+	function output( $return, $type, $params, $preview = false, $obj = null ) {
+		if ( $return === 'template' || 'Pods' ) {
+			if ( is_null( $obj) || ! is_pod( $obj ) ) {
+				$short_type = strtolower( $type );
+				//@TODO stop assuming 'ht_dms' prefix
+				$short_type = str_replace( 'ht_dms_', '', $short_type );
+				$class = call_user_func( "holotree_{$short_type}_class" );
+				$obj = $class->null_object( null, $obj );
+				$obj = $obj->find( $params );
+			}
+			if ( $return === 'Pods' ) {
+
+				return $obj;
+			}
+			elseif ( $return === 'template' ) {
+				$view = $this->path( $type, $preview );
+
+				return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
+
+			}
+		}
+
+		if ( $return === 'JSON' || $return === 'urlstring' ) {
+			$type = strtolower( $type );
+			$url = home_url( "/wp-json/pods/{$type}?" );
+			$url .= http_build_query( $params );
+
+			if ( $return === 'urlstring' ) {
+				return $url;
+
+			}
+
+			global $wp_rewrite;
+
+			if ( $return === 'JSON' && defined( 'JSON_API_VERSION' ) && defined( 'PODS_JSON_API_VERSION' ) && $wp_rewrite->permalink_structure === '/%postname%/' ) {
+
+				$response = wp_remote_get( $url );
+				if ( is_wp_error( $response ) ) {
+					holotree_error( __METHOD__, 'invalid remote get response' );
+				}
+
+				$data = wp_remote_retrieve_body( $response );
+
+				if ( ! is_wp_error( $data )  ) {
+
+					return $data;
+
+				}
+
+			}
+			else {
+				holotree_error( array( $return,JSON_API_VERSION,PODS_JSON_API_VERSION  ));
+			}
+
+		}
+
+		return holotree_error( sprintf( 'The model you requested oculd not be returned as either %1s is an invalid value for $return or the return type you requested was unreachable', $return ) );
 
 	}
 	
