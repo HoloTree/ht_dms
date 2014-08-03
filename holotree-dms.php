@@ -237,16 +237,6 @@ function holotree_dms() {
 		}
 
 		/**
-		 * Check and correct Permalinks
-		 */
-		global $wp_rewrite;
-
-		if ( $wp_rewrite->permalink_structure !== '/%postname%/') {
-			$wp_rewrite->set_permalink_structure('/%postname%/');
-			$wp_rewrite->flush_rules();
-		}
-
-		/**
 		 * Include class/ item functions
 		 */
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
@@ -255,6 +245,23 @@ function holotree_dms() {
 
 	}
 
+
+}
+/**
+ * Check and correct Permalinks
+ */
+add_action( 'after_theme_setup', 'holotree_dms_permalinks' );
+function holotree_dms_permalinks() {
+	global $wp_rewrite;
+
+	if ( ! is_object( $wp_rewrite ) ) {
+		return;
+	}
+
+	if ( $wp_rewrite->permalink_structure !== '/%postname%/') {
+		$wp_rewrite->set_permalink_structure('/%postname%/');
+		$wp_rewrite->flush_rules();
+	}
 
 }
 
