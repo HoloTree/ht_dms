@@ -329,57 +329,65 @@ class view_loaders {
 
 	function magic_template( $view, $obj, $cache_args = null ) {
 		$no_items = __( 'No items to display', 'holotree' );
-		if (  file_exists( $view ) && class_exists( 'Pods_Templates' ) ) {
-			$view = file_get_contents( $view );
+		if ( $obj->total() > 0 ) {
+			if ( file_exists( $view ) && class_exists( 'Pods_Templates' ) ) {
 
-			if (  is_null( $cache_args )  || !is_array( $cache_args ) ) {
-				$expires = DAY_IN_SECONDS;
-				$cache_mode = 'transient';
-			}
-			else {
-				extract( $cache_args );
-			}
+				$view = file_get_contents( $view );
 
-
-			if ( is_object( $obj ) && is_pod( $obj ) ) {
-				if ( $obj->total() > 1 ) {
-					$out = '';
-					while ( $obj->fetch() ) {
-
-						//reset id
-						$obj->id = $obj->id();
-
-						$out .= $this->template( $view, $obj );
-					}
-
-
+				if ( is_null( $cache_args ) || !is_array( $cache_args ) ) {
+					$expires = DAY_IN_SECONDS;
+					$cache_mode = 'transient';
 				}
-				elseif ( is_int( $obj->id() ) ) {
+				else {
+					extract( $cache_args );
+				}
 
-					if ( (int)$obj->id() < 1 ) {
 
-						return $no_items;
+				if ( is_object( $obj ) && is_pod( $obj ) ) {
+					if ( $obj->total() > 1 ) {
+						$out = '';
+						while ( $obj->fetch() ) {
+
+							//reset id
+							$obj->id = $obj->id();
+
+							$out .= $this->template( $view, $obj );
+						}
+
 
 					}
+					elseif ( is_int( $obj->id() ) ) {
 
-					$out = $this->template( $view, $obj );
+						if ( (int)$obj->id() < 1 ) {
+
+							return $no_items;
+
+						}
+
+						$out = $this->template( $view, $obj );
+					}
 				}
+				else {
+					if ( HT_DEV_MODE ) {
+						return 'No object for template loader...';
+					}
+					return $no_items;
+				}
+
+				if ( !empty( $out ) ) {
+					return $out;
+				}
+
+
 			}
 			else {
-				if ( HT_DEV_MODE ) {
-					return 'No object for template loader...';
-				}
-				return $no_items;
+				holotree_error( sprintf( 'The view %1s could not be loaded.', $view ) );
 			}
-
-			if ( ! empty( $out ) ) {
-				return $out;
-			}
-
-
-
 		}
-		//pods_error( __METHOD__.' can not load view - '.$view);
+		else {
+			return $no_items;
+		}
+
 
 	}
 

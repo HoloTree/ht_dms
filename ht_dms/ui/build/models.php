@@ -292,7 +292,6 @@ class models {
 			$view = $view.'.'.$extension;
 		}
 
-		//return trailingslashit( HT_DMS_VIEW_DIR ).'partials/foo.php';
 		return $view;
 
 	}
@@ -439,20 +438,25 @@ class models {
 	 */
 	function output( $return, $type, $params, $preview = false, $obj = null ) {
 		if ( $return === 'template' || 'Pods' ) {
-			if ( is_null( $obj) || ! is_pod( $obj ) ) {
-				$short_type = strtolower( $type );
-				//@TODO stop assuming 'ht_dms' prefix
-				$short_type = str_replace( 'ht_dms_', '', $short_type );
-				$class = call_user_func( "holotree_{$short_type}_class" );
-				$obj = $class->null_object( null, $obj );
-				$obj = $obj->find( $params );
-			}
-			if ( $return === 'Pods' ) {
+			$short_type = strtolower( $type );
+			//@TODO stop assuming 'ht_dms' prefix
+			$short_type = str_replace( 'ht_dms_', '', $short_type );
 
+			if ( is_null( $obj) || ! is_pod( $obj ) ) {
+				if ( function_exists( "holotree_{$short_type}_class" ) ) {
+					$class = call_user_func( "holotree_{$short_type}_class" );
+					$obj = $class->null_object( NULL, $obj );
+					$obj = $obj->find( $params );
+				}
+				
+			}
+
+			if ( $return === 'Pods' ) {
 				return $obj;
+
 			}
 			elseif ( $return === 'template' ) {
-				$view = $this->path( $type, $preview );
+				$view = $this->path( $short_type, $preview );
 
 				return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
 
