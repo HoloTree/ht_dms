@@ -128,6 +128,40 @@ class HoloTree_DMS {
 		wp_enqueue_style( 'pods-select2' );
 		wp_enqueue_script( 'pods-select2' );
 		wp_enqueue_style( 'pods-form' );
+		wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array( 'jquery' ), HT_DMS_VERSION, true );
+
+		if ( is_array( $this->ajax_vars() ) ) {
+			wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
+		}
+	}
+
+	/**
+	 * Variables to pass into htDMS JavaScript object, via ht-dms.js
+	 *
+	 * @return array|mixed|void
+	 *
+	 * @since 0.0.2
+	 */
+	function htDMS_js_var() {
+		$htDMS = array(
+			'ajaxURL' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'ht-dms' ),
+		);
+
+		/**
+		 * Override or add to variables passed into htDMS JavaScript object.
+		 *
+		 * Set to null to prevent the object from being created.
+		 *
+		 * @param 	array $htDMS An array of items to pass into the object.
+		 *
+		 * @return 				 The array
+		 *
+		 * @since 	0.0.2
+		 */
+		$htDMS = apply_filters( 'ht_dms_htDMS_js_var', $htDMS );
+
+		return $htDMS;
 	}
 
 	/**
@@ -266,3 +300,11 @@ function holotree_dms_permalinks() {
 }
 
 
+function holotree_dms_setup() {
+	include_once( trailingslashit( HT_DMS_DIR ).'setup/setup.php' );
+	ht_dms\setup\setup::init();
+}
+
+function foo() {
+	echo 'FOO!';
+}

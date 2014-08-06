@@ -213,3 +213,56 @@ function holotree_dms_common_class() {
 	return ht_dms\helper\common::init();
 
 }
+
+/**
+ * Get any view defined in the ht_dms\ui\build\views class
+ *
+ * Wrapper for ht_dms\ui\build\views::get_view(). Exists to power holotree_dms_ui_ajax_view(), but can be used independently.
+ *
+ * @param string $view The name of any method in the class.
+ * @param array $args An array of arguments in order for the chosen method.
+ * @param null|string Optional. What to return. If used overrides, $args[ 'return'] Options: template|Pods|JSON|urlstring
+ *
+ * @return null|string|obj|Pods|JSON
+ *
+ * @since 0.0.1
+ */
+function holotree_dms_ui_get_view( $view, $args, $return = null ) {
+
+	return holotree_dms_ui()->get_view( $view, $args, $return );
+
+}
+
+/**
+ * Loads a view from the ht_dms\ui\build\views class via AJAX
+ *
+ * @return null|string|obj|Pods|JSON
+ *
+ * @since 0.0.1
+ */
+add_action( 'wp_ajax_holotree_dms_ui_ajax_view', 'holotree_dms_ui_ajax_view');
+add_action( 'wp_ajax_nopriv_holotree_dms_ui_ajax_view', 'holotree_dms_ui_ajax_view' );
+function holotree_dms_ui_ajax_view() {
+	if ( ! wp_verify_nonce( $_REQUEST['nonce'],  'ht-dms' ) ) {
+		wp_die( __( 'Your attempt to request data via ajax using the function holotree_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' );
+	}
+
+	if ( isset( $_REQUEST[ 'view' ] ) && isset( $_REQUEST[ 'args' ] ) ) {
+		$view = $_REQUEST[ 'view' ];
+		$args = $_REQUEST[ 'args' ];
+	}
+	else {
+		exit;
+	}
+
+	$methods = get_class_methods( holotree_dms_ui()->views() );
+
+	if ( is_array( $methods ) && in_array( $view, $methods ) && ! in_array( $view, array( 'ui', 'models', 'type_view', 'init' ) ) ) {
+
+		wp_die(  holotree_dms_ui_get_view( $view, $args ) );
+
+	}
+
+
+}
+
