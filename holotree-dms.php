@@ -130,7 +130,7 @@ class HoloTree_DMS {
 		wp_enqueue_style( 'pods-form' );
 		wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array( 'jquery' ), HT_DMS_VERSION, true );
 
-		if ( is_array( $this->ajax_vars() ) ) {
+		if ( is_array( $this->htDMS_js_var() ) ) {
 			wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
 		}
 	}
@@ -299,12 +299,9 @@ function holotree_dms_permalinks() {
 
 }
 
-
+/*
 function holotree_dms_setup() {
 	include_once( trailingslashit( HT_DMS_DIR ).'setup/setup.php' );
 	ht_dms\setup\setup::init();
 }
-
-function foo() {
-	echo 'FOO!';
-}
+*/
