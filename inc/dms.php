@@ -219,9 +219,9 @@ function holotree_dms_common_class() {
  *
  * Wrapper for ht_dms\ui\build\views::get_view(). Exists to power holotree_dms_ui_ajax_view(), but can be used independently.
  *
- * @param string $view The name of any method in the class.
- * @param array $args An array of arguments in order for the chosen method.
- * @param null|string Optional. What to return. If used overrides, $args[ 'return'] Options: template|Pods|JSON|urlstring
+ * @param string 		$view 	The name of any method in the class.
+ * @param array 		$args 	An array of arguments in order for the chosen method.
+ * @param null|string 	$return	Optional. What to return. If used overrides, $args[ 'return'] Options: template|Pods|JSON|urlstring
  *
  * @return null|string|obj|Pods|JSON Either HTML for the view, Pods object, JSON object of the posts, or a URL string to get those posts via REST API.
  *

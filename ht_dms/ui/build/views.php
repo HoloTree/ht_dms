@@ -13,18 +13,32 @@ namespace ht_dms\ui\build;
 
 class views {
 
+	/**
+	 * Get the models class
+	 *
+	 * @return object|models
+	 *
+	 * @since 0.0.1
+	 */
 	function models() {
 		include_once( trailingslashit( HT_DMS_UI_DIR ).'build/models.php' );
 
 		return models::init();
 	}
 
-	function type_view( $type, $args ) {
-
-		return $this->ui()->view_loaders()->type_view( $type, $args );
-
-	}
-
+	/**
+	 * Get the users_groups view - All groups a user is a member of.
+	 *
+	 * @param	Pods|null	$obj		Optional. A Pods object.
+	 * @param 	int|null  	$uID        Optional. ID of user to get. If null, the default, current user's groups are shown.
+	 * @param 	int|null  	$oID        Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
+	 * @param 	int       	$limit      Optional. Number of groups to return. Default is 5.
+	 * @param null|string 	$return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function users_groups( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template'  ) {
 		$args = array(
 			'obj' 		=> $obj,
@@ -39,6 +53,18 @@ class views {
 
 	}
 
+	/**
+	 * Get the public_groups view - All public groups
+	 *
+	 * @param    Pods|null 	$obj 		Optional. A Pods object.
+	 * @param 	int|null  	$oID        Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
+	 * @param 	int       	$limit      Optional. Number of groups to return. Default is 5.
+	 * @param null|string 	$return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          	Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function public_groups( $obj = null, $oID = null, $limit = 5, $return = 'template'  ) {
 
 		$args = array(
@@ -53,7 +79,19 @@ class views {
 
 	}
 
-
+	/**
+	 * Get the assigned_tasks view - All tasks a user is assigned to.
+	 *
+	 * @param	Pods|null	$obj		Optional. A Pods object.
+	 * @param 	int|null  	$uID        Optional. ID of user to get tasks for. If null, the default, current user's tasks are shown.
+	 * @param 	int|null  	$oID        Optional. ID of organization to limit tasks to. If null, the default, tasks in all organizations are returned.
+	 * @param 	int       	$limit      Optional. Number of tasks to return. Default is 5.
+	 * @param  	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function assigned_tasks( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template'  ) {
 
 		$args = array(
@@ -69,6 +107,18 @@ class views {
 
 	}
 
+	/**
+	 * Get the users_organizations view - All organizations a user is a member of.
+	 *
+	 * @param    Pods|null $obj Optional. A Pods object.
+	 * @param 	 int|null  	$uID        Optional. ID of user to get organizations for. If null, the default, current user's organizations are shown.
+	 * @param 	 int       	$limit      Optional. Number of organizations to return. Default is 5.
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function users_organizations( $obj = null, $uID = null, $limit = 5, $return = 'template'  ) {
 
 		$args = array(
@@ -83,26 +133,18 @@ class views {
 
 	}
 
-	function _decisions_tasks( $obj, $id, $limit = 5, $return = 'template'  ) {
-
-		$in = array(
-			'id' 	=> $id,
-			'what' 	=> HT_DMS_DECISION_CPT_NAME,
-			'return'	=> $return,
-		);
-
-		$args = array(
-			'obj' 		=> $obj,
-			'in'		=> $in,
-			'limit' 	=> $limit,
-			'preview' 	=> true,
-			'return'	=> $return,
-		);
-
-		return $this->models()->task( $args );
-
-	}
-
+	/**
+	 * Get the decisions_tasks view - All (or some) tasks for a decision.
+	 *
+	 * @param   Pods|null $obj 			Optional. A Pods object.
+	 * @param 	int|null  $id          ID of decision to get tasks from.
+	 * @param 	int       $limit       Optional. Number of tasks to return. Default is 5. Use -1 for all.
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function decisions_tasks( $obj = null, $id, $limit = 5, $return = 'template'  ) {
 		$params[ 'where' ] = 'decision.ID = "'.$id.'"';
 		$params[ 'limit'] = $limit;
@@ -120,6 +162,17 @@ class views {
 
 	}
 
+	/**
+	 * Get single organization view.
+	 *
+	 * @param   Pods|null 	$obj 		Optional. A Pods object.
+	 * @param 	int       	$id         ID of organization to get
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function organization( $obj = null, $id, $return = 'template'  ) {
 
 		$args = array(
@@ -133,6 +186,17 @@ class views {
 		
 	}
 
+	/**
+	 * Get single group view.
+	 *
+	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   int  		$id
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function group( $obj = null, $id, $return = 'template'  ) {
 
 		$args = array(
@@ -146,6 +210,17 @@ class views {
 
 	}
 
+	/**
+	 * Get single decision view.
+	 *
+	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   int  		$id
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function decision( $obj = null, $id, $return = 'template'  ) {
 
 		$args = array(
@@ -159,6 +234,17 @@ class views {
 
 	}
 
+	/**
+	 * Get task decision view.
+	 *
+	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   int  		$id
+	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 *
+	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @since   0.0.2
+	 */
 	function task( $obj = null, $id, $return = 'template'  ) {
 
 		$args = array(
