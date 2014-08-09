@@ -196,4 +196,15 @@ jQuery(document).ready(function($) {
 
     }
 
+    window.usersGroups = usersGroups;
+    window.publicGroups = publicGroups;
+    window.assignedTasks = assignedTasks;
+    window.usersOrganizations = usersOrganizations;
+    window.decisionsTasks = decisionsTasks;
+    window.organization = organization;
+    window.group = group;
+    window.decision = decision;
+    window.task = task;
+
+
 });
