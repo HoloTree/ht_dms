@@ -2,8 +2,16 @@ jQuery(document).ready(function($) {
     ajaxURL = htDMS.ajaxURL;
 
     var data;
-    //main function for getting views
-    function viewGet( view, args, returnType ) {
+
+    /**
+     * Allows for getting views of the ht_dms\ui\build\views class via AJAX
+     *
+     * @param view Which view to get. Options: users_groups|public_groups|assigned_tasks|users_organizations|decision_tasks|organization|group|decision|task
+     * @param args Array of arguments, varies by view.
+     * @param returnType  Optional. What to return. Options: template|JSON|urlstring
+     * @param put The ID of the container to put the view in.
+     */
+    function viewGet( view, args, returnType, put ) {
         $.get(
             ajaxURL, {
                 'action': 'holotree_dms_ui_ajax_view',
@@ -15,11 +23,13 @@ jQuery(document).ready(function($) {
             function( response ) {
                 if ( response != undefined ) {
                     data = response;
+                    document.getElementById( put ).innerHTML = data;
                 }
+
+                return data;
             }
         )
     }
-
 
 
     //defaults for our view getters
@@ -28,11 +38,17 @@ jQuery(document).ready(function($) {
     var uID = null;
     var oID = null;
 
+    //viewGet( 'users_groups', ['null', uID, limit ], returnType, "#here" );
+
+
+
+
     /**
      * Get the users_groups view - All groups a user is a member of.
      *
      * AJAX wrapper for ht_dms\ui\build\views::users_groups()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int|null  uID         Optional. ID of user to get. If null, the default, current user's groups are shown.
      * @param int|null  oID         Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
      * @param int       limit       Optional. Number of groups to return. Default is 5.
@@ -42,9 +58,9 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function usersGroups( uID, oID, limit, returnType ) {
+    function usersGroups( put, uID, oID, limit, returnType, put ) {
 
-        return viewGet( 'users_groups', ['null', uID, limit ], 'template' );
+        return viewGet( 'users_groups', ['null', uID, limit ], returnType, put );
 
     }
 
@@ -53,6 +69,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::public_groups()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int|null  oID         Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
      * @param int       limit       Optional. Number of groups to return. Default is 5.
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
@@ -61,7 +78,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function publicGroups( oID, limit, returnType ) {
+    function publicGroups( put, oID, limit, returnType ) {
 
         return viewGet( 'public_groups', [ 'null', oID, limit ], returnType );
 
@@ -72,6 +89,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::assigned_tasks()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int|null  uID         Optional. ID of user to get assigned tasks for. If null, the default, current user's tasks are shown.
      * @param int|null  oID         Optional. ID of organization to limit tasks to. If null, the default, tasks in all organizations are returned.
      * @param int       limit       Optional. Number of tasks to return. Default is 5.
@@ -81,7 +99,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function assignedTasks( uID, oID, limit, returnType ) {
+    function assignedTasks( put, uID, oID, limit, returnType ) {
 
         return viewGet( 'assigned_tasks', [ 'null', uID, oID, limit ], returnType );
     }
@@ -91,6 +109,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::users_organizations()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int|null  uID         Optional. ID of user to get organizations for. If null, the default, current user's organizations are shown.
      * @param int       limit       Optional. Number of organizations to return. Default is 5.
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
@@ -99,7 +118,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function usersOrganizations( uID, limit, returnType ) {
+    function usersOrganizations( put, uID, limit, returnType ) {
 
         return viewGet( 'users_organizations', [ 'null', uID, limit ], returnType );
 
@@ -110,6 +129,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::decisions_tasks()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int|null  ID          ID of decision to get tasks from.
      * @param int       limit       Optional. Number of tasks to return. Default is 5. Use -1 for all.
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
@@ -118,7 +138,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function decisionsTasks( ID, limit, returnType ) {
+    function decisionsTasks( put, ID, limit, returnType ) {
 
         return viewGet( 'decisions_tasks', [ 'null', ID, limit ], returnType );
 
@@ -129,6 +149,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::organization()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int       ID          ID of organization to get
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
      *
@@ -136,7 +157,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function organization( ID, returnType ) {
+    function organization( put, ID, returnType ) {
 
         return viewGet( 'organization', [ 'null', ID ], returnType );
 
@@ -147,6 +168,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::group()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int       ID          ID of group to get.
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
      *
@@ -154,7 +176,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function group( ID, returnType ) {
+    function group( put, ID, returnType ) {
 
         return viewGet( 'group', [ 'null', ID ], returnType );
 
@@ -165,6 +187,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::decision()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int       ID          ID of decision to get
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
      *
@@ -172,7 +195,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function decision( ID, returnType ) {
+    function decision( put, ID, returnType ) {
 
         return viewGet( 'decision', [ 'null', ID ], returnType );
 
@@ -183,6 +206,7 @@ jQuery(document).ready(function($) {
      *
      * AJAX wrapper for ht_dms\ui\build\views::task()
      *
+     * @param string    put         The ID of the container to put data in.
      * @param int       ID          ID of task to get
      * @param string    returnType  Optional. What to return. Options: template|JSON|urlstring
      *
@@ -190,7 +214,7 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function task( ID ) {
+    function task( put, ID ) {
 
         return viewGet( 'task', [ 'null', ID ], returnType );
 
