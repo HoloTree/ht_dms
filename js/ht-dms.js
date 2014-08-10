@@ -23,10 +23,12 @@ jQuery(document).ready(function($) {
             function( response ) {
                 if ( response != undefined ) {
                     data = response;
-                    document.getElementById( put ).innerHTML = data;
+
+                }
+                if ( data !== null ) {
+                    return data;
                 }
 
-                return data;
             }
         )
     }
