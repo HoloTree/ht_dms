@@ -22,9 +22,39 @@ class view_loaders {
 	 */
 	function view_loaders( $view ) {
 		$post_type = get_post_type();
+		if ( defined( 'HT_NEW_VIEW' ) && HT_NEW_VIEW  ) {
+			return $this->new_view();
+		}
+
 		$context = $this->view_context( $post_type );
 
 		return $this->view_cache( $context, $post_type );
+
+	}
+
+	/**
+	 * Outputs layout for new JS-based UI
+	 *
+	 * @return string
+	 */
+	function new_view() {
+		$main_view = apply_filters( 'ht_dms_main_view', trailingslashit( HT_DMS_VIEW_DIR ).'dms.html' );
+
+		if ( file_exists( $main_view ) ) {
+			$main_view = file_get_contents( $main_view );
+			$main_view = str_replace( '{{main_title}}', $this->main_title( $this->id() ), $main_view );
+			$out = $main_view;
+			if ( is_string( $out ) ) {
+				return $out;
+			}
+		} else {
+			holotree_error();
+		}
+
+	}
+
+	function inline_data() {
+
 
 	}
 
@@ -102,15 +132,6 @@ class view_loaders {
 		//bypass cache in dev mode
 		if ( HT_DEV_MODE ) {
 			return $this->view_get( $context, $post_type );
-		}
-
-		if ( is_null( $id ) ) {
-			if ( is_home() || is_front_page() ) {
-				$id = 00;
-			}
-			else {
-				$id = get_queried_object_id();
-			}
 		}
 
 		$uID = get_current_user_id();
@@ -239,51 +260,8 @@ class view_loaders {
 
 	}
 
-	/**
-	 * Wrap HoloTree DMS content in div and add title
-	 *
-	 * @param   string 	$content What to wrap
-	 *
-	 * @return 	string			Wrapped content
-	 *
-	 * @since	0.0.1
-	 */
-	function _content_wrap( $content  ) {
-
-
-		$obj = get_queried_object();
-		if( !is_object( $obj) ) {
-
-			print_c3( get_queried_object() );
-		}
-		$id = $obj->ID;
-		if ( isset( $obj->term_id ) ) {
-			$name = $obj->name;
-			$type = 'tax';
-		}
-		else {
-			$name = $obj->post_title;
-			$type = $obj = 'post';
-		}
-		if ( is_home() || is_front_page() ) {
-			$name = __( 'HoloTree', 'holotree' );
-		}
-
-		$out = '<div class="holotree" id="'.$id.'">';
-		if ( apply_filters( 'ht_dms_view_title', true ) ) {
-			$class = 'entry-title';
-			$class = apply_filters( 'ht_dms_entry_title_class', $class );
-			$out .= '<h2 class="' . $class . '">' . $name . '</h2>';
-		}
-		$out .= $content;
-		$out .= '</div>';
-
-		return $out;
-
-	}
-
 	function content_wrap( $content ) {
-		$id = get_queried_object_id();
+		$id = $this->id();
 
 		$out = '<div class="holotree" id="'.$id.'">';
 		/**
@@ -296,21 +274,8 @@ class view_loaders {
 		$out .= do_action( 'ht_before_ht' );
 		$out .= $this->alert();
 
-		if ( apply_filters( 'ht_dms_view_title', true ) ) {
-			$name = $this->ui()->output_elements()->title( $id, null );
-			$class = 'entry-title';
+		$out .= $this->main_title( $id );
 
-			/**
-			 * Change or add to title class
-			 *
-			 * @param string $class
-			 *
-			 * @since 0.0.1
-			 */
-			$class = apply_filters( 'ht_dms_entry_title_class', $class );
-
-			$out .= '<h2 class="' . $class . '">' . $name . '</h2>';
-		}
 		$out .= $content;
 
 		/**
@@ -325,6 +290,40 @@ class view_loaders {
 		$out .= '</div>';
 
 		return $out;
+	}
+
+	function main_title( $id ) {
+		if ( apply_filters( 'ht_dms_view_title', true ) ) {
+			$name = $this->ui()->output_elements()->title( $id, null );
+			$class = 'entry-title';
+
+			/**
+			 * Change or add to title class
+			 *
+			 * @param string $class
+			 *
+			 * @since 0.0.1
+			 */
+			$class = apply_filters( 'ht_dms_entry_title_class', $class );
+
+			$out = '<h2 class="' . $class . '">' . $name . '</h2>';
+		}
+
+		if ( isset( $out ) ) {
+			return $out;
+		}
+	}
+
+	private function id() {
+		if ( is_home() || is_front_page() ) {
+			$id = 00;
+		}
+		else {
+			$id = get_queried_object_id();
+		}
+
+		return $id;
+
 	}
 
 	function magic_template( $view, $obj, $cache_args = null ) {
