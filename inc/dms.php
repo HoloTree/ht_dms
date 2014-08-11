@@ -261,6 +261,12 @@ function holotree_dms_ui_ajax_view() {
 			$return = $_REQUEST[ 'returnType' ];
 		}
 
+		if ( $return === 'JSON' || 'urlstring' ) {
+			if ( ! defined( 'PODS_JSON_API_VERSION' ) || ! defined( 'JSON_API_VERSION' ) ) {
+				wp_die( __( 'Error! Error! You must install Pods JSON API and WordPress REST API to get objects from the API!', 'holotree' ) );
+			}
+		}
+
 		$methods = get_class_methods( holotree_dms_ui()->views() );
 
 		if ( is_array( $methods ) && in_array( $view, $methods ) && ! in_array( $view, array ( 'ui', 'models', 'type_view', 'init' ) ) ) {
