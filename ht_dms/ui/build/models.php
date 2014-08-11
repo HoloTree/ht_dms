@@ -38,7 +38,7 @@ class models {
 	/**
 	 * PARAMS FOR ALL MODELS
 	 *
-	 * @param $args['obj'] Pods|obj|null Default is null.
+	 * @param $args['obj'] Pods|obj|null|string Pods object. Default is null. If is string, value will be swapped into $args['return'] and $args['obj'] will be set to null. If is null or string, an object will be created.
 	 * @param $args['id'] int|null. Set an ID to show single item. Default is false.
 	 * @param $args['preview'] bool Default is false
 	 * @param $args['in'] Default is null.
@@ -413,6 +413,11 @@ class models {
 
 
 
+		}
+
+		if ( is_string( $args[ 'obj' ] ) ) {
+			$args[ 'return' ] = $args[ 'obj' ];
+			$args[ 'obj' ] = null;
 		}
 
 		if ( isset( $args) && is_array( $args ) ) {

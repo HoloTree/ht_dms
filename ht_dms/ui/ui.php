@@ -87,7 +87,9 @@ class ui {
 		$views = $this->views();
 
 		if ( ! is_null( $return ) ) {
-			$args[ 'return' ] = $return;
+			end( $args );
+			echo $last_id= key( $args );
+			$args[ $last_id ] = $return;
 		}
 
 		return call_user_func_array( array( $views, $view ), $args );

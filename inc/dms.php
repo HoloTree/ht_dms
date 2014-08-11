@@ -263,14 +263,26 @@ function holotree_dms_ui_ajax_view() {
 
 		$methods = get_class_methods( holotree_dms_ui()->views() );
 
-		if ( is_array( $methods ) && in_array( $view, $methods ) && !in_array( $view, array ( 'ui', 'models', 'type_view', 'init' ) ) ) {
+		if ( is_array( $methods ) && in_array( $view, $methods ) && ! in_array( $view, array ( 'ui', 'models', 'type_view', 'init' ) ) ) {
 
 			wp_die( holotree_dms_ui_get_view( $view, $args, $return ) );
 
 		}
 	}
 	else {
-		exit;
+		if (  ! ( defined ( 'HT_DEV_MODE' ) || ! HT_DEV_MODE ) ) {
+			exit;
+		}
+		else {
+			wp_die( print_r2(
+					array(
+						'v' => $view,
+						'args' => $args,
+						'request' => $_REQUEST,
+					)
+				)
+			);
+		}
 	}
 
 

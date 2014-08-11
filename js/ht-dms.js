@@ -21,17 +21,28 @@ jQuery(document).ready(function($) {
                 'returnType' : returnType
             },
             function( response ) {
+
                 if ( response != undefined ) {
                     data = response;
 
                 }
+
+                if ( returnType === 'JSON' ) {
+                    return response;
+                }
+
+                if ( data !== null && put != undefined && put !== null ) {
+                    document.getElementById( put ).innerHTML = data;
+                }
+
                 if ( data !== null ) {
                     return data;
                 }
 
             }
-        )
+        );
     }
+
 
 
     //defaults for our view getters
@@ -39,10 +50,6 @@ jQuery(document).ready(function($) {
     var returnType = 'template';
     var uID = null;
     var oID = null;
-
-    //viewGet( 'users_groups', ['null', uID, limit ], returnType, "#here" );
-
-
 
 
     /**
@@ -60,9 +67,9 @@ jQuery(document).ready(function($) {
      *
      * @since   0.0.2
      */
-    function usersGroups( put, uID, oID, limit, returnType, put ) {
+    function usersGroups( put, uID, oID, limit, returnType ) {
 
-        return viewGet( 'users_groups', ['null', uID, limit ], returnType, put );
+        return viewGet( 'users_groups', [ returnType, uID, oID, limit ], returnType, put );
 
     }
 
@@ -82,7 +89,7 @@ jQuery(document).ready(function($) {
      */
     function publicGroups( put, oID, limit, returnType ) {
 
-        return viewGet( 'public_groups', [ 'null', oID, limit ], returnType );
+        return viewGet( 'public_groups', [ returnType, oID, limit ], returnType );
 
     }
 
@@ -103,7 +110,7 @@ jQuery(document).ready(function($) {
      */
     function assignedTasks( put, uID, oID, limit, returnType ) {
 
-        return viewGet( 'assigned_tasks', [ 'null', uID, oID, limit ], returnType );
+        return viewGet( 'assigned_tasks', [ returnType, uID, oID, limit ], returnType );
     }
 
     /**
@@ -122,7 +129,7 @@ jQuery(document).ready(function($) {
      */
     function usersOrganizations( put, uID, limit, returnType ) {
 
-        return viewGet( 'users_organizations', [ 'null', uID, limit ], returnType );
+        return viewGet( 'users_organizations', [ returnType, uID, limit ], returnType );
 
     }
 
@@ -142,7 +149,7 @@ jQuery(document).ready(function($) {
      */
     function decisionsTasks( put, ID, limit, returnType ) {
 
-        return viewGet( 'decisions_tasks', [ 'null', ID, limit ], returnType );
+        return viewGet( 'decisions_tasks', [ returnType, ID, limit ], returnType );
 
     }
 
@@ -161,7 +168,7 @@ jQuery(document).ready(function($) {
      */
     function organization( put, ID, returnType ) {
 
-        return viewGet( 'organization', [ 'null', ID ], returnType );
+        return viewGet( 'organization', [ returnType, ID ], returnType );
 
     }
 
@@ -180,7 +187,7 @@ jQuery(document).ready(function($) {
      */
     function group( put, ID, returnType ) {
 
-        return viewGet( 'group', [ 'null', ID ], returnType );
+        return viewGet( 'group', [ returnType, ID ], returnType );
 
     }
 
@@ -199,7 +206,7 @@ jQuery(document).ready(function($) {
      */
     function decision( put, ID, returnType ) {
 
-        return viewGet( 'decision', [ 'null', ID ], returnType );
+        return viewGet( 'decision', [ returnType, ID ], returnType );
 
     }
 
@@ -218,7 +225,7 @@ jQuery(document).ready(function($) {
      */
     function task( put, ID ) {
 
-        return viewGet( 'task', [ 'null', ID ], returnType );
+        return viewGet( 'task', [ returnType, ID ], returnType );
 
     }
 
