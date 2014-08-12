@@ -7,15 +7,22 @@ jQuery(document).ready(function( $ ) {
     var uID = null;
     var oID = null;
 
-    //var y = document.createElement( "someDiv");
 
-    //var x = usersGroups( "someDiv", uID,  oID, limit,  returnType  );
+    // var x = usersGroups( "someDiv", uID,  oID, limit,  "template"  );
 
-    $('#someButton').click(function() {
-        $('#someDIV').appendChild( x );
-    });
+// console.log(window.ported);
+    // $('#someButton').click(function() {
+    //     // console.log(window.ported);
+    //     // var p = window.ported;
+    //     // console.log(p);
+    //     var markup = window.ported;
+    //     // console.log(markup);
+    //     var main = $('#ht-dms-main');
+    //     main.innerHTML = markup;
+    //     console.log(main.innerHTML);
+    // });
 
-decision( "ht-dms-main", 278, returnType );
+// decision( "ht-dms-main", 278, returnType );
     //publicGroups( "ht-dms-main", 291, limit,  returnType );
 
 

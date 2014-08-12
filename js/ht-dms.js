@@ -2,6 +2,7 @@ jQuery(document).ready(function($) {
     ajaxURL = htDMS.ajaxURL;
 
     var data;
+    var portOut = '';
 
     /**
      * Allows for getting views of the ht_dms\ui\build\views class via AJAX
@@ -11,6 +12,12 @@ jQuery(document).ready(function($) {
      * @param returnType  Optional. What to return. Options: template|JSON|urlstring
      * @param put The ID of the container to put the view in.
      */
+     function portIt(port) {
+        // console.log("ran");
+        portOut = port;
+        // console.log(portOut);
+        return toWindow(portOut);
+     }
     function viewGet( view, args, returnType, put ) {
         $.get(
             ajaxURL, {
@@ -21,27 +28,23 @@ jQuery(document).ready(function($) {
                 'returnType' : returnType
             },
             function( response ) {
+                var string = response.toString();
 
-                if ( response != undefined ) {
-                    data = response;
+                // console.log( string );
+                // alert(string.charAt(0));
+                var port = string.slice(1,3119);
+                portOut += port;
 
-                }
+                return portIt(portOut);
 
-                if ( returnType === 'JSON' ) {
-                    return response;
-                }
+                // console.log(portOut);
 
-                if ( data !== null && put != undefined && put !== null ) {
-                    document.getElementById( put ).innerHTML = data;
-                }
-
-                if ( data !== null ) {
-                    return data;
-                }
+              
 
             }
         );
     }
+
 
 
 
@@ -229,15 +232,19 @@ jQuery(document).ready(function($) {
 
     }
 
-    window.usersGroups = usersGroups;
-    window.publicGroups = publicGroups;
-    window.assignedTasks = assignedTasks;
-    window.usersOrganizations = usersOrganizations;
-    window.decisionsTasks = decisionsTasks;
-    window.organization = organization;
-    window.group = group;
-    window.decision = decision;
-    window.task = task;
+        window.usersGroups = usersGroups;
+        window.publicGroups = publicGroups;
+        window.assignedTasks = assignedTasks;
+        window.usersOrganizations = usersOrganizations;
+        window.decisionsTasks = decisionsTasks;
+        window.organization = organization;
+        window.group = group;
+        window.decision = decision;
+        window.task = task;
+    function toWindow(port) {
+        window.ported = port;
+        // console.log(window.ported);
+    }
 
 
 });
