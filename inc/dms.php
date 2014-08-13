@@ -282,7 +282,7 @@ function holotree_dms_ui_ajax_view() {
 		else {
 			wp_die( print_r2(
 					array(
-						'v' => $view,
+						'view' => $view,
 						'args' => $args,
 						'request' => $_REQUEST,
 					)

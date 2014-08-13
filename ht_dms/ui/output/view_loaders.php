@@ -171,7 +171,7 @@ class view_loaders {
 		}
 
 		if ( $context === 'task' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ) );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ), true );
 		}
 
 	}
