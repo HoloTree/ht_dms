@@ -1,6 +1,4 @@
 <?php
-
-
 	$t = holotree_task_class();
 
 	$obj = $t->item( get_queried_object_id() );
@@ -9,8 +7,6 @@
 	$dID = (int) $obj->display( 'decision.ID' );
 
 	$ui = holotree_dms_ui();
-
-	echo '<h2>'.$ui->elements()->title( $id, $obj, true  ).'</h2>';
 
 	$tabs = array(
 		array(
@@ -33,4 +29,4 @@
 		),
 	);
 
-	echo $ui->elements()->output_container( $tabs );
+	return $ui->elements()->output_container( $tabs );

@@ -27,9 +27,21 @@ class view_loaders {
 		}
 
 		$context = $this->view_context( $post_type );
+		if ( $context !== 'task' ) {
+			return $this->view_cache( $context, $post_type );
+		}
 
-		return $this->view_cache( $context, $post_type );
+	}
 
+	/**
+	 * Creates the single view template for tasks.
+	 */
+	function task_view( $view ) {
+		if ( get_query_var( 'taxonomy' ) === HT_DMS_TASK_CT_NAME ) {
+			return $this->view_cache( 'task', null );
+		}
+
+		return $view;
 	}
 
 	/**
@@ -38,7 +50,26 @@ class view_loaders {
 	 * @return string
 	 */
 	function new_view() {
-		$main_view = apply_filters( 'ht_dms_main_view', trailingslashit( HT_DMS_VIEW_DIR ).'dms.html' );
+		$phone = $this->mobile_detect();
+
+		$main_view = 'dms-tabs.html';
+		if ( $phone ) {
+			$main_view = 'dms-accordion.html';
+		}
+
+		$main_view = trailingslashit( HT_DMS_VIEW_DIR ).$main_view;
+
+		/**
+		 * Change which view file is used.
+		 *
+		 * @param string $main_view Path to file to be loaded.
+		 * @param bool $phone Whether mobile detection returned as phone view or not.
+		 *
+		 * @return string Path to view to load.
+		 *
+		 * @since 0.0.2
+		 */
+		$main_view = apply_filters( 'ht_dms_main_view', $main_view, $phone  );
 
 		if ( file_exists( $main_view ) ) {
 			$main_view = file_get_contents( $main_view );
@@ -53,10 +84,28 @@ class view_loaders {
 
 	}
 
+
+	/**
+	 * Mobile-device detection
+	 *
+	 * @return bool True if phone view false if not
+	 * @since 0.0.2
+	 */
+	function mobile_detect() {
+		if (  ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) || ( function_exists( 'is_phone' ) && is_phone() ) || wp_is_mobile() ) {
+
+			return true;
+
+		}
+
+	}
+
 	function inline_data() {
 
 
 	}
+
+
 
 	/**
 	 * View loaders based on the content filter.
@@ -219,27 +268,6 @@ class view_loaders {
 
 	}
 
-	/**
-	 * Creates the single view template for tasks.
-	 *
-	 * @param $template
-	 *
-	 * @uses 'tempalte_include' filter
-	 *
-	 * @return string
-	 *
-	 * @since 0.0.1
-	 */
-	function task_view( $template ) {
-		$v = pods_v( 'ht_dms_task', 'get', false, true );
-		if ( $v != false ) {
-			$template = trailingslashit( HT_DMS_VIEW_DIR ).'task-single.php';
-		}
-
-		return $template;
-
-	}
-
 	function sidebar( $name ) {
 		$name = apply_filters( 'ht_sidebar', $name );
 		echo $this->sidebar_loader( $name );
@@ -260,7 +288,17 @@ class view_loaders {
 
 	}
 
-	function content_wrap( $content ) {
+	/**
+	 * Prepares content for output
+	 *
+	 * @param 	string  $content 	The content to wrap.
+	 * @param 	bool 	$task		Optional. If is task or not. Default is false.
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.2
+	 */
+	function content_wrap( $content, $task = false ) {
 		$id = $this->id();
 
 		$out = '<div class="holotree" id="'.$id.'">';
@@ -274,7 +312,7 @@ class view_loaders {
 		$out .= do_action( 'ht_before_ht' );
 		$out .= $this->alert();
 
-		$out .= $this->main_title( $id );
+		$out .= $this->main_title( $id, $task );
 
 		$out .= $content;
 
@@ -292,9 +330,9 @@ class view_loaders {
 		return $out;
 	}
 
-	function main_title( $id ) {
+	function main_title( $id, $task = false ) {
 		if ( apply_filters( 'ht_dms_view_title', true ) ) {
-			$name = $this->ui()->output_elements()->title( $id, null );
+			$name = $this->ui()->output_elements()->title( $id, null, $task );
 			$class = 'entry-title';
 
 			/**
