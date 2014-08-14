@@ -459,7 +459,9 @@ abstract class dms extends object {
 		 */
 		$form = do_action( 'ht_dms_before_form' );
 
-		//$form .= $this->form_fix( $new, $type );
+		if ( ! defined( 'HT_DEV_MODE' ) || ! HT_DEV_MODE ) {
+			$form .= $this->form_fix( $new, $type );
+		}
 
 		$ui = holotree_dms_ui();
 
