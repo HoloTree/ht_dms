@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.4",
         "composer/installers": "v1.0.6",
-        "holotree/holotree"
+        "holotree/holotree" : "*"
     },
     "extra" : {
         "installer-name" : "ht_dms"
