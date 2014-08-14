@@ -25,7 +25,7 @@ $org_class = holotree_organization_class();
 $uID = get_current_user_id();
 $ui = holotree_dms_ui();
 
-if ( 1==1 || $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
+if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
 
 	$tabs = array (
 
