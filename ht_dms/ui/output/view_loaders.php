@@ -187,6 +187,7 @@ class view_loaders {
 
 		$key = array( $context, $id, $uID );
 		$key = implode( '_', $key );
+		$key = md5( $key );
 
 		$group = 'ht_dms_front_end_views';
 
