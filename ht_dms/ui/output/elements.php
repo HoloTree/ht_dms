@@ -183,15 +183,7 @@ class elements {
 			if ( isset( $tab[ 'content' ] ) && isset( $tab[ 'label' ] ) ) {
 				if ( $key != 0 ) {
 					$out .= '<div class="content" id="' . $tab_prefix . $i . '">';
-					if ( is_string( $tab[ 'content' ] ) ) {
-						$out .= $tab[ 'content' ];
-					}
-					else {
-						$out .= __( "Tab maker content in iteration {$i} is not a string", 'holotree' );
-						if ( HT_DEV_MODE ) {
-							$out .= var_dump( array ( "tab{$i}" => $tab[ 'content' ] ) );
-						}
-					}
+					$out .= $tab[ 'content' ];
 					$out .= '</div><!--#' . $tab_prefix . $i . '-->';
 					$i++;
 				}
@@ -646,7 +638,28 @@ class elements {
 
 	}
 
+	/**
+	 * Outputs content in tabs or accordion according to device detection.
+	 *
+	 * @param array        $content The content to output. Should be a multi-dimensional array with each index containing keys for 'content' and 'label'
+	 * @param null|string   $prefix Optional The prefix to use for the t
+	 * @param string $class Optional. Class for outermost container
+	 *
+	 * @return string The container
+	 *
+	 * @since 0.0.1
+	 */
 	function output_container( $content, $prefix = null, $class = '' ) {
+		foreach( $content as $i => $c ) {
+			if ( ! is_string( $c['content'] ) ) {
+				unset( $content[ $i ] );
+				if ( HT_DEV_MODE ) {
+					echo sprintf( __('The tab %1s was not a string, so it was unset from output container. It is a %2s', 'holotree'), $c[ 'label'], gettype( $c['content'] ) );
+				}
+			}
+
+		}
+
 		if ( ( function_exists( 'is_phone' ) && is_phone() ) || ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) ) {
 			return $this->accordion( $content, $prefix, $class );
 		}
