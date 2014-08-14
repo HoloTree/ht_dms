@@ -23,35 +23,34 @@ $id = $post->ID;
 $obj = holotree_organization( $id );
 $org_class = holotree_organization_class();
 $uID = get_current_user_id();
-
+$ui = holotree_dms_ui();
 
 if ( 1==1 || $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
-	$ui = holotree_dms_ui();
-	$gObj = pods( HT_DMS_GROUP_CPT_NAME );
-
-	$gObj = $gObj->find( array( 'where' => 'organization.ID = "'.$id.'" ' ) );
 
 	$tabs = array (
-		array (
-			'label'   => __( 'My Groups In Organization', 'holotree' ),
-			'content' => $ui->views()->users_groups( $gObj, $uID, $id ),
-		),
-		array (
-			'label'   => __( 'Public Groups In Organization', 'holotree' ),
-			'content' => $ui->views()->public_groups( $gObj, $id ),
-		),
-		array (
-			'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
-			'content' => $ui->views()->assigned_tasks( null, $uID, $id ),
-		),
-		array (
-			'label'   => __( 'New Group In Organization', 'holotree' ),
-			'content' => $ui->add_modify()->new_group(  $id, $uID ),
-		),
-		array(
-			'label'		=> __( 'Edit Organization', 'holotree' ),
-			'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
-		),
+
+	array (
+		'label'   => __( 'My Groups In Organization', 'holotree' ),
+		'content' => $ui->views()->users_groups( null, $uID, $id ),
+	),
+	array (
+		'label'   => __( 'Public Groups In Organization', 'holotree' ),
+		'content' => $ui->views()->public_groups( null, $id ),
+	),
+	array (
+		'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
+		'content' => $ui->views()->assigned_tasks( null, $uID, $id ),
+	),
+
+	array (
+		'label'   => __( 'New Group In Organization', 'holotree' ),
+		'content' => $ui->add_modify()->new_group(  $id, $uID ),
+	),
+	array(
+		'label'		=> __( 'Edit Organization', 'holotree' ),
+		'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
+	),
+
 
 	);
 
