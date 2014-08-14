@@ -15,6 +15,7 @@ class Theme_Setup {
 
 	function __construct() {
 		$prefix = $this->prefix();
+
 		add_filter( "{$prefix}_no_sidebar", '__return_true' );
 
 		add_filter(  "{$prefix}_use_off_canvas_right", '__return_false' );
@@ -97,6 +98,7 @@ class Theme_Setup {
 			return 'htdms';
 		}
 
+		$stylesheet = str_replace( '-', '_', $stylesheet );
 		return $stylesheet;
 
 	}
