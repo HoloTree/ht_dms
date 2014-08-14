@@ -49,3 +49,7 @@ if ( !defined( 'HT_HT_DMS_USE' ) ) {
 if ( !defined( 'HT_DMS_PREFIX' ) ) {
 	define( 'HT_DMS_PREFIX', 'ht_dms' );
 }
+
+if ( ! defined( 'HT_DEV_MODE' ) ){
+	define( HT_DEV_MODE, false );
+}
