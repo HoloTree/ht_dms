@@ -1001,14 +1001,22 @@ class decision extends dms {
 	 *
 	 * @param 	int			$id		ID of decision to check.
 	 * @param	obj|null	$obj	Optional. Single decision status.
+	 * @param	bool		$check	Optional. Whether to check if status is correct, by evaluating consensus array, if true, or to just check this field value, if false, the default.
 	 *
 	 * @return 	string		$status	The status.
 	 *
 	 * @since 	0.0.1
 	 */
-	function status( $id, $obj = null ) {
+	function status( $id, $obj = null, $check = false ) {
 		$obj = $this->null_object( $obj, $id );
 		$status = $obj->field( 'decision_status' );
+		if ( $check && ( $status !== 'passed' || $status !== 'completed' ) ) {
+			if ( $this->has_consent( $id, $obj ) ){
+				$this->update( $id, 'decision_status', 'passed', $obj );
+				$status = 'passed';
+			}
+
+		}
 
 		return $status;
 
