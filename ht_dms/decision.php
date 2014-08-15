@@ -1014,6 +1014,30 @@ class decision extends dms {
 
 	}
 
+	function time_frame( $obj = null, $id ) {
+		$obj = $this->null_object( $obj, $id );
+		if ( ! empty( $length = $obj->field( 'time_frame' ) )  ) {
+
+			return $length;
+
+		}
+		elseif( ! empty ( $length = $obj->field( 'group.time_frame ' ) ) ) {
+
+			return $length;
+
+		}
+		elseif( ! empty ( $length = $obj->field( 'organization.time_frame' ) ) ) {
+
+			return $length;
+
+		}
+		else {
+
+			return get_option( 'ht_dms_default_time_frame', WEEK_IN_SECONDS );
+
+		}
+	}
+
 	/**
 	 *
 	 * @TODO incremental?
@@ -1022,7 +1046,7 @@ class decision extends dms {
 		$params = array(
 			'where' => 'd.decision_status = "new"' OR 'd.decision_status = "blocked"'
 		);
-		$obj = pods( HT_DMS_DECISION_CPT_NAME, $params );
+		$obj = $this->object( false, $params );
 		$changes = $this->time_checks( $obj );
 		$notifications_sent = $this->post_check_notifications( $changes, $obj );
 		$checks = array(
@@ -1035,34 +1059,36 @@ class decision extends dms {
 
 
 	function time_checks ( $obj ) {
+		$changes = false;
+
 		if ( $obj->total() > 0 ) {
 			while ( $obj->fetch() ) {
 				$created = strtotime( $obj->field( 'post_date' ) );
-				//@TODO Check if a decision specific length is set before using group's setting.
-				$length = (string) $obj->field( 'group.consensus_length'  );
-				if ( $length === '' ) {
-					$length = get_option( 'ht_dms_default_consensus_length', WEEK_IN_SECONDS );
-				}
-				else {
-					$length = constant( $length );
-				}
+				$id = $obj->id();
+				$length = $this->time_frame( $obj, $id  );
 
 				$elapsed = time() - $created;
 				if ( $length > $elapsed ) {
-					$status = $obj->field( 'decision_status' );
+					$change = false;
+					$status = $this->status( $id, $obj );
+
 					if ( $status === 'new' ) {
-						$id = $obj->save( 'decision_status', 'passed' );
 						$change = 'passed';
 					}
-					if ( $status === 'blocked' ) {
-						$id = $obj->save( 'decision_status', 'failed' );
+					elseif ( $status === 'blocked' ) {
 						$change = 'failed';
 					}
+
+					if ( $change ) {
+						$this->update( $id, 'decision_status', $change, $obj );
+					}
+
 					//@TODO More efficent/ less redundant way fo doing this?
-					$group_name = get_the_title( $obj->field( 'group.id' ) );
+					$gID = $this->get_group( $id, $obj);
+					$group_name = get_the_title( $gID );
 					$changes[] = array(
 						'id' 			=> $id,
-						'gID'			=> $obj->field( 'group.id' ),
+						'gID'			=> $gID,
 						'what_changed'	=> $change,
 						'name'			=> $obj->field( 'post_title' ),
 						'group_name'	=> $group_name,
@@ -1079,9 +1105,12 @@ class decision extends dms {
 			}
 		}
 
+		return $changes;
+
 	}
 
 	function post_check_notifications( $changes ) {
+		return __METHOD__.' not ready:(';
 		$dms = $GLOBALS[ 'ht_dms' ];
 		foreach ( $changes as $change ) {
 			extract( $change );
