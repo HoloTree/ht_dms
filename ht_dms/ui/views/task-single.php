@@ -18,6 +18,10 @@
 			'content'	=> $ui->views()->docs( $obj, 'task', $id ),
 		),
 		array(
+			'label'		=> __( 'Task Documents', 'holotree' ),
+			'content'	=> $ui->views()->docs( $obj, $id, 'task' ),
+		),
+		array(
 			'label'		=> __( 'Decision', 'holotree' ),
 			'content'	=> $ui->views()->decision( null, $dID ),
 

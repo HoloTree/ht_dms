@@ -258,9 +258,47 @@ class views {
 
 	}
 
-	function docs(  $obj = null, $which = false, $id = false ) {
+	/**
+	 * Show a task or decision documents
+	 *
+	 * @param null $obj
+	 * @param      $id
+	 * @param      $type
+	 *
+	 * @return bool|string
+	 */
+	function docs( $obj = null, $id, $type ) {
+		$args = array(
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
+			'return'	=> 'Pods',
+		);
 
-		return __( 'Docs functionality not yet implemented.', 'holotree' );
+
+		$type = ht_dms_prefix_remover( $type );
+
+		if ( $type === 'task' ) {
+			$obj =  $this->models()->task( $args );
+
+		} elseif ( $type === 'decision' ) {
+			$obj = $this->models()->decision( $args );
+
+		}
+		else {
+			holotree_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'holotree' ) );
+
+		}
+
+		$docs = $obj->field( 'documents' );
+
+		$expires = 85321;
+		$cache_type = 'object';
+		if ( defined( 'HT_DEV_MODE' ) && HT_DEV_MODE ) {
+			$cache_type = $expires = false;
+		}
+
+		return pods_view( HT_DMS_VIEW_DIR.'/partials/documents.php', compact( array( 'docs', 'type' ) ), $expires, $cache_type, true );
 
 	}
 
@@ -315,6 +353,7 @@ class views {
 			}
 		}
 	}
+
 
 	/**
 	 * Holds the instance of this class.

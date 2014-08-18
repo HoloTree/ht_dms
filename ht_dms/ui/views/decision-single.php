@@ -42,7 +42,11 @@ else {
 				'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 			),
 			array(
-				'label'	 	=> __( 'View Tasks' , 'holotree' ),
+				'label'		=> __( 'Decision Documents', 'holotree' ),
+				'content'	=> $ui->views()->docs( $obj, $id, 'decision' ),
+			),
+			array(
+				'label'	 	=> __( 'View Tasks', 'holotree' ),
 				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
 			),
 			array (
