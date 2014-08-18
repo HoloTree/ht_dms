@@ -241,6 +241,7 @@ function holotree_dms() {
 		do_action( 'holotree_DMS' );
 
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
 		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 		require_once( trailingslashit( HT_DMS_DIR ) . 'helper/theme_setup.php' );
 		new ht_dms\helper\Theme_Setup();

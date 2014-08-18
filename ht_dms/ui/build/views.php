@@ -258,9 +258,42 @@ class views {
 
 	}
 
-	function docs(  $obj = null, $which = false, $id = false ) {
+	function docs( $obj = null, $id, $type = null ) {
+		$args = array(
+			'obj' 		=> $obj,
+			'id'		=> $id,
+			'preview' 	=> false,
+			'return'	=> 'Pods',
+		);
 
-		return __( 'Docs functionality not yet implemented.', 'holotree' );
+		if ( is_null( $type ) ) {
+			$post = get_post( $id );
+			if ( is_object( $post ) ) {
+				$type = $post->post_type;
+			}
+			else {
+				holotree_error();
+			}
+
+		}
+
+		$type = ht_dms_prefix_remover( $type );
+
+		if ( $type === 'task' ) {
+			$obj =  $this->models()->task( $args );
+
+		} elseif ( $type === 'decision' ) {
+			$obj = $this->models()->decision( $args );
+
+		}
+		else {
+			holotree_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'holotree' ) );
+
+		}
+
+		$docs = $obj->field( 'documents' );
+
+		return pods_view( HT_DMS_VIEW_DIR.'/partials/documents.php', compact( array( 'docs', 'type' ) ), 85321, 'object', true );
 
 	}
 
@@ -315,6 +348,7 @@ class views {
 			}
 		}
 	}
+
 
 	/**
 	 * Holds the instance of this class.
