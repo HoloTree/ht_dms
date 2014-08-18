@@ -320,7 +320,7 @@ class setup {
 
 		if ( file_exists( $file ) && class_exists( 'Pods_Migrate_Packages' ) ) {
 			$data = file_get_contents( $file  );
-			return Pods_Migrate_Packages::import( $data );
+			return \Pods_Migrate_Packages::import( $data );
 		}
 		else {
 			echo sprintf( 'The file %1s could not be found and used to import.', $file  );
