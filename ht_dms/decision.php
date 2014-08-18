@@ -1022,6 +1022,7 @@ class decision extends dms {
 
 	}
 
+	/*
 	function _time_frame( $obj = null, $id ) {
 		$obj = $this->null_object( $obj, $id );
 		if ( ! empty( $length = $obj->field( 'time_frame' ) )  ) {
@@ -1045,6 +1046,7 @@ class decision extends dms {
 
 		}
 	}
+	*/
 
 	function time_frame( $obj = null, $id ) {
 		$obj = $this->null_object( $obj, $id );
