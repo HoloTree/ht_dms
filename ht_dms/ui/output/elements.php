@@ -161,8 +161,26 @@ class elements {
 
 		return $out;
 	}
-	function tab_maker_foundation( $tabs, $tab_prefix = 'tab_', $class = '' ) {
-		$out = '<dl class="tabs" data-tab>';
+
+	function tab_maker_foundation( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false ) {
+		$class = $class.' tabs';
+
+		/**
+		 * Filter to change value of $vertical to force vertical tabs.
+		 *
+		 * @param bool $vertical True for vertical tabs, false for horizontal tabs.
+		 *
+		 * @return bool
+		 *
+		 * @since 0.0.2
+		 */
+		$vertical = apply_filters( 'ht_dms_foundation_vertical_tabs', $vertical );
+
+		if ( $vertical ) {
+			$class = $class. ' vertical';
+		}
+
+		$out = '<dl class="'.$class.'" data-tab>';
 		$out .=  '<dd class="active"><a href="#'.$tab_prefix.'0">'.$tabs[ 0 ][ 'label' ].'</a></dd>';
 		$i = 1;
 		foreach ( $tabs as $key => $value ) {
