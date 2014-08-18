@@ -259,7 +259,7 @@ class views {
 	}
 
 	/**
-	 * Show a task or decision documents
+	 * Show a task or decision documents.
 	 *
 	 * @param null $obj
 	 * @param      $id
@@ -268,6 +268,7 @@ class views {
 	 * @return bool|string
 	 */
 	function docs( $obj = null, $id, $type ) {
+
 		$args = array(
 			'obj' 		=> $obj,
 			'id'		=> $id,
@@ -275,8 +276,8 @@ class views {
 			'return'	=> 'Pods',
 		);
 
-
 		$type = ht_dms_prefix_remover( $type );
+
 
 		if ( $type === 'task' ) {
 			$obj =  $this->models()->task( $args );
@@ -299,6 +300,7 @@ class views {
 		}
 
 		return pods_view( HT_DMS_VIEW_DIR.'/partials/documents.php', compact( array( 'docs', 'type' ) ), $expires, $cache_type, true );
+
 
 	}
 
