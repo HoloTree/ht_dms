@@ -1022,7 +1022,7 @@ class decision extends dms {
 
 	}
 
-	function time_frame( $obj = null, $id ) {
+	function _time_frame( $obj = null, $id ) {
 		$obj = $this->null_object( $obj, $id );
 		if ( ! empty( $length = $obj->field( 'time_frame' ) )  ) {
 
@@ -1044,6 +1044,34 @@ class decision extends dms {
 			return get_option( 'ht_dms_default_time_frame', WEEK_IN_SECONDS );
 
 		}
+	}
+
+	function time_frame( $obj = null, $id ) {
+		$obj = $this->null_object( $obj, $id );
+
+		$length = $obj->field( 'time_frame' );
+		if ( ! empty( $length )  ) {
+
+			return $length;
+
+		}
+
+		$length = $obj->field( 'group.time_frame' );
+		if ( ! empty ( $length ) ) {
+
+			return $length;
+
+		}
+
+		$length = $obj->field( 'organization.time_frame' );
+		if( ! empty ( $length ) ) {
+
+			return $length;
+
+		}
+
+		return get_option( 'ht_dms_default_time_frame', WEEK_IN_SECONDS );
+
 	}
 
 	/**
