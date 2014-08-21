@@ -19,7 +19,7 @@
 		),
 		array(
 			'label'		=> __( 'Task Documents', 'holotree' ),
-			'content'	=> $ui->views()->docs( $obj, $id, 'task' ),
+			'content'	=> $ui->views()->docs( $obj, (int) $id, 'task' ),
 		),
 		array(
 			'label'		=> __( 'Decision', 'holotree' ),

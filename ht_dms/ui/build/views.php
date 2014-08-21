@@ -268,6 +268,12 @@ class views {
 	 * @return bool|string
 	 */
 	function docs( $obj = null, $id, $type ) {
+		//$todo figure out why tasks keep flipping args making this needed.
+		if ( is_int( $type ) ){
+			$i = $type;
+			$type = $id;
+			$id = $i;
+		}
 
 		$args = array(
 			'obj' 		=> $obj,
