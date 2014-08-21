@@ -302,7 +302,14 @@ class view_loaders {
 	function content_wrap( $content, $task = false ) {
 		$id = $this->id();
 
-		$out = '<div class="holotree" id="'.$id.'">';
+		if ( $id == 00 ) {
+			$id = 'home';
+		}
+
+		$id = sprintf( '%1s-%2s', HT_DMS_PREFIX, $id );
+
+		$out = sprintf( '<div class="holotree %1s" id="holotree-dms">', $id );
+
 		/**
 		 * Output something or trigger something before HoloTree Main content happens.
 		 *
@@ -313,9 +320,9 @@ class view_loaders {
 		$out .= do_action( 'ht_before_ht' );
 		$out .= $this->alert();
 
-		$out .= $this->main_title( $id, $task );
+		$out .= sprintf( '<div id="title-section">%1s</div>', $this->main_title( $id, $task ) );
 
-		$out .= $content;
+		$out .= sprintf( '<div id="holotree-dms-content">%1s</div>', $content Yes);
 
 		/**
 		 * Output something or trigger something after HoloTree Main content happens.
