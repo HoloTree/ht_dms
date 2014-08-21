@@ -5,14 +5,16 @@
 	   foreach ( $docs as $doc ) {
 		   $link = get_attached_file( $doc['ID'] );
 		   $link = holotree_link( $link, 'permalink', $doc['post_title'] );
-			echo '<li>'.$link.'</li>';
+			echo sprintf( '<li>%1s</li>', $link);
 	   }
 	   echo '</ul>';
    }
    else {
 
-	   echo '<div class="no-docs">';
-	   __( sprintf( 'This %1s has no documents.', ucwords( $type ) ), 'holotree' );
+	   echo __(
+		   sprintf( '<div class="no-docs">%2s</div>',
+			   sprintf( 'This %1s has no documents.', ucwords( $type ) ), 'holotree' )
+	   );
 
    }
    ?>
