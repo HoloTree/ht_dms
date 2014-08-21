@@ -177,22 +177,29 @@ class elements {
 		$vertical = apply_filters( 'ht_dms_foundation_vertical_tabs', $vertical );
 
 		if ( $vertical ) {
-			$class = $class. ' vertical';
+			$vertical = 'vertical';
 		}
 
-		$out = '<dl class="'.$class.'" data-tab>';
-		$out .=  '<dd class="active"><a href="#'.$tab_prefix.'0">'.$tabs[ 0 ][ 'label' ].'</a></dd>';
+		if ( $vertical ) {
+			$class = $class. ' '.$vertical;
+		}
+		else {
+			$vertical = '';
+		}
+
+		$out = '<ul class="'.$class.'" data-tab>';
+		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'0">'.$tabs[ 0 ][ 'label' ].'</a></li>';
 		$i = 1;
 		foreach ( $tabs as $key => $value ) {
 			if ( $key != 0 ) {
-				$out .= '<dd><a href="#'.$tab_prefix.''.$i.'">'.$value[ 'label' ].'</a></dd>';
+				$out .= '<li class="tab-title"><a href="#'.$tab_prefix.''.$i.'">'.$value[ 'label' ].'</a></li>';
 				$i++;
 			}
 
 
 		}
-		$out .= '</dl>';
-		$out .= '<div class="tabs-content">';
+		$out .= '</ul>';
+		$out .= sprintf( '<div class="tabs-content %1s">', $vertical );
 		$out .= '<div class="content active" id="'.$tab_prefix.'0">';
 		$out .= $tabs[ 0 ][ 'content' ];
 		$out .= '</div><!--#'.$tab_prefix.$i.'-->';
