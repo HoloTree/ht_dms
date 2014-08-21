@@ -320,9 +320,9 @@ class view_loaders {
 		$out .= do_action( 'ht_before_ht' );
 		$out .= $this->alert();
 
-		$out .= sprintf( '<div id="title-section">%1s</div>', $this->main_title( $id, $task ) );
+		$out .= sprintf( '<div id="holotree-dms-title-section">%1s</div>', $this->main_title( $id, $task ) );
 
-		$out .= sprintf( '<div id="holotree-dms-content">%1s</div>', $content Yes);
+		$out .= sprintf( '<div id="holotree-dms-content" data-equalizer >%1s</div>', $content );
 
 		/**
 		 * Output something or trigger something after HoloTree Main content happens.

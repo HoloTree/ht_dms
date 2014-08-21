@@ -180,14 +180,22 @@ class elements {
 			$vertical = 'vertical';
 		}
 
+		$equalizer = false;
+
 		if ( $vertical ) {
 			$class = $class. ' '.$vertical;
+			$equalizer = true;
 		}
 		else {
 			$vertical = '';
 		}
 
-		$out = '<ul class="'.$class.'" data-tab>';
+		$attr = '';
+		if ( $equalizer ) {
+			$attr = 'data-equalizer-watch';
+		}
+
+		$out = sprintf( '<ul class="%1s" data-tab %2s>', $class, $attr );
 		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'0">'.$tabs[ 0 ][ 'label' ].'</a></li>';
 		$i = 1;
 		foreach ( $tabs as $key => $value ) {
@@ -199,7 +207,11 @@ class elements {
 
 		}
 		$out .= '</ul>';
-		$out .= sprintf( '<div class="tabs-content %1s">', $vertical );
+
+		if ( $equalizer ) {
+			$attr = 'data-equalizer-watch';
+		}
+		$out .= sprintf( '<div class="tabs-content %1s" %2s>', $vertical, $attr );
 		$out .= '<div class="content active" id="'.$tab_prefix.'0">';
 		$out .= $tabs[ 0 ][ 'content' ];
 		$out .= '</div><!--#'.$tab_prefix.$i.'-->';
