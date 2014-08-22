@@ -303,12 +303,12 @@ class view_loaders {
 		$id = $this->id();
 
 		if ( $id == 00 ) {
-			$id = 'home';
+			$container_id = 'home';
 		}
 
-		$id = sprintf( '%1s-%2s', HT_DMS_PREFIX, $id );
+		$container_id = sprintf( '%1s-%2s', HT_DMS_PREFIX, $container_id );
 
-		$out = sprintf( '<div class="holotree %1s" id="holotree-dms">', $id );
+		$out = sprintf( '<div class="holotree %1s" id="holotree-dms">', $container_id );
 
 		/**
 		 * Output something or trigger something before HoloTree Main content happens.
