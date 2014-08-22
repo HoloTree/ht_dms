@@ -1,5 +1,5 @@
 <div class="group">
-	<h3><?php echo holotree_link( $obj->id() ); ?></h3>
+	<h3><?php echo holotree_link( $obj->id(), 'permalink', null, null, true ); ?></h3>
 	<div class="details">
 		<div>{@group_description}</div>
 		<ul>

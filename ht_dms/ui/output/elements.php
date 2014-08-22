@@ -641,7 +641,7 @@ class elements {
 
 	}
 
-	function task_link( $id = null, $text = null, $title = null ) {
+	function task_link( $id = null, $text = null, $title = null, $button = false ) {
 
 		if ( is_null( $id ) ) {
 			$id = get_queried_object_id();
@@ -667,9 +667,14 @@ class elements {
 			$title = 'View '.$text;
 		}
 
+		$class = '';
+		if ( $button ) {
+			$class = 'class="button"';
+		}
+
 
 		if ( is_string( $url ) && is_string( $title ) && is_string( $text ) ) {
-			$out = '<a href="' . $url . '" text="' . $title . '">' . $text . '</a>';
+			$out = sprintf( '<a href="%1s" text="%2s" %3s>%4s</a>', $url, $title, $class, $text );
 			return $out;
 		}
 
