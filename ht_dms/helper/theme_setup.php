@@ -35,6 +35,8 @@ class Theme_Setup {
 		if ( ! is_user_logged_in() ) {
 			add_filter( "{$prefix}_use_off_canvas_left", '__return_false' );
 		}
+
+		add_filter( "{$prefix}_use_off_canvas", '__return_false' );
 	}
 
 	/**
