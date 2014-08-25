@@ -339,7 +339,10 @@ class setup {
 	 * @return \PodsAPI
 	 */
 	private function api() {
-		return pods_api();
+		$api = pods_api();
+
+		return $api;
+		
 	}
 
 	/**
