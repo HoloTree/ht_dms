@@ -49,7 +49,7 @@ function ht_dms_setup_pods( $package_only = false, $skip_package = true, $delete
 }
 
 function ht_dms_pods_exist() {
-	$key = 'ht_Dms_pods_exists';
+	$key = 'ht_dms_pods_exists';
 	if ( false == pods_transient_get( $key )  ) {
 		$pods = array( HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME );
 		$api = pods_api();

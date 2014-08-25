@@ -44,6 +44,7 @@ class setup {
 			$this->reset();
 			if ( $import ) {
 				echo 'Pods imported';
+				pods_transient_set( 'ht_dms_pods_exists', true );
 			}
 			else {
 				echo 'Pods not imported. Aborting.';
