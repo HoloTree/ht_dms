@@ -233,7 +233,7 @@ class HoloTree_DMS {
 	function setup_check() {
 
 		if ( version_compare( HT_DMS_DB_VERSION, get_option( 'ht_dms_db_version', 0 ) ) >= 0 ) {
-
+			require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
 			ht_dms_setup_pods();
 			update_option( 'ht_dms_db_version', HT_DMS_DB_VERSION );
 
