@@ -51,5 +51,5 @@ if ( !defined( 'HT_DMS_PREFIX' ) ) {
 }
 
 if ( ! defined( 'HT_DEV_MODE' ) ){
-	define( HT_DEV_MODE, false );
+	define( 'HT_DEV_MODE', false );
 }
