@@ -83,7 +83,7 @@ class HoloTree_DMS {
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		add_action( 'plugins_loaded', array( $this, 'setup_check' ), 25 );
+		add_action( 'init', array( $this, 'setup_check' ), 25 );
 
 	}
 
