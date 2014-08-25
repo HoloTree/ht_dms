@@ -11,7 +11,6 @@
 
 namespace ht_dms;
 
-
 class setup {
 
 	/**

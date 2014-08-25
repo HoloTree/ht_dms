@@ -29,3 +29,21 @@ function ht_dms_prefix_remover( $string, $remove_underscore = true ) {
 
 	return str_replace( $prefix, '', $string );
 }
+
+
+/**
+ * Setups the Pods for HoloTree DMS
+ *
+ *  @since 0.0.2
+ *
+ * @param bool $package_only	Optional. Whether to just import from import package and skip relationship field updates. Default is false.
+ * @param bool $skip_package	Optional. Whether to skip importing the package, and advanced directly to updating relationship fields, not pass go and not collect $200 dollars. Default is false.
+ * @param bool $delete_existing	Optional. Whether to delete existing Pods (for DMS including user) before importing. Default is true.
+ */
+function ht_dms_setup_pods( $package_only = false, $skip_package = true, $delete_existing = false) {
+
+	include( trailingslashit( HT_DMS_DIR ).'setup.php' );
+
+	new ht_dms\setup( $package_only, $skip_package, $delete_existing );
+
+}

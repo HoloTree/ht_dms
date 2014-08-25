@@ -40,6 +40,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @since 0.0.1
  */
 define( 'HT_DMS_VERSION', '0.0.1' );
+define( 'HT_DMS_DB_VERSION', '1' );
 define( 'HT_DMS_SLUG', plugin_basename( __FILE__ ) );
 define( 'HT_DMS_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'HT_DMS_ROOT_DIR', plugin_dir_path( __FILE__ ) );
@@ -81,6 +82,9 @@ class HoloTree_DMS {
 
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+		add_action( 'plugins_loaded', array( $this, 'setup_check' ), 25 );
+
 	}
 
 
@@ -221,6 +225,21 @@ class HoloTree_DMS {
 
 	}
 
+	/**
+	 * On load make sure we have the right DB version. If not run the Pods setup.
+	 *
+	 * @since 0.0.2
+	 */
+	function setup_check() {
+
+		if ( version_compare( HT_DMS_DB_VERSION, get_option( 'ht_dms_db_version', 0 ) ) >= 0 ) {
+
+			ht_dms_setup_pods();
+			update_option( 'ht_dms_db_version', HT_DMS_DB_VERSION );
+
+		}
+	}
+
 }
 
 /**
@@ -301,9 +320,3 @@ function holotree_dms_permalinks() {
 
 }
 
-/*
-function holotree_dms_setup() {
-	include_once( trailingslashit( HT_DMS_DIR ).'setup/setup.php' );
-	ht_dms\setup\setup::init();
-}
-*/
