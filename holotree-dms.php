@@ -233,9 +233,9 @@ class HoloTree_DMS {
 	function setup_check() {
 
 		if ( defined( 'PODS_VERSION' ) && function_exists( 'pods_api' ) ) {
-			if ( version_compare( HT_DMS_DB_VERSION, get_option( 'ht_dms_db_version', 0 ) ) >= 0 ) {
+			if ( version_compare( HT_DMS_DB_VERSION, get_option( 'ht_dms_db_version', 0 ) ) > 0 ) {
 				require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
-				ht_dms_setup_pods();
+				ht_dms_setup_pods( false, ht_dms_pods_exist() );
 				update_option( 'ht_dms_db_version', HT_DMS_DB_VERSION );
 
 			}

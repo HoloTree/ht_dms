@@ -47,3 +47,24 @@ function ht_dms_setup_pods( $package_only = false, $skip_package = true, $delete
 	new ht_dms\setup( $package_only, $skip_package, $delete_existing );
 
 }
+
+function ht_dms_pods_exist() {
+	$key = 'ht_Dms_pods_exists';
+	if ( false == pods_transient_get( $key )  ) {
+		$pods = array( HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME );
+		$api = pods_api();
+		foreach( $pods as $pod ) {
+			$params = array( 'name' => $pod );
+			if ( ! $api->pod_exists( $params ) ) {
+				return false;
+			}
+		}
+
+		pods_transient_set( $key, true );
+	}
+	else {
+		return pods_transient_get( $key );
+	}
+
+}
+
