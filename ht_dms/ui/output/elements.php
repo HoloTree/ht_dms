@@ -399,6 +399,12 @@ class elements {
 	function title( $id, $obj = null, $task = false, $separator = ' - ' ) {
 		remove_filter( 'the_title', '__return_false' );
 		$name = apply_filters( 'ht_dms_name', 'HoloTree' );
+
+		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
+
+		if ( $logo ) {
+			$name = sprintf( '<img src="%" alt="Home" height="50" width="50" />', $logo );
+		}
 		$name = $this->link( null, 'front', $name );
 
 		if ( get_post_type( $id ) === HT_DMS_GROUP_CPT_NAME ) {
