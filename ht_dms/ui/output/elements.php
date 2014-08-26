@@ -196,8 +196,8 @@ class elements {
 		}
 
 		$out = sprintf( '<ul class="%1s" data-tab %2s>', $class, $attr );
-		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'0">'.$tabs[ 0 ][ 'label' ].'</a></li>';
-		$i = 1;
+		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'1">'.$tabs[ 0 ][ 'label' ].'</a></li>';
+		$i = 2;
 		foreach ( $tabs as $key => $value ) {
 			if ( $key != 0 ) {
 				$out .= '<li class="tab-title"><a href="#'.$tab_prefix.''.$i.'">'.$value[ 'label' ].'</a></li>';
@@ -211,17 +211,22 @@ class elements {
 		if ( $equalizer ) {
 			$attr = 'data-equalizer-watch';
 		}
-		$out .= sprintf( '<div class="tabs-content %1s" %2s>', $vertical, $attr );
-		$out .= '<div class="content active" id="'.$tab_prefix.'0">';
-		$out .= $tabs[ 0 ][ 'content' ];
-		$out .= '</div><!--#'.$tab_prefix.$i.'-->';
+
 		$i = 1;
+
+		$out .= sprintf( '<div id="tabs" class="tabs-content %1s" %2s >', $vertical, $attr );
+		$out .= sprintf( '<div class="content active" id="%1s">', $tab_prefix.$i );
+		$out .= $tabs[ 0 ][ 'content' ];
+		//$out .= sprintf( '</div><!--%1-->', $tab_prefix.$i );
+
+		$i++;
+
 		foreach ( $tabs as $key => $tab ) {
 			if ( isset( $tab[ 'content' ] ) && isset( $tab[ 'label' ] ) ) {
 				if ( $key != 0 ) {
-					$out .= '<div class="content" id="' . $tab_prefix . $i . '">';
+					$out .= sprintf( '<div class="content" id="%1s">', $tab_prefix.$i );
 					$out .= $tab[ 'content' ];
-					$out .= '</div><!--#' . $tab_prefix . $i . '-->';
+					$out .= sprintf( '</div><!--%1s-->', $tab_prefix.$i );
 					$i++;
 				}
 			}
@@ -230,11 +235,7 @@ class elements {
 			}
 
 		}
-		$out .= '</div><!--#tabs';
-		if ( $class !== '' ) {
-			$out .= ' '.$class;
-		}
-		$out .= '-->';
+		$out .= '</div><!--#tabs-->';
 
 		return $out;
 	}
@@ -402,8 +403,8 @@ class elements {
 
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
 
-		if ( $logo && file_exists( $logo ) ) {
-			$name = sprintf( '<img src="%" alt="Home" height="50" width="50" />', $logo );
+		if ( $logo  ) {
+			$name = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', $logo );
 		}
 		$name = $this->link( null, 'front', $name );
 
