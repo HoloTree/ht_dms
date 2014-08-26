@@ -402,7 +402,7 @@ class elements {
 
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
 
-		if ( $logo ) {
+		if ( $logo && file_exists( $logo ) ) {
 			$name = sprintf( '<img src="%" alt="Home" height="50" width="50" />', $logo );
 		}
 		$name = $this->link( null, 'front', $name );
