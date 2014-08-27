@@ -707,6 +707,39 @@ class elements {
 	}
 
 	/**
+	 * Creates a hamburger menu
+	 *
+	 * @param array $menu_items Should be in form of link => link text
+	 *
+	 * @return array|bool|string
+	 */
+	function hamburger( $menu_items ) {
+
+		if ( is_array( $menu_items ) ) {
+			foreach( $menu_items as $link => $text ) {
+				$menu[] = sprintf( '<a href="%1s">%2s</a>', $link, $text );
+			}
+			if ( is_array( $menu ) ) {
+				$out[] = sprintf( '<div>%1s</div>', implode( $menu ) );
+			}
+			else {
+				$out = false;
+			}
+
+			if ( is_array( $out ) ) {
+				$out = sprintf( '<nav id="ht-sub-menu"><span class="button" id="ht-sub-menu-button"></span>%1s</nav>', implode( $out ) );
+			}
+
+		}
+
+		if ( is_string( $out ) ) {
+			return $out;
+		}
+
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.0.1

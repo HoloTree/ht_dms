@@ -90,3 +90,29 @@ function ht_dms_home() {
 	return apply_filters( 'ht_dms_home_url', $home );
 
 }
+
+/**
+ * Set mini-menu items outputted
+ *
+ * @since 0.0.2
+ *
+ * @return array
+ */
+function ht_dms_mini_menu_items() {
+	$items = array(
+		ht_dms_home() => __( 'Home', 'holotree' ),
+		wp_logout_url() => __( 'Logout', 'holotree' ),
+	);
+
+	/**
+	 * Override mini-menu items
+	 *
+	 * @param array $items Must be in form of  link => link text
+	 *
+	 * @since 0.0.2
+	 */
+	$items = apply_filters( 'ht_dms_mini_menu_items', $items );
+
+	return $items;
+
+}

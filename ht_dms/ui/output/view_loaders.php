@@ -318,6 +318,7 @@ class view_loaders {
 		 * @since 0.0.1
 		 */
 		$out .= do_action( 'ht_before_ht' );
+		$out .= $this->ui()->output_elements()->hamburger( ht_dms_mini_menu_items() );
 		$out .= $this->alert();
 
 		$out .= sprintf( '<div id="holotree-dms-title-section">%1s</div>', $this->main_title( $id, $task ) );
