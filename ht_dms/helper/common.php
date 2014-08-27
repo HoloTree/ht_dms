@@ -19,7 +19,7 @@ class common {
 
 	function __construct() {
 		// Loads frontend scripts and styles
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 25 );
 
 		add_action( 'init', array( $this, 'dms_actions'), 35 );
 
@@ -50,6 +50,12 @@ class common {
 				}
 			}
 		}
+
+		wp_enqueue_script( 'pods' );
+		wp_enqueue_style( 'pods-select2' );
+		wp_enqueue_script( 'pods-select2' );
+		wp_enqueue_style( 'pods-form' );
+
 
 	}
 
