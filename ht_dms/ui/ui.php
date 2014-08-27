@@ -27,9 +27,6 @@ class ui {
 			add_filter( 'the_content', array ( $this->view_loaders(), 'generic_view_loader' ) );
 			add_filter( 'template_include', array ( $this->view_loaders(), 'task_view' ) );
 		}
-		if ( ! is_user_logged_in() ) {
-			add_filter( 'template_include', array ( $this->login(), 'force_login' ) );
-		}
 
 		//don't show titles!
 		if ( !is_admin() ) {
