@@ -1,7 +1,7 @@
 <div class="decision-preview">
 	<h5><?php echo holotree_link( $obj->id(), 'permalink', null, null, true ); ?></h5>
 	<div class="details">
-		<div class="description">{@decision_description}</div>
+		<p class="description">{@decision_description}</p>
 		<ul>
 			<li>Status: {@decision_status}</li>
 			<li>Manager: {@manager}</li>
