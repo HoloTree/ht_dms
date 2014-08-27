@@ -15,6 +15,7 @@ namespace ht_dms\ui\build;
 class login {
 
 	function __construct() {
+		return;
 		add_filter( 'login_headerurl', array( $this, 'login_logo_url' ) );
 		add_filter( 'login_headertitle', array( $this, 'login_logo_url_title' ) );
 		add_action( 'wp_head', array( $this, 'login_style' ) );
@@ -59,8 +60,6 @@ class login {
 				background-repeat: no-repeat;
 				width: 300px !important;
 				height: 150px !important;
-				foo:bar;
-				;
 
 			}
 			html, body{
