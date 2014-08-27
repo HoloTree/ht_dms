@@ -26,6 +26,8 @@ class organization extends dms {
 	function __construct() {
 		$type = $this->get_type( );
 
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6  );
+
 	}
 
 	/**
@@ -355,6 +357,28 @@ class organization extends dms {
 
 			return $id;
 		}
+
+	}
+
+
+	/**
+	 * Set fields for the edit/new organization field
+	 *
+	 * @uses 'ht_dms_{$type}_edit_form_fields' filter
+	 *
+	 * @return array $fields
+	 */
+	function form_fields( $fields, $new, $id, $obj, $oID, $uID ) {
+		if ( $new ) {
+			$fields[ 'members' ][ 'type' ] = 'hidden';
+		}
+		$unset_fields = array( 'groups', 'decisions', 'tasks' );
+		foreach( $unset_fields as $field ) {
+
+			unset( $fields[ $field ] );
+		}
+
+		return $fields;
 
 	}
 
