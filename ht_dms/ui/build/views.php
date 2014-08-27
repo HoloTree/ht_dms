@@ -326,7 +326,7 @@ class views {
 	}
 
 	function notifications() {
-		return '@TODO === this:(';
+		return '<p>This is feature will be added soon.</p>';
 	}
 
 	/**
