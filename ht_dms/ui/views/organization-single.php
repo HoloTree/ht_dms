@@ -59,7 +59,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 }
 else {
 	$tabs = array(
-		'label'		=> get_post_title( $id ),
+		'label'		=> get_the_title( $id ),
 		'content'	=> __( 'You must be a member of this organization to view it\'s content', 'holotree' ),
 	);
 }
