@@ -28,7 +28,7 @@ class decision extends dms {
 
 		add_filter( "pods_api_post_save_pod_item_{$type}", array( $this, 'user_fix'), 11, 3 );
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
+		//add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 
 		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
@@ -208,12 +208,6 @@ class decision extends dms {
 	 *
 	 * @uses "ht_dms_ht_dms_decision_form_fields" filter
 	 *
-	 * @param $form_fields
-	 * @param $new
-	 * @param $id
-	 * @param $obj
-	 * @param $oID
-	 * @param $uID
 	 *
 	 * @return array
 	 *
@@ -229,12 +223,13 @@ class decision extends dms {
 					'label' => 'Decision Name',
 				),
 				'decision_description',
-				'tasks',
 				'decision_type'   => array (
 					'default' => $defaults[ 'decision_type' ],
+					'type' 		=> 'hidden'
 				),
 				'decision_status' => array (
-					'default' => $defaults[ 'status' ],
+					'default' 	=> $defaults[ 'status' ],
+					'type' 		=> 'hidden'
 				),
 				'manager'         => array (
 					'default' => $defaults[ 'user_id' ],
@@ -243,20 +238,24 @@ class decision extends dms {
 					'default' => $defaults[ 'user_id' ],
 				),
 				'group'           => array (
-					'default' => $defaults[ 'group_id' ],
+					'default' 	=> $defaults[ 'group_id' ],
+					'type' 		=> 'hidden'
 				),
 				'organization'    => array (
-					'default' => $defaults[ 'organization_id' ],
+					'default' 	=> $defaults[ 'organization_id' ],
+					'type' 		=> 'hidden'
 				),
 			);
 			if ( ! $new ) {
 
 				$form_fields[ 'change_to' ] = array (
 					'default' => (string) $id,
+					'type' 		=> 'hidden'
 				);
 				$form_fields[ 'reason_for_change' ] = array ();
 				$form_fields[ 'decision_type' ] = array (
-					'default' => 'change',
+					'default' 	=> 'change',
+					'type' 		=> 'hidden'
 				);
 
 			}

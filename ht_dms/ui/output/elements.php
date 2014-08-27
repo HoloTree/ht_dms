@@ -488,18 +488,13 @@ class elements {
 		else {
 			$action_name = apply_filters( 'ht_dms_action_name', 'dms_action' );
 		}
-		$action_name = $action_name.'=';
-		if ( strpos( $url, '?' ) !== false ) {
-			$url = $url.'&'.$action_name.$action;
-		}
-		else {
-			$url = $url.'?'.$action_name.$action;
-		}
+
+		$url = add_query_arg( $action_name, $action, $url );
 
 		if ( $id !== false ) {
 			$id_var = apply_filters( 'ht_dms_action_id_var', 'dms_id' );
-			$id_var = '&'.$id_var.'=';
-			$url .= $id_var.$id;
+
+			$url = add_query_arg( $id_var, $id, $url );
 		}
 
 		return $url;
@@ -694,7 +689,7 @@ class elements {
 	 */
 	function output_container( $content, $prefix = null, $class = '' ) {
 		foreach( $content as $i => $c ) {
-			if ( ! is_string( $c['content'] ) ) {
+			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c['content'] ) ) {
 				unset( $content[ $i ] );
 				if ( HT_DEV_MODE ) {
 					echo sprintf( __('The tab %1s was not a string, so it was unset from output container. It is a %2s', 'holotree'), $c[ 'label'], gettype( $c['content'] ) );

@@ -27,7 +27,7 @@ class group extends dms {
 		$type = $this->get_type();
 
 		add_action( 'pods_api_post_save_pod_item_ht_dms_group', array( $this, 'user_fix'), 9, 3 );
-		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+		//add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6  );
 	}
@@ -390,6 +390,8 @@ class group extends dms {
 
 		if ( $new ) {
 			$initial_members = $form_fields[ 'members' ];
+		}else {
+			unset( $form_fields[ 'organization' ] );
 		}
 
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
@@ -398,6 +400,14 @@ class group extends dms {
 		$form_fields[ 'open_access' ] = array();
 		$form_fields[ 'facilitators' ] = array();
 		$form_fields[ 'organization' ] = array( );
+
+		$hides = array( 'members', 'pending-members', 'decisions', 'organization' );
+
+		foreach( $hides as $field ) {
+			if ( isset( $form_fields[ $field ] ) ) {
+				$form_fields[ $field ][ 'type' ] = 'hidden';
+			}
+		}
 
 		return $form_fields;
 

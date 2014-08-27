@@ -199,7 +199,7 @@ abstract class dms extends object {
 
 		if ( $type === HT_DMS_TASK_CT_NAME ) {
 			if ( !is_null( $dID ) ) {
-				$form_fields[ 'decision' ] = $dID;
+				$form_fields[ 'decision' ][ 'default' ] = $dID;
 			}
 			else {
 				if ( is_null( $id ) ) {
@@ -220,10 +220,12 @@ abstract class dms extends object {
 	 *
 	 * @return 	bool
 	 *
+	 * @todo remove this
+	 *
 	 * @since 	0.0.1
 	 */
 	function form_fix( $new = true, $type ) {
-
+		return;
 		/**
 		 * Set jQuery to fix up forms, but content type
 		 *
@@ -466,7 +468,7 @@ abstract class dms extends object {
 		$ui = holotree_dms_ui();
 
 		if ( $new !== 'modify' ) {
-			$link = $ui->output_elements()->action_append( '/f', 'new', 'X_ID_X' );
+			$link = $ui->output_elements()->action_append( ht_dms_home(), 'new', 'X_ID_X' );
 			if ( $new ) {
 				$label = __( 'Create', 'holotree' );
 			}
@@ -474,12 +476,17 @@ abstract class dms extends object {
 				$label = __( 'Edit', 'holotree' );
 			}
 
-			$label = $label. ' '.$this->display_names( $type );
+			if ( $type === HT_DMS_TASK_CT_NAME ) {
+				$link = add_query_arg( 'task', true, $link );
+			}
+
+			$label = sprintf( '%1s %s', $label, $this->display_names( $type ) );
+
 
 			$form .= $obj->form( $form_fields, $label, $link );
 		}
 		else {
-			$link = $ui->output_elements()->action_append( '/f', 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
+			$link = $ui->output_elements()->action_append( ht_dms_home(), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
 
 			$form .= $obj->form( $form_fields, 'Propose Change', $link );

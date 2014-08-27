@@ -27,7 +27,7 @@ class task extends dms {
 		$type = $this->get_type();
 		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
-		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+		//add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 	}
 
 	/**
@@ -82,26 +82,13 @@ class task extends dms {
 	 */
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
 
-
-		if ( $new ) {
-			if ( $form_fields[ 'decision' ] ) {
-				$dID = $form_fields[ 'decision' ];
-			}
-
-
-			if ( $form_fields[ 'organization' ] ) {
-				$oID = $form_fields[ 'organization' ];
-			}
-			else {
-				$oID = $this->get_organization( $id, $obj, $dID, false );
-			}
-
-		}
 		if ( is_array( $oID ) ) {
 			$oID = $oID[ 0 ];
 		}
+		$dID =  $form_fields[ 'decision' ][ 'default' ];
 
 		unset( $form_fields );
+
 
 		$form_fields[ 'name' ] = array(
 
@@ -113,19 +100,23 @@ class task extends dms {
 		$form_fields[ 'blocking' ] = array(
 			'label' => __( 'Tasks that can only be completed after this task is completed.', 'holotree' )
 		);
-		$form_fields[ 'organization' ] =  array(
-			'default' 	=> $oID,
-		);
-		$form_fields[ 'decision_group' ] = array(
-
-		);
-		$form_fields[ 'decision' ] = array();
-		$form_fields[ 'organization' ] = array();
+		$gID = $this->get_group( $id, $obj, $dID, false );
 
 		if ( $new  ) {
-			$form_fields[ 'decision' ][ 'default' ] = $dID;
-			$form_fields[ 'organization' ][ 'default' ] = $oID;
-			$form_fields[ 'decision_group' ][ 'default' ] = $this->get_group( $id, $obj, $dID, false );
+
+			$form_fields[ 'decision' ] = array(
+				'default' => $dID,
+				'type' => 'hidden'
+			);
+			$form_fields[ 'organization' ]= array(
+				'default' => $oID,
+				'type' => 'hidden',
+			);
+
+			$form_fields[ 'decision_group' ] = array(
+				'default' => $gID,
+				'type' => 'hidden',
+			);
 		}
 
 

@@ -158,6 +158,10 @@ class common {
 		}
 		elseif( $action === 'new' ) {
 			$url = get_permalink( $id );
+			if ( pods_v( 'task' ) ) {
+				$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
+			}
+
 			$this->redirect( $url, sprintf( __( 'New %s created.', 'holotree'), 'NEED TO DEFINE TYPE' ) );
 		}
 		elseif ( false !== $action  ) {
