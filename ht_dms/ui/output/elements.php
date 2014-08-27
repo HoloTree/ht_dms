@@ -184,7 +184,7 @@ class elements {
 
 		if ( $vertical ) {
 			$class = $class. ' '.$vertical;
-			$equalizer = true;
+			//$equalizer = true;
 		}
 		else {
 			$vertical = '';
@@ -204,7 +204,6 @@ class elements {
 				$i++;
 			}
 
-
 		}
 		$out .= '</ul>';
 
@@ -215,26 +214,21 @@ class elements {
 		$i = 1;
 
 		$out .= sprintf( '<div id="tabs" class="tabs-content %1s" %2s >', $vertical, $attr );
-		$out .= sprintf( '<div class="content active" id="%1s">', $tab_prefix.$i );
-		$out .= $tabs[ 0 ][ 'content' ];
-		//$out .= sprintf( '</div><!--%1-->', $tab_prefix.$i );
 
-		$i++;
 
-		foreach ( $tabs as $key => $tab ) {
-			if ( isset( $tab[ 'content' ] ) && isset( $tab[ 'label' ] ) ) {
-				if ( $key != 0 ) {
-					$out .= sprintf( '<div class="content" id="%1s">', $tab_prefix.$i );
-					$out .= $tab[ 'content' ];
-					$out .= sprintf( '</div><!--%1s-->', $tab_prefix.$i );
-					$i++;
-				}
+		foreach ( $tabs as $key => $tab) {
+			if ( $key === 0 ) {
+				$out .= sprintf( '<div class="content active" id="%1s">%2s</div>', $tab_prefix.$i, $tab[ 'content']  );
+				$i++;
 			}
 			else {
-				$out .= __( "Tab  {$i} is not properly configured", 'holotree' );
+				$out .= sprintf( '<div class="content" id="%1s">%2s</div>', $tab_prefix.$i, $tab[ 'content']  );
+				$i++;
 			}
 
 		}
+
+
 		$out .= '</div><!--#tabs-->';
 
 		return $out;
