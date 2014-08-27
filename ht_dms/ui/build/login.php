@@ -18,6 +18,7 @@ class login {
 		add_filter( 'login_headerurl', array( $this, 'login_logo_url' ) );
 		add_filter( 'login_headertitle', array( $this, 'login_logo_url_title' ) );
 		add_action( 'wp_head', array( $this, 'login_style' ) );
+		add_action( 'login_enqueue_scripts', array( $this, 'login_style' ) );
 		add_filter( 'logout_url', array( $this, 'logout_url' ) );
 	}
 
@@ -29,7 +30,7 @@ class login {
 
 
 	function login_logo_url() {
-		return apply_filters( 'ht_dms_login_logo_url', '' );
+		return ht_dms_home();
 
 	}
 
@@ -42,29 +43,36 @@ class login {
 
 	}
 
+	function login_logo() {
+		return apply_filters( 'ht_dms_login_logo', '' );
+	}
+
 	function login_style() {
-		$logo = trailingslashit( HT_DMS_UI_DIR ).'img/login-logo.jpg';
-		/**
-		 * Set login logo
-		 *
-		 * @param string $logo Login logo source url
-		 *
-		 * @return Loging logo source.
-		 *
-		 * @since 0.0.1
-		 */
-		$logo = apply_filters( 'ht_dms_login_logo', $logo );
+
+		$logo = $this->login_logo();
 		?>
 		<style type="text/css">
-			.entry-title a {
+			.login h1 a {
 				margin: 0 auto;
 				color: white;
-				background-image: url(<?php echo $logo; ?>);
+				background-image: url(<?php echo $logo; ?>) !important;
 				background-repeat: no-repeat;
 				width: 300px !important;
 				height: 150px !important;
+				foo:bar;
 				;
-				
+
+			}
+			html, body{
+				background-color: #EFC771;
+			}
+
+			.login form {
+				background-color: #F4D99F;
+			}
+
+			input#wp-submit {
+				background-color: #5A180A;
 			}
 		</style>
 	<?php }
