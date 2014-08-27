@@ -529,7 +529,7 @@ class elements {
 			return false;
 		}
 		elseif( $type === 'home' || $type === 'front' ) {
-			$url = site_url();
+			$url = ht_dms_home();
 		}
 		elseif ( intval( $id ) !== 0 ) {
 			if ( $type === 'permalink' || $type === 'post' ) {

@@ -270,7 +270,7 @@ class elements {
 	 */
 	function menu() {
 		$items = array(
-			'Home' => site_url(),
+			'Home' => ht_dms_home(),
 			'My Groups' => null,
 			'Preferences' => null,
 			'Messages' => null,

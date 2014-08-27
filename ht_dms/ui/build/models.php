@@ -470,7 +470,7 @@ class models {
 
 		if ( $return === 'JSON' || $return === 'urlstring' ) {
 			$type = strtolower( $type );
-			$url = home_url( "/wp-json/pods/{$type}?" );
+			$url = ht_dms_home( "/wp-json/pods/{$type}?" );
 			$url .= http_build_query( $params );
 
 			if ( $return === 'urlstring' ) {

@@ -301,7 +301,7 @@ class view_loaders {
 	 */
 	function content_wrap( $content, $task = false ) {
 		$id = $this->id();
-
+		$container_id = $id;
 		if ( $id == 00 ) {
 			$container_id = 'home';
 		}

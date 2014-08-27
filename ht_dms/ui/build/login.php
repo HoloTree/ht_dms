@@ -22,14 +22,14 @@ class login {
 	}
 
 	function logout_url( $logout_url ) {
-		$logout_url = site_url();
+		$logout_url = ht_dms_home();
 
 		return $logout_url;
 	}
 
 
 	function login_logo_url() {
-		return site_url();
+		return apply_filters( 'ht_dms_login_logo_url', '' );
 
 	}
 

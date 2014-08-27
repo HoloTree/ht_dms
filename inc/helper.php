@@ -68,3 +68,25 @@ function ht_dms_pods_exist() {
 
 }
 
+/**
+ * Returns the main HT DMS Page url.
+ *
+ * By default returns home_url(), can be modified with the 'ht_dms_home_url' filter
+ *
+ * @since 0.0.2
+ *
+ * @return mixed|void
+ */
+function ht_dms_home() {
+	$home = home_url();
+
+	/**
+	 * Customize the main HT DMS page
+	 *
+	 * @param string $home. URL
+	 *
+	 * @since 0.0.2
+	 */
+	return apply_filters( 'ht_dms_home_url', $home );
+
+}

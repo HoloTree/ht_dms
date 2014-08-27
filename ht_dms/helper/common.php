@@ -148,7 +148,7 @@ class common {
 		}
 		elseif ( $action === 'add-consensus' ) {
 			holotree_consensus( $id );
-			$this->redirect( pods_v( 'thengo', 'get', site_url(), true ), __( 'Adding Consensus.', 'holotree' ) );
+			$this->redirect( pods_v( 'thengo', 'get', home_url(), true ), __( 'Adding Consensus.', 'holotree' ) );
 		}
 		elseif( $action === 'new' ) {
 			$url = get_permalink( $id );
