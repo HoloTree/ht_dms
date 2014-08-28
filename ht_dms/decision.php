@@ -28,9 +28,9 @@ class decision extends dms {
 
 		add_filter( "pods_api_post_save_pod_item_{$type}", array( $this, 'user_fix'), 11, 3 );
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		//add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
+		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 
-		add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+	//add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
 
 		//add_filter( "pods_api_pre_save_pod_item_{$type}", array( $this, 'save_proposed_modification' ), 15, 3 );
@@ -236,6 +236,7 @@ class decision extends dms {
 				),
 				'proposed_by'     => array (
 					'default' => $defaults[ 'user_id' ],
+					'type'	=> 'hidden',
 				),
 				'group'           => array (
 					'default' 	=> $defaults[ 'group_id' ],
