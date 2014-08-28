@@ -42,17 +42,20 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 			'content' => $ui->views()->assigned_tasks( null, $uID, $id ),
 		),
 
-		array (
+	);
+
+	$is_facilitator = $org_class->is_faciliator( $id, $uID, $obj );
+
+	if ( $is_facilitator ) {
+		$tabs[] = array (
 			'label'   => __( 'New Group In Organization', 'holotree' ),
 			'content' => $ui->add_modify()->new_group(  $id, $uID ),
-		),
-		array(
+		);
+		$tabs[] = array(
 			'label'		=> __( 'Edit Organization', 'holotree' ),
 			'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
-		),
-
-
-	);
+		);
+	}
 
 
 
