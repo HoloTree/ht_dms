@@ -171,7 +171,9 @@ class elements {
 
 		if ( is_array( $options )   ) {
 
-			$form = '<form action="' . $this->ui()->elements()->current_page_url() . '" method="get" id="dms-actions-form">';
+
+
+			$form = sprintf( '<form action="%1s" method="get" id="dms-actions-form">', ht_dms_home() );
 			$form .= '<select name="dms_action">';
 			foreach ( $options as $option ) {
 				$form .= '<option value="' . $option[ 'value' ] . '">' . $option[ 'label' ] . '</option>';

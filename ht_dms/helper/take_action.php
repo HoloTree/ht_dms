@@ -56,7 +56,7 @@ class take_action {
 		}
 
 		$d->reset_cache( $id );
-
+		pods_redirect( get_permalink( $id ) );
 		return $this->message( $action, $id, 'd' );
 	}
 
