@@ -144,7 +144,7 @@ class common {
 
 			$ui = holotree_dms_ui();
 
-			$link = $ui->output_elements()->action_append( '/f', 'add-consensus', $pmid );
+			$link = $ui->output_elements()->action_append( ht_dms_home(), 'add-consensus', $pmid );
 			$link .= '&thengo='.get_permalink( $id );
 
 			$this->message( __( 'Proposed modification created.', 'holotree' ) );
@@ -154,7 +154,7 @@ class common {
 		}
 		elseif ( $action === 'add-consensus' ) {
 			holotree_consensus( $id );
-			$this->redirect( pods_v( 'thengo', 'get', home_url(), true ), __( 'Adding Consensus.', 'holotree' ) );
+			$this->redirect( pods_v( 'thengo', 'get', ht_dms_home(), true ), __( 'Adding Consensus.', 'holotree' ) );
 		}
 		elseif( $action === 'new' ) {
 			$url = get_permalink( $id );
