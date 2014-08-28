@@ -403,10 +403,15 @@ abstract class dms extends object {
 
 		unset($form_fields[ 'change_to' ]);
 		$form_fields[ 'change_to' ] = array(
-			'default' => $id )
-		;
+			'default' => $id
+		);
 		$form_fields[ 'manager' ][ 'default' ] = $manager;
 		$form_fields[ 'proposed_by' ][ 'default' ] = $uID;
+
+
+		$form_fields[ 'decision_type' ] = array (
+			'default' 	=> 'change',
+		);
 
 		$oID = $dID = $gID = null;
 
@@ -425,6 +430,13 @@ abstract class dms extends object {
 		}
 
 		$obj->ID = $obj->data->id = $obj->data->field_id = 0;
+		$hides = array( 'change_to', 'organization', 'decision_type', 'decision_status', 'group', 'proposed_by');
+		foreach( $hides as $hide ) {
+			if ( isset( $form_fields[ $hide ] ) && $form_fields[ $hide ][ 'type' ] !== 'hidden' ){
+				$form_fields[ $hide ][ 'type' ] = 'hidden';
+			}
+
+		}
 
 		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type );
 

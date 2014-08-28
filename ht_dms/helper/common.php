@@ -129,9 +129,13 @@ class common {
 
 
 	function dms_actions() {
+		$output_elements = holotree_dms_ui()->output_elements();
 		$message_text = $action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
+		if ( $action === 'propose-change' || $action === 'changing' ) {
+			return;
+		}
 
 		//special handling for proposed changes
 		if (  $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
@@ -152,6 +156,7 @@ class common {
 			$action = false;
 
 		}
+
 		elseif ( $action === 'add-consensus' ) {
 			holotree_consensus( $id );
 			$this->redirect( pods_v( 'thengo', 'get', ht_dms_home(), true ), __( 'Adding Consensus.', 'holotree' ) );
@@ -171,8 +176,8 @@ class common {
 
 		}
 
-		if ( false !== $action && $id  && $action !== 'changing' ) {
-			$output_elements = holotree_dms_ui()->output_elements();
+		if ( false !== $action && $id && $action !== 'changing' ) {
+
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
 				$message_text = $take_action->decision( $action, $id );

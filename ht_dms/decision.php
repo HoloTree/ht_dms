@@ -214,9 +214,9 @@ class decision extends dms {
 	 * @since 0.0.2
 	 */
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
+		pods_error( var_dump( $new ) );
 		if ( $new !== 'modify' ) {
 			$defaults = $this->default_values( $id, $obj, $oID, $uID );
-
 
 			$form_fields = array (
 				'post_title'      => array (
@@ -247,7 +247,8 @@ class decision extends dms {
 					'type' 		=> 'hidden'
 				),
 			);
-			if ( ! $new ) {
+
+			if ( $new === 'modify' ) {
 
 				$form_fields[ 'change_to' ] = array (
 					'default' => (string) $id,
@@ -256,7 +257,7 @@ class decision extends dms {
 				$form_fields[ 'reason_for_change' ] = array ();
 				$form_fields[ 'decision_type' ] = array (
 					'default' 	=> 'change',
-					'type' 		=> 'hidden'
+					//'type' 		=> 'hidden'
 				);
 
 			}

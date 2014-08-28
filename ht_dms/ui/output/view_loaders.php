@@ -25,10 +25,18 @@ class view_loaders {
 		if ( defined( 'HT_NEW_VIEW' ) && HT_NEW_VIEW  ) {
 			return $this->new_view();
 		}
+		$action =  pods_v( 'dms_action', 'get', false, true );
 
-		$context = $this->view_context( $post_type );
-		if ( $context !== 'task' ) {
-			return $this->view_cache( $context, $post_type );
+
+		if ( $action === 'propose-change' ) {
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'propose-change.php' ) );
+
+		}
+		else {
+			$context = $this->view_context( $post_type );
+			if ( $context !== 'task' ) {
+				return $this->view_cache( $context, $post_type );
+			}
 		}
 
 	}
