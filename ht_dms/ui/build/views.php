@@ -344,7 +344,13 @@ class views {
 		$obj = $decision_class->null_object( $obj, $id );
 		if ( $decision_class->has_proposed_modification( $id, $obj, true ) ) {
 
-			$ids = $decision_class->proposed_modifications( $id, $obj, true );
+			$ids = $decision_class->proposed_modifications( $id, null, true );
+
+			if ( ! isset( $ids[0] ) ) {
+				$x = $ids[0];
+				unset( $ids );
+				$ids = $x;
+			}
 
 			if ( is_array( $ids ) ) {
 

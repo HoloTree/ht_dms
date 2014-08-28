@@ -890,8 +890,14 @@ class decision extends dms {
 			}
 			else {
 				$ids = array();
+				if ( !isset( $changes[ 0 ]) ) {
+					$x = $changes;
+					unset( $changes );
+					$changes[0] = $x;
+				}
+
 				foreach( $changes as $change ) {
-					$ids[] = $change[ 'ID' ];
+					$ids[] = pods_v( 'ID', $change );
 				}
 
 				if ( isset( $ids ) && is_array( $ids ) ) {

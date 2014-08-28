@@ -56,6 +56,7 @@ else {
 		);
 
 		$proposed_modifications = $ui->views()->proposed_modifications( $id );
+
 		if ( is_string( $proposed_modifications ) ) {
 			$tabs[ ] = array (
 				'label'   => __( 'Proposed Modifications', 'holotree' ),
