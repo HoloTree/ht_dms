@@ -191,6 +191,7 @@ class view_loaders {
 
 		$group = 'ht_dms_front_end_views';
 
+		pods_transient_set( $key, false );
 		if (  false === ( $value = pods_view_get( $key, $cache_mode, $group ) ) ) {
 			$value = $this->view_get( $context, $post_type );
 			pods_view_set( $key, $value, 0, $cache_mode, $group );
