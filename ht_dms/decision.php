@@ -355,19 +355,21 @@ class decision extends dms {
 	 *
 	 * @since 	0.0.1
 	 */
-	function change_consensus( $id, $value, $uID = null, $obj = null ) {
+	function change_consensus( $id, $value, $uID = null, $obj = null, $check_status = true ) {
 		$uID = $this->null_user( $uID );
 
 		$c = holotree_consensus_class();
 		$c->update( $id, $value, $uID );
 
 		$consensus = $c->get( $id );
-		$proper_status = $c->status( $consensus );
-		$status = $this->status( $id );
+		if ( $check_status ) {
+			$proper_status = $c->status( $consensus );
+			$status        = $this->status( $id );
 
-		if ( $proper_status !== $status ) {
-			$obj = $this->null_object( $obj, $id );
-			$id = $this->update( $id, 'decision_status', $proper_status, $obj );
+			if ( $proper_status !== $status ) {
+				$obj = $this->null_object( $obj, $id );
+				$id  = $this->update( $id, 'decision_status', $proper_status, $obj );
+			}
 		}
 
 		do_action( 'ht_dms_consensus_changed' );
@@ -398,7 +400,8 @@ class decision extends dms {
 			if ( !is_object( $obj ) ) {
 				holotree_error( __METHOD__ );
 			}
-			$id = $this->change_consensus( $id, 2, $uID );
+			$id = $this->change_consensus( $id, 2, $uID, $obj, false );
+			$obj->save( 'decision_status', 'blocked' );
 
 			do_action( 'ht_dms_new_block' );
 			do_action( 'ht_dms_new_block_'.$id );
@@ -428,7 +431,7 @@ class decision extends dms {
 		$status = $this->status( $id );
 		if ( $status === 'new' || $status === 'blocked' ) {
 			$obj = $this->null_object( $obj, $id );
-			$id = $this->change_consensus( $id, 0, $uID );
+			$id = $this->change_consensus( $id, 0, $uID, $obj );
 
 			do_action( 'ht_dms_new_unblock' );
 			do_action( 'ht_dms_new_unblock_'.$id );
