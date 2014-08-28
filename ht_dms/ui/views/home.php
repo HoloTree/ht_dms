@@ -41,15 +41,18 @@ $tabs = array(
 		'content'	=> $ui->views()->notifications( null ),
 	),
 	array(
-		'label'		=> __( 'New Organization', 'holotree' ),
-		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
-	),
-	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
 		'content'	=> $ui->views()->public_groups( ),
 	),
 
 
 );
+
+if ( HT_DEV_MODE ) {
+	$tabs[] = array(
+		'label'		=> __( 'New Organization', 'holotree' ),
+		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
+	);
+}
 
 return $ui->elements()->output_container( $tabs );
