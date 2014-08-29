@@ -22,6 +22,7 @@ $id = $post->ID;
 //@TODO Use where/or select to only get the groups/tasks in organziation
 $obj = holotree_organization( $id );
 $org_class = holotree_organization_class();
+
 $uID = get_current_user_id();
 $ui = holotree_dms_ui();
 
@@ -44,7 +45,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 
 	);
 
-	$is_facilitator = $org_class->is_faciliator( $id, $uID, $obj );
+	$is_facilitator = $org_class->is_facilitator( $id, $uID );
 
 	if ( $is_facilitator ) {
 		$tabs[] = array (

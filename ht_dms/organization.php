@@ -186,15 +186,27 @@ class organization extends dms {
 	 * @since 0.0.1
 	 */
 	function is_facilitator( $id, $uID = null, $obj = null ) {
+
 		$uID = $this->null_user( $uID );
 		$facilitators = $this->all_facilitators( $id, $obj );
+
 		if ( is_array( $facilitators ) ) {
 			if ( in_array( $uID, $facilitators ) ) {
 				return true;
 
 			}
 
+		}elseif ( is_int( $facilitators ) || intval( $facilitators ) > 0 ) {
+
+			if ( $facilitators === $uID ) {
+
+				return true;
+
+			}
+
 		}
+
+
 
 	}
 
