@@ -591,26 +591,6 @@ class decision extends dms {
 	}
 
 	/**
-	 * Action for proposing a modification to a decision
-	 *
-	 * @TODO Where to output
-	 *
-	 * @return string  $form
-	 *
-	 * @since 0.0.1
-	 */
-	function action_propose_modify( ) {
-		if ( $this->get_action_var() !== false ) {
-			if ( $this->get_action_var() === 'propose_change' ) {
-				if ( $this->get_id_var() !== false ) {
-					$form = $this->propose_modify( $this->get_id_var() );
-					return $form;
-				}
-			}
-		}
-	}
-
-	/**
 	 * Action for responding to a decision
 	 *
 	 * @TODO How to get content
@@ -734,7 +714,15 @@ class decision extends dms {
 	 *
 	 * @return mixed
 	 */
-	function make_modification( $id, $original_id, $obj, $uID, $original_obj ) {
+	function make_modification( $id, $original_id = false, $obj = null, $uID = null , $original_obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+		if ( ! $original_id ) {
+			$original_id = pods_v( 'ID', $obj->field( 'change_to' ) );
+		}
+
+		$original_obj = $this->null_object( $original_obj, $original_id );
+
+		$uID = $this->null_user( $uID );
 
 		$data = false;
 
@@ -758,19 +746,14 @@ class decision extends dms {
 			unset( $data[ $unset ] );
 		}
 
-
-		//get a new consensus array, set $uID as accepting, and prepare it to save.
-		$data[ 'consensus'] = holotree_consensus_class()->create( $id , $obj, true );
-		$data[ 'consensus'][ $uID ][ 'value' ] = 1;
-		$data[ 'consensus'] = serialize( $data[ 'consensus'] );
-
 		$data[ 'decision_status' ] = 'new';
 		$data[ 'decision_type' ] = 'modified';
+		$data[ 'proposed_by' ] = $uID;
 
 		if ( is_array( $data ) ) {
 			$updated_id = $original_obj->save( $data );
 
-			if ( $original_id === $updated_id ) {
+			if ( (int) $original_id === (int) $updated_id ) {
 				$finished = $this->finish_proposed_change( $id, $obj );
 			}
 			else {

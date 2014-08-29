@@ -350,7 +350,7 @@ abstract class dms extends object {
 			$old_values = $obj->field( $field );
 			$value = array_merge( $old_values, $value );
 		}
-
+pods_error( print_c3( array( $field, $value ) ));
 		$id = $obj->save( $field, $value );
 		//$this->reset_cache( $id );
 

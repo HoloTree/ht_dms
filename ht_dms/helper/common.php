@@ -133,7 +133,17 @@ class common {
 		$message_text = $action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
-		if ( $action === 'propose-change' || $action === 'changing' ) {
+
+
+		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
+			return;
+		}
+
+		if( $action == 'accept-change' ) {
+
+			$id = holotree_decision_class()->make_modification( $id );
+			holotree_consensus_class()->create( $id );
+			pods_redirect( get_permalink( $id ) );
 			return;
 		}
 
@@ -180,13 +190,17 @@ class common {
 
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
-				$message_text = $take_action->decision( $action, $id );
+
+				//$message_text = $take_action->decision( $action, $id );
 				if ( $action === 'propose-change' ) {
 					$link = get_permalink( $id );
 					$link = $output_elements->action_append( $link, 'changing', $id );
 
 					$this->redirect( $link, sprintf( __( 'Propose a change to %s.', 'holotree'), get_the_title( $id ) ) );
+					return;
 				}
+
+
 			}
 			elseif( $action === 'join-group' || 'approve-pending' || 'reject_pending' ) {
 				$message_text = $take_action->group( $action, $id );
