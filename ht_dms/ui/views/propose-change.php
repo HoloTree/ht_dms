@@ -14,11 +14,11 @@ $tabs = array(
 	),
 	array(
 		'label' => __( 'Decision Being Modified' ),
-		'content' => '@TODO',
+		'content' => $ui->views()->decision( null, $id ),
 	),
 	array(
 		'label' => __( 'Discussion From Original Decision' ),
-		'content' => '@TODO',
+		'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 	),
 );
 
