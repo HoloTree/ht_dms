@@ -983,8 +983,10 @@ class decision extends dms {
 	function is_blocking( $id, $uID = null ) {
 		$uID = intval( $this->null_user( $uID ) );
 		$who =  $this->who_is_blocking( $id, $uID );
-		if ( in_array( $uID, $who ) ) {
-			return true;
+		if ( is_array( $who ) ) {
+			if ( in_array( $uID, $who ) ) {
+				return true;
+			}
 		}
 
 	}
