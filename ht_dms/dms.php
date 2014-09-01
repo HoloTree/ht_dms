@@ -226,35 +226,7 @@ abstract class dms extends object {
 	 */
 	function form_fix( $new = true, $type ) {
 		return;
-		/**
-		 * Set jQuery to fix up forms, but content type
-		 *
-		 * Note: script tags and jQuery no conflict wrapper is added automatically.
-		 *
-		 * @param string|null $jQuery The jQuery to use. Defaults to null.
-		 *
-		 * @param bool $new Whether this script is for a new item or not.
-		 *
-		 * @return string|null The jQuery or null
-		 */
-		$jQuery = apply_filters( "ht_dms_{$type}_form_fix_jQuery", null, $new  );
-
-		if ( is_null( $jQuery ) ) {
-			return '';
-		}
-
-		$script = "
-		<script type='text/javascript'>
-		jQuery(document).ready(function($) {
-		//Fix for hidden fields
-		";
-		$script .= $jQuery;
-		$script .= "
-});
-		</script>
-		";
-
-		return $script;
+		
 	}
 
 	/**
@@ -350,9 +322,8 @@ abstract class dms extends object {
 			$old_values = $obj->field( $field );
 			$value = array_merge( $old_values, $value );
 		}
-pods_error( print_c3( array( $field, $value ) ));
+
 		$id = $obj->save( $field, $value );
-		//$this->reset_cache( $id );
 
 		return $id;
 	}
