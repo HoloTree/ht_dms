@@ -31,6 +31,8 @@ $tabs[] = array(
 	'label'		=>  __( 'Membership' , 'holotree' ),
 	'content'	=> $ui->build_elements()->group_sidebar_widgets( $id ),
 );
+
+
 //only show edit group if member & facilitator.
 if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
@@ -40,8 +42,8 @@ if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) )
 }
 
 //only allow add decision if is member
-if ( $g->is_member( $id, $uID, $obj ) ) {
-	$tabs[ ] = array (
+if (  $g->is_member( $id, $uID, $obj ) ) {
+	$tabs[] = array (
 		'label'   => __( 'Create New Decision', 'holotree' ),
 		'content' => $ui->add_modify()->new_decision( null, $uID, $oID ),
 	);
