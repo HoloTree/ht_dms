@@ -356,7 +356,15 @@ class views {
 
 				foreach ( $ids as $id ) {
 					$pObj = holotree_decision( $id );
-					$proposed_changes[ $id ] = $this->decision( $pObj, $id );
+					$args = array(
+						'obj' 		=> $pObj,
+						'id'		=> $id,
+						'preview' 	=> true,
+						'return'	=> 'template',
+					);
+
+
+					$proposed_changes[ $id ] = $this->ui()->models()->decision( $args );
 				}
 
 				if ( isset( $proposed_changes ) && is_array( $proposed_changes ) ) {
