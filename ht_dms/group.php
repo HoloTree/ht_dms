@@ -386,6 +386,22 @@ class group extends dms {
 
 	}
 
+	/**
+	 * Set fields for add/new group forms
+	 *
+	 * @uses "ht_dms_{$type}_edit_form_field"/ ht_dms_ht_dms_group_edit_form_field
+	 *
+	 * @param $form_fields
+	 * @param $new
+	 * @param $id
+	 * @param $obj
+	 * @param $oID
+	 * @param $uID
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.2
+	 */
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID ) {
 
 		if ( $new ) {
@@ -394,12 +410,22 @@ class group extends dms {
 			unset( $form_fields[ 'organization' ] );
 		}
 
+		$unset_fields = array( 'pending_members', 'tasks' );
+		if ( ! $new ) {
+			$unset_fields[] = 'organization';
+		}
+
+		foreach( $unset_fields as $field ) {
+			if ( isset( $form_fields[ $field ] ) ) {
+				unset( $form_fields[ $field ] );
+			}
+		}
+
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
 		$form_fields[ 'group_description' ] = array();
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
 		$form_fields[ 'facilitators' ] = array();
-		$form_fields[ 'organization' ] = array( );
 
 		$hides = array( 'members', 'pending-members', 'decisions', 'organization' );
 
