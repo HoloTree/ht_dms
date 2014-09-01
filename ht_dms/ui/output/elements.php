@@ -64,15 +64,22 @@ class elements {
 	 * @since 0.0.1
 	 */
 	function comment_form( $id ) {
-		$form = '<form action="' . $this->ui()->elements()->current_page_url() . '" method="POST" id="dms-comment-form">';
-		$form .= '<input type="hidden" name="dms_id" value="' . $id. '">';
+		$link = ht_dms_url( $id, 'post-type' );
+		$link = add_query_arg( 'add-comment', true, $link );
+		$link = add_query_arg( 'dms_id', $id, $link );
+
+
+		$form = sprintf(  '<form action="%1s" method="POST" id="dms-comment-form">', $link );
+		$form .= sprintf( '<input type="hidden" name="dms_id" value="%1s">', $id );
 		$form .= '<input type="hidden" name="dms_action" value="add-comment">';
 		$form .= '<label>Comment Text
 						<textarea name="dms_comment_text" placeholder=""></textarea>
 		  		</label>';
 		$form .= '<input type="submit" />';
 		$form .= '</form>';
+
 		return $form;
+
 	}
 
 	/**
@@ -642,7 +649,8 @@ class elements {
 		if ( is_null( $id ) ) {
 			$id = get_queried_object_id();
 		}
-		$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
+
+		$url = ht_dms_url( $id, HT_DMS_TASK_CT_NAME );
 
 		if ( is_null( $text ) ) {
 			$term = get_term( $id, HT_DMS_TASK_CT_NAME );

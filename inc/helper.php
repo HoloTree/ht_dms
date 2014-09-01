@@ -116,3 +116,30 @@ function ht_dms_mini_menu_items() {
 	return $items;
 
 }
+
+function ht_dms_url( $id, $type = false ) {
+	if ( $type === 'post-type' || in_array( $type, array(
+			HT_DMS_DECISION_CPT_NAME,
+			HT_DMS_GROUP_CPT_NAME,
+			HT_DMS_ORGANIZATION_NAME,
+		)
+	) ) {
+		return get_permalink( $id );
+	}
+
+	if ( false != ( $link = get_permalink( $id ) ) ) {
+
+		return $link;
+
+	}
+
+	if ( $type === HT_DMS_TASK_CT_NAME || false == $link  ) {
+
+		return get_term_link( $id, HT_DMS_TASK_CT_NAME );
+
+	}
+
+
+
+
+}

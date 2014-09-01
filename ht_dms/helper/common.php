@@ -134,6 +134,12 @@ class common {
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
 
+		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
+			include_once( 'take_action.php' );
+			$take_action = take_action::init();
+
+			$take_action->comment(  pods_v( 'dms_id', 'post' ) );
+		}
 
 		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
 			return;
@@ -159,15 +165,17 @@ class common {
 			$ui = holotree_dms_ui();
 
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'add-consensus', $pmid );
-			$link .= '&thengo='.get_permalink( $id );
+			$link = add_query_arg( 'thengo', get_permalink( $id ), $link );
 
 			$this->message( __( 'Proposed modification created.', 'holotree' ) );
 			$this->redirect( $link, true );
+
 			$action = false;
+			return;
 
 		}
 
-		elseif ( $action === 'add-consensus' ) {
+		if ( $action === 'add-consensus' ) {
 			holotree_consensus( $id );
 			$this->redirect( pods_v( 'thengo', 'get', ht_dms_home(), true ), __( 'Adding Consensus.', 'holotree' ) );
 		}
@@ -178,8 +186,12 @@ class common {
 			}
 
 			$this->redirect( $url, sprintf( __( 'New %s created.', 'holotree'), 'NEED TO DEFINE TYPE' ) );
+			return;
 		}
-		elseif ( false !== $action  ) {
+
+		//end special actions
+
+		if ( false !== $action  ) {
 			include_once( 'take_action.php' );
 
 			$take_action = take_action::init();
@@ -189,7 +201,7 @@ class common {
 		if ( false !== $action && $id && $action !== 'changing' ) {
 
 
-			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' ) {
+			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' || 'respond' ) {
 
 				//$message_text = $take_action->decision( $action, $id );
 				if ( $action === 'propose-change' ) {
@@ -198,6 +210,12 @@ class common {
 
 					$this->redirect( $link, sprintf( __( 'Propose a change to %s.', 'holotree'), get_the_title( $id ) ) );
 					return;
+				}else {
+					if ( $action === 'respond' ) {
+						//handled in view loader
+						return;
+					}
+					$take_action->decision( $action, $id );
 				}
 
 
@@ -227,15 +245,21 @@ class common {
 				holotree_error('dms_actions error', print_c3( array( $id, $action ) ) );
 			}
 		}
-		elseif ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && !is_null( pods_v( 'dms_id', 'post' ) ) ) {
-			include_once( 'take_action.php' );
-			$take_action = take_action::init();
 
-			$take_action->comment(  pods_v( 'dms_id', 'post' ) );
-		}
+
+
 
 		$this->set_message( $message_text );
 
+		$link = get_permalink( $id );
+		if ( ! $link ) {
+			$link = get_term_link( $id );
+			if ( ! $link ) {
+				$link = ht_dms_home();
+			}
+		}
+
+		$this->redirect( $link );
 
 	}
 
