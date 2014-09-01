@@ -214,7 +214,7 @@ class decision extends dms {
 	 * @since 0.0.2
 	 */
 	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
-		pods_error( var_dump( $new ) );
+
 		if ( $new !== 'modify' ) {
 			$defaults = $this->default_values( $id, $obj, $oID, $uID );
 
