@@ -141,9 +141,11 @@ class elements {
 
 		if ( $what == 'open-decision' ) {
 			$options = array( $accept, $change, $respond, $block );
+			$options = array( $accept, $change, $block );
 		}
 		elseif ( $what === 'blocked-decision' ) {
 			$options = array( $accept, $change, $respond );
+			$options = array( $accept, $change );
 			$decision = holotree_decision_class();
 			if ( $decision->is_blocking( $id ) ) {
 				$options[] = $unblock;
@@ -157,6 +159,7 @@ class elements {
 		}
 		else {
 			$options = array(  $respond );
+			$options = array();
 		}
 
 		if ( !is_singular() ) {
