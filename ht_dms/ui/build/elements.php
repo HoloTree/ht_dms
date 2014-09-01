@@ -93,9 +93,6 @@ class elements {
 
 	}
 
-	function foo() {
-		return 'fo';
-	}
 
 	function action_buttons( $what, $id, $obj = null ) {
 		$obj = holotree_decision( $id, $obj );
