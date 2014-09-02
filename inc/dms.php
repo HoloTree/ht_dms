@@ -289,8 +289,35 @@ function holotree_dms_ui_ajax_view() {
 				)
 			);
 		}
+
 	}
 
 }
 
+add_action( 'wp_ajax_ht_dms_paginate', 'ht_dms_paginate');
+add_action( 'wp_ajax_nopriv_ht_dms_paginate', 'ht_dms_paginate' );
+function ht_dms_paginate() {
+	if ( isset( $_REQUEST['nonce'] ) ) {
+		if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], 'ht-dms' ) ) {
+			wp_die( __( 'Your attempt to request data via ajax using the function holotree_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' ) );
+		}
+
+		if ( isset( $_REQUEST[ 'view' ] ) && isset( $_REQUEST[ 'limit' ] ) && isset( $_REQUEST[ 'page' ] ) ) {
+			$view = $_REQUEST[ 'view' ];
+			$limit = $_REQUEST[ 'limit' ];
+			$page = $_REQUEST[ 'page' ];
+
+			$args = array(
+				'limit' => $limit,
+				'page' => $page,
+				'return' => 'template'
+			);
+
+			wp_die( holotree_dms_ui_get_view( $view, $args, 'template' ) );
+		}
+
+		
+	}
+	
+}
 

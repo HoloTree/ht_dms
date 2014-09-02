@@ -247,4 +247,36 @@ jQuery(document).ready(function($) {
     }
 
 
+
+    function paginate( container ) {
+        var page = $( container ).attr( "page" );
+        page++;
+
+        var limit = $( container ).attr( "limit" );
+        var view = $( container ).attr( "view" );
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_paginate',
+                'nonce' : htDMS.nonce,
+                'view' : view,
+                'page' : page,
+                'limit' : limit,
+                'container' :container
+            },
+            function( response ) {
+                console.log(  page );
+                console.log( response );
+                $( container ).empty;
+                $( container ).append( response );
+
+                $( container ).attr('page', page );
+
+            }
+        );
+    }
+
+    window.paginate = paginate;
+
+
+
 });

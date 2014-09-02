@@ -88,6 +88,7 @@ class models {
 	}
 
 	function group( $args ) {
+
 		$g = holotree_group_class();
 
 		$args = $this->args( $args );
@@ -133,6 +134,8 @@ class models {
 			}
 
 			$params[ 'limit' ] = $limit;
+			$params[ 'page' ] = $page;
+
 		}
 
 		$params = $this->cache_args( $params );
@@ -385,9 +388,10 @@ class models {
 			6 => 'public',
 			7 => 'status',
 			8 => 'return',
+			9 => 'page',
 		);
 
-		for ( $i = 0; $i < 9; $i++ ) {
+		for ( $i = 0; $i < 10; $i++ ) {
 			$key = $params[ $i ];
 			if ( !isset( $args[ $i ]) ) {
 
@@ -399,6 +403,9 @@ class models {
 				}
 				elseif( $key === 'limit' ) {
 					$value = 5;
+				}
+				elseif( $key === 'page' ) {
+					$value = 1;
 				}
 				else {
 					$value = false;
@@ -442,6 +449,9 @@ class models {
 	 * @return null|string|bool|Pods|JSON
 	 */
 	function output( $return, $type, $params, $preview = false, $obj = null ) {
+		if ( ! is_string( $return ) || intval( $return ) > 0 ) {
+			$return = 'template';
+		}
 		if ( $return === 'template' || 'Pods' ) {
 			$short_type = strtolower( $type );
 			//@TODO stop assuming 'ht_dms' prefix

@@ -26,7 +26,7 @@ $uID = get_current_user_id();
 $tabs = array(
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
-		'content'	=> $ui->views()->users_groups( null, $uID ),
+		'content'	=> $ui->views()->users_groups( null, $uID, null, 3 ),
 	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),

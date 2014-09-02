@@ -387,6 +387,33 @@ class elements {
 
 	}
 
+	function ajax_pagination_buttons( $obj, $view, $page ) {
+		$previous = false;
+		if ( $page > 1 ) {
+			$out[] = sprintf( '<a href="#" id="previous-%1s" class="pagination-previous button">%2s</a>', $view, __( 'Previous', 'holotree' ) );
+			$previous = true;
+		}
+		$out[] =  sprintf( '<a href="#" id="next-%1s" class="pagination-next button">%2s</a>', $view, __( 'Next', 'holotree' ) );
+		$out = sprintf( '<div class="pagination %1s-pagination">%2s</div>', HT_DMS_PREFIX, implode( $out ) );
+
+		$out .= $this->pagination_inline_js( $previous, $view );
+
+		return $out;
+
+	}
+
+	function pagination_inline_js( $previous, $view )  {
+		if ( $previous ) {
+			$script[] = "jQuery( '#previous-{$view}' ).click( function() {paginate( '#{$view}' ); });";
+		}
+		$script[] = $script[] = "jQuery( '#next-{$view}' ).click( function() {paginate( '#{$view}' ); });";
+
+		$script = sprintf( '<script type="text/javascript">%2s</script>', implode( $script ) );
+
+		return $script;
+
+	}
+
 
 	/**
 	 * Get instance of UI class

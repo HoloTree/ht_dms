@@ -39,15 +39,22 @@ class views {
 	 *
 	 * @since   0.0.2
 	 */
-	function users_groups( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template'  ) {
-		$args = array(
-			'obj' 		=> $obj,
-			'mine' 		=> $uID,
-			'in'		=> $oID,
-			'limit' 	=> $limit,
-			'preview' 	=> true,
-			'return'	=> $return,
-		);
+	function users_groups( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template', $page = false  ) {
+
+		if ( ! is_array( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'mine'    => $uID,
+				'in'      => $oID,
+				'limit'   => $limit,
+				'page'    => $page,
+				'preview' => true,
+				'return'  => $return,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->group( $args );
 
@@ -65,14 +72,15 @@ class views {
 	 *
 	 * @since   0.0.2
 	 */
-	function public_groups( $obj = null, $oID = null, $limit = 5, $return = 'template'  ) {
-
+	function public_groups( $obj = null, $oID = null, $limit = 5, $return = 'template', $page = false  ) {
+		
 		$args = array(
 			'obj' 		=> $obj,
 			'in'		=> $oID,
 			'limit' 	=> $limit,
 			'preview' 	=> true,
 			'return'	=> $return,
+			'page'		=> $page,
 		);
 
 		return $this->models()->group( $args );
