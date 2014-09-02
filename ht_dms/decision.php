@@ -867,7 +867,12 @@ class decision extends dms {
 				}
 
 				foreach( $changes as $change ) {
-					$ids[] = pods_v( 'ID', $change );
+					$type = pods_v( 'decision_type', $change );
+					$status = pods_v( 'decision_status', $change );
+					if ( $type !== 'accepted_change' && ! in_array( $status, array( 'completed', 'failed' ) ) ) {
+						$ids[] = pods_v( 'ID', $change );
+					}
+
 				}
 
 				if ( isset( $ids ) && is_array( $ids ) ) {
