@@ -387,10 +387,10 @@ class elements {
 
 	}
 
-	function ajax_pagination_buttons( $obj, $view, $page, $return_array = false ) {
+	function ajax_pagination_buttons( $obj, $view, $page  ) {
 		$total_pages = $obj->total_found() / $obj->total();
 		$total_pages = ceil( $total_pages );
-var_Dump( array(  $obj->total(), $obj->total_found(), $total_pages ));
+
 		$previous = false;
 		if ( $page > 1 ) {
 			$previous_page = $page-1;

@@ -326,11 +326,11 @@ function ht_dms_paginate() {
 }
 
 function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
-	$views = holotree_dms_ui()->views();
-	$args[ 'return' ] = 'Pods';
-	//$obj = call_user_func_array( array( $views, $view ), $args );
-	$obj = $views->users_groups( null, 1, null, $args[ 'limit' ], 'Pods', 1 );
 
+	$args[ 'return' ] = 'Pods';
+	$view_args = array( null, get_current_user_id(), null, $args[ 'limit'], 'Pods', $args[ 'page'] );
+
+	$obj = holotree_dms_ui()->get_view( $view, $view_args, 'Pods' );
 	if ( $return_obj === true ) {
 		return $obj;
 
@@ -342,7 +342,6 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 		$template_file = trailingslashit( HT_DMS_VIEW_DIR ).'partials';
 		$template_file .= '/group_preview.php';
 
-		var_dump( array($obj->total(), $obj->total_found() ));
 		if ( $obj->total() > 1 ) {
 			$out = '';
 			if ( file_exists( $template_file ) ) {
