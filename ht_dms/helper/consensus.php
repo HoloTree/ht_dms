@@ -61,14 +61,9 @@ class consensus {
 			holotree_error( 'No object in', __METHOD__ );
 		}
 
-		$group = $obj->field( 'group' );
+		$gID = (int) $obj->display( 'group.ID' );
 
-		$g = holotree_group_class();
-		if ( !is_object( $g ) ) {
-			holotree_error( '$c->get $g!obj', __METHOD__ );
-		}
-
-		$users = $g->all_members( (int) $group[0][ 'ID'] );
+		$users = holotree_group_class()->all_members( $gID  );
 
 
 		if ( is_array( $users ) ) {
@@ -89,15 +84,13 @@ class consensus {
 				}
 				else {
 					$id = $obj->save( 'consensus', serialize( $consensus ) );
-					//holotree_decision_class()->reset_cache( $id );
-
 					return $id;
 
 				}
 			}
 		}
 		else {
-			holotree_error( __LINE__, print_c3( array( $obj->id(), holotree_decision( $obj->id(), false, true ), $users, $group, $dont_set, (int) $group[0][ 'ID'])));
+			holotree_error( __METHOD__, print_c3( array( 'obj->id()' => $obj->id(), 'users_array' => $users, 'group_id' => $gID ) ) );
 		}
 
 	}

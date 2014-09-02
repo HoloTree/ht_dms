@@ -386,25 +386,22 @@ abstract class dms extends object {
 
 		$oID = $dID = $gID = null;
 
-		if ( isset( $old[ 'organization' ] ) ) {
-			$oID = $form_fields[ 'organization' ][ 'default' ] = $this->get_organization( $id, $obj );
-		}
-		else {
-			$oID = $id;
-		}
-		if ( isset( $old[ 'group' ] ) ) {
-			$gID = $form_fields[ 'group' ][ 'default' ] = $this->get_group( $id, $obj );
-			$dID = $id;
-		}
-		else{
-			$gID = $id;
-		}
+		$oID = $form_fields[ 'organization' ][ 'default' ] = $this->get_organization( $id, $obj );
+
+		$gID = $form_fields[ 'group' ][ 'default' ] = $this->get_group( $id, $obj );
+		$dID = $id;
 
 		$obj->ID = $obj->data->id = $obj->data->field_id = 0;
 		$hides = array( 'change_to', 'organization', 'decision_type', 'decision_status', 'group', 'proposed_by');
 		foreach( $hides as $hide ) {
-			if ( isset( $form_fields[ $hide ] ) && $form_fields[ $hide ][ 'type' ] !== 'hidden' ){
-				$form_fields[ $hide ][ 'type' ] = 'hidden';
+			if ( isset( $form_fields[ $hide ] )  ){
+				if (
+					( isset( $form_fields[ $hide ][ 'type' ] ) && $form_fields[ $hide ][ 'type' ] !== 'hidden' ) 					||
+					( ! isset( $form_fields[ $hide ][ 'type' ] ) )
+
+				) {
+					//$form_fields[ $hide ][ 'type' ] = 'hidden';
+				}
 			}
 
 		}

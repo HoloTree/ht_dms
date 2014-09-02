@@ -248,19 +248,6 @@ class decision extends dms {
 				),
 			);
 
-			if ( $new === 'modify' ) {
-
-				$form_fields[ 'change_to' ] = array (
-					'default' => (string) $id,
-					'type' 		=> 'hidden'
-				);
-				$form_fields[ 'reason_for_change' ] = array ();
-				$form_fields[ 'decision_type' ] = array (
-					'default' 	=> 'change',
-					//'type' 		=> 'hidden'
-				);
-
-			}
 		}
 
 		return $form_fields;

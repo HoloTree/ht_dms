@@ -162,15 +162,12 @@ class common {
 			$pod = pods( HT_DMS_DECISION_CPT_NAME, $id );
 			$pod->save( 'proposed_changes', $pmid  );
 
-			$ui = holotree_dms_ui();
 
-			$link = $ui->output_elements()->action_append( ht_dms_home(), 'add-consensus', $pmid );
-			$link = add_query_arg( 'thengo', get_permalink( $id ), $link );
+			holotree_consensus( $pmid );
 
-			$this->message( __( 'Proposed modification created.', 'holotree' ) );
-			$this->redirect( $link, true );
+			$link = get_permalink( $id );
+			pods_redirect( $link );
 
-			$action = false;
 			return;
 
 		}
