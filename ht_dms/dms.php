@@ -362,6 +362,10 @@ abstract class dms extends object {
 		unset( $old[ 'proposed_by' ] );
 		unset( $old[ 'consensus' ] );
 		unset( $old[ 'proposed_changes' ] );
+		unset( $old[ 'tasks' ] );
+		unset( $old[ 'group' ] );
+		unset( $old[ 'organization' ] );
+
 		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
 
 		foreach( $old as $field => $value ) {
@@ -384,25 +388,37 @@ abstract class dms extends object {
 			'default' 	=> 'change',
 		);
 
-		$oID = $dID = $gID = null;
 
-		$oID = $form_fields[ 'organization' ][ 'default' ] = $this->get_organization( $id, $obj );
+		$oID = (int) $this->get_group( $id, $obj );
+		$gID = (int) $this->get_organization( $id, $obj );
 
-		$gID = $form_fields[ 'group' ][ 'default' ] = $this->get_group( $id, $obj );
+
+		$form_fields[ 'organization' ][ 'default' ] = $gID;
+
+		$form_fields[ 'group' ][ 'default' ] = $oID;
+
 		$dID = $id;
 
 		$obj->ID = $obj->data->id = $obj->data->field_id = 0;
-		$hides = array( 'change_to', 'organization', 'decision_type', 'decision_status', 'group', 'proposed_by');
+		$hides = array(
+			'change_to',
+			'organization',
+			'decision_type',
+			'decision_status',
+			'group',
+			'proposed_by'
+		);
+
 		foreach( $hides as $hide ) {
 			if ( isset( $form_fields[ $hide ] )  ){
-				if (
-					( isset( $form_fields[ $hide ][ 'type' ] ) && $form_fields[ $hide ][ 'type' ] !== 'hidden' ) 					||
-					( ! isset( $form_fields[ $hide ][ 'type' ] ) )
+				if ( isset( $form_fields[ $hide ] ) ) {
 
-				) {
-					//$form_fields[ $hide ][ 'type' ] = 'hidden';
+					$form_fields[ $hide ][ 'type' ] = 'hidden';
+
 				}
+
 			}
+
 
 		}
 
