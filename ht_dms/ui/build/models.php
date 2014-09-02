@@ -77,7 +77,7 @@ class models {
 				$params[ 'where' ] = $where;
 			}
 
-			$params = $this->limit_page_args( $limit, $params );
+			$params[ 'limit' ] = $limit;
 
 		}
 
@@ -132,8 +132,7 @@ class models {
 				$params[ 'where' ] = $where;
 			}
 
-			$params = $this->limit_page_args( $limit, $params );$params[ 'limit' ] = $limit;
-
+			$params[ 'limit' ] = $limit;
 		}
 
 		$params = $this->cache_args( $params );
@@ -181,7 +180,7 @@ class models {
 				$params[ 'where' ] = $where;
 			}
 
-			$params = $this->limit_page_args( $limit, $params );
+			$params[ 'limit' ] = $limit;
 
 		}
 
@@ -251,7 +250,7 @@ class models {
 				$params[ 'where' ] = $where;
 			}
 
-			$params = $this->limit_page_args( $limit, $params );
+			$params[ 'limit' ] = $limit;
 
 		}
 
@@ -504,40 +503,6 @@ class models {
 		}
 
 		return holotree_error( sprintf( 'The model you requested oculd not be returned as either %1s is an invalid value for $return or the return type you requested was unreachable', $return ) );
-
-	}
-
-	/**
-	 * Handles Pods::find() params limit and page.
-	 *
-	 * @param int|string|array $limit Either the total number to return or an array with 'limit' and 'page' args
-	 * @param array $params Array of params to add limit params to
-	 *
-	 * @see http://pods.io/docs/code/pods/find/
-	 *
-	 * @since 0.0.2
-	 *        
-	 * @return array
-	 */
-	private function limit_page_args( $limit, $params ) {
-		if ( ! is_array( $params ) ) {
-			$params = array();
-		}
-
-		if ( ! is_array( $limit ) ) {
-			return $params[ 'limit' ] = $limit;
-		}
-		else {
-			if ( ! isset( $limit[ 'limit' ] ) && isset( $limit[0] ) ) {
-				$limit[ 'limit' ] = $limit[0];
-			}
-
-			if ( ! isset( $limit[ 'page' ] ) && isset( $limit[1] ) ) {
-				$limit[ 'limit' ] = $limit[1];
-			}
-
-			return array_merge( $params, $limit );
-		}
 
 	}
 	
