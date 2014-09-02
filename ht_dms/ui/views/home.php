@@ -26,7 +26,14 @@ $uID = get_current_user_id();
 $tabs = array(
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
-		'content'	=> $ui->views()->users_groups( null, $uID, null, 3 ),
+		//'content'	=> $ui->views()->users_groups( null, $uID, null, 3 ),
+		'content' 	=> ht_dms_paginated_view_container( 'users_groups',
+			array(
+				'uID' => $uID,
+				'limit' => 3,
+				'page' => 1,
+			)
+		)
 	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),

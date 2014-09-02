@@ -139,7 +139,7 @@ class models {
 		}
 
 		$params = $this->cache_args( $params );
-
+print_c3( $params );
 		return $this->output( $return, HT_DMS_GROUP_CPT_NAME, $params, $preview, $obj );
 
 	}

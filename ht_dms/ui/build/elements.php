@@ -387,14 +387,29 @@ class elements {
 
 	}
 
-	function ajax_pagination_buttons( $obj, $view, $page ) {
+	function ajax_pagination_buttons( $obj, $view, $page, $return_array = false ) {
+		$total_pages = $obj->total_found() / $obj->total();
+		$total_pages = ceil( $total_pages );
+var_Dump( array(  $obj->total(), $obj->total_found(), $total_pages ));
 		$previous = false;
 		if ( $page > 1 ) {
-			$out[] = sprintf( '<a href="#" id="previous-%1s" class="pagination-previous button">%2s</a>', $view, __( 'Previous', 'holotree' ) );
-			$previous = true;
+			$previous_page = $page-1;
+			$attr = "page=\"{$previous_page}\"";
+			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', $view, $attr, __( 'Previous', 'holotree' ) );
 		}
-		$out[] =  sprintf( '<a href="#" id="next-%1s" class="pagination-next button">%2s</a>', $view, __( 'Next', 'holotree' ) );
-		$out = sprintf( '<div class="pagination %1s-pagination">%2s</div>', HT_DMS_PREFIX, implode( $out ) );
+
+		$next_page = $page+1;
+		if ( $next_page <= $total_pages ) {
+			$attr = "page=\"{$next_page}\"";
+			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', $view, $attr,  __( 'Next', 'holotree' ) );
+		}
+		else {
+			$next = false;
+		}
+
+		$buttons = array( $previous, $next );
+
+		$out = sprintf( '<div class="pagination %1s-pagination">%2s</div>', HT_DMS_PREFIX, implode( $buttons ) );
 
 		$out .= $this->pagination_inline_js( $previous, $view );
 
@@ -402,11 +417,15 @@ class elements {
 
 	}
 
-	function pagination_inline_js( $previous, $view )  {
+	private function pagination_inline_js( $previous, $view )  {
 		if ( $previous ) {
-			$script[] = "jQuery( '#previous-{$view}' ).click( function() {paginate( '#{$view}' ); });";
+			$script[] = "jQuery( '#previous-{$view}' ).click( function() {
+			 	paginate( '#{$view}', jQuery( '#previous-{$view}' ).attr( 'page' ) );
+			 });";
 		}
-		$script[] = $script[] = "jQuery( '#next-{$view}' ).click( function() {paginate( '#{$view}' ); });";
+		$script[]  = "jQuery( '#next-{$view}' ).click( function() {
+				paginate( '#{$view}', jQuery( '#next-{$view}' ).attr( 'page' ) );
+			});";
 
 		$script = sprintf( '<script type="text/javascript">%2s</script>', implode( $script ) );
 

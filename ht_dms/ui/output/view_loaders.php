@@ -382,7 +382,7 @@ class view_loaders {
 
 	}
 
-	function magic_template( $template_file, $obj, $cache_args = null ) {
+	function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
 		$no_items = __( 'No items to display', 'holotree' );
 		if ( $obj->total() > 0 ) {
 			if ( file_exists( $template_file ) && class_exists( 'Pods_Templates' ) ) {
@@ -398,34 +398,20 @@ class view_loaders {
 				}
 
 
-				if ( is_object( $obj ) && is_pod( $obj ) ) {
+				if (  is_object( $obj ) && is_pod( $obj ) ) {
+					if ( $page ) {
+						$obj->find( array( 'page' => $page ) );
+					}
+
 					if ( $obj->total() > 1 ) {
 						$out = '';
+
 						while ( $obj->fetch() ) {
 
 							//reset id
 							$obj->id = $obj->id();
 
 							$out .= $this->template( $template_file, $obj );
-						}
-
-
-						if ( $obj->total() !== $obj->total_found() ) {
-							$view = 'users_groups';
-							$attrs = array(
-								'view' => $view,
-								'page' => 1,
-								'limit' => $obj->limit,
-							);
-
-							$attributes = '';
-							foreach( $attrs as $attr => $value  ) {
-								$attributes .= $attr.'="'.$value.'"';
-							}
-
-							$out .= sprintf( '<div id="%0s" %1s>%2s</div>', $view, $attributes, $out );
-
-							$out .= $this->ui()->build_elements()->ajax_pagination_buttons( $obj, $view, 1 );
 						}
 
 					}
@@ -480,7 +466,7 @@ class view_loaders {
 
 	}
 
-	private function template( $template_file, $obj ) {
+	function template( $template_file, $obj ) {
 		$template = '<div class="ht_dms_template" style="">';
 		if ( HT_DEV_MODE ) {
 			$template .= '<span style="float:right">'.$obj->ID().'</span>';

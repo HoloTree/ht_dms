@@ -247,11 +247,14 @@ jQuery(document).ready(function($) {
     }
 
 
-
-    function paginate( container ) {
-        var page = $( container ).attr( "page" );
-        page++;
-
+    /**
+     * Pagination view loader
+     *
+     * @param string Container container ID, with #
+     * @param int page Page of results to load.
+     */
+    function paginate( container, page ) {
+        //var page = $( container ).attr( "page" );
         var limit = $( container ).attr( "limit" );
         var view = $( container ).attr( "view" );
         $.get(
@@ -264,9 +267,8 @@ jQuery(document).ready(function($) {
                 'container' :container
             },
             function( response ) {
-                console.log(  page );
-                console.log( response );
-                $( container ).empty;
+
+                $( container ).html('');
                 $( container ).append( response );
 
                 $( container ).attr('page', page );
@@ -274,6 +276,8 @@ jQuery(document).ready(function($) {
             }
         );
     }
+
+
 
     window.paginate = paginate;
 
