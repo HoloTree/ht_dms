@@ -668,10 +668,14 @@ class decision extends dms {
 		//get ID of original item and create seprate object for that.
 		$original_obj = $this->item( $original_id  );
 
+		/*
+		 * @todo put this back?
+		 * @see https://github.com/HoloTree/ht_dms/issues/31
+		 * @see https://github.com/HoloTree/ht_dms/issues/22
 		//proceed directly to acceptance if accepting user is the original
 		if ( (int) $original_obj->field( 'post_author' ) === ( $uID = (int) get_current_user_id()  ) ) {
 			$make_mod = true;
-		}
+		}*/
 		else {
 			$id = $this->accept( $id, $uID, $obj );
 			if ( $this->has_consent( $id, $obj ) ) {
