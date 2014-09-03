@@ -426,6 +426,7 @@ class group extends dms {
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
 		$form_fields[ 'facilitators' ] = array();
+		$form_fields[ 'organization' ][ 'default' ] = $oID;
 
 		$hides = array( 'members', 'pending-members', 'decisions', 'organization' );
 
