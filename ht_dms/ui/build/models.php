@@ -78,6 +78,7 @@ class models {
 			}
 
 			$params[ 'limit' ] = $limit;
+			$params[ 'page' ] = $page;
 
 		}
 
@@ -184,6 +185,7 @@ class models {
 			}
 
 			$params[ 'limit' ] = $limit;
+			$params[ 'page' ] = $page;
 
 		}
 
@@ -254,6 +256,7 @@ class models {
 			}
 
 			$params[ 'limit' ] = $limit;
+			$params[ 'page' ] = $page;
 
 		}
 
