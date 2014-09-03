@@ -650,7 +650,7 @@ class elements {
 			$id = get_queried_object_id();
 		}
 
-		$url = ht_dms_url( $id, HT_DMS_TASK_CT_NAME );
+		$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
 
 		if ( is_null( $text ) ) {
 			$term = get_term( $id, HT_DMS_TASK_CT_NAME );
