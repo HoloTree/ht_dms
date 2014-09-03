@@ -48,7 +48,8 @@ else {
 			),
 			array(
 				'label'	 	=> __( 'View Tasks', 'holotree' ),
-				'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
+				//'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
+				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),
