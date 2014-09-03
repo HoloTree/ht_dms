@@ -26,21 +26,23 @@ $org_class = holotree_organization_class();
 $uID = get_current_user_id();
 $ui = holotree_dms_ui();
 
+$paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'oID' => $id ) );
+
 if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $obj )   ) {
 
 	$tabs = array (
 
 		array (
 			'label'   => __( 'My Groups In Organization', 'holotree' ),
-			'content' => $ui->views()->users_groups( null, $uID, $id ),
+			'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 		),
 		array (
 			'label'   => __( 'Public Groups In Organization', 'holotree' ),
-			'content' => $ui->views()->public_groups( null, $id ),
+			ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 		),
 		array (
 			'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
-			'content' => $ui->views()->assigned_tasks( null, $uID, $id ),
+			'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 		),
 
 	);

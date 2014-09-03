@@ -86,7 +86,6 @@ class ui {
 	 */
 	function get_view( $view, $args, $return = null ) {
 		$views = $this->views();
-
 		if ( ! is_null( $return ) ) {
 			end( $args );
 			echo $last_id= key( $args );

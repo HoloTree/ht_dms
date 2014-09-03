@@ -23,6 +23,7 @@ if ( pods_v( 'dms_action', 'get', false, true ) === 'changing' ) {
 
 }
 else {
+		$paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'dID' => $id ) );
 		$current = $ui->views()->decision( $obj, $id );
 		$status = $obj->field( 'decision_status' );
 		$status = strtolower( $status );
@@ -47,7 +48,7 @@ else {
 			),
 			array(
 				'label'	 	=> __( 'View Tasks', 'holotree' ),
-				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
+				'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
 			),
 			array (
 				'label'   => __( 'Add Task', 'holotree' ),

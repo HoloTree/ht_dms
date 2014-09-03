@@ -289,6 +289,7 @@ function holotree_dms_ui_ajax_view() {
 				)
 			);
 		}
+
 	}
 
 }

@@ -382,12 +382,12 @@ class view_loaders {
 
 	}
 
-	function magic_template( $view, $obj, $cache_args = null ) {
+	function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
 		$no_items = __( 'No items to display', 'holotree' );
 		if ( $obj->total() > 0 ) {
-			if ( file_exists( $view ) && class_exists( 'Pods_Templates' ) ) {
+			if ( file_exists( $template_file ) && class_exists( 'Pods_Templates' ) ) {
 
-				$view = file_get_contents( $view );
+				$template_file = file_get_contents( $template_file );
 
 				if ( is_null( $cache_args ) || !is_array( $cache_args ) ) {
 					$expires = DAY_IN_SECONDS;
@@ -398,17 +398,21 @@ class view_loaders {
 				}
 
 
-				if ( is_object( $obj ) && is_pod( $obj ) ) {
+				if (  is_object( $obj ) && is_pod( $obj ) ) {
+					if ( $page ) {
+						$obj->find( array( 'page' => $page ) );
+					}
+
 					if ( $obj->total() > 1 ) {
 						$out = '';
+
 						while ( $obj->fetch() ) {
 
 							//reset id
 							$obj->id = $obj->id();
 
-							$out .= $this->template( $view, $obj );
+							$out .= $this->template( $template_file, $obj );
 						}
-
 
 					}
 					elseif ( is_int( $obj->id() ) ) {
@@ -419,7 +423,7 @@ class view_loaders {
 
 						}
 
-						$out = $this->template( $view, $obj );
+						$out = $this->template( $template_file, $obj );
 					}
 				}
 				else {
@@ -429,14 +433,15 @@ class view_loaders {
 					return $no_items;
 				}
 
-				if ( !empty( $out ) ) {
+				if ( ! empty( $out ) ) {
+
 					return $out;
 				}
 
 
 			}
 			else {
-				holotree_error( sprintf( 'The view %1s could not be loaded.', $view ) );
+				holotree_error( sprintf( 'The view %1s could not be loaded.', $template_file ) );
 			}
 		}
 		else {
@@ -461,13 +466,13 @@ class view_loaders {
 
 	}
 
-	private function template( $view, $obj ) {
+	function template( $template_file, $obj ) {
 		$template = '<div class="ht_dms_template" style="">';
 		if ( HT_DEV_MODE ) {
 			$template .= '<span style="float:right">'.$obj->ID().'</span>';
 		}
-		$template .= \Pods_Templates::do_template( $view, $obj );
-		//$template = $obj->template( '', $view );
+		$template .= \Pods_Templates::do_template( $template_file, $obj );
+
 		$template .= '</div>';
 
 		return $template;

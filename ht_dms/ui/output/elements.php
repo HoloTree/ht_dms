@@ -700,7 +700,7 @@ class elements {
 			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c['content'] ) ) {
 				unset( $content[ $i ] );
 				if ( HT_DEV_MODE ) {
-					echo sprintf( __('The tab %1s was not a string, so it was unset from output container. It is a %2s', 'holotree'), $c[ 'label'], gettype( $c['content'] ) );
+					echo sprintf( __('The tab %1s was not a string, so it was unset from output container.', 'holotree' ), $i );
 				}
 			}
 

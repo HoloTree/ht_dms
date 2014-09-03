@@ -247,4 +247,41 @@ jQuery(document).ready(function($) {
     }
 
 
+    /**
+     * Pagination view loader
+     *
+     * @param string Container container ID, with #
+     * @param int page Page of results to load.
+     */
+    function paginate( container, page ) {
+        //var page = $( container ).attr( "page" );
+        var limit = $( container ).attr( "limit" );
+        var view = $( container ).attr( "view" );
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_paginate',
+                'nonce' : htDMS.nonce,
+                'view' : view,
+                'page' : page,
+                'limit' : limit,
+                'container' :container
+            },
+            function( response ) {
+
+                $( container ).fadeOut( 800 ).html('');
+                $( container + "-spinner img" ).show().delay( 400 );
+                $( container ).hide().append( response ).fadeIn( 800 );
+                $( container + "-spinner img") .hide();
+                $( container ).attr('page', page );
+
+            }
+        );
+    }
+
+
+
+    window.paginate = paginate;
+
+
+
 });

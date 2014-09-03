@@ -20,21 +20,20 @@ $ui = holotree_dms_ui();
 
 $uID = get_current_user_id();
 
-//$gObj = holotree_group_class()->object();
-
+$paginated_view_args = ht_dms_default_paginated_view_arguments();
 
 $tabs = array(
 	array(
 		'label'		=> __( 'My Groups', 'holotree' ),
-		'content'	=> $ui->views()->users_groups( null, $uID ),
+		'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 	),
 	array(
 		'label'		=> __( 'My Organizations', 'holotree' ),
-		'content'	=> $ui->views()->users_organizations( null, $uID ),
+		'content' 	=> ht_dms_paginated_view_container( 'users_organizations', $paginated_view_args )
 	),
 	array(
 		'label'		=> __( 'Assigned Tasks', 'holotree' ),
-		'content'	=> $ui->views()->assigned_tasks( null, $uID ),
+		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
 	array(
 		'label'		=> __( 'Notifications', 'holotree' ),
@@ -42,7 +41,7 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
-		'content'	=> $ui->views()->public_groups( ),
+		'content' 	=> ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 	),
 
 
