@@ -13,6 +13,9 @@ jQuery(document).ready(function( $ ) {
     //loop through paginatedViews running each one, if we have that div already.
     $.each( paginatedViews, function( index, value ){
         if ( $( value ).length ) {
+            var spinner = value + "-spinner.spinner";
+            console.log( spinner );
+            $( spinner ).show();
             paginate( value , 1 );
         };
     });

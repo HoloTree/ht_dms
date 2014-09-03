@@ -267,8 +267,9 @@ jQuery(document).ready(function($) {
                 'container' :container
             },
             function( response ) {
-
+                $( container + "-spinner img").show();
                 $( container ).html('');
+                $( container + "-spinner img").hide();
                 $( container ).append( response );
 
                 $( container ).attr('page', page );
