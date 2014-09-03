@@ -267,9 +267,9 @@ jQuery(document).ready(function($) {
                 'container' :container
             },
             function( response ) {
-
-                $( container ).fadeOut( 800 ).html('');
+                $( container ).fadeOut( 800 ).hide();
                 $( container + "-spinner img" ).show().delay( 400 );
+                $( container ).html('');
                 $( container ).hide().append( response ).fadeIn( 800 );
                 $( container + "-spinner img") .hide();
                 $( container ).attr('page', page );
