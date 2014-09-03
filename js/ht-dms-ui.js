@@ -8,7 +8,7 @@ jQuery(document).ready(function( $ ) {
      *
      * @since 0.0.2
      */
-    var paginatedViews = [ '#users_groups', '#public_groups', '#public_organizations', '#assigned_tasks', '#decisions_tasks' ];
+    var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks' ];
 
     //loop through paginatedViews running each one, if we have that div already.
     $.each( paginatedViews, function( index, value ){

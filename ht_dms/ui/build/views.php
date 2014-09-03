@@ -34,6 +34,7 @@ class views {
 	 * @param 	int|null  	$oID        Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
 	 * @param 	int       	$limit      Optional. Number of groups to return. Default is 5.
 	 * @param null|string 	$return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 * @param int|bool		$page		Optional. Page of results to show.
 	 *
 	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
@@ -67,21 +68,27 @@ class views {
 	 * @param 	int|null  	$oID        Optional. ID of organization to limit groups to. If null, the default, groups in all organizations are returned.
 	 * @param 	int       	$limit      Optional. Number of groups to return. Default is 5.
 	 * @param null|string 	$return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 * @param int|bool		$page		Optional. Page of results to show.
 	 *
 	 * @return string|JSON          	Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
 	function public_groups( $obj = null, $oID = null, $limit = 5, $return = 'template', $page = false  ) {
-		
-		$args = array(
-			'obj' 		=> $obj,
-			'in'		=> $oID,
-			'limit' 	=> $limit,
-			'preview' 	=> true,
-			'return'	=> $return,
-			'page'		=> $page,
-		);
+
+		if ( ! is_array ( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'in'      => $oID,
+				'limit'   => $limit,
+				'preview' => true,
+				'return'  => $return,
+				'page'    => $page,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->group( $args );
 
@@ -95,21 +102,28 @@ class views {
 	 * @param 	int|null  	$oID        Optional. ID of organization to limit tasks to. If null, the default, tasks in all organizations are returned.
 	 * @param 	int       	$limit      Optional. Number of tasks to return. Default is 5.
 	 * @param  	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 * @param int|bool		$page		Optional. Page of results to show.
 	 *
 	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
-	function assigned_tasks( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template'  ) {
+	function assigned_tasks( $obj = null, $uID = null, $oID = null, $limit = 5, $return = 'template', $page = false  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'mine' 		=> $uID,
-			'in'		=> $oID,
-			'limit' 	=> $limit,
-			'preview' 	=> true,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array(
+				'obj' 		=> $obj,
+				'mine' 		=> $uID,
+				'in'		=> $oID,
+				'limit' 	=> $limit,
+				'preview' 	=> true,
+				'return'	=> $return,
+				'page'    	=> $page,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->task( $args );
 
@@ -127,15 +141,21 @@ class views {
 	 *
 	 * @since   0.0.2
 	 */
-	function users_organizations( $obj = null, $uID = null, $limit = 5, $return = 'template'  ) {
+	function users_organizations( $obj = null, $uID = null, $limit = 5, $return = 'template', $page = false  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'mine' 		=> $uID,
-			'limit' 	=> $limit,
-			'preview' 	=> true,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'mine'    => $uID,
+				'limit'   => $limit,
+				'preview' => true,
+				'return'  => $return,
+				'page'    => $page,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->organization( $args );
 
@@ -144,29 +164,48 @@ class views {
 	/**
 	 * Get the decisions_tasks view - All (or some) tasks for a decision.
 	 *
+	 * @todo normalize this one
+	 *
 	 * @param   Pods|null $obj 			Optional. A Pods object.
 	 * @param 	int|null  $id          ID of decision to get tasks from.
 	 * @param 	int       $limit       Optional. Number of tasks to return. Default is 5. Use -1 for all.
 	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
+	 * @param int|bool		$page		Optional. Page of results to show.
 	 *
 	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
-	function decisions_tasks( $obj = null, $id, $limit = 5, $return = 'template'  ) {
+	function decisions_tasks( $obj = null, $id, $limit = 5, $return = 'template', $page = false  ) {
 		$params[ 'where' ] = 'decision.ID = "'.$id.'"';
 		$params[ 'limit'] = $limit;
+		if ( $page ) {
+			$params[ 'page' ] = $page;
+		}
 		$obj = pods( HT_DMS_TASK_CT_NAME, $params );
 
-		if ( $obj->total() > 0 ) {
-			$view_loaders = holotree_dms_ui()->view_loaders();
-			$view =  holotree_dms_ui()->models()->path( 'task', true  );
+		if ( $return === 'template' ) {
+			if ( $obj->total() > 0 ) {
+				$view_loaders = holotree_dms_ui()->view_loaders();
+				$view         = holotree_dms_ui()->models()->path( 'task', true );
 
-			return $view_loaders->magic_template( $view, $obj );
+				return $view_loaders->magic_template( $view, $obj );
+
+			}
+
+			return __( 'This decision has no tasks', 'holotree' );
 
 		}
+		elseif ( $return === 'Pods' ) {
 
-		return __( 'This decision has no tasks', 'holotree' );
+			return $obj;
+
+		}
+		else {
+
+			return holotree_error( '<a href="https://github.com/HoloTree/ht_dms/issues/25">ISSUE!</a>' );
+
+		}
 
 	}
 
