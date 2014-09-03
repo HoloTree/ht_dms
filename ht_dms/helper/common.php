@@ -197,6 +197,10 @@ class common {
 
 		if ( false !== $action && $id && $action !== 'changing' ) {
 
+			if ( in_array( $action, array( 'join-group', 'approve-pending', 'reject-pending' ) ) ) {
+				$take_action->group( $action, $id );
+				return;
+			}
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' || 'respond' ) {
 
@@ -218,10 +222,13 @@ class common {
 
 			}
 			elseif( $action === 'join-group' || 'approve-pending' || 'reject_pending' ) {
+
 				$message_text = $take_action->group( $action, $id );
+				return;
 			}
 			elseif( $action === 'mark-notification' ||  'archive-notification' ) {
 				$take_action->notification( $action, $id );
+				return;
 			}
 			elseif ( $action === 'clear-dms-cache' ) {
 				$this->clear_dms_cache( null, false );
@@ -238,7 +245,9 @@ class common {
 			elseif( in_array( $action, $take_action->take_no_action()  ) ) {
 				//don't do anything.
 			}
+
 			else {
+
 				holotree_error('dms_actions error', print_c3( array( $id, $action ) ) );
 			}
 		}
