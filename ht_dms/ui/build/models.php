@@ -28,12 +28,12 @@ class models {
 	/**
 	 * Cache mode for Pods Objects
 	 *
-	 * object|transient|site-transient
+	 * cache|transient|site-transient
 	 * @var string
 	 *
 	 * @since 0.0.1
 	 */
-	static public $cache_mode = 'object';
+	static public $cache_mode = 'cache';
 
 	/**
 	 * PARAMS FOR ALL MODELS
