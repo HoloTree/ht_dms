@@ -71,7 +71,7 @@ class group_widget {
 				$first_name = $user->first_name;
 				$last_name = $user->last_name;
 
-				$fallback = 'http://www.adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png';
+				$fallback = 'http://joshpress.net/jp-content/uploads/sites/10/2013/08/gus.jpg';
 				/**
 				 * Fallback avatar for users without one set.
 				 *
