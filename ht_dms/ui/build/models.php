@@ -476,7 +476,7 @@ class models {
 			elseif ( $return === 'template' ) {
 				$view = $this->path( $short_type, $preview );
 
-				return $this->ui()->view_loaders()->magic_template( $view, $obj, true );
+				return $this->ui()->view_loaders()->magic_template( $view, $obj, false );
 
 			}
 		}
