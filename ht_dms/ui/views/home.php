@@ -33,7 +33,7 @@ $tabs = array(
 	),
 	array(
 		'label'		=> __( 'Assigned Tasks', 'holotree' ),
-		'content'	=> $ui->views()->assigned_tasks( null, $uID ),
+		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
 	array(
 		'label'		=> __( 'Notifications', 'holotree' ),
