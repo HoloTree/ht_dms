@@ -399,7 +399,7 @@ class elements {
 		}
 
 		$next_page = $page+1;
-		if ( $next_page <= $total_pages ) {
+		if ( $next_page < $total_pages ) {
 			$attr = "page=\"{$next_page}\"";
 			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', $view, $attr,  __( 'Next', 'holotree' ) );
 		}
