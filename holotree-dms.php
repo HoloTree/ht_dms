@@ -284,14 +284,19 @@ function holotree_dms() {
 
 
 		/**
-		 * Make REST API not require auth
+		 * Make REST API not require auth when HT_DEV_MODE
 		 *
 		 * THIS MUST GET REPLACED WITH PROPER AUTH!
 		 */
 
 		$filters = array( 'pods_json_api_access_pods', 'pods_json_api_access_api' );
 		foreach ( $filters as $filter ) {
-			add_filter( $filter, '__return_true' );
+			if ( HT_DEV_MODE ) {
+				add_filter( $filter, '__return_true' );
+			}
+			else {
+				add_filter( $filter, '__return_false' );
+			}
 		}
 
 		/**
