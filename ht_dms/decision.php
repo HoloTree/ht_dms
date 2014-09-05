@@ -1212,6 +1212,31 @@ class decision extends dms {
 
 	}
 
+	/**
+	 * Gets current consensus status by user
+	 *
+	 * @param int $id Decision ID
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.3
+	 */
+	function consensus_members( $id ) {
+		$users = $this->get_consensus( $id );
+
+		foreach( $users as $id => $consensus ) {
+			$data = get_userdata( $id );
+
+			$decision_members[ $id ] = array(
+				'name' => $data->data->display_name,
+				'avatar' => get_avatar( $id ),
+				'consensus' => $consensus[ 'value' ],
+			);
+		}
+
+		return $decision_members;
+
+	}
 
 
 } 

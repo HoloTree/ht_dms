@@ -158,3 +158,53 @@ function ht_dms_spinner() {
 	return $spinner;
 
 }
+
+/**
+ * Translates a user's value in the consensus value to a word in the current language.
+ *
+ * @param $value
+ *
+ * @since 0.0.3
+ */
+function ht_dms_consensus_status_readable( $value ) {
+	$accepted_values = array( 0,1,2 );
+	if ( ! in_array( $value , $accepted_values ) ) {
+		return false;
+	}
+	$values = array(
+		'0' => __( 'No Response', 'holotree' ),
+		'1' => __( 'Accepted', 'holotree' ),
+		'2' => __( 'Blocked', 'holotree' ),
+	);
+
+	/**
+	 * Change what we call each consensus value
+	 *
+	 * Note filter will not be used unless its response is in a valid form.
+	 *
+	 * $params array Values
+	 *
+	 * @since 0.0.3
+	 */
+	$filtered = apply_filters( 'ht_dms_readable_consensus_values', $values );
+
+	if ( count( $filtered ) === 3 ) {
+		$use = true;
+
+		for( $i = 0; $i <= 2; $i++) {
+			if ( ! isset( $filtered[ $i ] ) ) {
+				$use = false;
+				break;
+			}
+
+		}
+
+		if ( $use === true ) {
+			$values = $filtered;
+		}
+
+	}
+
+	return $values[ $value ];
+
+}

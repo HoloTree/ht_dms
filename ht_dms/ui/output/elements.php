@@ -748,6 +748,58 @@ class elements {
 	}
 
 	/**
+	 * Visual display of the current status of a consensus
+	 *
+	 * @TODO make not foundation dependent
+	 * @param int|array $id Decision ID. Or can be an array. If array, must be in format holotree_decision_class()->consensus_members() returns.
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function view_consensus( $id ) {
+		if ( ! is_array( $id ) ) {
+			$users = holotree_decision_class()->consensus_members( $id );
+		}
+		else {
+			$users = $id;
+		}
+		$user_display = false;
+
+		foreach( $users as $user ) {
+			$details[] = $user[ 'name' ];
+			$details[] = ht_dms_consensus_status_readable( $user[ 'consensus' ] );
+			$user_display[] = sprintf(
+				'<div class="row consensus-view-user" >
+
+					<div class="large-3 small-12">
+						%1s
+					</div>
+					<div class="large-9 small-12">
+						<ul>
+							<li>%2s</li>
+							<li>%3s</li>
+						</ul>
+					</div>
+				</div>
+				',
+				$user[ 'avatar' ],
+				$user[ 'name' ],
+				ht_dms_consensus_status_readable( $user[ 'consensus' ] )
+			);
+		}
+
+		if ( is_array( $user_display ) ) {
+			return sprintf( '
+				<div class="consensus-view">
+					%1s
+				</div>
+			', implode( $user_display ) );
+		}
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.0.1
