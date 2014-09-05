@@ -1223,13 +1223,13 @@ class decision extends dms {
 	 */
 	function consensus_members( $id ) {
 		$users = $this->get_consensus( $id );
-
+		$fallback = fallback_avatar();
 		foreach( $users as $id => $consensus ) {
 			$data = get_userdata( $id );
 
 			$decision_members[ $id ] = array(
 				'name' => $data->data->display_name,
-				'avatar' => get_avatar( $id ),
+				'avatar' => get_avatar( $id, 96, $fallback ),
 				'consensus' => $consensus[ 'value' ],
 			);
 		}

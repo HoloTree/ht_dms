@@ -208,3 +208,27 @@ function ht_dms_consensus_status_readable( $value ) {
 	return $values[ $value ];
 
 }
+
+/**
+ * Returns the fallback avatar for users without Gravtars set.
+ *
+ * @use 'ht_dms_fallback_avatar' filter to change the fallback image.
+ *
+ * @return string
+ *
+ * @since 0.0.3
+ */
+function fallback_avatar() {
+	$fallback = 'http://joshpress.net/jp-content/uploads/sites/10/2013/08/gus.jpg';
+	/**
+	 * Fallback avatar for users without one set.
+	 *
+	 * @param $fallback url of fallback image.
+	 *
+	 * @since 0.0.1
+	 */
+	$fallback = apply_filters( 'ht_dms_fallback_avatar', $fallback );
+
+	return $fallback;
+
+}

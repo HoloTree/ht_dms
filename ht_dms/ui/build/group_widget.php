@@ -71,15 +71,7 @@ class group_widget {
 				$first_name = $user->first_name;
 				$last_name = $user->last_name;
 
-				$fallback = 'http://joshpress.net/jp-content/uploads/sites/10/2013/08/gus.jpg';
-				/**
-				 * Fallback avatar for users without one set.
-				 *
-				 * @param $fallback url of fallback image.
-				 *
-				 * @since 0.0.1
-				 */
-				$fallback = apply_filters( 'ht_dms_fallback_avatar', $fallback );
+				$fallback = ht_dms_fallback_avatar();
 
 				$avatar = get_avatar( $member, 96, $fallback );
 				$out .= '<div class="group-member row">';

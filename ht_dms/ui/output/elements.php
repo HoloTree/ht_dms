@@ -212,7 +212,10 @@ class elements {
 			}
 
 		}
+		$out .= apply_filters( 'ht_dms_after_foundation_tab_choice', '' );
 		$out .= '</ul>';
+
+
 
 		if ( $equalizer ) {
 			$attr = 'data-equalizer-watch';
@@ -772,10 +775,10 @@ class elements {
 			$user_display[] = sprintf(
 				'<div class="row consensus-view-user" >
 
-					<div class="large-3 small-12">
+					<div class="large-3 small-12 columns">
 						%1s
 					</div>
-					<div class="large-9 small-12">
+					<div class="large-9 small-12 columns">
 						<ul>
 							<li>%2s</li>
 							<li>%3s</li>
@@ -792,9 +795,10 @@ class elements {
 		if ( is_array( $user_display ) ) {
 			return sprintf( '
 				<div class="consensus-view">
+					<h5>%0s</h5>
 					%1s
 				</div>
-			', implode( $user_display ) );
+			', __( 'Consensus Status', 'holotree' ), implode( $user_display ) );
 		}
 
 	}
