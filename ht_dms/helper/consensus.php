@@ -105,10 +105,16 @@ class consensus {
 	 * @since 0.0.1
 	 */
 	function get( $dID, $obj = null, $unserialized = true ) {
-		$obj = holotree_decision( $dID, $obj );
-		$consensus =  $obj->field( 'consensus' );
-		if ( $unserialized ) {
-			return unserialize( $consensus );
+		$key = "consensus_dID_{$dID}";
+		if ( false === ( $consensus = wp_cache_get( $key ) )  ) {
+			$obj       = holotree_decision( $dID, $obj );
+			$consensus = $obj->field( 'consensus' );
+			if ( $unserialized ) {
+				return unserialize( $consensus );
+
+			}
+
+			wp_cache_set( $key, $consensus, '', 7235 );
 
 		}
 
@@ -133,7 +139,6 @@ class consensus {
 		if ( $new_value > -1 && $new_value < 4 ) {
 			$uID = $this->null_user( $uID );
 			$consensus = $this->get( $dID );
-
 			if ( is_array( $consensus) ) {
 				foreach ( $consensus as $key => $value ) {
 					if ( $value[ 'id' ] === $uID ) {
@@ -223,6 +228,43 @@ class consensus {
 
 			return $status;
 		}
+
+	}
+
+	/**
+	 * Calculates what would be the result of a user taking any action on a consensus
+	 *
+	 * @param int $dID Decision ID to make change on.
+	 * @param int $uID User ID of user to test based on.
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.3
+	 */
+	function possible_changes( $dID, $uID ) {
+		$actual_status = $this->status( $this->get( $dID ) );
+		$possible = false;
+
+		if ( in_array( $actual_status, array( 'new', 'blocked' ) ) ) {
+			for ( $i = 0; $i <= 2; $i ++ ) {
+				$ic = $this->modify( $dID, $i, $uID );
+
+				$possible[ $i ] = $this->status( $ic );
+			}
+
+			//@todo make response translation friendly
+			//@todo figure out how given that $this->modify can't be translation friendly as it returns values for the field.
+		}
+		else {
+		}
+
+		$possible_changes =  array(
+			'current_status' => $actual_status,
+			'possible_results' => $possible,
+		);
+
+		return $possible_changes;
+
 	}
 
 
