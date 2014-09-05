@@ -20,5 +20,20 @@ jQuery(document).ready(function( $ ) {
         };
     });
 
+    /**
+     * Put possible result of actions into variables
+     */
+    if ( undefined != consensusPossibilities && undefined != consensusPossibilities.possible_results[0] ) {
+        var p0 = consensusPossibilities.possible_results[0];
+        var p1 = consensusPossibilities.possible_results[1];
+        var p2 = consensusPossibilities.possible_results[2];
+    }
+
+    //@todo (issue #13)
+    // - get selection from action form
+    // - use it to select one of the variables defined above
+    // - output it in container
+    //https://github.com/HoloTree/ht_dms/issues/13
+
 
 });
