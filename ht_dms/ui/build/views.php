@@ -352,7 +352,9 @@ class views {
 			$cache_type = $expires = false;
 		}
 
-		return pods_view( HT_DMS_VIEW_DIR.'/partials/documents.php', compact( array( 'docs', 'type' ) ), $expires, $cache_type, true );
+		$form = $this->ui()->add_modify()->add_doc( $id );
+
+		return pods_view( HT_DMS_VIEW_DIR.'/partials/documents.php', compact( array( 'docs', 'type', 'form' ) ), $expires, $cache_type, true );
 
 
 	}

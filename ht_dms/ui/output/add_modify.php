@@ -163,6 +163,51 @@ class add_modify {
 	}
 
 	/**
+	 * Form for adding document to decision or task
+	 *
+	 * @param int $id Task or document ID.
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function add_doc( $id ) {
+		$form = false;
+		$post = get_post( $id );
+		if ( ! empty( $post ) && in_array( $post->post_type, array( HT_DMS_DECISION_CPT_NAME, HT_DMS_GROUP_CPT_NAME ) ) ) {
+			$form = pods( $post->post_type, $id );
+
+			if ( $post->post_type == HT_DMS_DECISION_CPT_NAME ) {
+				$group = (int) $form->display( 'group.ID' );
+			}
+			else {
+				$group = (int )$form->display( 'decision_group' );
+			}
+
+			$fields_only = true;
+			$is_member = false;
+			if ( is_int( $group ) ) {
+				$is_member = holotree_group_class()->is_member( $group );
+				$fields_only = false;
+			}
+
+			$params = array(
+				'fields' => array( 'documents' ),
+				'fields_only' => $fields_only,
+			);
+			$form = $form->form( $params, __( 'Done Adding Documents', 'holotree', get_permalink( $id ) ) );
+
+		}
+
+		if ( ! isset( $is_member ) || ! $is_member ) {
+			$form .= '<script>jQuery( ".pods-media-add" ).remove();</script>';
+		}
+
+		return $form;
+
+	}
+
+	/**
 	 * Get instance of UI class
 	 *
 	 * @return 	\holotree\ui
