@@ -174,7 +174,7 @@ class elements {
 
 
 			$form = sprintf( '<form action="%1s" method="get" id="dms-actions-form">', ht_dms_home() );
-			$form .= '<select name="dms_action">';
+			$form .= '<select id="dms_action" name="dms_action">';
 			foreach ( $options as $option ) {
 				$form .= '<option value="' . $option[ 'value' ] . '">' . $option[ 'label' ] . '</option>';
 			}
@@ -184,7 +184,7 @@ class elements {
 
 			$form .= '<input class="'.$change['value'].'" type="submit" />';
 			$form .= '</form>';
-
+			$form .= '<div id="dms-action-result"></div>';
 			$out .= '&nbsp;&nbsp;';
 			$out .= $form;
 		}
