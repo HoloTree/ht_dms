@@ -16,7 +16,8 @@
  * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters matter. If not is new object is created.
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
- * @return 	obj|array			Decision Pods object or field array.
+ *
+ * @return 	obj|array|Pods			Decision Pods object or field array.
  *
  * @since 	0.0.1
  */
@@ -29,7 +30,7 @@ function holotree_decision( $id = true, $obj = null, $cached = true, $fields = f
 /**
  * Get an instance of the Decision class
  *
- * @return Class Instance
+ * @return obj|decision
  *
  * @since	0.0.1
  */
@@ -48,7 +49,7 @@ function holotree_decision_class() {
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
  *
- * @return 	obj|array			Group Pods object or field array.
+ * @return 	obj|array|Pods			Group Pods object or field array.
  *
  * @since 	0.0.1
  */
@@ -61,14 +62,14 @@ function holotree_group( $id = true, $obj = null, $cached = true, $fields = fals
 /**
  * Get an instance of the Group class
  *
- * @return Class Instance
+ * @return obj|group
  *
  * @since	0.0.1
  */
 function holotree_group_class() {
 
 	return group::init();
-	//return ht_dms\group::init();
+
 
 }
 
@@ -77,14 +78,13 @@ function holotree_group_class() {
  *
  * @return 	HoloTree_DMS_Task
  *
- * @return Class Instance
+ * @return obj|task
  *
  * @since	0.0.1
  */
 function holotree_task_class() {
 
 	return task::init();
-	//return ht_dms\task::init();
 
 }
 
@@ -96,7 +96,7 @@ function holotree_task_class() {
  * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
  *
- * @return 	obj|array			Task Pods object or field array.
+ * @return 	obj|array|Pods			Task Pods object or field array.
  *
  * @since 	0.0.1
  */
@@ -109,7 +109,7 @@ function holotree_task( $id = true, $obj = null, $cached = true, $fields = false
 /**
  * Get an instance of the Consensus class
  *
- * @return Class Instance
+ * @return obj|ht_dms\helper\consensus
  *
  * @since	0.0.1
  */
@@ -136,7 +136,7 @@ function holotree_consensus( $dID ) {
 /**
  * Get an instance of the Consensus class
  *
- * @return Class Instance
+ * @return obj|organization
  *
  * @since	0.0.1
  */
@@ -155,7 +155,7 @@ function holotree_organization_class() {
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
  * matter. If not is new object is created.
  *
- * @return 	obj|array			Organization Pods object or field array.
+ * @return 	obj|array|Pods			Organization Pods object or field array.
  *
  * @since 	0.0.1
  */
@@ -168,7 +168,7 @@ function holotree_organization( $id = true, $obj = false, $cached = true, $field
 /**
  * Returns an instance of the notification class object
  *
- * @return object|Notification
+ * @return obj|Notification
  *
  * @since 0.0.3
  */
@@ -187,7 +187,7 @@ function ht_dms_notification_class() {
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
  * matter. If not is new object is created.
  *
- * @return 	obj|array|Pods			Notification Pods object or field array.
+ * @return 	obj|array|Pods		Notification Pods object or field array.
  *
  * @since 	0.0.3
  */
@@ -200,7 +200,7 @@ function ht_dms_notification( $id, $obj = null, $cached = true, $fields = false 
 /**
  * Returns an instance of the Preferences class
  *
- * @return object|ht_dms\helper\preferences
+ * @returnht_dms\helper\preferences
  *
  * @since 0.0.3
  */
@@ -210,6 +210,13 @@ function ht_dms_preferences_class() {
 
 }
 
+/**
+ * Return an instance of the membership class
+ *
+ * @return ht_dms\helper\membership
+ *
+ * @since 0.0.2
+ */
 function holotree_membership_class() {
 
 	return ht_dms\helper\membership::init();
@@ -219,7 +226,7 @@ function holotree_membership_class() {
 /**
  * Get an instance of the DMS Common class
  *
- * @return Class Instance
+ * @return ht_dms\helper\common
  *
  * @since 	0.0.1
  */
@@ -233,6 +240,8 @@ function holotree_common_class() {
  * Get an instance of the ui class.
  *
  * @return \ht_dms\ui\ui
+ *
+ * @since 0.0.2
  */
 function holotree_dms_ui() {
 
@@ -240,18 +249,39 @@ function holotree_dms_ui() {
 
 }
 
+/**
+ * Return an instance of the build elements class
+ *
+ * @return object|ht_dms\ui\build\elements
+ *
+ * @since 0.0.2
+ */
 function holotree_dms_ui_build_elements() {
 
 	return holotree_dms_ui()->build_elements();
 
 }
 
+/**
+ * Return an instance of the output elements class
+ *
+ * @return object|ht_dms\ui\output\elements
+ *
+ * @since 0.0.2
+ */
 function holotree_dms_ui_output_elements() {
 
 	return holotree_dms_ui()->output_elements();
 
 }
 
+/**
+ * Return an instance of the common class
+ *
+ * @return object|ht_dms\helper\common
+ *
+ * @since 0.0.2
+ */
 function holotree_dms_common_class() {
 
 	return ht_dms\helper\common::init();
