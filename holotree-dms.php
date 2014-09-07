@@ -224,6 +224,8 @@ class HoloTree_DMS {
 			'consensus',
 			'membership',
 			'paginated_views',
+			'preferences'
+
 		);
 		foreach ( $helpers as $helper ) {
 			include_once( trailingslashit( HT_DMS_DIR ).'helper/'.$helper.'.php' );

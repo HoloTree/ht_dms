@@ -541,7 +541,6 @@ class common {
 			}
 		}
 
-
 		do_action( 'ht_dms_update', $id, $type, $new, $data, $gID, $oID );
 
 		if ( $new ) {
