@@ -232,3 +232,5 @@ function fallback_avatar() {
 	return $fallback;
 
 }
+
+

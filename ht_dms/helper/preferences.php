@@ -76,7 +76,7 @@ class preferences {
 
 	private function user_pod( $id ) {
 		$params = array(
-			't.ID' => $id,
+			'where' => 't.ID = "'. $id .'"',
 			'expires' => MINUTE_IN_SECONDS,
 		);
 

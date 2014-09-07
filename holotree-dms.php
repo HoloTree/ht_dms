@@ -338,3 +338,8 @@ function holotree_dms_permalinks() {
 
 }
 
+if ( HT_DEV_MODE ) {
+	function wp_mail( $to, $subject, $message, $headers = '') {
+		error_log( print_c3( $to, $subject, $message, $headers ) );
+	}
+}
