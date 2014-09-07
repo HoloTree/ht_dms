@@ -28,6 +28,9 @@ class common {
 
 		add_action( 'ht_before_ht', array( $this, 'message' ) );
 
+		add_action( "pods_api_post_save_pod_item", array( $this, 'update_actions' ), 99, 3 );
+
+
 	}
 
 
@@ -323,6 +326,8 @@ class common {
 
 		add_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ), 25, 3 );
 
+		return $pieces;
+
 	}
 
 	/**
@@ -483,6 +488,70 @@ class common {
 		}
 
 		return $uID;
+
+	}
+
+	/**
+	 * Creates the new/update {$type} actions
+	 *
+	 *
+	 * @uses pods_api_post_save_pod_item action
+	 *
+	 * @param $pieces
+	 * @param $new
+	 * @param $id
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.3
+	 */
+	function update_actions( $pieces, $new, $id ) {
+
+		$data = $dID = $gID = $oID = null;
+		foreach( $pieces[ 'fields_active' ] as $field ) {
+			$data[ $id ][ $field ] =  $pieces[ 'fields' ][ $field][ 'value'];
+		}
+
+		$type = $pieces['params']->pod;
+
+		if ( $type === HT_DMS_TASK_CT_NAME ) {
+			if ( isset ( $data[ $id ][ 'decision' ] ) ) {
+				$dID = reset( $data[ $id ][ 'decision' ] );
+				$data[ $id ][ 'decision' ] = $dID;
+			}
+		}
+
+		if ( $type === HT_DMS_GROUP_CPT_NAME ) {
+			$gID = $id;
+		}
+		else {
+			if ( isset ( $data[ $id ][ 'group' ] ) ) {
+				$gID = reset( $data[ $id ][ 'group' ] );
+				$data[ $id ][ 'group' ] = $gID;
+			}
+		}
+
+		if ( $type === HT_DMS_ORGANIZATION_NAME ) {
+			$oID = $id;
+		}
+		else {
+			if ( isset ( $data[ $id ][ 'organization' ] ) ) {
+				$oID                           = reset( $data[ $id ][ 'organization' ] );
+				$data[ $id ][ 'organization' ] = $oID;
+			}
+		}
+
+
+		do_action( 'ht_dms_update', $id, $type, $new, $data, $gID, $oID );
+
+		if ( $new ) {
+			do_action( "ht_dms_new_{$type}", $id, $data, $gID, $oID );
+		}else {
+			do_action( "ht_dms_update_{$type}", $id, $data, $gID, $oID );
+		}
+
+
+		return $pieces;
 
 	}
 
