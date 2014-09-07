@@ -84,4 +84,30 @@ class preferences {
 
 	}
 
+	/**
+	 * Holds the instance of this class.
+	 *
+	 *
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+
+	/**
+	 * Returns the instance.
+	 *
+	 * @since  0.0.3
+	 * @access public
+	 * @return object
+	 */
+	public static function init() {
+
+		if ( !self::$instance )
+			self::$instance = new preferences();
+
+		return self::$instance;
+
+	}
+
 }

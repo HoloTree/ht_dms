@@ -143,7 +143,6 @@ function holotree_consensus( $dID ) {
 function holotree_organization_class() {
 
 	return organization::init();
-	//return ht_dms\organization::init();
 
 }
 
@@ -156,13 +155,58 @@ function holotree_organization_class() {
  * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
  * matter. If not is new object is created.
  *
- * @return 	obj|array			Notification Pods object or field array.
+ * @return 	obj|array			Organization Pods object or field array.
  *
  * @since 	0.0.1
  */
 function holotree_organization( $id = true, $obj = false, $cached = true, $fields = false ) {
 	
 	return holotree_organization_class()->item( $id, $obj, null, $cached, $fields );
+
+}
+
+/**
+ * Returns an instance of the notification class object
+ *
+ * @return object|Notification
+ *
+ * @since 0.0.3
+ */
+function ht_dms_notification_class() {
+
+	return notification::init();
+
+}
+
+/**
+ * Return organization object or field array
+ *
+ * @param 	int|bool	$id 	Optional. ID of notification. Default is true, which returns complete object for post type.
+ * @param 	obj|null	$obj	Optional. Prebuilt Object. If is valid Pods object, <em>of any Pod</em> this object is returned and no other parameters
+ * @param 	bool		$cached	Optional. Whether to get cached value, if possible. Default is true.
+ * @param	bool		$fields Optional. Whether to return field array instead of object. Default is false, which returns object.
+ * matter. If not is new object is created.
+ *
+ * @return 	obj|array|Pods			Notification Pods object or field array.
+ *
+ * @since 	0.0.3
+ */
+function ht_dms_notification( $id, $obj = null, $cached = true, $fields = false ) {
+
+	return ht_dms_notification_class()->item( $id, $obj, null, $cached, $fields );
+
+}
+
+/**
+ * Returns an instance of the Preferences class
+ *
+ * @return object|ht_dms\helper\preferences
+ *
+ * @since 0.0.3
+ */
+function ht_dms_preferences_class() {
+
+	return ht_dms\helper\preferences::init();
 
 }
 

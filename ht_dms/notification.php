@@ -14,11 +14,17 @@ class notification extends dms{
 
 	}
 
-	function create( $data ) {
+	function create( $to, $subject, $message ) {
+		$data = array(
+			'to' => $to,
+			'subject' => $subject,
+			'message' => $message,
+		);
+
 		return $this->object()->save( $data );
 	}
 
-	function send( ) {
+	function send() {
 		$today = date( "d" );
 		$time = date( "H:i:s" );
 		$from = 'gus@holotree.net';
@@ -109,5 +115,32 @@ class notification extends dms{
 
 	}
 
+	/**
+	 * Holds the instance of this class.
+	 *
+	 *
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+
+	/**
+	 * Returns the instance.
+	 *
+	 * @since  0.0.3
+	 * @access public
+	 * @return object
+	 */
+	public static function init() {
+
+		if ( !self::$instance )
+			self::$instance = new notification();
+
+		return self::$instance;
+
+	}
+
 
 } 
+
