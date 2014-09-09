@@ -343,3 +343,35 @@ if ( HT_DEV_MODE ) {
 		error_log( print_c3( $to, $subject, $message, $headers ) );
 	}
 }
+
+add_action( 'init', function() {
+	if ( 1==1 && ! is_admin()  ) {
+
+		if ( 1==1 ) {
+
+			$class = ht_dms_notification_class();
+
+			$id    = $class->send();
+			print_r2( $id );
+		}
+		else {
+			$class= ht_dms_notification_class();
+			$params = array(
+				'expires' => MINUTE_IN_SECONDS,
+				'where' => ' t.viewed = 0',
+			);
+
+				$params[ 'where' ] = $params[ 'where' ] . ' AND t.sent = 0 ';
+
+			$params = array( 'where' => 'to.ID = "1"' );
+			$params[ 'where' ] = $params[ 'where' ] . ' AND t.sent = 1 AND t.viewed = 0';
+
+			$obj = pods( HT_DMS_NOTIFICATION_NAME, $params );
+			$sent = $obj->total();
+
+			return var_Dump( array( $params, $sent) );
+
+		}
+	}
+
+}, 99 );

@@ -30,6 +30,9 @@ class common {
 
 		add_action( "pods_api_post_save_pod_item", array( $this, 'update_actions' ), 99, 3 );
 
+		$notification = HT_DMS_NOTIFICATION_NAME;
+		add_filter( "pods_api_pre_save_pod_item_{$notification}", array( ht_dms_notification_class(), 'to_id' ), 5 );
+
 
 	}
 
