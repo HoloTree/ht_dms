@@ -306,6 +306,69 @@ class views {
 	}
 
 	/**
+	 * Get a user's notifications
+	 *
+	 * @param null|obj|pods|array $obj Optional. A notification Pods object. Could also be an array of arguments, which overrides all other params.
+	 * @param null|int  	$uID Optional. User ID. Defaults to current user ID.
+	 * @param bool   		$un_viewed_only Optional. To show only unviewed items. Default is true.
+	 * @param int    		$limit		Optional. Total number to show default is 5.
+	 * @param string 		$return		Optional. Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 * @param bool   		$page		Optional. Page of results to return. If false, the default, first page is returned.
+	 *
+	 * @return bool|JSON|Pods|null|string
+	 *
+	 * @since 0.0.3
+	 */
+	function users_notifications( $obj = null, $uID = null, $un_viewed_only = true, $limit = 5, $return = 'template', $page = false  ) {
+		if ( ! is_array( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'uID'	  => $uID,
+				'limit'   => $limit,
+				'preview' => true,
+				'return'  => $return,
+				'page'    => $page,
+				'un_viewed_only' => $un_viewed_only,
+			);
+		}
+		else {
+			$args = $obj;
+		}
+
+		return $this->models()->notification( $args );
+
+	}
+
+	/**
+	 * Get a single notification.
+	 *
+	 * @param null|obj|Pods|array $obj Optional. A notification Pods object. Could also be an array of arguments, which overrides all other params.
+	 * @param bool   		$id  ID of  notification to get. Technically optional, but if $obj is not an array, it must be used.
+	 * @param string 		$return		Optional. Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 *
+	 * @return bool|JSON|Pods|null|string
+	 *
+	 * @since 0.0.3
+	 */
+	function notification( $obj = null, $id = false, $return = 'template') {
+		if ( ! is_array( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'id'	  => $id,
+				'preview' => false,
+				'return'  => $return,
+				'un_viewed_only' => false,
+			);
+		}
+		else {
+			$args = $obj;
+		}
+
+		return $this->models()->notification( $args );
+
+	}
+
+	/**
 	 * Show a task or decision documents.
 	 *
 	 * @param null $obj
@@ -374,10 +437,6 @@ class views {
 
 	}
 
-	function notifications() {
-		return '<p>This is feature will be added soon.</p>';
-	}
-
 	/**
 	 * View proposed modifications to current decision.
 	 *
@@ -427,6 +486,7 @@ class views {
 			}
 		}
 	}
+
 
 
 	/**

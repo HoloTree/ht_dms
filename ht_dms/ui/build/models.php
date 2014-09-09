@@ -46,6 +46,8 @@ class models {
 	 * @param $args['limit'] int Default is 5.
 	 * @param $args['status'] string|null decision/task status. Default is null.
 	 * @param $args['return'] string What to return. Either the results as a template, as a Pods object, as JSON object via the REST API, or URL string to pass to the REST API  template|Pods|JSON|urlstring
+	 * @param $arg['page'] int|bool Page of results to return or false to not use paging arg.
+	 * @param $arg['un_viewed_only'] bool If true, the default, only un viewed notifications are returned. Has no effect on other models.
 	 */
 
 
@@ -273,6 +275,35 @@ class models {
 
 	}
 
+	function notification( $args ) {
+		$args = $this->args( $args );
+		extract( $args );
+
+		if ( holotree_integer( $id ) ) {
+			$params[ 'where' ] = 't.id = "' . $id . '"';
+		}
+		else {
+			if ( $un_viewed_only ) {
+				$params[ 'where' ] = 't.viewed = 0';
+			}
+			if ( ! is_null( $uID ) ){
+				$where = ' t.to_id = "'.$uID.'"';
+				if ( isset( $params[ 'where' ] ) ) {
+					$params[ 'where' ] = $params['where'] . ' AND ' . $where;
+				}
+				else {
+					$params[ 'where' ] = $where;
+				}
+			}
+
+		}
+
+		$params = $this->cache_args( $params );
+
+		return $this->output( $return, HT_DMS_NOTIFICATION_NAME, $params, $preview, $obj );
+
+	}
+
 	/**
 	 * @TODO Translate from constants?
 	 *
@@ -392,9 +423,11 @@ class models {
 			7 => 'status',
 			8 => 'return',
 			9 => 'page',
+			10 => 'un_viewed_only',
 		);
 
-		for ( $i = 0; $i < 10; $i++ ) {
+
+		for ( $i = 0; $i < count( $params ); $i++ ) {
 			$key = $params[ $i ];
 			if ( !isset( $args[ $i ]) ) {
 
@@ -409,6 +442,9 @@ class models {
 				}
 				elseif( $key === 'page' ) {
 					$value = 1;
+				}
+				elseif( $key === 'un_viewed_only' ) {
+					$value = true;
 				}
 				else {
 					$value = false;
@@ -461,19 +497,30 @@ class models {
 			$short_type = str_replace( 'ht_dms_', '', $short_type );
 
 			if ( is_null( $obj) || ! is_pod( $obj ) ) {
-				if ( function_exists( "holotree_{$short_type}_class" ) ) {
-					$class = call_user_func( "holotree_{$short_type}_class" );
-					$obj = $class->null_object( NULL, $obj );
-					$obj = $obj->find( $params );
+				//@todo remove this once https://github.com/HoloTree/ht_dms/issues/27 is resolved.
+				if ( $type !== HT_DMS_NOTIFICATION_NAME ) {
+					if ( function_exists( "holotree_{$short_type}_class" ) ) {
+						$class = call_user_func( "holotree_{$short_type}_class" );
+						$obj   = $class->null_object( null, $obj );
+						$obj   = $obj->find( $params );
+
+					}
+				}
+				else {
+					$class = ht_dms_notification_class();
+					$obj   = $class->null_object( null, $obj );
+					$obj   = $obj->find( $params );
 				}
 
 			}
+
 
 			if ( $return === 'Pods' ) {
 				return $obj;
 
 			}
 			elseif ( $return === 'template' ) {
+
 				$view = $this->path( $short_type, $preview );
 
 				return $this->ui()->view_loaders()->magic_template( $view, $obj, false );

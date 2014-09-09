@@ -399,12 +399,15 @@ class view_loaders {
 
 
 				if (  is_object( $obj ) && is_pod( $obj ) ) {
+
 					if ( $page ) {
 						$obj->find( array( 'page' => $page ) );
 					}
 
-					if ( $obj->total() > 1 ) {
+					if ( $obj->total() > 0 ) {
+
 						$out = '';
+
 
 						while ( $obj->fetch() ) {
 
@@ -416,7 +419,6 @@ class view_loaders {
 
 					}
 					elseif ( is_int( $obj->id() ) ) {
-
 						if ( (int)$obj->id() < 1 ) {
 
 							return $no_items;
