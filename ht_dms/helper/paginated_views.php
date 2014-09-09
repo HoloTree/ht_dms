@@ -161,6 +161,10 @@ function ht_dms_paginated_views( $args = null ) {
 
 	}
 
+	if ( ! isset( $args[ 'un_viewed_only' ] ) ) {
+		$args[ 'un_viewed_only' ] = true;
+	}
+
 	$paginated_views = array(
 		'users_groups' => array(
 			'args' => array( null, get_current_user_id(), null, $args[ 'limit'], 'Pods', $args[ 'page'] ),
@@ -181,6 +185,10 @@ function ht_dms_paginated_views( $args = null ) {
 		'decisions_tasks' => array(
 			'args' => array( null, $args[ 'uID' ], $args[ 'dID' ], $args[ 'limit' ], 'Pods', $args[ 'page'] ),
 			'view' => 'task_preview.php',
+		),
+		'users_notifications' => array(
+			'args' => array( null, get_current_user_id(), $args[ 'un_viewed_only'], $args[ 'limit'], 'Pods', $args[ 'page' ] ),
+			'view' => 'notification_preview.php',
 		),
 	);
 
