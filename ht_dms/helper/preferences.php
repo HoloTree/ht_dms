@@ -16,8 +16,20 @@ class preferences {
 
 	}
 
-	function profile( $get = true ) {
+	function profile_list( $id ) {
+		$values = $this->get_fields( null, $id );
+		$out = false;
+		if ( is_array( $values ) ) {
+			foreach( $values as $field => $value ) {
+				$out[] = sprintf( '<li><span class="label preference-label">%1s</span> %2s</li>', $field, $value );
+			}
 
+		}
+
+		if ( is_array( $out ) ) {
+			return sprintf( '<ul class="preference-list">%1s</ul>', implode( $out ) );
+
+		}
 	}
 
 	function notification_preferences( $get = true ) {
@@ -34,7 +46,10 @@ class preferences {
 
 	}
 
-	private function edit_form($fields = null, $id, $button = null ) {
+	function edit_form( $fields = null, $id, $button = null, $notifications = false ) {
+		if ( $notifications ) {
+			return $this->notification_preferences( false );
+		}
 
 		return $this->user_pod( $id )->form( $fields, $button );
 
@@ -52,7 +67,7 @@ class preferences {
 			}
 		}
 
-		foreach( $fields as $field ) {
+		foreach( $field_names as $field ) {
 			$value = $pods->display( $field );
 			$user[ $id ] = array( $field  => $value );
 		}
@@ -79,6 +94,10 @@ class preferences {
 			'where' => 't.ID = "'. $id .'"',
 			'expires' => MINUTE_IN_SECONDS,
 		);
+
+		if ( is_null( $id ) ) {
+			unset( $params[ 'where' ] );
+		}
 
 		return pods( 'user', $params );
 
@@ -111,3 +130,4 @@ class preferences {
 	}
 
 }
+

@@ -369,6 +369,29 @@ class views {
 	}
 
 	/**
+	 * View or edit user's profile or notification preferences
+	 *
+	 * @param int|null 	$uID
+	 * @param bool 		$edit
+	 * @param bool 		$notification
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function preference( $uID = null, $edit = false, $notification = false ) {
+		$class = ht_dms_preferences_class();
+		if ( $edit ) {
+			$out = $class->edit_form( null, $uID, null, $notification;
+		}
+		else {
+			$out = $class->profile( $uID );
+		}
+
+		return $out;
+	}
+
+	/**
 	 * Show a task or decision documents.
 	 *
 	 * @param null $obj
