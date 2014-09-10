@@ -209,7 +209,7 @@ function ht_dms_default_paginated_view_arguments( $args = null ) {
 	$paginated_view_args = array(
 		'uID' => get_current_user_id(),
 		'limit' => 5,
-		'page' => 5,
+		'page' => 1,
 	);
 
 	if ( is_array( $args ) ) {

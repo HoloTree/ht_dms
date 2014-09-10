@@ -135,10 +135,15 @@ class common {
 
 
 	function dms_actions() {
+
 		$output_elements = holotree_dms_ui()->output_elements();
 		$message_text = $action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
+
+		if ( in_array( $action, array_keys( holotree_dms_ui()->view_loaders()->special_views() ) ) ) {
+			return;
+		}
 
 		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
 			include_once( 'take_action.php' );

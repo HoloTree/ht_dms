@@ -200,7 +200,7 @@ function ht_dms_notification( $id, $obj = null, $cached = true, $fields = false 
 /**
  * Returns an instance of the Preferences class
  *
- * @returnht_dms\helper\preferences
+ * @return ht_dms\helper\preferences
  *
  * @since 0.0.3
  */

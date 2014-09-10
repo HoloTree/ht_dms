@@ -233,4 +233,24 @@ function fallback_avatar() {
 
 }
 
+/**
+ * Pass null or user ID, returns same ID or current user ID if null
+ *
+ * @param null $uID
+ *
+ * @return int|null
+ *
+ * @since 0.0.3
+ */
+function ht_dms_null_user( $uID = null ) {
+
+	if ( is_null( $uID ) ) {
+		$uID = get_current_user_id();
+
+	}
+
+	return $uID;
+
+
+}
 

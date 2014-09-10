@@ -16,15 +16,15 @@ $uID = get_current_user_id();
 $tabs = array(
 	array(
 		'label'		=> __( 'Profile', 'holotree' ),
-		'content' 	=> $ui->views()->preference( $uID, false, false ),
+		'content' 	=> $ui->views()->preferences( $uID, false, false ),
 	),
 	array(
 		'label'		=> __( 'Edit Profile', 'holotree' ),
-		'content' 	=> $ui->views()->preference( $uID, true, false ),
+		'content' 	=> $ui->views()->preferences( $uID, true, false ),
 	),
 	array(
-		'label'		=> __( 'Notification Settigns', 'holotree' ),
-		'content' 	=> $ui->views()->preference( $uID, true, true ),
+		'label'		=> __( 'Notification Settings', 'holotree' ),
+		'content' 	=> $ui->views()->preferences( $uID, true, true ),
 	),
 );
 

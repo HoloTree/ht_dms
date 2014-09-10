@@ -8,7 +8,7 @@ jQuery(document).ready(function( $ ) {
      *
      * @since 0.0.2
      */
-    var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks' ];
+    var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks', "#users_notifications" ];
     window.paginatedViews = paginatedViews;
 
     //loop through paginatedViews running each one, if we have that div already.
@@ -25,8 +25,8 @@ jQuery(document).ready(function( $ ) {
      */
     var select_field = '#dms_action';
 
-    function result( select_field ) {
-        if (undefined != consensusPossibilities && undefined != consensusPossibilities.possible_results[0]) {
+    function result( select_field, consensusPossibilities ) {
+        if ( undefined != consensusPossibilities && undefined != consensusPossibilities.possible_results[0]) {
             var p0 = consensusPossibilities.possible_results[0];
             var p1 = consensusPossibilities.possible_results[1];
             var p2 = consensusPossibilities.possible_results[2];
@@ -63,7 +63,7 @@ jQuery(document).ready(function( $ ) {
 
     result( select_field );
     $( select_field ).change( function() {
-        result( select_field );
+        result( select_field, consensusPossibilities );
     });
 
 });

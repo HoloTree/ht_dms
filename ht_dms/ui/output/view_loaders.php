@@ -27,9 +27,9 @@ class view_loaders {
 		}
 		$action =  pods_v( 'dms_action', 'get', false, true );
 
+		if ( in_array( $action, array_keys( $this->special_views() ) ) ) {
 
-		if ( $action === 'propose-change' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'propose-change.php' ) );
+			return $this->special_view_loader( $action );
 
 		}
 		else {
@@ -38,6 +38,65 @@ class view_loaders {
 				return $this->view_cache( $context, $post_type );
 			}
 		}
+
+	}
+
+	/**
+	 * Load special views
+	 *
+	 *
+	 * @param 	string $action Action ($_GET[ 'dms_action' ]) to trigger view.
+	 *
+	 * @return string			The action
+	 *
+	 * @since 0.0.3
+	 */
+	function special_view_loader( $action ) {
+		$special_views = $this->special_views();
+
+		if ( isset( $special_views[ $action ] ) ) {
+			$view = $special_views[ $action ];
+			if ( ! is_file( $view ) ) {
+				$view = trailingslashit( HT_DMS_VIEW_DIR ) . $view . '.php';
+			}
+
+			$view = $this->content_wrap( include( $view ) );
+
+			return $view;
+
+		}
+
+	}
+
+	/**
+	 * Allowed special views
+	 *
+	 * @return array
+	 *
+	 * @since 0.0.3
+	 */
+	function special_views() {
+
+		$special_views = array(
+			'notifications' => 'notifications',
+			'new-message' => 'notifications',
+			'preferences' => 'preferences',
+			'propose-change' => 'propose-change',
+		);
+
+		/**
+		 * Change/ add to the array of special views to override the main view with, based on value of $_GET[ 'dms_action' ]
+		 *
+		 * @params array $special views. Must be in form of GET Var => path to view. Path view should be full file path or the name of a file, without extension in HT_DMS_VIEW_DIR
+		 *
+		 * @since 0.0.3
+		 */
+
+		return apply_filters( 'ht_dms_special_views', $special_views );
+
+	}
+
+	function special_view_loaders() {
 
 	}
 

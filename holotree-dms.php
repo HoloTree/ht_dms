@@ -140,12 +140,16 @@ class HoloTree_DMS {
 			wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
 		}
 
+		$consensus_possibilities = false;
 		global $post;
 		if ( is_object( $post ) && $post->post_type === HT_DMS_DECISION_CPT_NAME ) {
 
 			$consensus_possibilities = holotree_consensus_class()->possible_changes( $post->ID, get_current_user_id() );
-			wp_localize_script( 'ht-dms-ui', 'consensusPossibilities', $consensus_possibilities );
 		}
+
+
+		wp_localize_script( 'ht-dms-ui', 'consensusPossibilities', $consensus_possibilities );
+
 	}
 
 	/**

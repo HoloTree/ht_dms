@@ -379,13 +379,13 @@ class views {
 	 *
 	 * @since 0.0.3
 	 */
-	function preference( $uID = null, $edit = false, $notification = false ) {
+	function preferences( $uID = null, $edit = false, $notification = false ) {
 		$class = ht_dms_preferences_class();
 		if ( $edit ) {
-			$out = $class->edit_form( null, $uID, null, $notification;
+			$out = $class->edit_form( null, $uID, null, $notification );
 		}
 		else {
-			$out = $class->profile( $uID );
+			$out = $class->profile_list( $uID );
 		}
 
 		return $out;
