@@ -203,7 +203,7 @@ function ht_dms_paginated_views( $args = null ) {
  *
  * @return array
  *
- * @since 0.0.2
+ * @since 0.0.3
  */
 function ht_dms_default_paginated_view_arguments( $args = null ) {
 	$paginated_view_args = array(
@@ -220,3 +220,6 @@ function ht_dms_default_paginated_view_arguments( $args = null ) {
 
 
 }
+
+
+

@@ -278,9 +278,30 @@ jQuery(document).ready(function($) {
         );
     }
 
-
-
     window.paginate = paginate;
+
+    $("[notification]").click( function () {
+
+        console.log( $(this).attr( 'notification' ) );
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_notification',
+                'nonce' : htDMS.nonce,
+                'id' : 1
+            },
+            function( response ) {
+                var container = '#notification_view';
+                $( container ).fadeOut( 800 ).hide();
+                $( container + "-spinner img" ).show().delay( 400 );
+                $( container ).html('');
+                $( container ).hide().append( response ).fadeIn( 800 );
+                $( container + "-spinner img") .hide();
+
+
+            }
+        );
+
+    });
 
 
 

@@ -66,4 +66,5 @@ jQuery(document).ready(function( $ ) {
         result( select_field, consensusPossibilities );
     });
 
+
 });

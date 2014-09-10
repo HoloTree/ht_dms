@@ -350,7 +350,7 @@ class views {
 	 *
 	 * @since 0.0.3
 	 */
-	function notification( $obj = null, $id = false, $return = 'template') {
+	function notification( $obj = null, $id = false, $return = 'template' ) {
 		if ( ! is_array( $obj ) ) {
 			$args = array (
 				'obj'     => $obj,

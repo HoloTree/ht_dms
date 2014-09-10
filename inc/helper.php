@@ -254,3 +254,40 @@ function ht_dms_null_user( $uID = null ) {
 
 }
 
+function ht_dms_notification_link( $id, $button = false, $title = null, $text = null ) {
+	if ( is_null( $title ) || is_null( $text ) ) {
+		$obj = ht_dms_notification( $id );
+
+		if ( is_null( $text ) ) {
+			$text = $obj->display( 'name' );
+		}
+
+		if ( empty( $text ) ) {
+			$text = 'View Notification';
+		}
+
+		if ( is_null( $title ) ) {
+			$title = $text;
+		}
+
+	}
+
+	$class = '';
+	if ( $button ) {
+		$class = 'button';
+	}
+
+	if ( 'notifications' === pods_v( 'dms_action', 'get', false, true ) ) {
+		$url = '#';
+	}
+	else {
+		$url = holotree_action_append( ht_dms_home(), 'notifications', $id );
+	}
+
+	$url = "#";
+
+	return sprintf( '<a href="%1s" class="notification-link %2s" notification="%3s" title="%4s" id="a">%5s</a>',
+		$url, $class, $id, $title, $text
+	);
+
+}
