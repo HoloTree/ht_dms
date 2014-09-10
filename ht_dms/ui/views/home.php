@@ -36,10 +36,6 @@ $tabs = array(
 		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
 	array(
-		'label'		=> __( 'Notifications', 'holotree' ),
-		'content'	=> $ui->views()->notifications( null ),
-	),
-	array(
 		'label'		=> __( 'All Public Groups', 'holotree' ),
 		'content' 	=> ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 	),
