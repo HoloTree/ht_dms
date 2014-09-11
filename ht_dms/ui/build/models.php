@@ -529,8 +529,12 @@ class models {
 		}
 
 		if ( $return === 'JSON' || $return === 'urlstring' ) {
+			if ( ! function_exists( 'json_url' ) ) {
+				return false;
+
+			}
 			$type = strtolower( $type );
-			$url = ht_dms_home( "/wp-json/pods/{$type}?" );
+			$url = json_url( "/pods/{$type}?" );
 			$url .= http_build_query( $params );
 
 			if ( $return === 'urlstring' ) {
