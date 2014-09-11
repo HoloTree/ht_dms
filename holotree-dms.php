@@ -130,18 +130,19 @@ class HoloTree_DMS {
 	 * @since 0.0.1
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'pods-select2' );
-		wp_enqueue_script( 'pods-select2' );
-		wp_enqueue_style( 'pods-form' );
-		wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array( 'jquery' ), HT_DMS_VERSION, true );
-		wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array( 'jquery', 'ht-dms' ), HT_DMS_VERSION, true );
+		if ( ! is_admin() ) {
+			wp_enqueue_style( 'pods-select2' );
+			wp_enqueue_script( 'pods-select2' );
+			wp_enqueue_style( 'pods-form' );
+			wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array ( 'jquery' ), HT_DMS_VERSION, true );
+			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery', 'ht-dms' ), HT_DMS_VERSION, true );
 
-		if ( is_array( $this->htDMS_js_var() ) ) {
-			wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
-		}
+			if ( is_array( $this->htDMS_js_var() ) ) {
+				wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
+			}
 
-		$consensus_possibilities = false;
-		global $post;
+			$consensus_possibilities = false;
+		}global $post;
 		if ( is_object( $post ) && $post->post_type === HT_DMS_DECISION_CPT_NAME ) {
 
 			$consensus_possibilities = holotree_consensus_class()->possible_changes( $post->ID, get_current_user_id() );
