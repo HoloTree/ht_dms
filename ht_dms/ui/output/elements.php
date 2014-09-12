@@ -761,20 +761,23 @@ class elements {
 	 * @since 0.0.3
 	 */
 	function view_consensus( $id ) {
+		wp_cache_flush();
 		if ( ! is_array( $id ) ) {
+
 			$users = holotree_decision_class()->consensus_members( $id );
+			$c = holotree_consensus( $id );
 		}
 		else {
 			$users = $id;
+			$c = false;
 		}
+
 		$user_display = false;
 
 		foreach( $users as $user ) {
-			$details[] = $user[ 'name' ];
-			$details[] = ht_dms_consensus_status_readable( $user[ 'consensus' ] );
-			$user_display[] = sprintf(
-				'<div class="row consensus-view-user" >
 
+			$user_display[ ] = sprintf(
+				'<div class="row consensus-view-user" id="consensus-view">
 					<div class="large-3 small-12 columns">
 						%1s
 					</div>
@@ -793,6 +796,7 @@ class elements {
 		}
 
 		if ( is_array( $user_display ) ) {
+			//return print_c3( array( $c, $users, $user_display ) );
 			return sprintf( '
 				<div class="consensus-view">
 					<h5>%0s</h5>

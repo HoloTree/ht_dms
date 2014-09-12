@@ -23,7 +23,7 @@ jQuery(document).ready(function( $ ) {
     /**
      * Put possible result of actions into variables
      */
-    var select_field = '#dms_action';
+    var select_field = '#fld_738259_1';
 
     function result( select_field, consensusPossibilities ) {
         if ( undefined != consensusPossibilities && undefined != consensusPossibilities.possible_results[0]) {
@@ -32,6 +32,7 @@ jQuery(document).ready(function( $ ) {
             var p2 = consensusPossibilities.possible_results[2];
 
             var selected_action = $( select_field ) .val();
+            console.log( selected_action );
             var result = false;
             if ( selected_action === 'accept-change') {
                 var result = 'Decision will be ' + p1 + '.';
@@ -46,7 +47,7 @@ jQuery(document).ready(function( $ ) {
                 var result = 'You will be able to propose a new version of this decision to consider.';
             }
 
-            if ( selected_action === 'respond') {
+            if ( selected_action === 'Respond') {
                 var result = 'You will be able to respond to this decision';
             }
 
@@ -64,6 +65,19 @@ jQuery(document).ready(function( $ ) {
     result( select_field );
     $( select_field ).change( function() {
         result( select_field, consensusPossibilities );
+    });
+
+    /**
+     * Reload consensus view on Caldera submit
+     *
+     * @since 0.0.3
+     */
+    $( document ).ajaxSuccess(function( event, xhr, settings ) {
+console.log( 'xx');
+       if ( settings.url == './' ) {
+           reloadConsensus( '#consensus-view', 376 );
+       }
+
     });
 
 

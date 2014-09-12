@@ -987,6 +987,40 @@ class decision extends dms {
 
 	}
 
+	function is_completed( $id, $obj = null ) {
+		$status = $this->status( $id, $obj );
+		if ( $status === 'completed' ) {
+
+			return true;
+
+		}
+
+	}
+
+	function is_new( $id, $obj = null ) {
+		$status = $this->status( $id, $obj );
+		if ( $status === 'new' ) {
+
+			return true;
+
+		}
+	}
+
+	function is_proposed_change( $id, $obj = null ) {
+		$type = $this->get_type( $id, $obj );
+		if ( $type === 'change' ) {
+
+			return true;
+		}
+
+	}
+
+	function type( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		return $obj->field( 'decision_type' );
+	}
+
 	/**
 	 * Check the status of a decision
 	 *
@@ -1223,7 +1257,7 @@ class decision extends dms {
 	 */
 	function consensus_members( $id ) {
 		$users = $this->get_consensus( $id );
-		$fallback = fallback_avatar();
+		$fallback = ht_dms_fallback_avatar();
 		foreach( $users as $id => $consensus ) {
 			$data = get_userdata( $id );
 

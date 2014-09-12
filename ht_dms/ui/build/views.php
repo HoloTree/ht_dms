@@ -510,6 +510,32 @@ class views {
 		}
 	}
 
+	/**
+	 * Adds additional markup for notifications view to allow AJAX-based UI.
+	 *
+	 * @uses ht_dms_models_template_output filter
+	 *
+	 * @param $view
+	 * @param $type
+	 *
+	 * @return string
+	 *
+	 * @#since 0.0.3
+	 */
+	function after_notification_preview( $out, $view ) {
+		if ( $view === 'users_notifications' ) {
+			$single_view = '<div id="notification-single-view"> </div>';
+
+			$title = __( 'Close notification viewer', 'holotree' );
+
+			$out = sprintf( '<a href="#" id="notification-single-close" class=" ht-dms-close" style="display:none;" title="%0s"><span class="genericon genericon-close"></span></a><div id="notification-viewer">%2s</div>', $title, $out, $single_view );
+
+		}
+
+		return $out;
+
+	}
+
 
 
 	/**

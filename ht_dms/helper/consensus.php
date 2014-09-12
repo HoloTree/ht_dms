@@ -106,7 +106,8 @@ class consensus {
 	 */
 	function get( $dID, $obj = null, $unserialized = true ) {
 		$key = "consensus_dID_{$dID}";
-		if ( false === ( $consensus = wp_cache_get( $key ) )  ) {
+		//if ( ! DOING_AJAX || false === ( $consensus = wp_cache_get( $key ) )  ) {
+		if ( true ) {
 			$obj       = holotree_decision( $dID, $obj );
 			$consensus = $obj->field( 'consensus' );
 			if ( $unserialized ) {
@@ -114,7 +115,7 @@ class consensus {
 
 			}
 
-			wp_cache_set( $key, $consensus, '', 7235 );
+			//wp_cache_set( $key, $consensus, '', 7235 );
 
 		}
 
@@ -137,23 +138,24 @@ class consensus {
 	 */
 	private function modify ( $dID, $new_value, $uID = null ) {
 		if ( $new_value > -1 && $new_value < 4 ) {
-			$uID = $this->null_user( $uID );
+			$uID = (int) $this->null_user( $uID );
+
 			$consensus = $this->get( $dID );
 			if ( is_array( $consensus) ) {
-				foreach ( $consensus as $key => $value ) {
-					if ( $value[ 'id' ] === $uID ) {
-						unset( $consensus[ $key ] );
-						break;
-					}
+
+				if ( isset( $consensus[ (int) $uID ] ) ) {
+					$consensus[ (int) $uID ] = array (
+						'id'    => $uID,
+						'value' => $new_value,
+					);
 				}
-				$consensus[ $uID ] = array (
-					'id'    => $uID,
-					'value' => $new_value,
-				);
+
 
 
 				return $consensus;
+
 			}
+
 		}
 
 	}

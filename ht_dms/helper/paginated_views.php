@@ -58,6 +58,7 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 
 	$obj = holotree_dms_ui()->get_view( $view, $view_args, 'Pods' );
 	if ( $return_obj === true ) {
+
 		return $obj;
 
 	}
@@ -87,7 +88,10 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 
 			if ( ! empty ( $out ) ) {
 				$out .= holotree_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $args[ 'page' ] );
+				$out = apply_filters( 'ht_dms_paginated_views_template_output', $out, $view );
+
 				return $out;
+
 			}
 
 

@@ -519,11 +519,14 @@ class models {
 				return $obj;
 
 			}
+
 			elseif ( $return === 'template' ) {
 
 				$view = $this->path( $short_type, $preview );
 
-				return $this->ui()->view_loaders()->magic_template( $view, $obj, false );
+				$view = $this->ui()->view_loaders()->magic_template( $view, $obj, false );
+
+				return apply_filters( 'ht_dms_models_template_output', $view, $type );
 
 			}
 		}

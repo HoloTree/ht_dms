@@ -35,7 +35,10 @@ class view_loaders {
 		else {
 			$context = $this->view_context( $post_type );
 			if ( $context !== 'task' ) {
-				return $this->view_cache( $context, $post_type );
+				$output = $this->view_cache( $context, $post_type );
+
+				return $output;
+
 			}
 		}
 
