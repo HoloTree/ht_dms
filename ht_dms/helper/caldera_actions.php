@@ -13,6 +13,8 @@ namespace ht_dms\helper;
 
 
 class caldera_actions {
+	private $decision_actions_field = 'fld_738259';
+
 	function __construct() {
 		add_action( 'ht_dms_decision_action_process', array( $this, 'decision_actions' ) );
 		add_filter( 'caldera_forms_render_get_field_type-dropdown', array( $this, 'decision_action_options' ), 5, 2 );
@@ -56,50 +58,99 @@ class caldera_actions {
 		$d = holotree_decision_class();
 
 
-		if ( $field[ 'ID' ] == 'fld_738259' ) {
+		if ( $field[ 'ID' ] == $this->decision_actions_field ) {
 			if ( $d->is_proposed_change( $id, $obj ) ) {
-				unset( $field[ 'option' ][ $this->decision_option_id( 'accept' ) ] );
+				unset( $field['config']['option'][ $this->decision_option_id( 'accept' ) ] );
 			}
 			else {
-				unset( $field[ 'option'][ $this->decision_option_id( 'accept-proposed-change' ) ] );
+				unset( $field['config']['option'][ $this->decision_option_id( 'accept-change' ) ] );
 			}
 
-			if ( ! $d->is_new( $id, $obj ) && !$d->is_proposed_change( $id, $obj ) ) {
+			if ( ! $d->is_new( $id, $obj ) && ! $d->is_proposed_change( $id, $obj ) ) {
 				foreach( $this->decision_option_id( '', true ) as $option ) {
 					if ( $option !== $this->decision_option_id( 'respond' ) ) {
-						unset( $field[ 'option'][ $option ] );
-
+						unset( $field['config']['option'][ $option ] );
 					}
 
 				}
 			}
 
+			if ( ! $d->is_proposed_change( $id ) ) {
+				unset( $field[ 'config' ][ 'option' ][ $this->decision_option_id( 'accept-change' ) ] );
+				
+			}
+
+			if ( $d->is_blocked( $id ) ) {
+				if ( $d->is_blocking( $id ) ){
+					unset( $field[ 'config' ][ 'option' ][ $this->decision_option_id( 'object' ) ] );
+
+				}
+
+			}
+			else {
+				unset( $field[ 'config'][ 'option' ][ $this->decision_option_id( 'remove-objection' ) ] );
+
+			}
+
 
 
 		}
+
 
 		return $field;
 
 	}
 
-	function decision_option_id( $what, $return_all = false ) {
 
-		$options = array(
-			'opt3452387' => 'respond',
-			'opt1586' => 'accept',
-			'opt1782504' => 'accept-proposed-change',
-			'opt1782504' => 'object',
-			'opt2779288' => 'propose-change',
 
+	function decision_option_id( $value, $return_all = false ) {
+
+		$options = array (
+			'opt1791757' =>
+				array (
+					'value' => 'respond',
+					'label' => 'Respond',
+				),
+			'opt1957683' =>
+				array (
+					'value' => 'accept',
+					'label' => 'Accept',
+				),
+			'opt1353927' =>
+				array (
+					'value' => 'object',
+					'label' => 'Object',
+				),
+			'opt1289816' =>
+				array (
+					'value' => 'remove-objection',
+					'label' => 'Remove Objection',
+				),
+			'opt2001124' =>
+				array (
+					'value' => 'propose-modify',
+					'label' => 'Propose Modification',
+				),
+			'opt1639315' =>
+				array (
+					'value' => 'accept-change',
+					'label' => 'Accept Proposed Modification',
+				),
 		);
+
+
 
 		if ( $return_all ) {
 			return $options;
 		}
 
-		$options = array_flip( $options );
+		$values = wp_list_pluck( $options, 'value' );
+		$values = array_flip( $values );
 
-		return pods_v( $what, $options, false, true );
+		return pods_v( $value, $values, false, true );
 
 	}
+
+
+
 } 

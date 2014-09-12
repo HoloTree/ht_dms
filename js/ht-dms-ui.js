@@ -34,27 +34,28 @@ jQuery(document).ready(function( $ ) {
             var selected_action = $( select_field ) .val();
             console.log( selected_action );
             var result = false;
-            if ( selected_action === 'accept-change') {
+            if ( selected_action === 'accept' ) {
                 var result = 'Decision will be ' + p1 + '.';
             }
 
-            if (selected_action === 'block') {
+            if (selected_action === 'object') {
                 var result = 'Decision will be ' + p2 + '.';
             }
 
             //@todo translation-friendliness!
-            if (selected_action === 'propose-change') {
+            if (selected_action === 'propose-modify') {
                 var result = 'You will be able to propose a new version of this decision to consider.';
             }
 
-            if ( selected_action === 'Respond') {
+            if ( selected_action === 'respond') {
                 var result = 'You will be able to respond to this decision';
             }
 
             if ( false != result ) {
+                $( '#dms-action-result').hide();
                 result = 'If you make this choice: ' + result;
                 $( '#dms-action-result').empty();
-                $( '#dms-action-result' ).append( result );
+                $( '#dms-action-result' ).append( result).show();
             }
 
 

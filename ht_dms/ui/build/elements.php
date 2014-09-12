@@ -93,9 +93,18 @@ class elements {
 
 	}
 
-	function decision_actions() {
+	/**
+	 * Decisions action form based on Caldera forms
+	 *
+	 * @param string $caldera_id ID of form
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function decision_actions( $caldera_id = 'CF5411fb087123d' ) {
 		$caldera = new \Caldera_Forms();
-		return $caldera::render_form( 'CF5411fb087123d' );
+		return $caldera::render_form( $caldera_id ) . '<div id="dms-action-result" style="display:none;"></div>';
 
 	}
 
