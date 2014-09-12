@@ -72,6 +72,21 @@ class ui {
 	}
 
 	/**
+	 * Ajax callbacks class
+	 *
+	 * @return output\ajax_callbacks
+	 *
+	 * @since 0.0.3
+	 */
+	function ajax_callbacks() {
+
+		$this->file( 'ajax_callbacks', 'output' );
+
+		return new \ht_dms\ui\output\ajax_callbacks();
+
+	}
+
+	/**
 	 * Get any view defined in the ht_dms\ui\build\views class.
 	 *
 	 * Exists to power holotree_dms_ui_ajax_view(), but can be used independently.

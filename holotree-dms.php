@@ -229,14 +229,28 @@ class HoloTree_DMS {
 			'consensus',
 			'membership',
 			'paginated_views',
-			'preferences'
+			'preferences',
+			'caldera_actions',
 
 		);
+
+		$caldera = true;
+
+		if (  ! defined( 'CFCORE_VER' ) ) {
+			$caldera = false;
+			unset( $helpers[ 'caldera_actions' ] );
+		}
+
 		foreach ( $helpers as $helper ) {
 			include_once( trailingslashit( HT_DMS_DIR ).'helper/'.$helper.'.php' );
 		}
 
+
 		new ht_dms\helper\common();
+
+		if ( $caldera ) {
+			new ht_dms\helper\caldera_actions();
+		}
 
 
 	}
@@ -267,7 +281,9 @@ class HoloTree_DMS {
  */
 add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
-	if ( defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
+
+	if (  defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
+
 		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
 
 		/**
@@ -276,6 +292,9 @@ function holotree_dms() {
 		 * @since 0.0.1
 		 */
 		do_action( 'holotree_DMS' );
+
+
+
 
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
@@ -314,10 +333,7 @@ function holotree_dms() {
 			}
 		}
 
-		/**
-		 * Include class/ item functions
-		 */
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
+
 
 		return ht_dms\ui\ui::init();
 
@@ -342,41 +358,3 @@ function holotree_dms_permalinks() {
 	}
 
 }
-
-if ( HT_DEV_MODE ) {
-	function wp_mail( $to, $subject, $message, $headers = '') {
-		error_log( print_c3( $to, $subject, $message, $headers ) );
-	}
-}
-
-add_action( 'init', function() {
-	if ( 1==1 && ! is_admin()  ) {
-
-		if ( 1==1 ) {
-
-			$class = ht_dms_notification_class();
-
-			$id    = $class->send();
-			print_r2( $id );
-		}
-		else {
-			$class= ht_dms_notification_class();
-			$params = array(
-				'expires' => MINUTE_IN_SECONDS,
-				'where' => ' t.viewed = 0',
-			);
-
-				$params[ 'where' ] = $params[ 'where' ] . ' AND t.sent = 0 ';
-
-			$params = array( 'where' => 'to.ID = "1"' );
-			$params[ 'where' ] = $params[ 'where' ] . ' AND t.sent = 1 AND t.viewed = 0';
-
-			$obj = pods( HT_DMS_NOTIFICATION_NAME, $params );
-			$sent = $obj->total();
-
-			return var_Dump( array( $params, $sent) );
-
-		}
-	}
-
-}, 99 );

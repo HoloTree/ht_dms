@@ -33,6 +33,19 @@ class common {
 		$notification = HT_DMS_NOTIFICATION_NAME;
 		add_filter( "pods_api_pre_save_pod_item_{$notification}", array( ht_dms_notification_class(), 'to_id' ), 5 );
 
+		$ajax_callbacks = holotree_dms_ui()->ajax_callbacks();
+		add_action( 'wp_ajax_ht_dms_reload_consensus', array( $ajax_callbacks, 'reload_consensus' ) );
+		add_action( 'wp_ajax_nopriv_ht_dms_reload_consensus', '__return_false' );
+
+		add_action( 'wp_ajax_ht_dms_notification', array( $ajax_callbacks, 'load_notification' ) );
+		add_action( 'wp_ajax_nopriv_ht_dms_notification', '__return_false' );
+
+		add_action( 'wp_ajax_ht_dms_update_decision_status', array( $ajax_callbacks, 'update_decision_status' ) );
+		add_action( 'wp_ajax_nopriv_ht_dms_update_decision_status', '__return_false' );
+
+
+
+		add_filter( 'ht_dms_paginated_views_template_output', array( holotree_dms_ui()->views(), 'after_notification_preview' ), 10, 2 );
 
 	}
 
@@ -214,6 +227,7 @@ class common {
 			}
 
 			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' || 'respond' ) {
+				return;
 
 				//$message_text = $take_action->decision( $action, $id );
 				if ( $action === 'propose-change' ) {
@@ -561,6 +575,7 @@ class common {
 		return $pieces;
 
 	}
+
 
 	/**
 	 * Holds the instance of this class.

@@ -93,8 +93,19 @@ class elements {
 
 	}
 
+	function decision_actions() {
+		$caldera = new \Caldera_Forms();
+		return $caldera::render_form( 'CF5411fb087123d' );
+
+	}
 
 	function action_buttons( $what, $id, $obj = null ) {
+		if ( class_exists( 'Caldera_Forms' ) ) {
+
+			return $this->decision_actions();
+
+		}
+
 		$obj = holotree_decision( $id, $obj );
 
 		$is_change = holotree_decision_class()->is_proposed_modification( $id, $obj );
