@@ -166,6 +166,20 @@ class ui {
 
 	}
 
+	/**
+	 * Group & Organization Membership Elements
+	 *
+	 * @return build\membership
+	 *
+	 * @since 0.0.3
+	 */
+	function membership() {
+		$this->file( 'membership', 'build' );
+
+		return new \ht_dms\ui\build\membership();
+
+	}
+
 	private function file( $file, $dir  ) {
 		require_once( trailingslashit( HT_DMS_UI_DIR ) ). trailingslashit( $dir ). $file .'.php';
 	}

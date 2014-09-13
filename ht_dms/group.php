@@ -486,6 +486,26 @@ class group extends dms {
 	}
 
 	/**
+	 * Check if a group is public.
+	 *
+	 * Checks the value of the 'visibility' field.
+	 *
+	 * @param  int    $id Group  ID
+	 * @param null|obj|Pods $obj
+
+	 *
+	 * @return false|null|string
+	 *
+	 * @since 0.0.3
+	 */
+	function is_public( $id, $obj = null ) {
+		$obj = $this->null_obj( $obj, $id  );
+
+		return holotree_membership_class()->is_public( $id, $obj, true );
+
+	}
+
+	/**
 	 * Update user fields related to this post type.
 	 *
 	 * Workaround for Pods issue #1945

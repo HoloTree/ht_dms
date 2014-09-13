@@ -291,3 +291,21 @@ function ht_dms_notification_link( $id, $button = false, $title = null, $text = 
 	);
 
 }
+
+/**
+ * Load a Calder a form
+ * @param        $caldera_id
+ * @param string $before
+ * @param string $after
+ *
+ * @return string
+ */
+function ht_dms_caldera_loader( $caldera_id, $before = '', $after = '' ) {
+	if ( class_exists( 'Caldera_Forms' ) ) {
+		$caldera = new \Caldera_Forms();
+		$form    = $caldera::render_form( $caldera_id );
+
+		return $before . $form . $after;
+	}
+
+}

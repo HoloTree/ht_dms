@@ -12,8 +12,6 @@
 namespace ht_dms\ui\build;
 
 
-use ht_dms\helper\caldera_actions;
-
 class elements {
 
 	/**
@@ -110,9 +108,8 @@ class elements {
 			$caldera_id = caldera_actions::$decision_actions_form_id;
 
 		}
-
-		$caldera = new \Caldera_Forms();
-		return $caldera::render_form( $caldera_id ) . '<div id="dms-action-result" style="display:none;"></div>';
+		$after = '<div id="dms-action-result" style="display:none;"></div>';
+		return ht_dms_caldera_loader( $caldera_id, '', $after );
 
 	}
 
@@ -372,6 +369,31 @@ class elements {
 		}
 	}
 
+	function group_membership( $gID, $obj = null ) {
+		$uID = get_current_user_id();
+		$obj = holotree_group( $gID, $obj  );
+		$g = holotree_group_class();
+		$membership = $this->ui()->membership();
+		if ( $g->is_member( $gID, $uID, $obj ) ) {
+			$out[] = $membership->join();
+
+		}
+		else {
+			$out[] = $membership->leave();
+		}
+
+
+
+		if ( $g->is_facilitator( $gID, $uID, $obj ) ) {
+			$out[] = $membership->pending();
+		}
+
+		if ( $g->is_public( $gID, $obj ) || $g->is_member( $gID, $obj ) || $g->is_facilitator( $gID, $obj ) ) {
+			$out[] = $membership->view( $gID );
+		}
+
+	}
+
 	/**
 	 * All of the group psuedo-widgets.
 	 *
@@ -388,6 +410,7 @@ class elements {
 		if ( HT_DEV_MODE ) {
 			$out .= "gID = ". $gID;
 		}
+
 		if ( ! holotree_group_class()->is_member( $gID ) ) {
 			$out .= $this->ui()->group_widget()->join_group_widget( $gID );
 		}
@@ -465,7 +488,7 @@ class elements {
 	/**
 	 * Get instance of UI class
 	 *
-	 * @return 	\holotree\ui
+	 * @return 	\ht_dms\ui\ui
 	 *
 	 * @since 	0.0.1
 	 */

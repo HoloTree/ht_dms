@@ -225,6 +225,25 @@ class membership {
 	}
 
 	/**
+	 * Check if a group or organization is public.
+	 *
+	 * Checks the value of the 'visibility' field.
+	 * @param  int    $id Group or organization ID
+	 * @param null|obj|Pods $obj
+	 * @param bool $group If true group, if false organization.
+	 *
+	 * @return false|null|string
+	 *
+	 * @since 0.0.3
+	 */
+	function is_public( $id, $obj = null, $group = true ) {
+		$obj = $this->null_obj( $id, $obj, $group  );
+
+		return $obj->display( 'visibility' );
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.0.1
