@@ -12,6 +12,8 @@
 namespace ht_dms\ui\build;
 
 
+use ht_dms\helper\caldera_actions;
+
 class elements {
 
 	/**
@@ -102,7 +104,13 @@ class elements {
 	 *
 	 * @since 0.0.3
 	 */
-	function decision_actions( $caldera_id = 'CF5411fb087123d' ) {
+	function decision_actions( $caldera_id = false ) {
+		if ( ! $caldera_id ) {
+
+			$caldera_id = caldera_actions::$decision_actions_form_id;
+
+		}
+
 		$caldera = new \Caldera_Forms();
 		return $caldera::render_form( $caldera_id ) . '<div id="dms-action-result" style="display:none;"></div>';
 
