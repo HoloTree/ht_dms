@@ -14,98 +14,6 @@ namespace ht_dms\helper;
 
 class take_action {
 
-	function __construct() {
-		//add_action( 'init', array( $this, 'do_message' ), 49 );
-	}
-
-	/**
-	 * Take decision action
-	 *
-	 * @param $action
-	 * @param $id
-	 *
-	 * @return null|string|void
-	 *
-	 * @since 0.0.1
-	 */
-	function decision( $action, $id ) {
-		$d = holotree_decision_class();
-
-		if ( $action === 'block' ) {
-			$d->block( $id );
-
-		}
-		elseif ( $action === 'unblock' ) {
-			$d->unblock( $id );
-
-
-		}
-		elseif ( $action === 'accept' ) {
-			$d->accept( $id );
-
-
-		}
-		elseif ( $action === 'propose-change' ) {
-			//add_action( 'get_header', 'redirect' );
-		}
-		elseif ( $action === 'accept-change' ) {
-			$d->accept_modify( $id );
-		}
-		else {
-			holotree_error( __METHOD__, print_c3( array( $id, $action ) ) );
-		}
-
-		$d->reset_cache( $id );
-		pods_redirect( get_permalink( $id ) );
-		return $this->message( $action, $id, 'd' );
-	}
-
-	/**
-	 * Take group action
-	 *
-	 * @param $action
-	 * @param $id
-	 *
-	 * @return null|string|void
-	 *
-	 * @since 0.0.1
-	 */
-	function group( $action, $id ) {
-		$g = holotree_group_class();
-		$uID = pods_v( 'dms_member_id', 'get', false, true );
-
-		if ( $action === 'join-group' ) {
-			$g->add_member( $id, get_current_user_id() );
-
-
-		}
-		elseif ( $action === 'approve-pending' || $action = 'reject-pending' && false !==  $uID  ) {
-
-			if ( $uID !== false ) {
-				if ( $action === 'approve-pending' ) {
-					$approve = true;
-				}
-				elseif ( $action === 'reject-pending' ) {
-					$approve = false;
-				}
-				else{
-					holotree_error( 'Bad dms_action', __METHOD__ );
-				}
-
-				$g->pending( $id, $uID, false, $approve );
-
-
-			}
-		}
-		else {
-			holotree_error( __METHOD__, print_c3( array( $id, $action ) ) );
-		}
-
-		$g->reset_cache( $id );
-
-		return $this->message( $action, $id, 'g' );
-
-	}
 
 	/**
 	 * Take task actions
@@ -136,34 +44,6 @@ class take_action {
 		$t->reset_cache( $id );
 
 		return $this->message( $action, $id, 't' );
-
-	}
-
-	/**
-	 * Take notification action
-	 * @param $action
-	 * @param $id
-	 *
-	 * @return null|string|void
-	 *
-	 * @since 0.0.1
-	 */
-	function notification( $action, $id ) {
-		$n = holotree_notification_class();
-
-		if ( $action === 'mark-notification' ) {
-
-
-		}
-		elseif ( $action = 'archive-notification' ) {
-
-		}
-		else {
-			holotree_error( __METHOD__, print_c3( array( $id, $action ) ) );
-		}
-
-		//@TODO reset?
-		return $this->message( $action, $id, 'n' );
 
 	}
 
@@ -236,62 +116,7 @@ class take_action {
 	 * @since 0.0.1
 	 */
 	function message ( $action, $id, $what ) {
-		$text = null;
-
-
-		//@todo make translation ready
-		if ( 'd' === $what ) {
-			if ( $action !== 'accept-change' ) {
-				$title = $this->title( $id, $what );
-
-				$text = __( sprintf( 'You have %1s %22s', $action, $title ), 'holotree' );
-			}
-			else {
-				$text = __( 'Proposed Modification Accepted', 'holotree' );
-			}
-		}
-		elseif ( 'g' === $what ) {
-			$obj = holotree_group( $id );
-			$title = $this->title( $id, $what );
-
-			if ( 'join-group'  === $action ) {
-				$access = $obj->field( 'open_access' );
-				if ( $access == 1 ) {
-					$text = __( sprintf( 'You have joined %1s', $title ), 'holotree' );
-				}
-				else {
-					$text = __( sprintf( 'Your request to join %1s is pending', $title ), 'holotree' );
-				}
-			}
-			if ( 'reject-pending' === $action ) {
-				$user = get_userdata( $id );
-				if ( is_object( $user ) ) {
-					$user = $user->display_name;
-					$text = __( sprintf( 'You have rejected the membership of %1s', $user ), 'holotree' );
-				}
-			}
-
-		}
-		elseif ( 't' === $what ) {
-			$text = __( 'Task Updated.', 'holotree' );
-
-		}
-		elseif ( 'n' === $what ) {
-			$text = __( 'Message Updated' );
-
-			if ( 'archive-notification' === $action ) {
-				$text = __( 'Message Archived', 'holotree' );
-			}
-
-		}
-		elseif ( 'c' === $what ) {
-			$text = __( 'Comment Updated.', 'holotree' );
-		}
-
-		if ( ! is_null( $text ) ) {
-			return $text;
-
-		}
+		return false;
 
 	}
 
