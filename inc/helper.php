@@ -331,7 +331,8 @@ function ht_dms_is( $content_type, $id = false ) {
 		}
 	}
 
-	if (  in_array( $content_type, HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME )  ) {
+	if (  in_array( $content_type, array(  HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME ) ) ) {
+
 		if ( $id ) {
 			$post = get_post( $id );
 		}
@@ -340,7 +341,6 @@ function ht_dms_is( $content_type, $id = false ) {
 		}
 		if ( is_object( $post ) && isset( $post->post_type ) ) {
 			if ( $content_type == $post->post_type ) {
-
 				return true;
 
 			}

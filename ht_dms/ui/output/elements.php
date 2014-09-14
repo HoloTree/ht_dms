@@ -412,28 +412,50 @@ class elements {
 		}
 		$name = $this->link( null, 'front', $name );
 
-		if ( get_post_type( $id ) === HT_DMS_GROUP_CPT_NAME ) {
-			$title = get_the_title( $id );
-			$decision = $this->link( $id, 'permalink', $title );
-			$name .= $separator .$decision;
-		}
-		elseif( get_post_type( $id ) === HT_DMS_DECISION_CPT_NAME ) {
-			$obj = holotree_decision( $id, $obj );
-			$group = $obj->field( 'group' );
-			$title = get_the_title( $id );
-			$decision = $this->link( $id, 'permalink', $title );
-			$title = get_the_title( (int) $group[0]['ID'] );
-			$group = $this->link((int) $group[0]['ID'], 'permalink', $title );
+		if (  ! ht_dms_is( 'home' ) || ht_dms_is_notification() ) {
+			$titles = $oID = $gID = $dID = $tID = false;
 
-			$name .= $separator . $decision . $separator . $group ;
+			$id = get_queried_object_id();
+
+			if ( ht_dms_is_organization( $id ) ) {
+				$oID = $id;
+			}
+			elseif( ht_dms_is_group( $id  ) ) {
+				$gID = $id;
+				$oID = holotree_group_class()->get_organization( $gID );
+				pods_error( var_dump( $oID ) );
+			}
+			elseif( ht_dms_is_decision( $id ) ) {
+
+				$dID = $id;
+				$obj = holotree_decision( $id );
+				$oID = holotree_decision_class()->get_organization( $id, $obj );
+				$gID = holotree_decision_class()->get_group( $id, $obj );
+			}
+			elseif( ht_dms_is_task( $id ) ) {
+				//@todo if ! https://github.com/HoloTree/ht_dms/issues/55
+			}
+
+			foreach ( array(
+				__( 'Organization', 'ht_dms' ) => $oID,
+				__( 'Group', 'ht_dms' ) => $gID,
+				__( 'Decision', 'ht_dms' ) => $dID,
+			) as $label => $id ) {
+				if ( holotree_integer( $id ) ) {
+					$titles[] = sprintf(
+						'<span class="breadcrumbs-component" ><span class="breadcrumbs-label breadcrumbs-component">%1s:</span> %2s </span>',
+						$label,
+						$this->link( $id, 'permalink', get_the_title( $id ) )
+					);
+				}
+			}
+
+			if ( is_array( $titles ) ) {
+				$name .= sprintf( '<span id="breadcrumbs-titles">%1s</span>', implode( $titles ) );
+			}
+
 		}
-		elseif ( $task ) {
-			$obj = holotree_task( $id, $obj );
-			$name .= $separator . $obj->field( 'name' );
-			$dID = $obj->field( 'decision' );
-			$dID = $dID[ 'ID' ];
-			$name .= $separator . get_the_title( $dID );
-		}
+
 		add_filter( 'the_title', '__return_false' );
 
 		$name = apply_filters( 'ht_dms_title_override', $name, $id );
