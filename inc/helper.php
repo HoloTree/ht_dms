@@ -309,3 +309,153 @@ function ht_dms_caldera_loader( $caldera_id, $before = '', $after = '' ) {
 	}
 
 }
+
+/**
+ * Check if is the content type set in $content type
+ *
+ * @param 	string    $content_type Content type to check for
+ * @param 	bool 		$id	Optional. ID of item to check or if false, the default check current page.
+ *
+ * @return 	bool
+ *
+ * @since 	0.0.3
+ */
+function ht_dms_is( $content_type, $id = false ) {
+	if ( $content_type === 'home' ){
+		if ( is_home() || is_front_page() ) {
+
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	if (  in_array( $content_type, HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME )  ) {
+		if ( $id ) {
+			$post = get_post( $id );
+		}
+		else {
+			global $post;
+		}
+		if ( is_object( $post ) && isset( $post->post_type ) ) {
+			if ( $content_type == $post->post_type ) {
+
+				return true;
+
+			}
+			else {
+
+				return false;
+
+			}
+
+		}
+	}
+
+	if ( $content_type === HT_DMS_TASK_CT_NAME ) {
+		if ( !  $id ) {
+			$id = get_queried_object_id();
+		}
+
+		$term = get_term( $id, $content_type );
+
+		if ( is_object( $term ) ) {
+
+			return true;
+		}
+		else {
+
+			return false;
+
+		}
+
+	}
+
+	if ( $content_type == HT_DMS_NOTIFICATION_NAME ) {
+		if ( $id && is_object( ht_dms_notification( $id ) ) ) {
+
+			return true;
+
+		}
+
+	}
+
+
+}
+
+/**
+ * Check if a particular item, or current page is an  organization.
+ *
+ * @param 	bool $id Optional. ID of item to check or if false, the default, checks current page.
+ *
+ * @return bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_is_organization( $id = false ) {
+
+	return ht_dms_is( HT_DMS_ORGANIZATION_NAME, $id );
+
+}
+
+/**
+ * Check if a particular item, or current page is a group.
+ *
+ * @param 	bool $id Optional. ID of item to check or if false, the default, checks current page.
+ *
+ * @return bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_is_group( $id = false ) {
+
+	return ht_dms_is( HT_DMS_GROUP_CPT_NAME, $id );
+
+}
+
+/**
+ * Check if a particular item, or current page is a decision.
+ *
+ * @param 	bool $id Optional. ID of item to check or if false, the default, checks current page.
+ *
+ * @return bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_is_decision( $id = false ) {
+
+	return ht_dms_is( HT_DMS_DECISION_CPT_NAME, $id );
+
+}
+
+/**
+ * Check if a particular item, or current page is a task.
+ *
+ * @param 	bool $id Optional. ID of item to check or if false, the default, checks current page.
+ *
+ * @return bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_is_task( $id = false ) {
+
+	return ht_dms_is( HT_DMS_TASK_CT_NAME, $id );
+
+}
+
+/**
+ * Check if a particular item, or current page is a notification.
+ *
+ * @param 	bool $id Optional. ID of item to check or if false, the default, checks current page.
+ *
+ * @return bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_is_notification( $id = false ) {
+
+	return ht_dms_is( HT_DMS_NOTIFICATION_NAME, $id );
+
+}
+

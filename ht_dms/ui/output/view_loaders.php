@@ -563,7 +563,7 @@ class view_loaders {
 	/**
 	 * Get instance of UI class
 	 *
-	 * @return 	\holotree\ui
+	 * @return 	\ht_dms\ui\ui
 	 *
 	 * @since 	0.0.1
 	 */
