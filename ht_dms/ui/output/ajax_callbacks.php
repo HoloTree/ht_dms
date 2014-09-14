@@ -64,6 +64,13 @@ class ajax_callbacks {
 
 	}
 
+	/**
+	 * Update decision status on ht_dms_update_decision_status AJAX action
+	 *
+	 * @uses 'wp_ajax_ht_dms_update_decision_status' action
+	 *
+	 * @since 0.0.3
+	 */
 	function update_decision_status() {
 		if ( $this->nonce_check( $_REQUEST ) ) {
 			$dID = pods_v( 'dID', $_REQUEST );
@@ -75,6 +82,13 @@ class ajax_callbacks {
 		}
 	}
 
+	/**
+	 * Reload's membership view on ht_dms_reload_membership AJAX action
+	 *
+	 * @uses 'wp_ajax_ht_dms_reload_membership' action
+	 *
+	 * @since 0.0.3
+	 */
 	function reload_membership() {
 		if ( $this->nonce_check( $_REQUEST ) ) {
 			$gID = pods_v( 'gID', $_REQUEST );
@@ -114,15 +128,13 @@ class ajax_callbacks {
 	}
 
 	/**
+	 * Returns an array, which is used in the common class' __construct() to build hooks for AJAX actions.
+	 *
 	 * @return array
+	 *
+	 * @since 0.0.3
 	 */
 	function callbacks() {
-		$callbacks = array(
-			'reload_consensus',
-			'notification',
-			'update_decision_status',
-			'reload_membership',
-		);
 
 		$callbacks = get_class_methods( __CLASS__ );
 		foreach( array( 'nonce_check', 'callbacks' ) as $unset ) {
