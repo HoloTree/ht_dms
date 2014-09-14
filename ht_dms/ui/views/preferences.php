@@ -13,6 +13,9 @@ $ui = holotree_dms_ui();
 
 $uID = get_current_user_id();
 
+$view_id = pods_v( 'dms_id' );
+
+
 $tabs = array(
 	array(
 		'label'		=> __( 'Profile', 'holotree' ),
@@ -27,5 +30,14 @@ $tabs = array(
 		'content' 	=> $ui->views()->preferences( $uID, true, true ),
 	),
 );
+
+if ( (int) $view_id !== (int) $uID ) {
+	unset( $tabs[1] );
+	unset( $tabs[2] );
+	$tabs[] = array(
+		'label' 	=> __( 'Send Message', 'holotree' ),
+		'content'	=> 'Functionality not complete',
+	);
+}
 
 return $ui->elements()->output_container( $tabs );

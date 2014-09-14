@@ -85,6 +85,7 @@ class view_loaders {
 			'new-message' => 'notifications',
 			'preferences' => 'preferences',
 			'propose-change' => 'propose-change',
+			'user-profile' 	=> 'preferences',
 		);
 
 		/**
