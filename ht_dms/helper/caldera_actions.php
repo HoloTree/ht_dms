@@ -29,7 +29,9 @@ class caldera_actions {
 		add_filter( 'caldera_forms_render_get_field_type-dropdown', array( $this, 'decision_action_options' ), 5, 2 );
 
 		add_action( 'ht_dms_pending_membership_process', array( $this, 'pending_process' ) );
-		add_filter(  'caldera_forms_render_get_field_type-dropdown', 'pending_membership_fields' );
+		add_filter(  'caldera_forms_render_get_field_type-checkbox', array( $this, 'pending_membership_fields' ), 1, 2 );
+
+
 	}
 
 
@@ -64,6 +66,10 @@ class caldera_actions {
 	}
 
 	function decision_action_options( $field, $form ) {
+		if ( $form[ 'ID' ] !== self::$decision_actions_form_id ) {
+			return $field;
+		}
+
 		global $post;
 		$id = $post->ID;
 		$obj = holotree_decision( $id  );
@@ -166,13 +172,20 @@ class caldera_actions {
 	function group( $data ) {
 		$id = pods_v( 'gid', $data, false, true );
 		if ( $id ) {
-			holotree_group_class()->add_member( $id, get_current_user_id() );
+			if ( array_key_exists( 'join_group', $data ) ) {
+				holotree_group_class()->join( $id, get_current_user_id() );
+			}
+			elseif ( array_key_exists( 'leave_group', $data )  ) {
+				holotree_group_class()->remove_member( $id, get_current_user_id() );
+			}
+
 		}
 
 		if ( $this->force_debug || HT_DEV_MODE ) {
 			if ( isset( $id ) ) {
 				$data[ 'id' ] = $id;
 			}
+
 			update_option( __FUNCTION__, $data );
 
 		}
@@ -180,16 +193,59 @@ class caldera_actions {
 	}
 
 	function pending_process( $data ) {
-		///@todo
+		$gID = pods_v( 'gid', $data );
+		if ( $gID  ) {
+			$class          = holotree_group_class();
+
+			$actions = array(
+				'members_to_accept',
+				'members_to_reject',
+			);
+
+			foreach( $actions as $action  ) {
+				$members = pods_v( $action, $data );
+
+				$approve = true;
+
+
+				if ( is_array( $members ) ) {
+
+					foreach ( $members as $member ) {
+
+						if ( $action == 'members_to_reject' ) {
+							$approve = false;
+						}
+						$class->pending( (int) $gID, $member, $approve );
+					}
+				}
+
+			}
+
+		}
+
+		if ( $this->force_debug || HT_DEV_MODE ) {
+			foreach( $actions as $action ) {
+				$data[ $action ] = pods_v( $action, $data );
+			}
+			update_option( __FUNCTION__, $data );
+
+		}
 	}
 
-	function pending_membership_fields( $field ) {
-		global $post;
-		if ( is_object( $post )  ) {
-			$gID = $post->ID;
+	function pending_membership_fields( $field, $form ) {
+		if ( self::$group_pending_form_id !== $form[ 'ID' ] ) {
 
-			$field_id = 'fld_8545072';
-			if ( $field[ 'ID' ] == $field_id ) {
+			return $field;
+		}
+		else {
+
+
+
+			global $post;
+			if ( is_object( $post  ) && in_array( $field[ 'ID' ], array( $this->pending_member_fields( 'members_to_reject' ), $this->pending_member_fields( 'members_to_accept' ) ) ) ) {
+				$gID = $post->ID;
+
+
 				$pending = holotree_group( $gID )->field( 'pending_members.ID' );
 				if ( is_array( $pending ) ) {
 					foreach( $pending as $user ) {
@@ -211,12 +267,23 @@ class caldera_actions {
 					$field[ 'config' ][ 'option' ] = $option;
 				}
 
+
+
 			}
+
+			return $field;
 
 		}
 
-		return $field;
+	}
 
+	private function pending_member_fields( $field ) {
+		$fields =  array(
+			'members_to_reject' => 'fld_3704384',
+			'members_to_accept' => 'fld_8545072',
+		);
+
+		return pods_v( $field, $fields );
 	}
 
 

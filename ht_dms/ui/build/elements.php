@@ -105,7 +105,7 @@ class elements {
 	function decision_actions( $caldera_id = false ) {
 		if ( ! $caldera_id ) {
 
-			$caldera_id = caldera_actions::$decision_actions_form_id;
+			$caldera_id = \ht_dms\helper\caldera_actions::$decision_actions_form_id;
 
 		}
 		$after = '<div id="dms-action-result" style="display:none;"></div>';
@@ -373,23 +373,37 @@ class elements {
 		$uID = get_current_user_id();
 		$obj = holotree_group( $gID, $obj  );
 		$g = holotree_group_class();
+		$out = false;
 		$membership = $this->ui()->membership();
 		if ( $g->is_member( $gID, $uID, $obj ) ) {
-			$out[] = $membership->join();
+			$out[] = $membership->leave();
 
 		}
 		else {
-			$out[] = $membership->leave();
+			if ( $g->is_pending( $uID, $gID, $obj ) ) {
+				$out[] = __( 'Your Membership in this group is pending approval', 'ht_dms' );
+			}
+			else {
+				$out[ ] = $membership->join( $gID, $obj );
+			}
 		}
 
 
 
 		if ( $g->is_facilitator( $gID, $uID, $obj ) ) {
-			$out[] = $membership->pending();
+			if ( is_array(  $g->get_pending( $gID, $obj ) ) ) {
+				$out[ ] = $membership->pending();
+			}
 		}
 
 		if ( $g->is_public( $gID, $obj ) || $g->is_member( $gID, $obj ) || $g->is_facilitator( $gID, $obj ) ) {
 			$out[] = $membership->view( $gID );
+		}
+
+		if ( is_array( $out ) ) {
+
+			return sprintf( '<div id="group-membership">%1s</div>', implode( $out ) );
+
 		}
 
 	}

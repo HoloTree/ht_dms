@@ -127,7 +127,6 @@ jQuery(document).ready(function($) {
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
-                console.log( 'rc' + dID );
                 update_decision_status( dID );
                 $( container ).html('');
                 $( container ).hide().append( response ).fadeIn( 800 );
@@ -136,18 +135,18 @@ jQuery(document).ready(function($) {
 
             }
         );
+
     }
 
     window.reloadConsensus = reloadConsensus;
 
     function update_decision_status( dID ) {
         var container = '#decision-status';
-        console.log( 'udc' + dID );
         $.get(
             ajaxURL, {
                 'action': 'ht_dms_update_decision_status',
                 'nonce' : htDMS.nonce,
-                'dID' : dID
+                'dID'   : dID
 
             },function( response ) {
                 $( container ).fadeOut( 400 );
@@ -159,5 +158,24 @@ jQuery(document).ready(function($) {
         );
 
     }
+
+    function reloadMembership( container, gID ) {
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_reload_membership',
+                'nonce' : htDMS.nonce,
+                'gID'   : gID,
+                'container' :container
+            },
+            function( response ) {
+                $( container ).fadeOut( 400 );
+                $( container ).html('');
+                $( container ).append( response ).fadeIn( 400 );
+            }
+        );
+
+    }
+
+    window.reloadMembership = reloadMembership;
 
 });

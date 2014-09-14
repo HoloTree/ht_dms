@@ -75,6 +75,15 @@ class ajax_callbacks {
 		}
 	}
 
+	function reload_membership() {
+		if ( $this->nonce_check( $_REQUEST ) ) {
+			$gID = pods_v( 'gID', $_REQUEST );
+			if ( $gID ) {
+				wp_die( holotree_dms_ui()->build_elements()->group_membership( $gID) );
+			}
+		}
+	}
+
 	/**
 	 * Check a nonce
 	 *
@@ -101,6 +110,26 @@ class ajax_callbacks {
 			return true;
 
 		}
+
+	}
+
+	/**
+	 * @return array
+	 */
+	function callbacks() {
+		$callbacks = array(
+			'reload_consensus',
+			'notification',
+			'update_decision_status',
+			'reload_membership',
+		);
+
+		$callbacks = get_class_methods( __CLASS__ );
+		foreach( array( 'nonce_check', 'callbacks' ) as $unset ) {
+			unset( $callbacks [ array_search( $unset, $callbacks ) ] );
+		}
+
+		return $callbacks;
 
 	}
 

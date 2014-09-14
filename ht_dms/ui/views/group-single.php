@@ -29,7 +29,7 @@ $tabs[] = array(
 );
 $tabs[] = array(
 	'label'		=>  __( 'Membership' , 'holotree' ),
-	'content'	=> $ui->build_elements()->group_sidebar_widgets( $id ),
+	'content'	=> $ui->build_elements()->group_membership( $id, $obj ),
 );
 //only show edit group if member & facilitator.
 if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) ) {

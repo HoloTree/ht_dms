@@ -161,6 +161,7 @@ class group extends dms {
 	function is_facilitator( $id, $uID = null, $obj = null ) {
 		$uID = $this->null_user( $uID );
 		$facilitators = $this->all_facilitators( $id, $obj );
+
 		if ( is_array( $facilitators ) ) {
 			if ( in_array( $uID, $facilitators ) ) {
 				return true;
@@ -204,9 +205,7 @@ class group extends dms {
 	function join( $id, $uID = null, $obj = null ) {
 		$uID = $this->null_user( $uID );
 		if ( get_user_by( 'id', $uID ) !== false ) {
-			if ( is_null( $obj ) ) {
-				$obj = $this->single_group_object( $id );
-			}
+			$obj = $this->null_object( $obj, $id );
 			$access = $obj->field( 'open_access' );
 			if ( $access == 1 ) {
 				$id = $this->add_member( $id, $uID );
@@ -256,87 +255,35 @@ class group extends dms {
 	 *
 	 * @param 	int     	$id			ID of group to add members to.
 	 * @param 	int|null	$uID		Optional. ID of user to add/ reject. Default is current user. Not used if $all = true
-	 * @param 	bool 		$all		Optional. Approve/ reject all pending members. Default is false.
 	 * @param 	bool		$approve	Optional. If true user(s) are added, if false, rejected. Default is true.
 	 *
 	 * @return 	int|array	$id		 	ID of group pending member(s) were approved to join.
 	 *
 	 * @since 	0.0.1
 	 */
-	function pending( $id, $uID = null, $all = false, $approve = true ) {
+	function pending( $id, $uID = null, $approve = true ) {
 		$uID = $this->null_user( $uID );
 		$obj = $this->null_object( null, $id  );
 
-		if ( $all ) {
-			if ( $this->user_exists( $uID )) {
-				$none = array();
-				$pending = $obj->field( 'pending_members.ID' );
+		if ( $approve ) {
+			$this->join( $id, $uID, $obj  );
 
-				$members = $obj->field( 'members.ID' );
-				if ( is_array( $pending ) ) {
-					if ( $approve ) {
-						foreach ( $pending as $new_member ) {
-							$members[ ] = $new_member;
-						}
-						$obj->save( 'pending_members', $none );
-						$id = $obj->save( 'members', $members );
-
-						$this->reset_cache( $id );
-
-						return $id;
-					}
-					else {
-						$id = $obj->save( 'pending_members', $none );
-
-						$this->reset_cache( $id );
-
-						return $id;
-					}
-
-				}
-				elseif ( is_int( $pending ) ) {
-					if ( $approve ) {
-						$members[ ] = $pending;
-						$id = $obj->save( 'members', $members );
-						$obj->save( 'pending_members', $none );
-
-						$this->reset_cache( $id );
-
-						return $id;
-					}
-					else {
-						$pending = $obj->field( 'pending_members.ID' );
-						if( ( $key = array_search( $uID, $pending ) ) !== false) {
-							unset( $pending[ $key ] );
-						}
-
-						$obj->save( 'pending_members', $pending );
-
-						$this->reset_cache( $id );
-					}
-
-				}
-				else {
-					holotree_error();
-				}
-
-			}
 		}
-		else {
 
-			$id = $this->add_member( $id, $uID );
+		$pending = $obj->field( 'pending_members' );
 
-			$pending = $obj->field( 'pending_members.ID' );
-			if ( is_array( $pending ) ) {
-				if ( ( $key = array_search( $uID, $pending ) ) !== FALSE ) {
-					unset( $pending[ $key ] );
-				}
-			}
+		$pending =  wp_list_pluck( $pending, 'ID' );
+		$pending = array_flip( $pending  );
+		unset( $pending[ $uID ] );
+		$pending = array_flip( $pending );
+
+		if ( ! empty( $pending ) ) {
 			$obj->save( 'pending_members', $pending );
-			$this->reset_cache( $id );
-
-			return $id;
 		}
+		else{
+			$obj->save( 'pending_members', array() );
+		}
+
 
 	}
 
