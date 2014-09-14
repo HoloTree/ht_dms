@@ -146,8 +146,6 @@ class common {
 
 	function dms_actions() {
 
-		$output_elements = holotree_dms_ui()->output_elements();
-		$message_text = $action = $id = false;
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
 
@@ -156,10 +154,19 @@ class common {
 		}
 
 		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
-			include_once( 'take_action.php' );
-			$take_action = take_action::init();
+			$content = pods_v( 'dms_comment_text', 'post', false, true );
+			if ( false !== $content ) {
+				$data = array (
+					'comment_post_ID'  => $id,
+					'comment_content'  => $content,
+					'user_id'          => get_current_user_id(),
+					'comment_approved' => 1,
+				);
+				wp_insert_comment( $data );
+			}
 
-			$take_action->comment(  pods_v( 'dms_id', 'post' ) );
+			return;
+
 		}
 
 		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
@@ -193,91 +200,6 @@ class common {
 
 		}
 
-		if ( $action === 'add-consensus' ) {
-			holotree_consensus( $id );
-			$this->redirect( pods_v( 'thengo', 'get', ht_dms_home(), true ), __( 'Adding Consensus.', 'holotree' ) );
-		}
-		elseif( $action === 'new' ) {
-			$url = get_permalink( $id );
-			if ( pods_v( 'task' ) ) {
-				$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
-			}
-
-			$this->redirect( $url, sprintf( __( 'New %s created.', 'holotree'), 'NEED TO DEFINE TYPE' ) );
-			return;
-		}
-
-		//end special actions
-
-		if ( false !== $action  ) {
-			include_once( 'take_action.php' );
-
-			$take_action = take_action::init();
-
-		}
-
-		if ( false !== $action && $id && $action !== 'changing' ) {
-
-			if ( in_array( $action, array( 'join-group', 'approve-pending', 'reject-pending' ) ) ) {
-				$take_action->group( $action, $id );
-				return;
-			}
-
-			if ( $action === 'block' || $action === 'unblock' || $action === 'accept' || $action === 'propose-change' || $action === 'accept-change' || 'respond' ) {
-				return;
-
-				//$message_text = $take_action->decision( $action, $id );
-				if ( $action === 'propose-change' ) {
-					$link = get_permalink( $id );
-					$link = $output_elements->action_append( $link, 'changing', $id );
-
-					$this->redirect( $link, sprintf( __( 'Propose a change to %s.', 'holotree'), get_the_title( $id ) ) );
-					return;
-				}else {
-					if ( $action === 'respond' ) {
-						//handled in view loader
-						return;
-					}
-					$take_action->decision( $action, $id );
-				}
-
-
-			}
-			elseif( $action === 'join-group' || 'approve-pending' || 'reject_pending' ) {
-
-				$message_text = $take_action->group( $action, $id );
-				return;
-			}
-			elseif( $action === 'mark-notification' ||  'archive-notification' ) {
-				$take_action->notification( $action, $id );
-				return;
-			}
-			elseif ( $action === 'clear-dms-cache' ) {
-				$this->clear_dms_cache( null, false );
-			}
-			elseif ( $action === 'task-updated' ) {
-				$message_text = __( 'Task Updated.', 'holotree' );
-			}
-			elseif( $action === 'change-proposed' ) {
-				$message_text = __( 'Change Proposed', 'holotree' );
-			}
-			elseif ( $action === 'add-blocker' || 'add-blocking' || 'completed' ) {
-				//@todo still needed?
-			}
-			elseif( in_array( $action, $take_action->take_no_action()  ) ) {
-				//don't do anything.
-			}
-
-			else {
-
-				holotree_error('dms_actions error', print_c3( array( $id, $action ) ) );
-			}
-		}
-
-
-
-
-		$this->set_message( $message_text );
 
 		$link = get_permalink( $id );
 		if ( ! $link ) {
