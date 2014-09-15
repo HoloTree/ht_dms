@@ -3,7 +3,7 @@
 	<div class="details">
 		<p class="description">{@group_description}</p>
 		<ul>
-			<li>Organization: {@organization}</li>
+			<li>Organization: {{organization}} {@organization}</li>
 			<li>Members: {@members}</li>
 		</ul>
 	</div>

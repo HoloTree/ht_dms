@@ -471,13 +471,14 @@ class elements {
 	/**
 	 * Get markup for an icon
 	 *
-	 * @param string $icon
+	 * @param string 	$icon	Icon to get. Ignored if $all == true
+	 * @param bool 		$all  	Optional. If true returns array of all icons.
 	 *
-	 * @return string
+	 * @return string|array
 	 *
 	 * @since 0.0.3
 	 */
-	function icon( $icon ) {
+	function icon( $icon, $all = false ) {
 		$icons = array(
 			'organization' => '<i class="fa fa-university"></i>',
 			'group'	=> '<i class="fa fa-users"></i>',
@@ -504,8 +505,29 @@ class elements {
 		 */
 		$icons = apply_filters( 'ht_dms_icons', $icons, $icon );
 
+		if ( $all ) {
+			return $icons;
+		}
+
 		return pods_v( $icon, $icons );
 
+	}
+
+	/**
+	 * Substitute {{icon}} markup in partials for the actual icons
+	 *
+	 * @param $string
+	 *
+	 * @return mixed
+	 */
+	function icon_substitution( $string ) {
+
+		foreach( $this->icon( null, true ) as $icon => $markup ) {
+			$search = '{{' . $icon . '}}';
+			$string = str_replace( $search, $markup, $string );
+		}
+
+		return $string;
 	}
 
 

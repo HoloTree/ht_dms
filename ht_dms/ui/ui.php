@@ -117,6 +117,9 @@ class ui {
 
 	}
 
+	/**
+	 * @return \ht_dms\ui\build\elements
+	 */
 	function build_elements() {
 		$this->file( 'elements', 'build' );
 

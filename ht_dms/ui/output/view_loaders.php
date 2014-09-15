@@ -499,7 +499,7 @@ class view_loaders {
 				}
 
 				if ( ! empty( $out ) ) {
-
+					$out = holotree_dms_ui()->build_elements()->icon_substitution( $out );
 					return $out;
 				}
 

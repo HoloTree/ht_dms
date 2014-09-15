@@ -77,19 +77,11 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 
 		if ( $obj->total() > 1 ) {
 			$out = '';
-			if ( file_exists( $template_file ) ) {
-				$template_file = file_get_contents( $template_file );
+			if ( ! file_exists( $template_file ) ) {
+				return false;
 			}
-			else {
-				return;
-			}
-			
-			while ( $obj->fetch() ) {
-				$obj->id = $obj->id();
 
-				$out .= holotree_dms_ui()->view_loaders()->template( $template_file, $obj );
-
-			}
+			$out .= holotree_dms_ui()->view_loaders()->magic_template( $template_file, $obj, pods_v( 'page', $pagination_args_and_path, false, true ) );
 
 			if ( ! empty ( $out ) ) {
 				$out .= holotree_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $args[ 'page' ] );
