@@ -99,9 +99,10 @@ function ht_dms_home() {
  * @return array
  */
 function ht_dms_mini_menu_items() {
+	$elements = holotree_dms_ui()->build_elements();
 	$items = array(
-		ht_dms_home() => __( 'Home', 'holotree' ),
-		wp_logout_url() => __( 'Logout', 'holotree' ),
+		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'holotree' ),
+		wp_logout_url() => $elements->icon( 'logout' ) .  __( 'Logout', 'holotree' ),
 	);
 
 	/**
