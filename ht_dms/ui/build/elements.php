@@ -504,7 +504,8 @@ class elements {
 			'members' => '<i class="fa fa-child"></i>',
 			'profile' => '<i class="fa fa-user"></i>',
 			'edit' => '<i class="fa fa-pencil-square-o"></i>',
-			'public' => '<i class="fa fa-tree"></i>'
+			'public' => '<i class="fa fa-tree"></i>',
+			'spinner' => '<i class="fa fa-spinner fa-spin"></i>',
 		);
 
 		/**
