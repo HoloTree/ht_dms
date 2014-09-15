@@ -498,6 +498,44 @@ class elements {
 
 	}
 
+	/**
+	 * Get markup for an icon
+	 *
+	 * @param string $icon
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function icon( $icon ) {
+		$icons = array(
+			'organization' => '<i class="fa fa-university"></i>',
+			'group'	=> '<i class="fa fa-users"></i>',
+			'decision' => '<i class="fa fa-check"></i>',
+			'task'	=> '<i class="fa fa-tag"></i>',
+			'notification' => '<i class="fa fa-inbox"></i>',
+			'preferences' => '<i class="fa fa-cogs"></i>',
+			'close' => '<i class="fa fa-times"></i>',
+			'doc' => '<i class="fa fa-file"></i>',
+			'star' => '<i class="fa fa-star"></i>',
+			'trash' => '<i class="fa fa-trash"></i>',
+
+		);
+
+		/**
+		 * Change one or more of the icons
+		 *
+		 * @param array $icons The icons 'icon' => 'markup'
+		 * @param string $icon Current icon being outputted.
+		 *
+		 * @since 0.0.3
+		 */
+		$icons = apply_filters( 'ht_dms_icons', $icons, $icon );
+
+		return pods_v( $icon, $icons );
+
+	}
+
 
 	/**
 	 * Get instance of UI class
