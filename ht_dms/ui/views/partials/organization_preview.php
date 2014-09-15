@@ -1,5 +1,5 @@
 <div class="organization organization-preview">
-	<h5><?php echo holotree_link( $obj->id(), 'permalink', null, null, true ); ?></h5>
+	<h3><a href="#" class="organization-link button" organization="{@id}" title="View organization" id="organization-link">View organization</a></h3>
 	<p class="description">Description: {@description}</p>
 </div>
 

@@ -535,3 +535,7 @@ function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 	return $string;
 
 }
+
+function ht_dms_content_types() {
+	return array( HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_ORGANIZATION_NAME );
+}

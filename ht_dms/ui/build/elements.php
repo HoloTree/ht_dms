@@ -556,7 +556,7 @@ class elements {
 	}
 
 	function visualize_hierarchy_icon( $type ) {
-		if ( in_array( $type, array( HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_ORGANIZATION_NAME ) ) ) {
+		if ( in_array( $type, ht_dms_content_types() ) ) {
 
 			$text = ht_dms_prefix_remover( $type );
 
