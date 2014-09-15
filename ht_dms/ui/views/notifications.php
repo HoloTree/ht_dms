@@ -13,7 +13,7 @@ $ui = holotree_dms_ui();
 
 $uID = get_current_user_id();
 
-$paginated_view_args = ht_dms_default_paginated_view_arguments();
+$paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'un_viewed_only' => true  ) );
 
 $tabs = array(
 	array(

@@ -387,6 +387,29 @@ class notification extends dms{
 	}
 
 	/**
+	 * Mark a notification as viewed
+	 *
+	 * @param      $id
+	 * @param null $obj
+	 *
+	 * @return int
+	 *
+	 * @since 0.0.3
+	 */
+	function viewed( $id, $obj = null, $value = null ) {
+		$obj = $this->null_object( $obj, $id );
+		$field = 'viewed';
+
+		if ( is_null( $value ) ) {
+			return $obj->display( $field );
+
+		}
+
+		return $obj->save( $field, $value );
+
+	}
+
+	/**
 	 * Set the name of the Pod
 	 *
 	 * @param 	string 	$type

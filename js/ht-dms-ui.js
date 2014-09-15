@@ -93,6 +93,45 @@ jQuery(document).ready(function( $ ) {
 
     });
 
+    $( document ).ajaxComplete(function( event, xhr, settings ) {
+        $('.notification-mark' ).each(function(i, el) {
+
+
+            nRead = $( el ).attr( 'viewed' );
+            if ( nRead == 'Yes' ) {
+                $( el ).html( 'Mark Not Viewed' );
+
+            }
+
+            if ( nRead == 'No' ) {
+                $( el ).html( 'Mark Viewed' );
+            }
+
+
+        });
+
+        var mark = '.notification-mark';
+        $( mark ).click(function () {
+
+            markNotification( $( this ).attr('nid' ), $( this ).attr( 'viewed' ) );
+        });
+
+        $( '#notification-single-close' ).click(function () {
+
+            markNotification( $( this ).attr('nid' ) );
+
+        });
+
+        $( '#unviewed-only').click( function() {
+            container = '#users_notifications';
+            paginate( container, $( container).attr( 'page' ), 1 );
+
+        });
+
+    });
+
+
+
 
 
 });

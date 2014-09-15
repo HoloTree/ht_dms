@@ -42,10 +42,14 @@ jQuery(document).ready(function($) {
      * @param string Container container ID, with #
      * @param int page Page of results to load.
      */
-    function paginate( container, page ) {
+    function paginate( container, page, extraArg ) {
         //var page = $( container ).attr( "page" );
         var limit = $( container ).attr( "limit" );
         var view = $( container ).attr( "view" );
+
+
+
+
         $.get(
             ajaxURL, {
                 'action': 'ht_dms_paginate',
@@ -53,7 +57,9 @@ jQuery(document).ready(function($) {
                 'view' : view,
                 'page' : page,
                 'limit' : limit,
-                'container' :container
+                'container' :container,
+                'extraArg' : extraArg
+
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
@@ -82,7 +88,7 @@ jQuery(document).ready(function($) {
 
             $.get(
                 ajaxURL, {
-                    'action': 'ht_dms_notification',
+                    'action': 'ht_dms_load_notification',
                     'nonce' : htDMS.nonce,
                     'nID' : nID
                 },
@@ -101,11 +107,11 @@ jQuery(document).ready(function($) {
 
                 }
             );
+
         });
 
-
-
     });
+
 
 
     /**
@@ -177,5 +183,28 @@ jQuery(document).ready(function($) {
     }
 
     window.reloadMembership = reloadMembership;
+
+    function markNotification( nID, viewed ) {
+        var mark = 1;
+        if ( viewed == 'Yes' ) {
+            mark = 0;
+        }
+
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_mark_notification',
+                'nonce' : htDMS.nonce,
+                'nID'   : nID,
+                'mark'  : mark
+
+            },
+            function( response ) {
+                console.log( response );
+                paginate( "#users_notifications", 1 );
+            }
+        );
+    }
+
+    window.markNotification = markNotification;
 
 });

@@ -128,6 +128,33 @@ class ajax_callbacks {
 	}
 
 	/**
+	 * Mark a notification viewed or unviewed via AJAX
+	 *
+	 * @uses 'wp_ajax_ht_dms_mark_notification' action
+	 *
+	 * @since 0.0.3
+	 */
+	function mark_notification()  {
+		if ( $this->nonce_check( $_REQUEST ) ) {
+			$nID = pods_v( 'nID', $_REQUEST );
+			$value =  ( pods_v( 'mark', $_REQUEST ) );
+
+			if ( $nID && in_array( $value, array( 1, 0 ) ) ) {
+				$id = ht_dms_notification_class()->viewed( $nID, null, $value );
+
+				if ( $id == $nID ) {
+					wp_die( 1 );
+				}
+				else {
+					wp_die( 0 );
+				}
+			}
+
+		}
+
+	}
+
+	/**
 	 * Returns an array, which is used in the common class' __construct() to build hooks for AJAX actions.
 	 *
 	 * @return array

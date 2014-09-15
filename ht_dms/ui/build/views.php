@@ -335,6 +335,7 @@ class views {
 			$args = $obj;
 		}
 
+
 		return $this->models()->notification( $args );
 
 	}
@@ -524,11 +525,19 @@ class views {
 	 */
 	function after_notification_preview( $out, $view ) {
 		if ( $view === 'users_notifications' ) {
+
 			$single_view = '<div id="notification-single-view"> </div>';
 
-			$title = __( 'Close notification viewer', 'holotree' );
+			$header = sprintf(
+				'<div id="notifications-header"><h3 style="float:left">%1s</h3> <span id="notification-options" class="button" style="float:right"><a href="#" id="unviewed-only">%2s</a></span></div>',
 
-			$out = sprintf( '<a href="#" id="notification-single-close" class=" ht-dms-close" style="display:none;" title="%0s"><span class="genericon genericon-close"></span></a><div id="notification-viewer">%2s</div>', $title, $out, $single_view );
+				__( 'Notifications', 'ht_dms' ),
+				__( 'Show New Notifications Only' , 'ht_dms' )
+
+			);
+
+
+			$out = sprintf( '<div id="notification-viewer">%0s %1s %2s</div>', $header,  $out, $single_view );
 
 		}
 

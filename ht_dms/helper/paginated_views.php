@@ -24,11 +24,16 @@ function ht_dms_paginate() {
 			$view = $_REQUEST[ 'view' ];
 			$limit = $_REQUEST[ 'limit' ];
 			$page = $_REQUEST[ 'page' ];
+			$extra_arg = pods_v( 'extra_arg', $_REQUEST );
 
 			$args = array(
 				'limit' => $limit,
 				'page' => $page,
 			);
+
+			if ( $view == 'users_notifications' ) {
+				$args[ 'un_viewed_only' ] = $extra_arg;
+			}
 
 			$allowed_views = array_keys( ht_dms_paginated_views()  );
 			if ( in_array( $view, $allowed_views  ) ) {
@@ -123,6 +128,10 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 
 	);
 
+	if ( $view === 'users_notifications' ) {
+		$attrs[ 'unViewedOnly' ] = 1;
+	}
+
 	$attributes = '';
 	foreach( $attrs as $attr => $value  ) {
 		$attributes .= $attr.'="'.$value.'"';
@@ -166,7 +175,7 @@ function ht_dms_paginated_views( $args = null ) {
 	}
 
 	if ( ! isset( $args[ 'un_viewed_only' ] ) ) {
-		$args[ 'un_viewed_only' ] = true;
+		$args[ 'un_viewed_only' ] = false;
 	}
 
 	$paginated_views = array(
