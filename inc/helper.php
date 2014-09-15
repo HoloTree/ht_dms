@@ -527,7 +527,7 @@ function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 
 	}
 	else{
-		$icon = holotree_dms_ui()->build_elements()->icon( $icon, false, $extra_class );
+		$icon = holotree_dms_ui()->build_elements()->icon( $icon, $extra_class );
 
 		$string = $icon . $string;
 	}

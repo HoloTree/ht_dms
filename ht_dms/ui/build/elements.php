@@ -473,14 +473,14 @@ class elements {
 	 * Get markup for an icon
 	 *
 	 * @param string 	$icon	Icon to get. Ignored if $all == true
-	 * @param bool 		$all  	Optional. If true returns array of all icons.
 	 * @param string $extra_class Optional. Additional class to add to icon.
+	 * @param bool 		$all  	Optional. If true returns array of all icons.
 	 *
 	 * @return string|array
 	 *
 	 * @since 0.0.3
 	 */
-	function icon( $icon, $all = false, $extra_class = false ) {
+	function icon( $icon, $extra_class = false, $all = false  ) {
 		$icons = array(
 			'organization' => '<i class="fa fa-university"></i>',
 			'group'	=> '<i class="fa fa-users"></i>',
@@ -546,7 +546,7 @@ class elements {
 	 */
 	function icon_substitution( $string ) {
 
-		foreach( $this->icon( null, true ) as $icon => $markup ) {
+		foreach( $this->icon( null, '', true ) as $icon => $markup ) {
 			$search = '{{' . $icon . '}}';
 			$string = str_replace( $search, $markup, $string );
 		}
