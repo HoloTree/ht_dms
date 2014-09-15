@@ -1,5 +1,5 @@
 <div class="organization organization-single">
-	<h3>{@post_title}</h3>
+	<h3>{{organization}}{@post_title}</h3>
 	<p class=""description">Description: {@description}</p>
 	[if groups]
 	<div class="organizations-groups">

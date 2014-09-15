@@ -1,5 +1,5 @@
 <div class="decision">
-	<h5>{@post_title}</h5>
+	<h5>{{decision}}{@post_title}</h5>
 	<div class="details">
 		<p class="description">{@decision_description}</p>
 			<ul>

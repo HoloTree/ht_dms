@@ -1,5 +1,5 @@
 <div class="task task-single">
-    <h5>{@name}</h5>
+    <h5>{{task}}{@name}</h5>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>
         <li>Description: {@task_description}</li>

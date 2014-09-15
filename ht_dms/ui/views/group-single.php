@@ -18,7 +18,6 @@ $uID = get_current_user_id();
 
 $oID = (int) $obj->display( 'organization.ID' );
 
-
 $statuses = array( 'New', 'Blocked', 'Passed' );
 $tabs = $ui->build_elements()->decisions_by_status_tabs( $statuses, $id, null );
 
