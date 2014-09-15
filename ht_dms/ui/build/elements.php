@@ -519,6 +519,7 @@ class elements {
 			'doc' => '<i class="fa fa-file"></i>',
 			'star' => '<i class="fa fa-star"></i>',
 			'trash' => '<i class="fa fa-trash"></i>',
+			'home' => '<i class="fa fa-home"></i>',
 
 		);
 
