@@ -44,6 +44,8 @@ class common {
 
 		add_filter( 'ht_dms_paginated_views_template_output', array( holotree_dms_ui()->views(), 'after_notification_preview' ), 10, 2 );
 
+		add_action( 'init', array( $this, 'font_awesome' ), 59 );
+
 	}
 
 
@@ -494,6 +496,18 @@ class common {
 
 		return $pieces;
 
+	}
+
+	function font_awesome() {
+		include_once( trailingslashit( HT_ROOT_DIR ) .'inc/cdn_script.php' );
+
+
+		new \holotree_cdn_script(
+			'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
+			trailingslashit( HT_DMS_ROOT_URL ) .'css/font-awesome.min.css',
+			'font-awesome',
+			true
+		);
 	}
 
 
