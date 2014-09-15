@@ -360,8 +360,8 @@ class decision extends dms {
 			}
 		}
 
-		do_action( 'ht_dms_consensus_changed' );
-		do_action( 'ht_dms_consensus_changed'.$id );
+		do_action( 'ht_dms_consensus_changed', $id, $status );
+		do_action( 'ht_dms_consensus_changed_'.$id, $status );
 		return $id;
 	}
 

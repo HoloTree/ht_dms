@@ -34,6 +34,7 @@ class elements {
 
 		foreach ( $statuses as $status  ) {
 			//@TODO limit/ pagination for individual statuses: How to do that?
+			//@todo use $g->decisions_by_status() for this
 			$params = array (
 				'where' => 'd.decision_type <> "accepted_change" AND group.ID = " ' . $gID. ' "  AND d.decision_status = "'. strtolower( $status ) .'" ',
 				'limit'	=> -1,
@@ -576,6 +577,10 @@ class elements {
 		}
 
 
+	}
+
+	function member_details( $uID, $obj = null ) {
+		return;
 	}
 
 
