@@ -394,12 +394,13 @@ class group extends dms {
 	 * @param 	null 		$obj	Optional. Prebuilt Pods object to run find on.
 	 * @param 	int  		$limit 	Optional. Number of items per page to return. Default is 5.
 	 * @param	int|array|false	$oID	Optional. ID or array of IDs organization(s), if not false, will only return groups from the specified organization(s).
+	 * @param	bool	Optional. Return IDs instead of object if true. Default is false.
 	 *
 	 * @return 	null|Pods 	$obj	Pods object of groups CPT.
 	 *
 	 * @since 	0.0.1
 	 */
-	function users_groups_obj( $uID = null, $obj = null, $limit = 5, $oID = false ) {
+	function users_groups_obj( $uID = null, $obj = null, $limit = 5, $oID = false, $return_ids = false ) {
 
 		$uID = $this->null_user( $uID );
 
@@ -414,7 +415,15 @@ class group extends dms {
 
 		$obj = holotree_group_class()->null_obj( $obj, $params );
 
+		if ( $return_ids  ) {
+
+			return wp_list_pluck( $obj->rows, 'ID' );
+
+		}
+
 		return $obj;
+
+
 
 	}
 
