@@ -292,7 +292,7 @@ class elements {
 		return $out;
 	}
 
-	
+
 
 	/**
 	 * View for blockers or blocking
@@ -490,6 +490,7 @@ class elements {
 			'star' => '<i class="fa fa-star"></i>',
 			'trash' => '<i class="fa fa-trash"></i>',
 			'home' => '<i class="fa fa-home"></i>',
+			'logout' => '<i class="fa fa-sign-out"></i>',
 
 		);
 
@@ -542,7 +543,7 @@ class elements {
 	 */
 	public static function init() {
 		if ( !self::$instance )
-			self::$instance = new self;
+			self::$instance = new elements();
 
 		return self::$instance;
 
