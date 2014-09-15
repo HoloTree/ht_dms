@@ -292,37 +292,7 @@ class elements {
 		return $out;
 	}
 
-	/**
-	 * This is the menu that goes in the left slide-in
-	 */
-	function menu() {
-		$items = array(
-			'Home' => ht_dms_home(),
-			'My Groups' => null,
-			'Preferences' => null,
-			'Messages' => null,
-			'Logout' => wp_logout_url(),
-		);
-		/**
-		 * Override the left menu items
-		 *
-		 * @param array $item The items as 'label' => 'link'
-		 *
-		 * @since 0.0.1
-		 */
-		$items = apply_filters( 'ht_dms_menu_items', $items );
-
-		$out = '<ul>';
-		foreach( $items as $label => $link ) {
-			if ( is_null( $link ) || !is_string( $link ) ) {
-				$link = '#';
-			}
-			$out .= '<li><a href="'.$link.'">'.$label.'</a></li>';
-		}
-		$out .= '</ul>';
-
-		return $out;
-	}
+	
 
 	/**
 	 * View for blockers or blocking
