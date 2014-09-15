@@ -99,9 +99,12 @@ function ht_dms_home() {
  * @return array
  */
 function ht_dms_mini_menu_items() {
+
 	$elements = holotree_dms_ui()->build_elements();
 	$items = array(
 		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'holotree' ),
+		ht_dms_preferences_url() => $elements->icon( 'preferences' ) . __( 'Preferences', 'ht_dms' ),
+		ht_dms_notifications_url() => $elements->icon( 'notification' ) . __( 'Notifications', 'ht_dms' ),
 		wp_logout_url() => $elements->icon( 'logout' ) .  __( 'Logout', 'holotree' ),
 	);
 
@@ -457,6 +460,47 @@ function ht_dms_is_task( $id = false ) {
 function ht_dms_is_notification( $id = false ) {
 
 	return ht_dms_is( HT_DMS_NOTIFICATION_NAME, $id );
+
+}
+
+/**
+ * URL for preferences view
+ *
+ * @return string
+ *
+ * @since 0.0.3
+ */
+function ht_dms_preferences_url() {
+
+	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'preferences' );
+
+}
+
+/**
+ * URL for user profile view/edit
+ *
+ * @param int $uID Optional. User ID to view profile for. If 0, current user profile edit returned.
+ *
+ * @return string
+ *
+ * @since 0.0.3
+ */
+function ht_dms_profile_url( $uID = 0 ) {
+
+	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'user-profile', $uID );
+
+}
+
+/**
+ * Get URL for notifications view
+ *
+ * @return string
+ *
+ * @since 0.0.3
+ */
+function ht_dms_notifications_url() {
+
+	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'notifications' );
 
 }
 
