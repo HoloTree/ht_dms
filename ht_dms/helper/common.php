@@ -46,6 +46,8 @@ class common {
 
 		add_action( 'init', array( $this, 'font_awesome' ), 59 );
 
+		add_action( 'init', array( $this, 'automatic_notification_actions' ) );
+
 	}
 
 
@@ -458,6 +460,10 @@ class common {
 
 		$type = $pieces['params']->pod;
 
+		if ( $type === HT_DMS_DECISION_CPT_NAME ) {
+			$data[ 'status' ] = holotree_decision_class()->status( $id );
+		}
+
 		if ( $type === HT_DMS_TASK_CT_NAME ) {
 			if ( isset ( $data[ $id ][ 'decision' ] ) ) {
 				$dID = reset( $data[ $id ][ 'decision' ] );
@@ -485,11 +491,14 @@ class common {
 			}
 		}
 
+		$type = ht_dms_prefix_remover( $type );
+
 		do_action( 'ht_dms_update', $id, $type, $new, $data, $gID, $oID );
 
 		if ( $new ) {
 			do_action( "ht_dms_new_{$type}", $id, $data, $gID, $oID );
-		}else {
+		}
+		else {
 			do_action( "ht_dms_update_{$type}", $id, $data, $gID, $oID );
 		}
 
@@ -508,6 +517,21 @@ class common {
 			'font-awesome',
 			true
 		);
+	}
+
+	function automatic_notification_actions() {
+		$class = ht_dms_automatic_notifications_class();
+		$actions = $class->actions();
+		$i = 10;
+		if ( is_array( $actions ) && ! empty( $actions ) ) {
+			$prefix = HT_DMS_PREFIX;
+			foreach( $actions as $action => $callback ) {
+				add_action( "{$prefix}_{$action}", array( $class, $callback ), $i, 4 );
+				$i++;
+			}
+
+		}
+
 	}
 
 

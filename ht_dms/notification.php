@@ -121,6 +121,8 @@ class notification extends dms{
 		$notifications = $this->get_unsent();
 
 		$send_to_users = $this->get_users_to_send_to();
+		ht_dms_automatic_notifications_class()->create_summaries( $send_to_users );
+
 		if ( is_array( $send_to_users ) ) {
 			foreach ( $notifications as $notification ) {
 
