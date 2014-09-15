@@ -289,6 +289,21 @@ function holotree_dms_common_class() {
 }
 
 /**
+ * Returns an instance of the automatic notifications class
+ *
+ * @return \ht_dms\helper\automatic_notifications|object
+ *
+ * @since 0.0.3
+ */
+function ht_dms_automatic_notifications_class() {
+
+	include_once( trailingslashit( HT_DMS_DIR ) . '/helper/automatic_notifications.php' );
+
+	return ht_dms\helper\automatic_notifications::init();
+
+}
+
+/**
  * Get any view defined in the ht_dms\ui\build\views class
  *
  * Wrapper for ht_dms\ui\build\views::get_view(). Exists to power holotree_dms_ui_ajax_view(), but can be used independently.
