@@ -436,15 +436,17 @@ class elements {
 				//@todo if ! https://github.com/HoloTree/ht_dms/issues/55
 			}
 
+			$build_elements = holotree_dms_ui()->build_elements();
+
 			foreach ( array(
-				__( 'Organization', 'ht_dms' ) => $oID,
-				__( 'Group', 'ht_dms' ) => $gID,
-				__( 'Decision', 'ht_dms' ) => $dID,
-			) as $label => $id ) {
+				HT_DMS_ORGANIZATION_NAME => $oID,
+				HT_DMS_GROUP_CPT_NAME => $gID,
+				HT_DMS_DECISION_CPT_NAME => $dID,
+			) as $type => $id ) {
 				if ( holotree_integer( $id ) ) {
 					$titles[] = sprintf(
 						'<span class="breadcrumbs-component" ><span class="breadcrumbs-label breadcrumbs-component">%1s:</span> %2s </span>',
-						$label,
+						$build_elements->visualize_hierarchy_icon( $type ),
 						$this->link( $id, 'permalink', get_the_title( $id ) )
 					);
 				}

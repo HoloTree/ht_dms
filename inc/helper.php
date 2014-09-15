@@ -508,13 +508,14 @@ function ht_dms_notifications_url() {
  * Add an icon to a string
  *
  * @param string $string String to add icon to
- * @param string $icon Icon to add. Must be defined in holotree_dms_ui()->build_elements()->icon(
+ * @param string $icon Icon to add. Must be defined in holotree_dms_ui()->build_elements()->icon()
+ * @param string $extra_class Optional. Additional class to add to icon.
  *
  * @return string
  *
  * @since 0.0.3
  */
-function ht_dms_add_icon( $string, $icon ) {
+function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 	if ( is_array( $icon ) ) {
 		foreach ( $icon as $i  ) {
 			$icons[] = holotree_dms_ui()->build_elements()->icon( $i );
@@ -526,7 +527,7 @@ function ht_dms_add_icon( $string, $icon ) {
 
 	}
 	else{
-		$icon = holotree_dms_ui()->build_elements()->icon( $icon );
+		$icon = holotree_dms_ui()->build_elements()->icon( $icon, false, $extra_class );
 
 		$string = $icon . $string;
 	}

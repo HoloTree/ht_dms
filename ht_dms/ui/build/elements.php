@@ -474,12 +474,13 @@ class elements {
 	 *
 	 * @param string 	$icon	Icon to get. Ignored if $all == true
 	 * @param bool 		$all  	Optional. If true returns array of all icons.
+	 * @param string $extra_class Optional. Additional class to add to icon.
 	 *
 	 * @return string|array
 	 *
 	 * @since 0.0.3
 	 */
-	function icon( $icon, $all = false ) {
+	function icon( $icon, $all = false, $extra_class = false ) {
 		$icons = array(
 			'organization' => '<i class="fa fa-university"></i>',
 			'group'	=> '<i class="fa fa-users"></i>',
@@ -489,6 +490,7 @@ class elements {
 			'preferences' => '<i class="fa fa-cogs"></i>',
 			'close' => '<i class="fa fa-times"></i>',
 			'doc' => '<i class="fa fa-file"></i>',
+			'docs' => '<i class="fa fa-file"></i>',
 			'star' => '<i class="fa fa-star"></i>',
 			'trash' => '<i class="fa fa-trash"></i>',
 			'home' => '<i class="fa fa-home"></i>',
@@ -524,7 +526,14 @@ class elements {
 			$false_return = '[]';
 		}
 
-		return pods_v( $icon, $icons, $false_return, true );
+		$icon = pods_v( $icon, $icons, $false_return, true );
+
+		if ( $extra_class && $icon !== $false_return  ) {
+			$replace = sprintf( '%1s %2s', 'class="', 'fa ' . $extra_class );
+			$icon = str_replace( 'class="', $replace, $icon );
+		}
+
+		return $icon;
 
 	}
 
@@ -543,6 +552,29 @@ class elements {
 		}
 
 		return $string;
+	}
+
+	function visualize_hierarchy_icon( $type ) {
+		if ( in_array( $type, array( HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_ORGANIZATION_NAME ) ) ) {
+
+			$text = ht_dms_prefix_remover( $type );
+
+			$icon = ht_dms_add_icon( '', $text, 'fa-4x' );
+
+			$out = sprintf(
+				'
+					<div class="visualize-hierarchy" id="visualize-hierarchy-%1s">
+						<div class="visualize-hierarchy-icon">%2s</div>
+						<div class="visualize-hierarchy-text">%3s</div>
+					</div>
+				',
+				$text, $icon, $text
+			);
+
+			return $out;
+		}
+
+
 	}
 
 
