@@ -33,15 +33,15 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 	$tabs = array (
 
 		array (
-			'label'   => __( 'My Groups In Organization', 'holotree' ),
+			'label'   => ht_dms_add_icon( __( 'My Groups In Organization', 'holotree' ), 'group' ),
 			'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 		),
 		array (
-			'label'   => __( 'Public Groups In Organization', 'holotree' ),
+			'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'holotree' ), array( 'public', 'group' ) ),
 			ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 		),
 		array (
-			'label'   => __( 'Assigned Tasks In This Organization', 'holotree' ),
+			'label'   => ht_dms_add_icon( __( 'Assigned Tasks In This Organization', 'holotree' ), 'task' ),
 			'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 		),
 
@@ -51,11 +51,11 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 
 	if ( $is_facilitator ) {
 		$tabs[] = array (
-			'label'   => __( 'New Group In Organization', 'holotree' ),
+			'label'   => ht_dms_add_icon( __( 'New Group In Organization', 'holotree' ), array( 'new', 'group') ),
 			'content' => $ui->add_modify()->new_group(  $id, $uID ),
 		);
 		$tabs[] = array(
-			'label'		=> __( 'Edit Organization', 'holotree' ),
+			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'holotree' ), array( 'edit', 'organization') ),
 			'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
 		);
 	}

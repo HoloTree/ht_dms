@@ -24,17 +24,17 @@ $tabs = $ui->build_elements()->decisions_by_status_tabs( $statuses, $id, null );
 
 
 $tabs[] = array(
-	'label'	 	=> __( 'Discussion' , 'holotree' ),
+	'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'holotree' ), 'discussion' ),
 	'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 );
 $tabs[] = array(
-	'label'		=>  __( 'Membership' , 'holotree' ),
+	'label'		=> ht_dms_add_icon( __( 'Membership', 'holotree' ), 'members' ),
 	'content'	=> $ui->build_elements()->group_membership( $id, $obj ),
 );
 //only show edit group if member & facilitator.
 if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
-		'label'   => __( 'Edit Group', 'holotree' ),
+		'label'   => ht_dms_add_icon( __( 'Edit Group', 'holotree' ), 'group' ),
 		'content' => $ui->add_modify()->edit_group( $id, $obj ),
 	);
 }

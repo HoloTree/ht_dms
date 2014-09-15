@@ -10,25 +10,20 @@
 
 	$tabs = array(
 		array(
-			'label' 	=> __( 'Task Details', 'holotree'),
+			'label' 	=> ht_dms_add_icon( __( 'Task Details', 'holotree' ), 'details' ),
 			'content'	=> $ui->views()->task( $obj, $id  ),
 		),
 		array(
-			'label' 	=> __( 'Task Documents', 'holotree'),
-			'content'	=> $ui->views()->docs( $obj, 'task', $id ),
+			'label' 	=> ht_dms_add_icon ( __( 'Task Documents', 'holotree' ), 'docs' ),
+			'content'	=> $ui->views()->docs( $obj, $id, 'task' ),
 		),
 		array(
-			'label'		=> __( 'Task Documents', 'holotree' ),
-			'content'	=> $ui->views()->docs( $obj, (int) $id, 'task' ),
-		),
-		array(
-			'label'		=> __( 'Decision', 'holotree' ),
+			'label'		=> ht_dms_add_icon( __( 'Decision', 'holotree' ), 'decision' ),
 			'content'	=> $ui->views()->decision( null, $dID ),
 
 		),
 		array(
-			'label'		=> __( 'Edit Task', 'holotree' ),
-			//'content'	=> $ui->add_modify()->edit_task( $id, $obj, $dID ),
+			'label'		=> ht_dms_add_icon( __( 'Edit Task', 'holotree' ), array( 'edit', 'task' ) ),
 			'content'  => '',
 		),
 	);

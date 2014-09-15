@@ -72,8 +72,9 @@ class elements {
 					$content .= $decisions[ $status ];
 					$content .= '</div>';
 
+
 					$tabs[ ] = array (
-						'label'   => __( $status . ' Decisions', 'holotree' ),
+						'label'   => ht_dms_add_icon( $status . __( ' Decisions', 'ht_dms' ), strtolower( $status ) ),
 						'content' => $content,
 					);
 
@@ -518,7 +519,12 @@ class elements {
 			return $icons;
 		}
 
-		return pods_v( $icon, $icons );
+		$false_return = '';
+		if ( HT_DEV_MODE ) {
+			$false_return = '[]';
+		}
+
+		return pods_v( $icon, $icons, $false_return, true );
 
 	}
 

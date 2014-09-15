@@ -18,15 +18,15 @@ $view_id = pods_v( 'dms_id' );
 
 $tabs = array(
 	array(
-		'label'		=> __( 'Profile', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'Profile', 'holotree' ), 'profile' ),
 		'content' 	=> $ui->views()->preferences( $uID, false, false ),
 	),
 	array(
-		'label'		=> __( 'Edit Profile', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'Edit Profile', 'holotree' ), array( 'edit', 'profile' ) ),
 		'content' 	=> $ui->views()->preferences( $uID, true, false ),
 	),
 	array(
-		'label'		=> __( 'Notification Settings', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'Notification Settings', 'holotree' ), 'profile' ),
 		'content' 	=> $ui->views()->preferences( $uID, true, true ),
 	),
 );
@@ -35,7 +35,7 @@ if ( (int) $view_id !== (int) $uID ) {
 	unset( $tabs[1] );
 	unset( $tabs[2] );
 	$tabs[] = array(
-		'label' 	=> __( 'Send Message', 'holotree' ),
+		'label' 	=> ht_dms_add_icon( __( 'Send Message', 'holotree' ), array( 'new', 'notification' ) ),
 		'content'	=> 'Functionality not complete',
 	);
 }

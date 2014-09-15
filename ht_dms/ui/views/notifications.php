@@ -17,15 +17,13 @@ $paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'un_viewe
 
 $tabs = array(
 	array(
-		'label'		=> __( 'Notifications', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'Notifications', 'holotree' ), 'notification' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_notifications', $paginated_view_args )
 	),
 	array(
-		'label'		=> __( 'New Private Message', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'New Private Message', 'holotree' ), array( 'new', 'notification') ),
 		'content' 	=> 'Functionality not yet implemented',
 	),
 );
-
-//@todo a place to load single notifications in via AJAX + make that possible.
 
 return $ui->elements()->output_container( $tabs );

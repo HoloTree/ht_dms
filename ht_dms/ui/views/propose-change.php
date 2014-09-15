@@ -9,15 +9,15 @@ $id = pods_v( 'dms_id' );
 
 $tabs = array(
 	array(
-		'label' => __( 'Propose Modification', 'holotree' ),
+		'label' => ht_dms_add_icon( __( 'Propose Modification', 'holotree' ), arrray( 'new', 'modification' ) ),
 		'content' => $ui->add_modify()->modify_decision( $id, null, $uID ),
 	),
 	array(
-		'label' => __( 'Decision Being Modified' ),
+		'label' => ht_dms_add_icon( __( 'Decision Being Modified' ), 'decision' ),
 		'content' => $ui->views()->decision( null, $id ),
 	),
 	array(
-		'label' => __( 'Discussion From Original Decision' ),
+		'label' => ht_dms_add_icon( __( 'Discussion From Original Decision' ), 'discussion' ),
 		'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 	),
 );

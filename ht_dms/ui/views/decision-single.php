@@ -40,24 +40,24 @@ else {
 
 		$tabs = array (
 			array (
-				'label'   => __( 'Decision Information', 'holotree' ),
+				'label'   => ht_dms_add_icon( __( 'Decision Information', 'holotree' ), 'details' ),
 				'content' => $current
 			),
 			array(
-				'label'	 	=> __( 'Discussion' , 'holotree' ),
+				'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'holotree' ), 'discussion' ),
 				'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 			),
 			array(
-				'label'		=> __( 'Decision Documents', 'holotree' ),
+				'label'		=> ht_dms_add_icon( __( 'Decision Documents', 'holotree' ), 'docs' ),
 				'content'	=> $ui->views()->docs( $obj, $id, 'decision' ),
 			),
 			array(
-				'label'	 	=> __( 'View Tasks', 'holotree' ),
+				'label'	 	=> ht_dms_add_icon( __( 'View Tasks', 'holotree' ), 'task' ),
 				//'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
 				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
 			),
 			array (
-				'label'   => __( 'Add Task', 'holotree' ),
+				'label'   => ht_dms_add_icon( __( 'Add Task', 'holotree' ), array( 'new', 'task') ),
 				'content' => $ui->add_modify()->new_task(  null, null, $id ),
 			),
 		);
@@ -66,7 +66,7 @@ else {
 
 		if ( is_string( $proposed_modifications ) ) {
 			$tabs[ ] = array (
-				'label'   => __( 'Proposed Modifications', 'holotree' ),
+				'label'   => ht_dms_add_icon( __( 'Proposed Modifications', 'holotree' ), 'modification' ),
 				'content' => $proposed_modifications,
 			);
 		}

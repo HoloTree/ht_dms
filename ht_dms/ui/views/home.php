@@ -22,30 +22,29 @@ $uID = get_current_user_id();
 
 $paginated_view_args = ht_dms_default_paginated_view_arguments();
 
+
 $tabs = array(
 	array(
-		'label'		=> __( 'My Groups', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'My Groups', 'holotree' ), 'group' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 	),
 	array(
-		'label'		=> __( 'My Organizations', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'My Organizations', 'holotree' ), 'organization' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_organizations', $paginated_view_args )
 	),
 	array(
-		'label'		=> __( 'Assigned Tasks', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'holotree' ), 'task' ),
 		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
-	array(
-		'label'		=> __( 'All Public Groups', 'holotree' ),
+	array (
+		'label'		=> ht_dms_add_icon( __( 'All Public Groups', 'holotree' ), array( 'public', 'group' ) ),
 		'content' 	=> ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 	),
-
-
 );
 
 if ( HT_DEV_MODE ) {
 	$tabs[] = array(
-		'label'		=> __( 'New Organization', 'holotree' ),
+		'label'		=> ht_dms_add_icon( __( 'New Organization', 'holotree' ), array( 'new', 'organization' ) ),
 		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
 	);
 }
