@@ -492,7 +492,16 @@ class elements {
 			'trash' => '<i class="fa fa-trash"></i>',
 			'home' => '<i class="fa fa-home"></i>',
 			'logout' => '<i class="fa fa-sign-out"></i>',
-
+			'new' => '<i class="fa fa-plus"></i>',
+			'discussion' => '<i class="fa fa-comments"></i>',
+			'modification' => '<i class="fa fa-code-fork"></i>',
+			'details' => '<i class="fa fa-info"></i>',
+			'blocked' => '<i class="fa fa-stop"></i>',
+			'completed' => '<i class="fa fa-birthday-cake"></i>',
+			'members' => '<i class="fa fa-child"></i>',
+			'profile' => '<i class="fa fa-user"></i>',
+			'edit' => '<i class="fa fa-pencil-square-o"></i>',
+			'public' => '<i class="fa fa-tree"></i>'
 		);
 
 		/**
