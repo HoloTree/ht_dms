@@ -461,6 +461,12 @@ class group extends dms {
 
 	}
 
+	function decisions_by_status( $gID, $status, $return_type = false ) {
+
+		return holotree_decision_class()->decisions_by_status( $status, $gID, $return_type );
+
+	}
+
 	/**
 	 * Update user fields related to this post type.
 	 *

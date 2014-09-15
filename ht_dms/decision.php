@@ -1274,5 +1274,46 @@ class decision extends dms {
 
 	}
 
+	function decisions_by_status( $status, $gID = false, $return_type = false, $obj = null ) {
+		$obj = $this->null_object( $obj );
+
+		$params = array (
+			'where' => 'd.decision_type <> "accepted_change"  AND d.decision_status = "'. strtolower( $status ) .'" ',
+			'limit'	=> -1,
+		);
+
+		if ( holotree_integer( $gID ) ) {
+			$params[ 'where' ] = $params[ 'where' ] . ' AND group.ID = " ' . $gID. ' " ';
+
+		}
+
+		$obj = $obj->find( $params );
+
+
+
+		if ( $obj->total() > 0 ) {
+			if ( ! $return_type || $return_type == 'obj' ) {
+
+				return $obj;
+
+			}
+
+			if ( $return_type == 'ids' ) {
+
+				return wp_list_pluck( $obj->rows, 'ID' );
+
+			}
+
+			if ( $return_type == 'names' ) {
+				return array_combine(
+					wp_list_pluck( $obj->rows, 'ID' ),
+					wp_list_pluck( $obj->rows, 'post_title' )
+				);
+			}
+
+		}
+
+	}
+
 
 } 
