@@ -529,7 +529,7 @@ class elements {
 		$icon = pods_v( $icon, $icons, $false_return, true );
 
 		if ( $extra_class && $icon !== $false_return  ) {
-			$replace = sprintf( '%1s %2s', 'class="', 'fa ' . $extra_class );
+			$replace = sprintf( '%1s %2s ', 'class="',  $extra_class );
 			$icon = str_replace( 'class="', $replace, $icon );
 		}
 
@@ -559,7 +559,7 @@ class elements {
 
 			$text = ht_dms_prefix_remover( $type );
 
-			$icon = ht_dms_add_icon( '', $text, 'fa-4x' );
+			$icon = ht_dms_add_icon( '', $text );
 
 			$out = sprintf(
 				'
