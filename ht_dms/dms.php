@@ -585,7 +585,45 @@ abstract class dms extends object {
 			HT_DMS_GROUP_CPT_NAME,
 			HT_DMS_DECISION_CPT_NAME,
 			HT_DMS_TASK_CT_NAME,
+			HT_DMS_NOTIFICATION_NAME,
 		);
+
+	}
+
+	/**
+	 * Return an item's tittle
+	 * @param      $id
+	 * @param null|Pods $obj
+	 *
+	 * @return false|null|string
+	 *
+	 * @since 0.0.3
+	 */
+	function title( $id, $obj = null ) {
+		$obj = $this->null_object( $obj, $id );
+
+		if ( 'post_type' == $this->pod_type( $obj ) ) {
+			return $obj->display( 'post_title' );
+		}
+		else{
+			return $obj->display( 'name' );
+		}
+
+	}
+
+	/**
+	 * Get Pod type
+	 *
+	 * @param Pods $obj
+	 *
+	 * @return string
+	 *
+	 * @since 0.0.3
+	 */
+	function pod_type( $obj ){
+		$api = pods_v( 'api', $obj  );
+
+		return  $api->pod_data[ 'type' ];
 
 	}
 
