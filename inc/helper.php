@@ -158,7 +158,7 @@ function ht_dms_url( $id, $type = false ) {
 function ht_dms_spinner() {
 
 	$spinner = holotree_dms_ui()->build_elements()->icon( 'spinner', 'fa-2x fa-spin'  );
-	$spinner = sprintf( '<div class="spinner" style="padding-top:12px;"><img src="%1s"></div>', $spinner );
+	$spinner = sprintf( '<div class="spinner" style="padding-top:12px;">%1s</div>', $spinner );
 	return $spinner;
 
 }

@@ -63,10 +63,10 @@ jQuery(document).ready(function($) {
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
-                $( container + "-spinner img" ).show().delay( 400 );
+                $( container + "-spinner" ).show().delay( 400 );
                 $( container ).html('');
                 $( container ).hide().append( response ).fadeIn( 800 );
-                $( container + "-spinner img") .hide();
+                $( container + "-spinner") .hide();
                 $( container ).attr('page', page );
 
             }
