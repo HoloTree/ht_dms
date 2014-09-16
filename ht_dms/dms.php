@@ -547,6 +547,7 @@ abstract class dms extends object {
 			'Group',
 			'Decision',
 			'Task',
+			'Notification'
 		);
 
 		/**
