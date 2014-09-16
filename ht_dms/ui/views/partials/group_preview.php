@@ -1,5 +1,5 @@
 <div class="group">
-	<h3><a href="#" class="group-link button" group="{@id}" title="View group" id="group-link">{{group}}{@post_title}</a></h3>
+	<h3><a href="{@permalink}" class="group-link button" group="{@id}" title="View group" id="group-link">{{group}}{@post_title}</a></h3>
 	<div class="details">
 		<p class="description">{@group_description}</p>
 		<ul>

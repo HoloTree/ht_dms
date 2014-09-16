@@ -1,5 +1,5 @@
 <div class="decision-preview">
-	<h3><a href="#" class="decision-link button" decision="{@id}" title="View decision" id="decision-link">{{decision}}{@post_title}</a></h3>
+	<h3><a href="{@permalink}" class="decision-link button" decision="{@id}" title="View decision" id="decision-link">{{decision}}{@post_title}</a></h3>
 	<div class="details">
 		<p class="description">{@decision_description}</p>
 		<ul>
