@@ -423,7 +423,7 @@ class elements {
 			elseif( ht_dms_is_group( $id  ) ) {
 				$gID = $id;
 				$oID = holotree_group_class()->get_organization( $gID );
-				pods_error( var_dump( $oID ) );
+
 			}
 			elseif( ht_dms_is_decision( $id ) ) {
 
