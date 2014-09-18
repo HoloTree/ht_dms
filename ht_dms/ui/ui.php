@@ -167,6 +167,22 @@ class ui {
 	}
 
 	/**
+	 * Returns activity stream
+	 *
+	 * @param string $type Type of stream network|user|organization|group
+	 *
+	 * @return build\activity_stream
+	 *
+	 * @since 0.0.3
+	 */
+	function activity_stream( $type ) {
+		$this->file( __FUNCTION__, 'build' );
+
+		return new \ht_dms\ui\build\activity_stream( $type );
+
+	}
+
+	/**
 	 * Group & Organization Membership Elements
 	 *
 	 * @return build\membership

@@ -830,6 +830,29 @@ class elements {
 	}
 
 	/**
+	 * Returns the third element with its wrapping markup.
+	 *
+	 * @param $type network|user|organization|group|consenus
+	 *
+	 * @return string
+	 */
+	function third_element( $type, $id ) {
+		if ( $type == 'consensus' ) {
+			$this->view_consensus( $id );
+		}
+		elseif ( in_array( $type, array( 'network', 'user', 'organization', 'group' ) ) ) {
+			$content = call_user_func( array( ht_dms_ui()->activity_stream( $type, $id ),  $type ), $id );
+		}
+		else{
+			holotree_error();
+		}
+
+		return sprintf( '<div id="ht-dms-third-element" class="ht-dms-third-element-%1s">%2s</div>', $type, $content );
+
+	}
+
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.0.1

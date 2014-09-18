@@ -25,7 +25,7 @@ class view_loaders {
 		if ( defined( 'HT_NEW_VIEW' ) && HT_NEW_VIEW  ) {
 			return $this->new_view();
 		}
-		$action =  pods_v( 'dms_action', 'get', false, true );
+		$action =  pods_v_sanitized( 'dms_action', 'get', false, true );
 
 		if ( in_array( $action, array_keys( $this->special_views() ) ) ) {
 
@@ -63,7 +63,7 @@ class view_loaders {
 				$view = trailingslashit( HT_DMS_VIEW_DIR ) . $view . '.php';
 			}
 
-			$view = $this->content_wrap( include( $view ) );
+			$view = $this->content_wrap( include( $view ), false, $action );
 
 			return $view;
 
@@ -283,17 +283,17 @@ class view_loaders {
 	function view_get( $context, $post_type ) {
 
 		if ( $context === 'home' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ), false, 'home' );
 		}
 
 		if ( $context === 'single' ) {
 			$post_type = str_replace( HT_DMS_PREFIX.'_', '', $post_type );
 
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ) );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ), false, $post_type );
 		}
 
 		if ( $context === 'task' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ), true );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ), true, HT_DMS_TASK_CT_NAME );
 		}
 
 	}
@@ -366,12 +366,13 @@ class view_loaders {
 	 *
 	 * @param 	string  $content 	The content to wrap.
 	 * @param 	bool 	$task		Optional. If is task or not. Default is false.
+	 * @param   string  $post_type
 	 *
 	 * @return string
 	 *
 	 * @since 0.0.2
 	 */
-	function content_wrap( $content, $task = false ) {
+	function content_wrap( $content, $task = false, $post_type ) {
 		$id = $this->id();
 		$container_id = $id;
 		if ( $id == 00 ) {
@@ -396,6 +397,18 @@ class view_loaders {
 		$out .= sprintf( '<div id="holotree-dms-title-section">%1s</div>', $this->main_title( $id, $task ) );
 
 		$out .= sprintf( '<div id="holotree-dms-content" data-equalizer >%1s</div>', $content );
+
+		if ( $post_type == 'home' ) {
+			$type = 'network';
+		}
+		elseif( in_array( $post_type, array_keys( $this->special_views() ) ) ){
+			$type = 'user';
+		}
+		else{
+			$type = ht_dms_prefix_remover( $post_type );
+		}
+
+		$out .= $this->ui()->output_elements()->third_element( $type, $id );
 
 		/**
 		 * Output something or trigger something after HoloTree Main content happens.

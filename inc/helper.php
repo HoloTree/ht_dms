@@ -317,7 +317,7 @@ function ht_dms_caldera_loader( $caldera_id, $before = '', $after = '' ) {
 /**
  * Check if is the content type set in $content type
  *
- * @param 	string    $content_type Content type to check for
+ * @param 	string      $content_type Content type to check for
  * @param 	bool 		$id	Optional. ID of item to check or if false, the default check current page.
  *
  * @return 	bool
