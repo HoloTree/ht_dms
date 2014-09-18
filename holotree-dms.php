@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: HoloTree Decision Making System
-Version: 0.0.3.a.1
+Version: 0.0.3.a.2
 License: GPL v2 or Later
 Text Domain: ht_dms
 Domain Path: /languages/
