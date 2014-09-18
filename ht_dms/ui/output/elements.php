@@ -402,7 +402,7 @@ class elements {
 	 * @since	0.0.1
 	 */
 	function title( $id, $obj = null, $task = false, $separator = ' - ' ) {
-		remove_filter( 'the_title', '__return_false' );
+
 		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
 
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
@@ -457,8 +457,6 @@ class elements {
 			}
 
 		}
-
-		add_filter( 'the_title', '__return_false' );
 
 		$name = apply_filters( 'ht_dms_title_override', $name, $id );
 		return $name;

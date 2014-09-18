@@ -428,7 +428,6 @@ abstract class dms extends object {
 
 	private function form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type ) {
 
-		remove_filter( 'the_title', '__return_false' );
 
 		/**
 		 * Override form fields for add/edit  form

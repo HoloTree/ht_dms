@@ -28,10 +28,6 @@ class ui {
 			add_filter( 'template_include', array ( $this->view_loaders(), 'task_view' ) );
 		}
 
-		//don't show titles!
-		if ( !is_admin() ) {
-			add_filter( 'the_title', '__return_false' );
-		}
 	}
 
 	/**
