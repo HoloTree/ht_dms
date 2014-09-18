@@ -113,7 +113,7 @@ class caldera_actions {
 
 			if ( ! $d->is_new( $id, $obj ) && ! $d->is_proposed_change( $id, $obj ) ) {
 				foreach( $this->decision_option_id( '', true ) as $option ) {
-					if ( $option !== $this->decision_option_id( 'respond' ) ) {
+					if ( $option !== $this->decision_option_id( 'respond' ) && isset( $field['config']['option'][ $option ] ) ) {
 						unset( $field['config']['option'][ $option ] );
 					}
 
