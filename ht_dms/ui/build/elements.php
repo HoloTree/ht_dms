@@ -507,6 +507,7 @@ class elements {
 			'edit' => '<i class="fa fa-pencil-square-o"></i>',
 			'public' => '<i class="fa fa-tree"></i>',
 			'spinner' => '<i class="fa fa-spinner fa-spin"></i>',
+			'silence' => '<i class="fa fa-circle-o"></i>',
 		);
 
 		/**
