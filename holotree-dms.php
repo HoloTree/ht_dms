@@ -225,7 +225,7 @@ class HoloTree_DMS {
 
 			}
 			else {
-				holotree_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'holotree' ) );
+				holotree_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'ht_dms' ) );
 			}
 		}
 	}

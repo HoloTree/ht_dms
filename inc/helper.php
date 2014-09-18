@@ -102,10 +102,10 @@ function ht_dms_mini_menu_items() {
 
 	$elements = ht_dms_ui()->build_elements();
 	$items = array(
-		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'holotree' ),
+		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'ht_dms' ),
 		ht_dms_preferences_url() => $elements->icon( 'preferences' ) . __( 'Preferences', 'ht_dms' ),
 		ht_dms_notifications_url() => $elements->icon( 'notification' ) . __( 'Notifications', 'ht_dms' ),
-		wp_logout_url() => $elements->icon( 'logout' ) .  __( 'Logout', 'holotree' ),
+		wp_logout_url() => $elements->icon( 'logout' ) .  __( 'Logout', 'ht_dms' ),
 	);
 
 	/**
@@ -176,9 +176,9 @@ function ht_dms_consensus_status_readable( $value ) {
 		return false;
 	}
 	$values = array(
-		'0' => __( 'No Response', 'holotree' ),
-		'1' => __( 'Accepted', 'holotree' ),
-		'2' => __( 'Blocked', 'holotree' ),
+		'0' => __( 'No Response', 'ht_dms' ),
+		'1' => __( 'Accepted', 'ht_dms' ),
+		'2' => __( 'Blocked', 'ht_dms' ),
 	);
 
 	/**

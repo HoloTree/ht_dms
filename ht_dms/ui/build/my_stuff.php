@@ -103,10 +103,10 @@ class my_stuff {
 		$group_count = count( $mgd );
 
 
-		$out = '<h3>'.__( 'My Stuff', 'holotree' ).'</h3>';
+		$out = '<h3>'.__( 'My Stuff', 'ht_dms' ).'</h3>';
 
 		if ( is_array( $mgd ) ) {
-			$panels[0][ 'label' ] = __( 'My Groups', 'holotree' );
+			$panels[0][ 'label' ] = __( 'My Groups', 'ht_dms' );
 			$panel_content = '';
 			$i = 0;
 
@@ -125,7 +125,7 @@ class my_stuff {
 					$new = $decisions[ 'new' ];
 
 					if ( is_array( $new ) && $new !== FALSE ) {
-						$content = '<h6>' . __( 'New Decisions', 'holotree' ) . '</h6>';
+						$content = '<h6>' . __( 'New Decisions', 'ht_dms' ) . '</h6>';
 						$content .= $this->decisions( $new );
 
 						if ( $group_count === 1 ) {
@@ -144,7 +144,7 @@ class my_stuff {
 				if ( isset( $decisions[ 'blocked' ] ) ) {
 					$blocked = $decisions[ 'blocked' ];
 					if ( is_array( $blocked ) ) {
-						$content = '<h6>' . __( 'Blocked Decisions', 'holotree' ) . '</h6>';
+						$content = '<h6>' . __( 'Blocked Decisions', 'ht_dms' ) . '</h6>';
 						$content .= $this->decisions( $blocked );
 
 						if ( $group_count === 1 ) {
@@ -178,7 +178,7 @@ class my_stuff {
 
 		$tasks = $this->my_tasks( $uID );
 		if ( is_array( $tasks ) ) {
-			$panels[1][ 'label' ] =  __( 'My Tasks', 'holotree' );
+			$panels[1][ 'label' ] =  __( 'My Tasks', 'ht_dms' );
 
 			$panel_content = '<ul>';
 

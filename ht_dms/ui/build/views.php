@@ -193,7 +193,7 @@ class views {
 
 			}
 
-			return __( 'This decision has no tasks', 'holotree' );
+			return __( 'This decision has no tasks', 'ht_dms' );
 
 		}
 		elseif ( $return === 'Pods' ) {
@@ -430,7 +430,7 @@ class views {
 
 		}
 		else {
-			holotree_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'holotree' ) );
+			holotree_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'ht_dms' ) );
 
 		}
 

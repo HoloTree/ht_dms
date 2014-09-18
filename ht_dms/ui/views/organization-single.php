@@ -33,15 +33,15 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 	$tabs = array (
 
 		array (
-			'label'   => ht_dms_add_icon( __( 'My Groups In Organization', 'holotree' ), 'group' ),
+			'label'   => ht_dms_add_icon( __( 'My Groups In Organization', 'ht_dms' ), 'group' ),
 			'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 		),
 		array (
-			'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'holotree' ), array( 'public', 'group' ) ),
+			'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'ht_dms' ), array( 'public', 'group' ) ),
 			ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 		),
 		array (
-			'label'   => ht_dms_add_icon( __( 'Assigned Tasks In This Organization', 'holotree' ), 'task' ),
+			'label'   => ht_dms_add_icon( __( 'Assigned Tasks In This Organization', 'ht_dms' ), 'task' ),
 			'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 		),
 
@@ -51,11 +51,11 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 
 	if ( $is_facilitator ) {
 		$tabs[] = array (
-			'label'   => ht_dms_add_icon( __( 'New Group In Organization', 'holotree' ), array( 'new', 'group') ),
+			'label'   => ht_dms_add_icon( __( 'New Group In Organization', 'ht_dms' ), array( 'new', 'group') ),
 			'content' => $ui->add_modify()->new_group(  $id, $uID ),
 		);
 		$tabs[] = array(
-			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'holotree' ), array( 'edit', 'organization') ),
+			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'ht_dms' ), array( 'edit', 'organization') ),
 			'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
 		);
 	}
@@ -66,7 +66,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 else {
 	$tabs = array(
 		'label'		=> get_the_title( $id ),
-		'content'	=> __( 'You must be a member of this organization to view it\'s content', 'holotree' ),
+		'content'	=> __( 'You must be a member of this organization to view it\'s content', 'ht_dms' ),
 	);
 }
 

@@ -9,7 +9,7 @@ $id = pods_v( 'dms_id' );
 
 $tabs = array(
 	array(
-		'label' => ht_dms_add_icon( __( 'Propose Modification', 'holotree' ), arrray( 'new', 'modification' ) ),
+		'label' => ht_dms_add_icon( __( 'Propose Modification', 'ht_dms' ), arrray( 'new', 'modification' ) ),
 		'content' => $ui->add_modify()->modify_decision( $id, null, $uID ),
 	),
 	array(

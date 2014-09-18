@@ -446,7 +446,7 @@ class view_loaders {
 	}
 
 	function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
-		$no_items = __( 'No items to display', 'holotree' );
+		$no_items = __( 'No items to display', 'ht_dms' );
 		if ( $obj->total() > 0 ) {
 			if ( file_exists( $template_file ) && class_exists( 'Pods_Templates' ) ) {
 

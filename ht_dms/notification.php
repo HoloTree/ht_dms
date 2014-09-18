@@ -73,7 +73,7 @@ class notification extends dms{
 	function send() {
 		$from = 'gus@holotree.net';
 		$headers = "From: Gus by Holotree <{$from}> \r\n";
-		$subject = __( sprintf( 'HoloTree Notifications for %1s', date("l") ), 'holotree' );
+		$subject = __( sprintf( 'HoloTree Notifications for %1s', date("l") ), 'ht_dms' );
 
 
 		$the_messages = $this->prepare_send();

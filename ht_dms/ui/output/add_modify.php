@@ -195,7 +195,7 @@ class add_modify {
 				'fields' => array( 'documents' ),
 				'fields_only' => $fields_only,
 			);
-			$form = $form->form( $params, __( 'Done Adding Documents', 'holotree', get_permalink( $id ) ) );
+			$form = $form->form( $params, __( 'Done Adding Documents', 'ht_dms' ), get_permalink( $id ) );
 
 		}
 

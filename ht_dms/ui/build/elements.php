@@ -234,9 +234,9 @@ class elements {
 		$obj = ht_dms_task( $id, $obj );
 
 		$fields = array(
-			'blockers'	=> array( 'label' => __( 'Add tasks that must be completed before this task is completed.', 'holotree' ),
+			'blockers'	=> array( 'label' => __( 'Add tasks that must be completed before this task is completed.', 'ht_dms' ),
 			),
-			'blocking'	=> array( 'label' => __( 'Add tasks that can only be completed after this task is completed.', 'holotree' ) ),
+			'blocking'	=> array( 'label' => __( 'Add tasks that can only be completed after this task is completed.', 'ht_dms' ) ),
 		);
 
 		//only allow marking complete if isn't blocked.
@@ -260,7 +260,7 @@ class elements {
 
 		$modal_id = "modify-{$tID}";
 
-		return $elements->modal( $form, $modal_id, __( 'Task Actions', 'holotree' ) );
+		return $elements->modal( $form, $modal_id, __( 'Task Actions', 'ht_dms' ) );
 
 	}
 
@@ -432,13 +432,13 @@ class elements {
 		if ( $page > 1 ) {
 			$previous_page = $page-1;
 			$attr = "page=\"{$previous_page}\"";
-			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', $view, $attr, __( 'Previous', 'holotree' ) );
+			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', $view, $attr, __( 'Previous', 'ht_dms' ) );
 		}
 
 		$next_page = $page+1;
 		if ( $next_page < $total_pages ) {
 			$attr = "page=\"{$next_page}\"";
-			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', $view, $attr,  __( 'Next', 'holotree' ) );
+			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', $view, $attr,  __( 'Next', 'ht_dms' ) );
 		}
 		else {
 			$next = false;

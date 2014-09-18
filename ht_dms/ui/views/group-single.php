@@ -23,17 +23,17 @@ $tabs = $ui->build_elements()->decisions_by_status_tabs( $statuses, $id, null );
 
 
 $tabs[] = array(
-	'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'holotree' ), 'discussion' ),
+	'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'ht_dms' ), 'discussion' ),
 	'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 );
 $tabs[] = array(
-	'label'		=> ht_dms_add_icon( __( 'Membership', 'holotree' ), 'members' ),
+	'label'		=> ht_dms_add_icon( __( 'Membership', 'ht_dms' ), 'members' ),
 	'content'	=> $ui->build_elements()->group_membership( $id, $obj ),
 );
 //only show edit group if member & facilitator.
 if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
-		'label'   => ht_dms_add_icon( __( 'Edit Group', 'holotree' ), 'group' ),
+		'label'   => ht_dms_add_icon( __( 'Edit Group', 'ht_dms' ), 'group' ),
 		'content' => $ui->add_modify()->edit_group( $id, $obj ),
 	);
 }
@@ -41,7 +41,7 @@ if ( $g->is_member( $id, $uID, $obj ) && $g->is_facilitator( $id, $uID, $obj ) )
 //only allow add decision if is member
 if ( $g->is_member( $id, $uID, $obj ) ) {
 	$tabs[ ] = array (
-		'label'   => __( 'Create New Decision', 'holotree' ),
+		'label'   => __( 'Create New Decision', 'ht_dms' ),
 		'content' => $ui->add_modify()->new_decision( null, $uID, $oID ),
 	);
 }

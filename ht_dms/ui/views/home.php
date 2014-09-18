@@ -25,26 +25,26 @@ $paginated_view_args = ht_dms_default_paginated_view_arguments();
 
 $tabs = array(
 	array(
-		'label'		=> ht_dms_add_icon( __( 'My Groups', 'holotree' ), 'group' ),
+		'label'		=> ht_dms_add_icon( __( 'My Groups', 'ht_dms' ), 'group' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
 	),
 	array(
-		'label'		=> ht_dms_add_icon( __( 'My Organizations', 'holotree' ), 'organization' ),
+		'label'		=> ht_dms_add_icon( __( 'My Organizations', 'ht_dms' ), 'organization' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_organizations', $paginated_view_args )
 	),
 	array(
-		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'holotree' ), 'task' ),
+		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'ht_dms' ), 'task' ),
 		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
 	array (
-		'label'		=> ht_dms_add_icon( __( 'All Public Groups', 'holotree' ), array( 'public', 'group' ) ),
+		'label'		=> ht_dms_add_icon( __( 'All Public Groups', 'ht_dms' ), array( 'public', 'group' ) ),
 		'content' 	=> ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 	),
 );
 
 if ( HT_DEV_MODE ) {
 	$tabs[] = array(
-		'label'		=> ht_dms_add_icon( __( 'New Organization', 'holotree' ), array( 'new', 'organization' ) ),
+		'label'		=> ht_dms_add_icon( __( 'New Organization', 'ht_dms' ), array( 'new', 'organization' ) ),
 		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
 	);
 }

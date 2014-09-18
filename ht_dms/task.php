@@ -96,10 +96,10 @@ class task extends dms {
 		$form_fields[ 'task_description' ] = array();
 		$form_fields[ 'assigned_user' ] = array( 'default' => $uID );
 		$form_fields[ 'blockers' ] = array(
-			'label' => __( 'Tasks that must be completed before this task is completed.', 'holotree' ),
+			'label' => __( 'Tasks that must be completed before this task is completed.', 'ht_dms' ),
 		);
 		$form_fields[ 'blocking' ] = array(
-			'label' => __( 'Tasks that can only be completed after this task is completed.', 'holotree' )
+			'label' => __( 'Tasks that can only be completed after this task is completed.', 'ht_dms' )
 		);
 		$gID = $this->get_group( $id, $obj, $dID, false );
 

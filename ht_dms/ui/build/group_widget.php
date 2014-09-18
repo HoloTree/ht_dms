@@ -31,15 +31,15 @@ class group_widget {
 		$access = $obj->field( 'open_access' );
 
 		if ( $access == 0 ) {
-			$access_label = __('Membership to this group does not require approval.', 'holotree' );
+			$access_label = __('Membership to this group does not require approval.', 'ht_dms' );
 		}
 		else {
-			$access_label = __('Membership to this group requires approval.', 'holotree' );
+			$access_label = __('Membership to this group requires approval.', 'ht_dms' );
 		}
 		$out = '<aside id="join-panel-'. $gID. '" class="join-panel panel">';
 
 		if ( ht_dms_group_class()->is_pending( null, $gID, $obj ) ) {
-			$out .= $this->ui()->elements()->alert( __( 'Your membership in this group is pending', 'holotree' ) );
+			$out .= $this->ui()->elements()->alert( __( 'Your membership in this group is pending', 'ht_dms' ) );
 		}
 		else {
 			$link = holotree_action_append( get_permalink( $gID ), 'join-group', $gID );

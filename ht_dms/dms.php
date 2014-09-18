@@ -186,7 +186,7 @@ abstract class dms extends object {
 				}
 			}
 			else {
-					holotree_error( __( sprintf( 'When using %d in this context you must specify organization ID in $oID', __METHOD__ ), 'holotree' ) );
+					holotree_error( __( sprintf( 'When using %d in this context you must specify organization ID in $oID', __METHOD__ ), 'ht_dms' ) );
 			}
 
 		}
@@ -203,7 +203,7 @@ abstract class dms extends object {
 			}
 			else {
 				if ( is_null( $id ) ) {
-					holotree_error( __( 'Decision ID must be set when creating new tasks.', 'holotree' ) );
+					holotree_error( __( 'Decision ID must be set when creating new tasks.', 'ht_dms' ) );
 				}
 			}
 
@@ -347,7 +347,7 @@ abstract class dms extends object {
 		$type = $obj->pod;
 
 		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
-			holotree_error( __METHOD__, __('only supports decisions. For now...', 'holotree' ) );
+			holotree_error( __METHOD__, __('only supports decisions. For now...', 'ht_dms' ) );
 		}
 
 		$uID = $this->null_user( $uID );
@@ -466,10 +466,10 @@ abstract class dms extends object {
 		if ( $new !== 'modify' ) {
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'new', 'X_ID_X' );
 			if ( $new ) {
-				$label = __( 'Create', 'holotree' );
+				$label = __( 'Create', 'ht_dms' );
 			}
 			else {
-				$label = __( 'Edit', 'holotree' );
+				$label = __( 'Edit', 'ht_dms' );
 			}
 
 			if ( $type === HT_DMS_TASK_CT_NAME ) {

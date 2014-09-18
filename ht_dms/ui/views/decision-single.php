@@ -40,24 +40,24 @@ else {
 
 		$tabs = array (
 			array (
-				'label'   => ht_dms_add_icon( __( 'Decision Information', 'holotree' ), 'details' ),
+				'label'   => ht_dms_add_icon( __( 'Decision Information', 'ht_dms' ), 'details' ),
 				'content' => $current
 			),
 			array(
-				'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'holotree' ), 'discussion' ),
+				'label'	 	=> ht_dms_add_icon( __( 'Discussion', 'ht_dms' ), 'discussion' ),
 				'content' 	=> $ui->elements()->discussion( $id, 5, true ),
 			),
 			array(
-				'label'		=> ht_dms_add_icon( __( 'Decision Documents', 'holotree' ), 'docs' ),
+				'label'		=> ht_dms_add_icon( __( 'Decision Documents', 'ht_dms' ), 'docs' ),
 				'content'	=> $ui->views()->docs( $obj, $id, 'decision' ),
 			),
 			array(
-				'label'	 	=> ht_dms_add_icon( __( 'View Tasks', 'holotree' ), 'task' ),
+				'label'	 	=> ht_dms_add_icon( __( 'View Tasks', 'ht_dms' ), 'task' ),
 				//'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
 				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
 			),
 			array (
-				'label'   => ht_dms_add_icon( __( 'Add Task', 'holotree' ), array( 'new', 'task') ),
+				'label'   => ht_dms_add_icon( __( 'Add Task', 'ht_dms' ), array( 'new', 'task') ),
 				'content' => $ui->add_modify()->new_task(  null, null, $id ),
 			),
 		);
@@ -66,7 +66,7 @@ else {
 
 		if ( is_string( $proposed_modifications ) ) {
 			$tabs[ ] = array (
-				'label'   => ht_dms_add_icon( __( 'Proposed Modifications', 'holotree' ), 'modification' ),
+				'label'   => ht_dms_add_icon( __( 'Proposed Modifications', 'ht_dms' ), 'modification' ),
 				'content' => $proposed_modifications,
 			);
 		}

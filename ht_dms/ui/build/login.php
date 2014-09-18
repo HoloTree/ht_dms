@@ -36,7 +36,7 @@ class login {
 	}
 
 	function title() {
-		return apply_filters( 'ht_dms_name', 'HoloTree' );
+		return apply_filters( 'ht_dms_name', 'ht_dms' );
 	}
 
 	function login_logo_url_title() {

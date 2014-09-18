@@ -403,7 +403,7 @@ class elements {
 	 */
 	function title( $id, $obj = null, $task = false, $separator = ' - ' ) {
 		remove_filter( 'the_title', '__return_false' );
-		$name = apply_filters( 'ht_dms_name', 'HoloTree' );
+		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
 
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
 
@@ -727,7 +727,7 @@ class elements {
 			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c['content'] ) ) {
 				unset( $content[ $i ] );
 				if ( HT_DEV_MODE ) {
-					echo sprintf( __('The tab %1s was not a string, so it was unset from output container.', 'holotree' ), $i );
+					echo sprintf( __('The tab %1s was not a string, so it was unset from output container.', 'ht_dms' ), $i );
 				}
 			}
 
@@ -826,7 +826,7 @@ class elements {
 					<h5>%0s</h5>
 					%1s
 				</div>
-			', __( 'Consensus Status', 'holotree' ), implode( $user_display ) );
+			', __( 'Consensus Status', 'ht_dms' ), implode( $user_display ) );
 		}
 
 	}
