@@ -83,7 +83,7 @@ class group extends dms {
 	 * @since 	0.0.1
 	 */
 	function all_members( $id, $obj = null ) {
-		$user_ids = holotree_membership_class()->all_members( $id, $obj, true );
+		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, true );
 
 		return $user_ids;
 
@@ -103,7 +103,7 @@ class group extends dms {
 	 * @since 	0.0.1
 	 */
 	function add_member ( $id, $uID = null, $obj = null ) {
-		$id = holotree_membership_class()->add_member( $id, $uID, $obj, true );
+		$id = ht_dms_membership_class()->add_member( $id, $uID, $obj, true );
 
 		return $id;
 
@@ -124,7 +124,7 @@ class group extends dms {
 	 */
 	function remove_member( $id, $uID = null, $obj = null ) {
 
-		$id = holotree_membership_class()->remove_member( $id, $uID, $obj, true );
+		$id = ht_dms_membership_class()->remove_member( $id, $uID, $obj, true );
 
 		return $id;
 
@@ -143,7 +143,7 @@ class group extends dms {
 	 */
 	function is_member( $id, $uID = null, $obj = null ) {
 
-		return holotree_membership_class()->is_member( $id, $uID, $obj, true );
+		return ht_dms_membership_class()->is_member( $id, $uID, $obj, true );
 
 	}
 
@@ -413,7 +413,7 @@ class group extends dms {
 
 		$params[ 'where' ] = $where;
 
-		$obj = holotree_group_class()->null_obj( $obj, $params );
+		$obj = ht_dms_group_class()->null_obj( $obj, $params );
 
 		if ( $return_ids  ) {
 
@@ -437,7 +437,7 @@ class group extends dms {
 	 */
 	function open_access( $id, $obj = null ) {
 
-		return holotree_membership_class()->open_access( $id, $obj, true );
+		return ht_dms_membership_class()->open_access( $id, $obj, true );
 
 	}
 
@@ -457,13 +457,13 @@ class group extends dms {
 	function is_public( $id, $obj = null ) {
 		$obj = $this->null_obj( $obj, $id  );
 
-		return holotree_membership_class()->is_public( $id, $obj, true );
+		return ht_dms_membership_class()->is_public( $id, $obj, true );
 
 	}
 
 	function decisions_by_status( $gID, $status, $return_type = false ) {
 
-		return holotree_decision_class()->decisions_by_status( $status, $gID, $return_type );
+		return ht_dms_decision_class()->decisions_by_status( $status, $gID, $return_type );
 
 	}
 

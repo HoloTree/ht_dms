@@ -21,9 +21,9 @@
  *
  * @since 	0.0.1
  */
-function holotree_decision( $id = true, $obj = null, $cached = true, $fields = false ) {
+function ht_dms_decision( $id = true, $obj = null, $cached = true, $fields = false ) {
 
-	return holotree_decision_class()->item( $id, $obj, null, $cached, $fields );
+	return ht_dms_decision_class()->item( $id, $obj, null, $cached, $fields );
 
 }
 
@@ -34,7 +34,7 @@ function holotree_decision( $id = true, $obj = null, $cached = true, $fields = f
  *
  * @since	0.0.1
  */
-function holotree_decision_class() {
+function ht_dms_decision_class() {
 
 	return decision::init();
 	//return htdms\decision::init();
@@ -55,7 +55,7 @@ function holotree_decision_class() {
  */
 function holotree_group( $id = true, $obj = null, $cached = true, $fields = false ) {
 
-	return holotree_group_class()->item( $id, $obj, null, $cached, $fields );
+	return ht_dms_group_class()->item( $id, $obj, null, $cached, $fields );
 
 }
 
@@ -66,7 +66,7 @@ function holotree_group( $id = true, $obj = null, $cached = true, $fields = fals
  *
  * @since	0.0.1
  */
-function holotree_group_class() {
+function ht_dms_group_class() {
 
 	return group::init();
 
@@ -82,7 +82,7 @@ function holotree_group_class() {
  *
  * @since	0.0.1
  */
-function holotree_task_class() {
+function ht_dms_task_class() {
 
 	return task::init();
 
@@ -100,9 +100,9 @@ function holotree_task_class() {
  *
  * @since 	0.0.1
  */
-function holotree_task( $id = true, $obj = null, $cached = true, $fields = false ) {
+function ht_dms_task( $id = true, $obj = null, $cached = true, $fields = false ) {
 
-	return holotree_task_class()->item( $id, $obj, null, $cached, $fields );
+	return ht_dms_task_class()->item( $id, $obj, null, $cached, $fields );
 
 }
 
@@ -113,7 +113,7 @@ function holotree_task( $id = true, $obj = null, $cached = true, $fields = false
  *
  * @since	0.0.1
  */
-function holotree_consensus_class() {
+function ht_dms_consensus_class() {
 
 	return  ht_dms\helper\consensus::init();
 
@@ -128,8 +128,9 @@ function holotree_consensus_class() {
  *
  * @since 	0.0.1
  */
-function holotree_consensus( $dID ) {
-	return holotree_consensus_class()->consensus( $dID );
+function ht_dms_consensus( $dID ) {
+
+	return ht_dms_consensus_class()->consensus( $dID );
 
 }
 
@@ -140,7 +141,7 @@ function holotree_consensus( $dID ) {
  *
  * @since	0.0.1
  */
-function holotree_organization_class() {
+function ht_dms_organization_class() {
 
 	return organization::init();
 
@@ -159,9 +160,9 @@ function holotree_organization_class() {
  *
  * @since 	0.0.1
  */
-function holotree_organization( $id = true, $obj = false, $cached = true, $fields = false ) {
+function ht_dms_organization( $id = true, $obj = false, $cached = true, $fields = false ) {
 	
-	return holotree_organization_class()->item( $id, $obj, null, $cached, $fields );
+	return ht_dms_organization_class()->item( $id, $obj, null, $cached, $fields );
 
 }
 
@@ -217,7 +218,7 @@ function ht_dms_preferences_class() {
  *
  * @since 0.0.2
  */
-function holotree_membership_class() {
+function ht_dms_membership_class() {
 
 	return ht_dms\helper\membership::init();
 
@@ -230,7 +231,7 @@ function holotree_membership_class() {
  *
  * @since 	0.0.1
  */
-function holotree_common_class() {
+function ht_dms_common_class() {
 
 	return ht_dms\helper\common::init();
 
@@ -243,7 +244,7 @@ function holotree_common_class() {
  *
  * @since 0.0.2
  */
-function holotree_dms_ui() {
+function ht_dms_ui() {
 
 	return ht_dms\ui\ui::init();
 
@@ -256,9 +257,9 @@ function holotree_dms_ui() {
  *
  * @since 0.0.2
  */
-function holotree_dms_ui_build_elements() {
+function ht_dms_ui_build_elements() {
 
-	return holotree_dms_ui()->build_elements();
+	return ht_dms_ui()->build_elements();
 
 }
 
@@ -269,24 +270,13 @@ function holotree_dms_ui_build_elements() {
  *
  * @since 0.0.2
  */
-function holotree_dms_ui_output_elements() {
+function ht_dms_ui_output_elements() {
 
-	return holotree_dms_ui()->output_elements();
-
-}
-
-/**
- * Return an instance of the common class
- *
- * @return object|ht_dms\helper\common
- *
- * @since 0.0.2
- */
-function holotree_dms_common_class() {
-
-	return ht_dms\helper\common::init();
+	return ht_dms_ui()->output_elements();
 
 }
+
+
 
 /**
  * Returns an instance of the automatic notifications class
@@ -306,7 +296,7 @@ function ht_dms_automatic_notifications_class() {
 /**
  * Get any view defined in the ht_dms\ui\build\views class
  *
- * Wrapper for ht_dms\ui\build\views::get_view(). Exists to power holotree_dms_ui_ajax_view(), but can be used independently.
+ * Wrapper for ht_dms\ui\build\views::get_view(). Exists to power ht_dms_ui_ajax_view(), but can be used independently.
  *
  * @param string 		$view 	The name of any method in the class.
  * @param array 		$args 	An array of arguments in order for the chosen method.
@@ -316,9 +306,9 @@ function ht_dms_automatic_notifications_class() {
  *
  * @since 0.0.1
  */
-function holotree_dms_ui_get_view( $view, $args, $return = null ) {
+function ht_dms_ui_get_view( $view, $args, $return = null ) {
 
-	return holotree_dms_ui()->get_view( $view, $args, $return );
+	return ht_dms_ui()->get_view( $view, $args, $return );
 
 }
 
@@ -328,12 +318,12 @@ function holotree_dms_ui_get_view( $view, $args, $return = null ) {
  *
  * @since 0.0.1
  */
-add_action( 'wp_ajax_holotree_dms_ui_ajax_view', 'holotree_dms_ui_ajax_view');
-add_action( 'wp_ajax_nopriv_holotree_dms_ui_ajax_view', 'holotree_dms_ui_ajax_view' );
-function holotree_dms_ui_ajax_view() {
+add_action( 'wp_ajax_ht_dms_ui_ajax_view', 'ht_dms_ui_ajax_view' );
+add_action( 'wp_ajax_nopriv_ht_dms_ui_ajax_view', '__return_false' );
+function ht_dms_ui_ajax_view() {
 	if ( isset( $_REQUEST['nonce'] ) ) {
 		if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], 'ht-dms' ) ) {
-			wp_die( __( 'Your attempt to request data via ajax using the function holotree_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' ) );
+			wp_die( __( 'Your attempt to request data via ajax using the function ht_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' ) );
 		}
 
 		if ( isset( $_REQUEST[ 'view' ] ) && isset( $_REQUEST[ 'args' ] ) ) {
@@ -356,11 +346,11 @@ function holotree_dms_ui_ajax_view() {
 			}
 		}
 
-		$methods = get_class_methods( holotree_dms_ui()->views() );
+		$methods = get_class_methods( ht_dms_ui()->views() );
 
 		if ( is_array( $methods ) && in_array( $view, $methods ) && ! in_array( $view, array ( 'ui', 'models', 'type_view', 'init' ) ) ) {
 
-			wp_die( holotree_dms_ui_get_view( $view, $args, $return ) );
+			wp_die( ht_dms_ui_get_view( $view, $args, $return ) );
 
 		}
 	}

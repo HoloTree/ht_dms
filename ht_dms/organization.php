@@ -110,7 +110,7 @@ class organization extends dms {
 	 * @since 	0.0.1
 	 */
 	function all_members( $id, $obj = null ) {
-		$user_ids = holotree_membership_class()->all_members( $id, $obj, false );
+		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, false );
 
 		return $user_ids;
 
@@ -130,7 +130,7 @@ class organization extends dms {
 	 * @since 	0.0.1
 	 */
 	function add_member ( $id, $uID = null, $obj = null ) {
-		$id = holotree_membership_class()->add_member( $id, $uID, $obj, false );
+		$id = ht_dms_membership_class()->add_member( $id, $uID, $obj, false );
 
 		return $id;
 
@@ -151,7 +151,7 @@ class organization extends dms {
 	 */
 	function remove_member( $id, $uID = null, $obj = null ) {
 
-		$id = holotree_membership_class()->remove_member( $id, $uID, $obj, false );
+		$id = ht_dms_membership_class()->remove_member( $id, $uID, $obj, false );
 
 		return $id;
 
@@ -170,7 +170,7 @@ class organization extends dms {
 	 */
 	function is_member( $id, $uID = null, $obj = null ) {
 
-		return holotree_membership_class()->is_member( $id, $uID, $obj, false );
+		return ht_dms_membership_class()->is_member( $id, $uID, $obj, false );
 
 	}
 

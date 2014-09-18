@@ -342,7 +342,7 @@ class elements {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 
@@ -422,21 +422,21 @@ class elements {
 			}
 			elseif( ht_dms_is_group( $id  ) ) {
 				$gID = $id;
-				$oID = holotree_group_class()->get_organization( $gID );
+				$oID = ht_dms_group_class()->get_organization( $gID );
 
 			}
 			elseif( ht_dms_is_decision( $id ) ) {
 
 				$dID = $id;
-				$obj = holotree_decision( $id );
-				$oID = holotree_decision_class()->get_organization( $id, $obj );
-				$gID = holotree_decision_class()->get_group( $id, $obj );
+				$obj = ht_dms_decision( $id );
+				$oID = ht_dms_decision_class()->get_organization( $id, $obj );
+				$gID = ht_dms_decision_class()->get_group( $id, $obj );
 			}
 			elseif( ht_dms_is_task( $id ) ) {
 				//@todo if ! https://github.com/HoloTree/ht_dms/issues/55
 			}
 
-			$build_elements = holotree_dms_ui()->build_elements();
+			$build_elements = ht_dms_ui()->build_elements();
 
 			foreach ( array(
 				HT_DMS_ORGANIZATION_NAME => $oID,
@@ -778,7 +778,7 @@ class elements {
 	 * Visual display of the current status of a consensus
 	 *
 	 * @TODO make not foundation dependent
-	 * @param int|array $id Decision ID. Or can be an array. If array, must be in format holotree_decision_class()->consensus_members() returns.
+	 * @param int|array $id Decision ID. Or can be an array. If array, must be in format ht_dms_decision_class()->consensus_members() returns.
 	 *
 	 * @return string
 	 *
@@ -788,8 +788,8 @@ class elements {
 		wp_cache_flush();
 		if ( ! is_array( $id ) ) {
 
-			$users = holotree_decision_class()->consensus_members( $id );
-			$c = holotree_consensus( $id );
+			$users = ht_dms_decision_class()->consensus_members( $id );
+			$c = ht_dms_consensus( $id );
 		}
 		else {
 			$users = $id;

@@ -16,7 +16,7 @@ if ( HT_DEV_MODE ) {
 	echo '<a href="' . $link . '">Groups</a><br>';
 }
 
-$ui = holotree_dms_ui();
+$ui = ht_dms_ui();
 
 $uID = get_current_user_id();
 

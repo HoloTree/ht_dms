@@ -12,8 +12,8 @@
 global $post;
 global $id;
 $id = $post->ID;
-$d = holotree_decision_class();
-$ui = holotree_dms_ui();
+$d = ht_dms_decision_class();
+$ui = ht_dms_ui();
 $obj = $d->item( $id );
 if ( !is_object( $obj) ) {
 	holotree_error( 'Not an object!', __FILE__ );
@@ -26,7 +26,7 @@ if ( pods_v( 'dms_action', 'get', false, true ) === 'changing' ) {
 else {
 	add_filter( 'ht_dms_after_foundation_tab_choice', function( $out ) {
 		global $id;
-		return holotree_dms_ui()->output_elements()->view_consensus( $id );
+		return ht_dms_ui()->output_elements()->view_consensus( $id );
 	} );
 		$paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'dID' => $id ) );
 		$current = $ui->views()->decision( $obj, $id );

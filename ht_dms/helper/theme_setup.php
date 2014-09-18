@@ -72,7 +72,7 @@ class Theme_Setup {
 	}
 
 	function title_in_tab_bar() {
-		$title = holotree_dms_ui()->output_elements()->title( get_queried_object_id(), null, false, ' ' );
+		$title = ht_dms_ui()->output_elements()->title( get_queried_object_id(), null, false, ' ' );
 		$title = '<span style="display:inline;color:white>'.$title.'</span>';
 		return apply_filters( 'ht_dms_top_bar_content', $title );
 
@@ -92,7 +92,7 @@ class Theme_Setup {
 	}
 
 	function left_menu() {
-		echo holotree_dms_ui()->build_elements()->menu();
+		echo ht_dms_ui()->build_elements()->menu();
 	}
 
 	function prefix() {

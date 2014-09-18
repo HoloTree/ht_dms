@@ -499,7 +499,7 @@ class view_loaders {
 				}
 
 				if ( ! empty( $out ) ) {
-					$out = holotree_dms_ui()->build_elements()->icon_substitution( $out );
+					$out = ht_dms_ui()->build_elements()->icon_substitution( $out );
 					return $out;
 				}
 
@@ -554,7 +554,7 @@ class view_loaders {
 	 */
 	private function alert() {
 		if ( pods_v( 'dms-alert', 'get', false, true ) ) {
-			return holotree_dms_ui()->elements()->alert( get_option( 'ht_dms_action_message', '' ), 'success' );
+			return ht_dms_ui()->elements()->alert( get_option( 'ht_dms_action_message', '' ), 'success' );
 		}
 	}
 
@@ -568,7 +568,7 @@ class view_loaders {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

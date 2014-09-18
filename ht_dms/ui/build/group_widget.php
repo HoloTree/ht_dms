@@ -26,7 +26,7 @@ class group_widget {
 	 */
 	function join_group_widget( $gID, $obj = null ) {
 		if ( is_null( $obj ) ) {
-			$obj = holotree_group_class()->null_object( $obj, $gID );
+			$obj = ht_dms_group_class()->null_object( $obj, $gID );
 		}
 		$access = $obj->field( 'open_access' );
 
@@ -38,7 +38,7 @@ class group_widget {
 		}
 		$out = '<aside id="join-panel-'. $gID. '" class="join-panel panel">';
 
-		if ( holotree_group_class()->is_pending( null, $gID, $obj ) ) {
+		if ( ht_dms_group_class()->is_pending( null, $gID, $obj ) ) {
 			$out .= $this->ui()->elements()->alert( __( 'Your membership in this group is pending', 'holotree' ) );
 		}
 		else {
@@ -62,7 +62,7 @@ class group_widget {
 	 * @since	0.0.1
 	 */
 	function group_members_widget( $gID ) {
-		$members = holotree_group_class()->all_members( $gID );
+		$members = ht_dms_group_class()->all_members( $gID );
 		if ( is_array( $members ) ) {
 			$out = '<aside class="group-members-panel panel" id="group-members-panel-'.$gID.'">';
 			$out .= '<h5 class="widget-title">Group Members</h5>';
@@ -110,9 +110,9 @@ class group_widget {
 	 */
 	function group_approve_widget( $gID ) {
 
-		$dms = holotree_group_class();
-		if ( holotree_common_class()->is_facilitator( null, $gID ) ) {
-			$pending = holotree_group_class()->get_pending( $gID );
+		$dms = ht_dms_group_class();
+		if ( ht_dms_common_class()->is_facilitator( null, $gID ) ) {
+			$pending = ht_dms_group_class()->get_pending( $gID );
 			//@todo what does a lack of pending members actually look like?
 			if ( $pending != '' ) {
 				$out = '<aside class="group-members-panel panel" id="group-members-approve-panel-'.$gID.'">';
@@ -157,7 +157,7 @@ class group_widget {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

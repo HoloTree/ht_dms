@@ -1,6 +1,6 @@
 <?php
-$class = holotree_decision_class();
-$ui = holotree_dms_ui();
+$class = ht_dms_decision_class();
+$ui = ht_dms_ui();
 $uID = get_current_user_id();
 
 $id = pods_v( 'dms_id' );

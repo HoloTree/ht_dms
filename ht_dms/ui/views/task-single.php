@@ -1,12 +1,12 @@
 <?php
-	$t = holotree_task_class();
+	$t = ht_dms_task_class();
 
 	$obj = $t->item( get_queried_object_id() );
 	$id = $obj->id();
 
 	$dID = (int) $obj->display( 'decision.ID' );
 
-	$ui = holotree_dms_ui();
+	$ui = ht_dms_ui();
 
 	$tabs = array(
 		array(

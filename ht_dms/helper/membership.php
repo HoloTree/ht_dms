@@ -204,7 +204,7 @@ class membership {
 	 */
 	function null_user( $uID ) {
 
-		return holotree_common_class()->null_user( $uID );
+		return ht_dms_common_class()->null_user( $uID );
 
 	}
 
@@ -220,7 +220,7 @@ class membership {
 	 */
 	function user_exists( $uID ) {
 
-		return holotree_common_class()->user_exists( $uID );
+		return ht_dms_common_class()->user_exists( $uID );
 
 	}
 

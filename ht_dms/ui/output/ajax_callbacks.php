@@ -29,8 +29,8 @@ class ajax_callbacks {
 				$post = get_post( $dID );
 				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_CPT_NAME === $post->post_type ) {
 					wp_cache_flush();
-					//$users = holotree_decision_class()->consensus_members( $dID );
-					$consensus = holotree_dms_ui()->output_elements()->view_consensus( $dID );
+					//$users = ht_dms_decision_class()->consensus_members( $dID );
+					$consensus = ht_dms_ui()->output_elements()->view_consensus( $dID );
 
 					if ( is_string( $consensus ) ) {
 						wp_die(  $consensus );
@@ -56,7 +56,7 @@ class ajax_callbacks {
 			$nID = pods_v( 'nID', $_REQUEST );
 			if ( $nID ) {
 
-				wp_die( holotree_dms_ui()->views()->notification( null, $nID ) );
+				wp_die( ht_dms_ui()->views()->notification( null, $nID ) );
 
 			}
 
@@ -75,7 +75,7 @@ class ajax_callbacks {
 		if ( $this->nonce_check( $_REQUEST ) ) {
 			$dID = pods_v( 'dID', $_REQUEST );
 			if ( $dID ) {
-				wp_die( ucwords( holotree_decision_class()->status( $dID ) ) );
+				wp_die( ucwords( ht_dms_decision_class()->status( $dID ) ) );
 
 			}
 
@@ -93,7 +93,7 @@ class ajax_callbacks {
 		if ( $this->nonce_check( $_REQUEST ) ) {
 			$gID = pods_v( 'gID', $_REQUEST );
 			if ( $gID ) {
-				wp_die( holotree_dms_ui()->build_elements()->group_membership( $gID) );
+				wp_die( ht_dms_ui()->build_elements()->group_membership( $gID) );
 			}
 		}
 	}

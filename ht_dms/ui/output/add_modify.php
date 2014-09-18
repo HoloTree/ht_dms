@@ -26,7 +26,7 @@ class add_modify {
 	 */
 	function new_decision ( $obj = null, $uID = null, $oID = null   ) {
 
-		return holotree_decision_class()->edit( null, $uID, $obj, $oID );
+		return ht_dms_decision_class()->edit( null, $uID, $obj, $oID );
 
 	}
 
@@ -41,7 +41,7 @@ class add_modify {
 	 */
 	function edit_decision( $id, $obj = null, $oID = null  ) {
 
-		return holotree_decision_class()->edit( $id, null, $ob, $oID );
+		return ht_dms_decision_class()->edit( $id, null, $ob, $oID );
 
 	}
 
@@ -58,7 +58,7 @@ class add_modify {
 	 */
 	function modify_decision( $id, $obj = null, $uID = null ) {
 		
-		$dms_decision = holotree_decision_class();
+		$dms_decision = ht_dms_decision_class();
 		$form = $dms_decision->propose_modify( $id, $obj, $uID );
 		$out = '<div class="modify-decision" id="modify-'.$id.'">';
 		$out .= $form;
@@ -76,7 +76,7 @@ class add_modify {
 	 */
 	function new_group( $obj = null, $uID = null, $oID = null) {
 		
-		return holotree_group_class()->edit( null, $uID, $obj, $oID );
+		return ht_dms_group_class()->edit( null, $uID, $obj, $oID );
 
 	}
 
@@ -89,7 +89,7 @@ class add_modify {
 	 */
 	function edit_group( $id, $obj = null, $oID = null ) {
 		
-		return holotree_group_class()->edit( $id, null, $obj, $oID );
+		return ht_dms_group_class()->edit( $id, null, $obj, $oID );
 
 	}
 
@@ -104,7 +104,7 @@ class add_modify {
 	 */
 	function new_task( $obj = null, $uID = null, $dID, $oID = null ) {
 		
-		$form = holotree_task_class()->edit( null, $uID, $obj, $oID, $dID );
+		$form = ht_dms_task_class()->edit( null, $uID, $obj, $oID, $dID );
 
 		return $form;
 	}
@@ -120,7 +120,7 @@ class add_modify {
 	 */
 	function edit_task( $id, $obj = null, $dID, $oID = null ) {
 		
-		return holotree_task_class()->new_task( $id, null, $obj, $dID, $oID );
+		return ht_dms_task_class()->new_task( $id, null, $obj, $dID, $oID );
 
 	}
 
@@ -133,7 +133,7 @@ class add_modify {
 	 */
 	function new_organization( $uID = null, $obj = null ) {
 
-		return holotree_organization_class()->edit( null, $uID, $obj );
+		return ht_dms_organization_class()->edit( null, $uID, $obj );
 
 	}
 
@@ -146,7 +146,7 @@ class add_modify {
 	 */
 	function edit_organization( $id, $obj = null, $oID = null ) {
 
-		return holotree_organization_class()->edit( $id, null, $obj, $oID );
+		return ht_dms_organization_class()->edit( $id, null, $obj, $oID );
 	}
 
 	/**
@@ -187,7 +187,7 @@ class add_modify {
 			$fields_only = true;
 			$is_member = false;
 			if ( is_int( $group ) ) {
-				$is_member = holotree_group_class()->is_member( $group );
+				$is_member = ht_dms_group_class()->is_member( $group );
 				$fields_only = false;
 			}
 
@@ -215,7 +215,7 @@ class add_modify {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

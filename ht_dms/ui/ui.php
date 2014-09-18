@@ -89,7 +89,7 @@ class ui {
 	/**
 	 * Get any view defined in the ht_dms\ui\build\views class.
 	 *
-	 * Exists to power holotree_dms_ui_ajax_view(), but can be used independently.
+	 * Exists to power ht_dms_ui_ajax_view(), but can be used independently.
 	 *
 	 * @param string $view The name of any method in the class.
 	 * @param array $args An array of arguments in order for the chosen method.
@@ -103,11 +103,12 @@ class ui {
 		$views = $this->views();
 		if ( ! is_null( $return ) ) {
 			end( $args );
-			echo $last_id= key( $args );
+			$last_id = key( $args );
 			$args[ $last_id ] = $return;
 		}
 
 		return call_user_func_array( array( $views, $view ), $args );
+
 	}
 
 	function models() {

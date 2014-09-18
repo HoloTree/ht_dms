@@ -17,7 +17,7 @@ add_action( 'wp_ajax_nopriv_ht_dms_paginate', '__return_false' );
 function ht_dms_paginate() {
 	if ( isset( $_REQUEST['nonce'] ) ) {
 		if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], 'ht-dms' ) ) {
-			wp_die( __( 'Your attempt to request data via ajax using the function holotree_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' ) );
+			wp_die( __( 'Your attempt to request data via ajax using the function ht_dms_ui_ajax_view was denied as the nonce did not match.', 'holotree' ) );
 		}
 
 		if ( isset( $_REQUEST[ 'view' ] ) && isset( $_REQUEST[ 'limit' ] ) && isset( $_REQUEST[ 'page' ] ) ) {
@@ -61,13 +61,16 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 	$pagination_args_and_path = pods_v( $view, $pagination_args_and_path );
 	$view_args = pods_v( 'args', $pagination_args_and_path  );
 
-	$obj = holotree_dms_ui()->get_view( $view, $view_args, 'Pods' );
+	$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
 	if ( $return_obj === true ) {
 
 		return $obj;
 
 	}
 	else {
+		if ( ! is_object( $obj )  ) {
+			holotree_error();
+		}
 		$template_file = trailingslashit( HT_DMS_VIEW_DIR ).'partials/';
 
 		$template_file .= pods_v( 'view', $pagination_args_and_path );
@@ -81,10 +84,10 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 				return false;
 			}
 
-			$out .= holotree_dms_ui()->view_loaders()->magic_template( $template_file, $obj, pods_v( 'page', $pagination_args_and_path, false, true ) );
+			$out .= ht_dms_ui()->view_loaders()->magic_template( $template_file, $obj, pods_v( 'page', $pagination_args_and_path, false, true ) );
 
 			if ( ! empty ( $out ) ) {
-				$out .= holotree_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $args[ 'page' ] );
+				$out .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $args[ 'page' ] );
 				$out = apply_filters( 'ht_dms_paginated_views_template_output', $out, $view );
 
 				return $out;

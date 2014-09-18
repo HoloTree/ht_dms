@@ -56,14 +56,14 @@ class consensus {
 	 * @since 	0.0.1
 	 */
 	function create( $dID, $obj = null, $dont_set = false ) {
-		$obj = holotree_decision( $dID, $obj );
+		$obj = ht_dms_decision( $dID, $obj );
 		if ( !is_object( $obj ) ) {
 			holotree_error( 'No object in', __METHOD__ );
 		}
 
 		$gID = (int) $obj->display( 'group.ID' );
 
-		$users = holotree_group_class()->all_members( $gID  );
+		$users = ht_dms_group_class()->all_members( $gID  );
 
 
 		if ( is_array( $users ) ) {
@@ -108,7 +108,7 @@ class consensus {
 		$key = "consensus_dID_{$dID}";
 		//if ( ! DOING_AJAX || false === ( $consensus = wp_cache_get( $key ) )  ) {
 		if ( true ) {
-			$obj       = holotree_decision( $dID, $obj );
+			$obj       = ht_dms_decision( $dID, $obj );
 			$consensus = $obj->field( 'consensus' );
 			if ( $unserialized ) {
 				return unserialize( $consensus );
@@ -183,7 +183,7 @@ class consensus {
 
 
 		if ( is_array( $value ) ) {
-			$d = holotree_decision_class();
+			$d = ht_dms_decision_class();
 			$id = $d->update( $dID, 'consensus', $value );
 			$status = $this->status( $value );
 			$d->update( $dID, 'decision_status', $status );

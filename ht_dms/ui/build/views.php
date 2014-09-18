@@ -186,8 +186,8 @@ class views {
 
 		if ( $return === 'template' ) {
 			if ( $obj->total() > 0 ) {
-				$view_loaders = holotree_dms_ui()->view_loaders();
-				$view         = holotree_dms_ui()->models()->path( 'task', true );
+				$view_loaders = ht_dms_ui()->view_loaders();
+				$view         = ht_dms_ui()->models()->path( 'task', true );
 
 				return $view_loaders->magic_template( $view, $obj );
 
@@ -475,7 +475,7 @@ class views {
 	 * @since 0.0.2
 	 */
 	function proposed_modifications( $id, $obj = null ) {
-		$decision_class = holotree_decision_class();
+		$decision_class = ht_dms_decision_class();
 		$obj = $decision_class->null_object( $obj, $id );
 		if ( $decision_class->has_proposed_modification( $id, $obj, true ) ) {
 
@@ -493,7 +493,7 @@ class views {
 			if ( is_array( $ids ) ) {
 
 				foreach ( $ids as $id ) {
-					$pObj = holotree_decision( $id );
+					$pObj = ht_dms_decision( $id );
 					$args = array(
 						'obj' 		=> $pObj,
 						'id'		=> $id,
@@ -583,7 +583,7 @@ class views {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

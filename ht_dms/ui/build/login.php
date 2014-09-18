@@ -78,7 +78,7 @@ class login {
 
 	static function output() {
 
-		return holotree_dms_ui()->view_loaders()->content_wrap(
+		return ht_dms_ui()->view_loaders()->content_wrap(
 			wp_login_form(
 				array( 'echo' => false, )
 			)

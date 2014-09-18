@@ -33,7 +33,7 @@ class common {
 		$notification = HT_DMS_NOTIFICATION_NAME;
 		add_filter( "pods_api_pre_save_pod_item_{$notification}", array( ht_dms_notification_class(), 'to_id' ), 5 );
 
-		$ajax_callbacks_class = holotree_dms_ui()->ajax_callbacks();
+		$ajax_callbacks_class = ht_dms_ui()->ajax_callbacks();
 		$ajax_actions = $ajax_callbacks_class->callbacks();
 
 		foreach( $ajax_actions as $callback ) {
@@ -42,7 +42,7 @@ class common {
 
 		}
 
-		add_filter( 'ht_dms_paginated_views_template_output', array( holotree_dms_ui()->views(), 'after_notification_preview' ), 10, 2 );
+		add_filter( 'ht_dms_paginated_views_template_output', array( ht_dms_ui()->views(), 'after_notification_preview' ), 10, 2 );
 
 		add_action( 'init', array( $this, 'font_awesome' ), 59 );
 
@@ -154,7 +154,7 @@ class common {
 		$action =  pods_v( 'dms_action', 'get', false, true );
 		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
 
-		if ( in_array( $action, array_keys( holotree_dms_ui()->view_loaders()->special_views() ) ) ) {
+		if ( in_array( $action, array_keys( ht_dms_ui()->view_loaders()->special_views() ) ) ) {
 			return;
 		}
 
@@ -180,8 +180,8 @@ class common {
 
 		if( $action == 'accept-change' ) {
 
-			$id = holotree_decision_class()->make_modification( $id );
-			holotree_consensus_class()->create( $id );
+			$id = ht_dms_decision_class()->make_modification( $id );
+			ht_dms_consensus_class()->create( $id );
 			pods_redirect( get_permalink( $id ) );
 			return;
 		}
@@ -196,7 +196,7 @@ class common {
 			$pod->save( 'proposed_changes', $pmid  );
 
 
-			holotree_consensus( $pmid );
+			ht_dms_consensus( $pmid );
 
 			$link = get_permalink( $id );
 			pods_redirect( $link );
@@ -228,7 +228,7 @@ class common {
 	 */
 	function redirect( $destination, $message = false ) {
 		if ( $message  ) {
-			$destination = holotree_dms_ui()->output_elements()->action_append( $destination, array ( 'var' => 'dms_message', 'value' => true ) );
+			$destination = ht_dms_ui()->output_elements()->action_append( $destination, array ( 'var' => 'dms_message', 'value' => true ) );
 		}
 		pods_redirect( $destination );
 		
@@ -265,7 +265,7 @@ class common {
 
 			if ( is_object( $pieces[ 'params' ] ) && isset( $pieces[ 'params' ]->pod ) && $pieces[ 'params' ]->pod === HT_DMS_DECISION_CPT_NAME ) {
 
-				holotree_consensus( $id );
+				ht_dms_consensus( $id );
 
 			}
 		}
@@ -286,7 +286,7 @@ class common {
 	function add_consensus(  $dID   ) {
 
 
-		holotree_consensus( $dID );
+		ht_dms_consensus( $dID );
 
 
 	}
@@ -461,7 +461,7 @@ class common {
 		$type = $pieces['params']->pod;
 
 		if ( $type === HT_DMS_DECISION_CPT_NAME ) {
-			$data[ 'status' ] = holotree_decision_class()->status( $id );
+			$data[ 'status' ] = ht_dms_decision_class()->status( $id );
 		}
 
 		if ( $type === HT_DMS_TASK_CT_NAME ) {

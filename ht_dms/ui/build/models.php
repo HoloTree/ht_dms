@@ -92,7 +92,7 @@ class models {
 
 	function group( $args ) {
 
-		$g = holotree_group_class();
+		$g = ht_dms_group_class();
 
 		$args = $this->args( $args );
 		extract( $args );
@@ -265,7 +265,7 @@ class models {
 		$params = $this->cache_args( $params );
 
 		if ( is_null( $obj) || ! is_pod( $obj ) ) {
-			$obj = holotree_task_class()->object( true, $params );
+			$obj = ht_dms_task_class()->object( true, $params );
 		}
 
 
@@ -380,7 +380,7 @@ class models {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 
@@ -493,29 +493,26 @@ class models {
 		}
 		if ( $return === 'template' || 'Pods' ) {
 			$short_type = strtolower( $type );
-			//@TODO stop assuming 'ht_dms' prefix
-			$short_type = str_replace( 'ht_dms_', '', $short_type );
+
+			$short_type = ht_dms_prefix_remover( $short_type );
 
 			if ( is_null( $obj) || ! is_pod( $obj ) ) {
-				//@todo remove this once https://github.com/HoloTree/ht_dms/issues/27 is resolved.
-				if ( $type !== HT_DMS_NOTIFICATION_NAME ) {
-					if ( function_exists( "holotree_{$short_type}_class" ) ) {
-						$class = call_user_func( "holotree_{$short_type}_class" );
-						$obj   = $class->null_object( null, $obj );
-						$obj   = $obj->find( $params );
-
-					}
-				}
-				else {
-					$class = ht_dms_notification_class();
+				if ( function_exists( "ht_dms_{$short_type}_class" ) ) {
+					$class = call_user_func( "ht_dms_{$short_type}_class" );
 					$obj   = $class->null_object( null, $obj );
 					$obj   = $obj->find( $params );
+
 				}
+				else{
+					holotree_error( __( sprintf( 'Object can not be built for %1s view', $type ), 'ht_dms' ) , __METHOD__ );
+				}
+
 
 			}
 
 
 			if ( $return === 'Pods' ) {
+
 				return $obj;
 
 			}

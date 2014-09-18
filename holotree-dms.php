@@ -146,7 +146,7 @@ class HoloTree_DMS {
 			global $post;
 			if ( is_object( $post ) && $post->post_type === HT_DMS_DECISION_CPT_NAME ) {
 
-				$consensus_possibilities = holotree_consensus_class()->possible_changes( $post->ID, get_current_user_id() );
+				$consensus_possibilities = ht_dms_consensus_class()->possible_changes( $post->ID, get_current_user_id() );
 
 			}
 
@@ -321,7 +321,7 @@ function holotree_dms() {
 		$classLoader->addDirectory( trailingslashit( HT_DMS_DIR ) . 'helper' );
 		$classLoader->register();
 
-		holotree_dms_ui();
+		ht_dms_ui();
 
 
 		/**

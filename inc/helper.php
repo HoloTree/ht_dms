@@ -100,7 +100,7 @@ function ht_dms_home() {
  */
 function ht_dms_mini_menu_items() {
 
-	$elements = holotree_dms_ui()->build_elements();
+	$elements = ht_dms_ui()->build_elements();
 	$items = array(
 		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'holotree' ),
 		ht_dms_preferences_url() => $elements->icon( 'preferences' ) . __( 'Preferences', 'ht_dms' ),
@@ -157,7 +157,7 @@ function ht_dms_url( $id, $type = false ) {
  */
 function ht_dms_spinner() {
 
-	$spinner = holotree_dms_ui()->build_elements()->icon( 'spinner', 'fa-2x fa-spin'  );
+	$spinner = ht_dms_ui()->build_elements()->icon( 'spinner', 'fa-2x fa-spin'  );
 	$spinner = sprintf( '<div class="spinner" style="padding-top:12px;">%1s</div>', $spinner );
 	return $spinner;
 
@@ -472,7 +472,7 @@ function ht_dms_is_notification( $id = false ) {
  */
 function ht_dms_preferences_url() {
 
-	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'preferences' );
+	return ht_dms_ui()->output_elements()->action_append( ht_dms_home(), 'preferences' );
 
 }
 
@@ -487,7 +487,7 @@ function ht_dms_preferences_url() {
  */
 function ht_dms_profile_url( $uID = 0 ) {
 
-	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'user-profile', $uID );
+	return ht_dms_ui()->output_elements()->action_append( ht_dms_home(), 'user-profile', $uID );
 
 }
 
@@ -500,7 +500,7 @@ function ht_dms_profile_url( $uID = 0 ) {
  */
 function ht_dms_notifications_url() {
 
-	return holotree_dms_ui()->output_elements()->action_append( ht_dms_home(), 'notifications' );
+	return ht_dms_ui()->output_elements()->action_append( ht_dms_home(), 'notifications' );
 
 }
 
@@ -508,7 +508,7 @@ function ht_dms_notifications_url() {
  * Add an icon to a string
  *
  * @param string $string String to add icon to
- * @param string $icon Icon to add. Must be defined in holotree_dms_ui()->build_elements()->icon()
+ * @param string $icon Icon to add. Must be defined in ht_dms_ui()->build_elements()->icon()
  * @param string $extra_class Optional. Additional class to add to icon.
  *
  * @return string
@@ -518,7 +518,7 @@ function ht_dms_notifications_url() {
 function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 	if ( is_array( $icon ) ) {
 		foreach ( $icon as $i  ) {
-			$icons[] = holotree_dms_ui()->build_elements()->icon( $i );
+			$icons[] = ht_dms_ui()->build_elements()->icon( $i );
 		}
 
 		if ( is_array( $icons ) ) {
@@ -527,7 +527,7 @@ function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 
 	}
 	else{
-		$icon = holotree_dms_ui()->build_elements()->icon( $icon, $extra_class );
+		$icon = ht_dms_ui()->build_elements()->icon( $icon, $extra_class );
 
 		$string = $icon . $string;
 	}

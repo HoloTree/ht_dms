@@ -346,7 +346,7 @@ class decision extends dms {
 	function change_consensus( $id, $value, $uID = null, $obj = null, $check_status = true ) {
 		$uID = $this->null_user( $uID );
 
-		$c = holotree_consensus_class();
+		$c = ht_dms_consensus_class();
 		$c->update( $id, $value, $uID );
 
 		$status  = $this->status( $id );
@@ -810,7 +810,7 @@ class decision extends dms {
 	}
 
 	function get_consensus( $id ) {
-		$consensus = holotree_consensus( $id );
+		$consensus = ht_dms_consensus( $id );
 
 		if ( is_array( $consensus ) ) {
 			return $consensus;
@@ -952,7 +952,7 @@ class decision extends dms {
 	 */
 	function who_is_blocking( $id ) {
 		if ( $this->is_blocked( $id ) ) {
-			$consensus = holotree_consensus_class()->get( $id );
+			$consensus = ht_dms_consensus_class()->get( $id );
 			if ( is_array( $consensus ) ) {
 				$who = array();
 				foreach ( $consensus as $value ) {

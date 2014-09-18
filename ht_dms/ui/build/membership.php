@@ -16,7 +16,7 @@ class membership {
 
 	function join( $gID, $obj = null ) {
 		$obj = holotree_group( $gID, $obj );
-		$access = holotree_group_class()->open_access( $gID, $obj );
+		$access = ht_dms_group_class()->open_access( $gID, $obj );
 		if ( $access == 0 ) {
 			$access_label = __( 'Membership to this group does not require approval.', 'holotree' );
 		}
@@ -57,7 +57,7 @@ class membership {
 
 	function view( $gID, $obj = null ) {
 		$obj = holotree_group( $gID, $obj );
-		$members = holotree_group_class()->all_members(  $gID, $obj );
+		$members = ht_dms_group_class()->all_members(  $gID, $obj );
 
 		$out = false;
 		if ( is_array( $members ) ) {
@@ -108,7 +108,7 @@ class membership {
 	 * @return \ht_dms\ui\ui
 	 */
 	private function ui() {
-		return holotree_dms_ui();
+		return ht_dms_ui();
 
 	}
 

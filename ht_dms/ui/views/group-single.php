@@ -11,8 +11,8 @@
 
 global $post;
 $id = $post->ID;
-$ui = holotree_dms_ui();
-$g = holotree_group_class();
+$ui = ht_dms_ui();
+$g = ht_dms_group_class();
 $obj = holotree_group( $id );
 $uID = get_current_user_id();
 

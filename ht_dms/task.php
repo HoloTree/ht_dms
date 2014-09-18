@@ -177,7 +177,7 @@ class task extends dms {
 			holotree_error( __LINE__, __METHOD__ );
 		}
 		$this->reset_cache( $id );
-		holotree_decision_class()->reset_cache( $id );
+		ht_dms_decision_class()->reset_cache( $id );
 		//$id = $this->update( $id, 'task_status', $status, $obj );
 
 		return $id;
@@ -592,7 +592,7 @@ class task extends dms {
 		$gID = (int) $obj->display( 'group.ID' );
 		if ( ! $gID ) {
 
-			$dObj = holotree_decision( $dID );
+			$dObj = ht_dms_decision( $dID );
 
 			$gID = (int) $dObj->display( 'group.ID' );
 
@@ -644,7 +644,7 @@ class task extends dms {
 				holotree_error();
 			}
 
-			$dObj = holotree_decision( $dID );
+			$dObj = ht_dms_decision( $dID );
 			$oID = (int) $dObj->display( 'organization.ID' );
 
 			if ( $fix ) {

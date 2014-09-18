@@ -26,8 +26,8 @@ class my_stuff {
 	 */
 	function my_group_decisions( $uID = null ) {
 		$decisions = false;
-		$uID = holotree_common_class()->null_user( $uID );
-		$groups = holotree_group_class()->users_groups( $uID, true );
+		$uID = ht_dms_common_class()->null_user( $uID );
+		$groups = ht_dms_group_class()->users_groups( $uID, true );
 
 		if ( is_array( $groups ) ) {
 			foreach ( $groups as $group ) {
@@ -69,7 +69,7 @@ class my_stuff {
 	 * @since 	0.0.1
 	 */
 	function my_tasks( $uID = null ) {
-		$uID = holotree_common_class()->null_user( $uID );
+		$uID = ht_dms_common_class()->null_user( $uID );
 		$obj = holotree_pods_object( 'task' );
 		$obj = $obj->find( array(  'd.assigned_user = "'.$uID.'" ') );
 		if ( $obj->total() > 0 ) {
@@ -245,7 +245,7 @@ class my_stuff {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

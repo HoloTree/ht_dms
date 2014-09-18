@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
     function viewGet( view, args, returnType, put ) {
         $.get(
             ajaxURL, {
-                'action': 'holotree_dms_ui_ajax_view',
+                'action': 'ht_dms_ui_ajax_view',
                 'nonce' : htDMS.nonce,
                 'view' : view,
                 'args' : args,

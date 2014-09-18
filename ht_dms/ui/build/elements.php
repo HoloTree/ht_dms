@@ -47,8 +47,8 @@ class elements {
 
 			if ( $dObj->total() > 0 ) {
 
-				$view_loaders = holotree_dms_ui()->view_loaders();
-				$view =  holotree_dms_ui()->models()->path( 'decision', true  );
+				$view_loaders = ht_dms_ui()->view_loaders();
+				$view =  ht_dms_ui()->models()->path( 'decision', true  );
 				$d_s = $view_loaders->magic_template( $view, $dObj );
 				$decisions[ $status ] = $d_s;
 
@@ -122,9 +122,9 @@ class elements {
 
 		}
 
-		$obj = holotree_decision( $id, $obj );
+		$obj = ht_dms_decision( $id, $obj );
 
-		$is_change = holotree_decision_class()->is_proposed_modification( $id, $obj );
+		$is_change = ht_dms_decision_class()->is_proposed_modification( $id, $obj );
 		if ( $obj->field( 'decision_type')  === 'change' ) {
 			$is_change = true;
 		}
@@ -173,7 +173,7 @@ class elements {
 		elseif ( $what === 'blocked-decision' ) {
 			$options = array( $accept, $change, $respond );
 			$options = array( $accept, $change );
-			$decision = holotree_decision_class();
+			$decision = ht_dms_decision_class();
 			if ( $decision->is_blocking( $id ) ) {
 				$options[] = $unblock;
 			}
@@ -231,7 +231,7 @@ class elements {
 	function task_actions( $tID, $obj = null ) {
 		$elements = $this->ui()->elements();
 		$id = $tID;
-		$obj = holotree_task( $id, $obj );
+		$obj = ht_dms_task( $id, $obj );
 
 		$fields = array(
 			'blockers'	=> array( 'label' => __( 'Add tasks that must be completed before this task is completed.', 'holotree' ),
@@ -240,7 +240,7 @@ class elements {
 		);
 
 		//only allow marking complete if isn't blocked.
-		if ( ! holotree_task_class()->is_blocked( $id, $obj ) ) {
+		if ( ! ht_dms_task_class()->is_blocked( $id, $obj ) ) {
 			$fields[] = 'completed';
 		}
 
@@ -344,7 +344,7 @@ class elements {
 	function group_membership( $gID, $obj = null ) {
 		$uID = get_current_user_id();
 		$obj = holotree_group( $gID, $obj  );
-		$g = holotree_group_class();
+		$g = ht_dms_group_class();
 		$out = false;
 		$membership = $this->ui()->membership();
 		if ( $g->is_member( $gID, $uID, $obj ) ) {
@@ -397,12 +397,12 @@ class elements {
 			$out .= "gID = ". $gID;
 		}
 
-		if ( ! holotree_group_class()->is_member( $gID ) ) {
+		if ( ! ht_dms_group_class()->is_member( $gID ) ) {
 			$out .= $this->ui()->group_widget()->join_group_widget( $gID );
 		}
 
 		$out .= $this->ui()->group_widget()->group_members_widget( $gID );
-		if ( holotree_common_class()->is_facilitator( null, $gID, null ) ) {
+		if ( ht_dms_common_class()->is_facilitator( null, $gID, null ) ) {
 			$out .= $this->ui()->group_widget()->group_approve_widget( $gID );
 		}
 
@@ -593,7 +593,7 @@ class elements {
 	 * @since 	0.0.1
 	 */
 	function ui(){
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		return $ui;
 

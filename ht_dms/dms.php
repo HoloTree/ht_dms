@@ -461,7 +461,7 @@ abstract class dms extends object {
 			$form .= $this->form_fix( $new, $type );
 		}
 
-		$ui = holotree_dms_ui();
+		$ui = ht_dms_ui();
 
 		if ( $new !== 'modify' ) {
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'new', 'X_ID_X' );

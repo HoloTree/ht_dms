@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-$ui = holotree_dms_ui();
+$ui = ht_dms_ui();
 
 $uID = get_current_user_id();
 

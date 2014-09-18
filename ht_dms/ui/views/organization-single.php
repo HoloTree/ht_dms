@@ -20,11 +20,11 @@ global $post;
 $id = $post->ID;
 
 //@TODO Use where/or select to only get the groups/tasks in organziation
-$obj = holotree_organization( $id );
-$org_class = holotree_organization_class();
+$obj = ht_dms_organization( $id );
+$org_class = ht_dms_organization_class();
 
 $uID = get_current_user_id();
-$ui = holotree_dms_ui();
+$ui = ht_dms_ui();
 
 $paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'oID' => $id ) );
 

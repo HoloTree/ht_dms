@@ -16,8 +16,8 @@ class automatic_notifications {
 
 
 	function new_decision_in_group( $id, $data, $gID, $oID ) {
-		$g = holotree_group_class();
-		$d = holotree_decision_class();
+		$g = ht_dms_group_class();
+		$d = ht_dms_decision_class();
 		$obj = holotree_group( $gID );
 		$group_name = $g->title( $gID, $obj );
 		$decision_name = $d->title($id );
@@ -44,7 +44,7 @@ class automatic_notifications {
 	//@todo hook to ht_dms_consensus_changed
 	function decision_passed( $id, $status ) {
 		if ( $status === 'passed' ) {
-			$d = holotree_decision_class();
+			$d = ht_dms_decision_class();
 			$members = $d->consensus_members( $id );
 			$decision_name = $d->title( $id );
 			$decision_link = sprintf( '<a href="%1s">%2s</a>', get_the_permalink( $id ), $decision_name );
@@ -113,7 +113,7 @@ class automatic_notifications {
 
 	function decision_summary( $uID ) {
 		$out = $decisions = false;
-		$g = holotree_group_class();
+		$g = ht_dms_group_class();
 		$groups = $g->users_groups_obj( $uID, null, -1,false, true );
 		if ( is_array( $groups ) && ! empty( $groups ) ) {
 			$statuses = array ( 'new', 'blocked' );
@@ -149,7 +149,7 @@ class automatic_notifications {
 	}
 
 	function membership_summary( $uID ) {
-		$g = holotree_group_class();
+		$g = ht_dms_group_class();
 		$params = array(
 			'where' => 'facilitators.ID = "' . $uID . ' " ',
 			'expires' => 599,
@@ -166,7 +166,7 @@ class automatic_notifications {
 		}
 
 		if ( is_array( $pending ) ) {
-			$build_elements = holotree_dms_ui()->build_elements();
+			$build_elements = ht_dms_ui()->build_elements();
 			foreach( $pending as $group ) {
 				foreach( $group as $pending_members => $name) {
 					$pending_list = false;

@@ -54,7 +54,7 @@ class caldera_actions {
 		$dID = pods_v( 'did', $data, false, true );
 
 
-		$d = holotree_decision_class();
+		$d = ht_dms_decision_class();
 		$uID = get_current_user_id();
 		if ( $action && $dID ) {
 			$action = strtolower( $action );
@@ -99,8 +99,8 @@ class caldera_actions {
 
 		global $post;
 		$id = $post->ID;
-		$obj = holotree_decision( $id  );
-		$d = holotree_decision_class();
+		$obj = ht_dms_decision( $id  );
+		$d = ht_dms_decision_class();
 
 
 		if ( $field[ 'ID' ] == $this->decision_actions_field ) {
@@ -220,10 +220,10 @@ class caldera_actions {
 		$id = pods_v( 'gid', $data, false, true );
 		if ( $id ) {
 			if ( array_key_exists( 'join_group', $data ) ) {
-				holotree_group_class()->join( $id, get_current_user_id() );
+				ht_dms_group_class()->join( $id, get_current_user_id() );
 			}
 			elseif ( array_key_exists( 'leave_group', $data )  ) {
-				holotree_group_class()->remove_member( $id, get_current_user_id() );
+				ht_dms_group_class()->remove_member( $id, get_current_user_id() );
 			}
 
 		}
@@ -251,7 +251,7 @@ class caldera_actions {
 	function pending_process( $data ) {
 		$gID = pods_v( 'gid', $data );
 		if ( $gID  ) {
-			$class          = holotree_group_class();
+			$class          = ht_dms_group_class();
 
 			$actions = array(
 				'members_to_accept',
