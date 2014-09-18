@@ -3,6 +3,8 @@
 Plugin Name: HoloTree Decision Making System
 Version: 0.0.3.a.1
 License: GPL v2 or Later
+Text Domain: ht_dms
+Domain Path: /languages/
 */
 
 /**
@@ -364,4 +366,17 @@ function holotree_dms_permalinks() {
 		$wp_rewrite->flush_rules();
 	}
 
+}
+
+/**
+ * Default initialization for the plugin:
+ * - Registers the default textdomain.
+ *
+ * @since 0.0.3
+ */
+add_action( 'init', 'ht_dms_init_translation' );
+function ht_dms_init_translation() {
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'ht_dms' );
+	load_textdomain( 'ht_dms', WP_LANG_DIR . '/ht_dms/ht_dms-' . $locale . '.mo' );
+	load_plugin_textdomain( 'ht_dms', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
