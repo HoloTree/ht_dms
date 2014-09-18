@@ -349,15 +349,18 @@ class decision extends dms {
 		$c = holotree_consensus_class();
 		$c->update( $id, $value, $uID );
 
+		$status  = $this->status( $id );
+
 		$consensus = $c->get( $id );
 		if ( $check_status ) {
 			$proper_status = $c->status( $consensus );
-			$status        = $this->status( $id );
+
 
 			if ( $proper_status !== $status ) {
 				$obj = $this->null_object( $obj, $id );
 				$id  = $this->update( $id, 'decision_status', $proper_status, $obj );
 			}
+
 		}
 
 		do_action( 'ht_dms_consensus_changed', $id, $status );

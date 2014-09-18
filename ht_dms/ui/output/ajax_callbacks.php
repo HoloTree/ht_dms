@@ -30,7 +30,7 @@ class ajax_callbacks {
 				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_CPT_NAME === $post->post_type ) {
 					wp_cache_flush();
 					//$users = holotree_decision_class()->consensus_members( $dID );
-					$consensus = holotree_dms_ui()->output_elements()->view_consensus( $_REQUEST[ $dID ] );
+					$consensus = holotree_dms_ui()->output_elements()->view_consensus( $dID );
 
 					if ( is_string( $consensus ) ) {
 						wp_die(  $consensus );

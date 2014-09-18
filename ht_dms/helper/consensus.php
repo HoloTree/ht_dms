@@ -138,8 +138,8 @@ class consensus {
 	 */
 	private function modify ( $dID, $new_value, $uID = null ) {
 		if ( $new_value > -1 && $new_value < 4 ) {
-			$uID = (int) $this->null_user( $uID );
-
+			$uID =  $this->null_user( $uID );
+			$uID = (int) $uID;
 			$consensus = $this->get( $dID );
 			if ( is_array( $consensus) ) {
 
@@ -279,9 +279,10 @@ class consensus {
 	 *
 	 * @since 0.0.1
 	 */
-	function null_user( $uID ) {
-		$class = new \ht_dms\helper\common();
-		$uID = $class->null_user( $uID );
+	function null_user( $uID  = null ) {
+		if( is_null( $uID ) ) {
+			$uID = get_current_user_id();
+		}
 
 		return $uID;
 	}

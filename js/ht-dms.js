@@ -133,9 +133,10 @@ jQuery(document).ready(function($) {
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
+                $( container ).empty();
                 update_decision_status( dID );
-                $( container ).html('');
-                $( container ).hide().append( response ).fadeIn( 800 );
+
+                $( container).html( response ).fadeIn( 800 );
 
 
 

@@ -55,7 +55,7 @@ class caldera_actions {
 
 
 		$d = holotree_decision_class();
-		$uID = holotree_dms_ui();
+		$uID = get_current_user_id();
 		if ( $action && $dID ) {
 			$action = strtolower( $action );
 
