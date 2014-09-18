@@ -31,7 +31,7 @@ $tabs = array(
 	),
 );
 
-if ( (int) $view_id !== (int) $uID ) {
+if ( ! is_null( $view_id ) && (int) $view_id !== (int) $uID ) {
 	unset( $tabs[1] );
 	unset( $tabs[2] );
 	$tabs[] = array(
