@@ -838,7 +838,7 @@ class elements {
 	 */
 	function third_element( $type, $id ) {
 		if ( $type == 'consensus' ) {
-			$this->view_consensus( $id );
+			$content = $this->view_consensus( $id );
 		}
 		elseif ( in_array( $type, array( 'network', 'user', 'organization', 'group' ) ) ) {
 			$content = call_user_func( array( ht_dms_ui()->activity_stream( $type, $id ),  $type ), $id );

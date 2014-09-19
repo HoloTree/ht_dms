@@ -404,8 +404,13 @@ class view_loaders {
 		elseif( in_array( $post_type, array_keys( $this->special_views() ) ) ){
 			$type = 'user';
 		}
-		else{
-			$type = ht_dms_prefix_remover( $post_type );
+		else {
+			if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_CPT_NAME ) ) {
+				$type = ht_dms_prefix_remover( $post_type );
+			} else {
+				$type = 'consensus';
+			}
+
 		}
 
 		$out .= $this->ui()->output_elements()->third_element( $type, $id );
