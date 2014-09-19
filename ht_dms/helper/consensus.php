@@ -269,6 +269,42 @@ class consensus {
 
 	}
 
+	/**
+	 * Sort a consensus by status
+	 *
+	 * @param int|array $dID Either a decision ID or a consensus array.
+	 *
+	 * @return array sorted consensus [status_code] => array( $uIDs)
+	 *
+	 * @since 0.0.3
+	 */
+	function sort_consensus( $dID ) {
+		if ( ! is_array( $dID ) ) {
+			$consensus = $this->consensus( $dID );
+		}
+		else {
+			$consensus = $dID;
+		}
+
+		$user_value = wp_list_pluck( $consensus, 'value' );
+
+
+		foreach( $user_value as $uID => $value ) {
+			$statuses[ $value ][] = $uID;
+		}
+
+		for ( $i=0; $i<=2; $i++ ) {
+			if ( ! isset( $statuses[ $i ] ) ) {
+				$statuses[ $i ] = array();
+			}
+		}
+
+		return $statuses;
+
+
+
+	}
+
 
 	/**
 	 * Convert null value for $uID to current user ID

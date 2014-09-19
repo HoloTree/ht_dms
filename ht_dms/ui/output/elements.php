@@ -181,7 +181,7 @@ class elements {
 		 *
 		 * @since 0.0.2
 		 */
-		$vertical = apply_filters( 'ht_dms_foundation_vertical_tabs', $vertical );
+		$vertical = apply_filters( 'ht_dms_foundation_vertical_tabs', $vertical, $tab_prefix );
 
 		if ( $vertical ) {
 			$vertical = 'vertical';
@@ -785,8 +785,12 @@ class elements {
 	 * @return string
 	 */
 	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false ) {
+		$members = false;
 		if ( is_array( $users ) ) {
 			foreach( $users as $user ) {
+				if ( ! pods_v( 'name', $user ) && isset( $user[0] )) {
+					$user = $user[0];
+				}
 				$name = pods_v( 'name', $user );
 				if ( ! is_null( $name ) ) {
 					$avatar = pods_v( 'avatar', $user, ht_dms_fallback_avatar() );
@@ -807,42 +811,51 @@ class elements {
 	/**
 	 * Visual display of the current status of a consensus
 	 *
-	 * @TODO make not foundation dependent
 	 * @param int|array $id Decision ID. Or can be an array. If array, must be in format ht_dms_decision_class()->consensus_members() returns.
+	 * @param int  $desktop_wide Number of items wide in desktop view
+	 * @param bool $mobile_wide Optional. Number of items wide in mobile view. If false, the default, will be half of $desktop_wide.
 	 *
 	 * @return string
 	 *
 	 * @since 0.0.3
 	 */
-	function view_consensus( $id ) {
-		wp_cache_flush();
-		if ( ! is_array( $id ) ) {
+	function view_consensus( $id, $desktop_wide = 8, $mobile_wide = false ) {
 
-			$users = ht_dms_decision_class()->consensus_members( $id );
-			$c = ht_dms_consensus( $id );
+		$tabs = false;
+
+		if ( ! is_array( $id ) ) {
+			$sorted_consensus = ht_dms_consensus_class()->sort_consensus( $id );
 		}
 		else {
-			$users = $id;
-			$c = false;
+			$sorted_consensus = $id;
 		}
 
-		$user_display = false;
-		$build = ht_dms_ui()->build_elements();
-		foreach( $users as $user ) {
+		foreach( $sorted_consensus as $status => $user_ids ) {
+			$users = array();
+			foreach( $user_ids as $uID ) {
+				$users[] = ht_dms_ui()->build_elements()->member_details( $uID );
+			}
 
-			$member_details[] = $build->member_details( $user );
-
+			$tabs[] = array(
+				'label'     => ht_dms_ui()->build_elements()->consensus_tab_header( $status, count( $users ) ),
+				'content'   => $member_details = $this->members_details_view( $users ),
+			);
 		}
-		$member_details = array( 'fopp' );
 
-		if ( is_array( $member_details ) ) {
-			$member_details = $this->members_details_view( $users );
-			return sprintf( '
-				<div class="consensus-view">
-					<h5>%0s</h5>
-					%1s
-				</div>
-			', __( 'Consensus Status', 'ht_dms' ), $member_details );
+
+		if ( is_array( $tabs ) ) {
+			$tabs = ht_dms_ui()->output_elements()->tab_maker( $tabs, 'consensus_view_tab_' );
+
+			if ( is_string( $tabs ) ) {
+
+				return sprintf( '
+					<div class="consensus-view">
+						<h5>%0s</h5>
+						%1s
+					</div>
+				', __( 'Consensus Status', 'ht_dms' ), $tabs );
+
+			}
 		}
 
 	}

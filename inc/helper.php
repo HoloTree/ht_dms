@@ -166,15 +166,19 @@ function ht_dms_spinner() {
 /**
  * Translates a user's value in the consensus value to a word in the current language.
  *
- * @param $value
+ * @param int  $value Status code 0|1|2 to translate.
+ * @param bool $with icons. Whether to return with an icon or not.
  *
  * @since 0.0.3
  */
-function ht_dms_consensus_status_readable( $value ) {
+function ht_dms_consensus_status_readable( $value, $with_icons = false ) {
 	$accepted_values = array( 0,1,2 );
 	if ( ! in_array( $value , $accepted_values ) ) {
+
 		return false;
+
 	}
+
 	$values = array(
 		'0' => __( 'No Response', 'ht_dms' ),
 		'1' => __( 'Accepted', 'ht_dms' ),
@@ -209,9 +213,14 @@ function ht_dms_consensus_status_readable( $value ) {
 
 	}
 
-	return $values[ $value ];
+	if ( $with_icons ) {
+
+	}
+
+	return pods_v( $value, $values );
 
 }
+
 
 /**
  * Returns the fallback avatar for users without Gravtars set.

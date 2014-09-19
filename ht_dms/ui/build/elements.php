@@ -508,6 +508,7 @@ class elements {
 			'public' => '<i class="fa fa-tree"></i>',
 			'spinner' => '<i class="fa fa-spinner fa-spin"></i>',
 			'silence' => '<i class="fa fa-circle-o"></i>',
+			'accepted' => '<i class="fa fa-check"></i>',
 		);
 
 		/**
@@ -596,12 +597,60 @@ class elements {
 		$data = get_userdata( $uID );
 
 		if ( $data ) {
-			$details[ $uID ] = array (
+			$details[] = array (
 				'name'   => $data->data->display_name,
 				'avatar' => get_avatar( $uID, $avatar_size, ht_dms_fallback_avatar() )
 			);
 
 			return apply_filters( 'ht_dms_member_details', $details, $uID, $details );
+
+		}
+
+	}
+
+	/**
+	 * Returns an icon for consensus code
+	 *
+	 * @param int $status_code 0|1|2
+	 *
+	 * @return mixed
+	 *
+	 * @since 0.0.3
+	 */
+	function consensus_icons( $status_code ) {
+		$class = 'fa-2x';
+		$icons = array(
+			0 => $this->icon( 'silence', $class ),
+			1 => $this->icon( 'accepted', $class ),
+			2 => $this->icon( 'blocked', $class ),
+		);
+
+		$icons = apply_filters( 'ht_dms_consensus_icons', $icons );
+
+		return pods_v( $status_code, $icons, false, false );
+
+	}
+
+	/**
+	 * Header for consensus tabs (or other use)
+	 *
+	 * Shows icon-status-count
+	 *
+	 * @param int $status_code 0|1|2
+	 * @param int $count number of users with that status
+	 *
+	 * @return string
+	 */
+	function consensus_tab_header( $status_code, $count ) {
+		$status = ht_dms_consensus_status_readable( $status_code );
+		$icon = $this->consensus_icons( $status_code );
+		if ( ! holotree_integer( $count ) ) {
+			$count = '';
+		}
+
+		if ( $status ) {
+
+			return sprintf( '<div class="consensus-tab-label">%1s<span class="status">%2s</span><span="count">%3s</span></div>', $icon, $status, $count );
 
 		}
 
