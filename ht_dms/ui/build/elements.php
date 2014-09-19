@@ -580,8 +580,31 @@ class elements {
 
 	}
 
-	function member_details( $uID, $obj = null ) {
-		return;
+
+	/**
+	 * Individual member details.
+	 *
+	 * Designed to be passed to be used in output_views()->members_details_view()
+	 *
+	 * @param null|int $uID Optional. User Id or null for current user.
+	 * @param int  $avatar_size Optional. Avatar size. Default is 256
+	 *
+	 * @return mixed|void
+	 */
+	function member_details( $uID = null, $avatar_size = 256 ) {
+		$uID = ht_dms_common_class()->null_user( $uID );
+		$data = get_userdata( $uID );
+
+		if ( $data ) {
+			$details[ $uID ] = array (
+				'name'   => $data->data->display_name,
+				'avatar' => get_avatar( $uID, $avatar_size, ht_dms_fallback_avatar() )
+			);
+
+			return apply_filters( 'ht_dms_member_details', $details, $uID, $details );
+
+		}
+
 	}
 
 

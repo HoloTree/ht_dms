@@ -24,10 +24,7 @@ if ( pods_v( 'dms_action', 'get', false, true ) === 'changing' ) {
 
 }
 else {
-	add_filter( 'ht_dms_after_foundation_tab_choice', function( $out ) {
-		global $id;
-		return ht_dms_ui()->output_elements()->view_consensus( $id );
-	} );
+
 		$paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'dID' => $id ) );
 		$current = $ui->views()->decision( $obj, $id );
 		$status = $obj->field( 'decision_status' );

@@ -773,6 +773,38 @@ class elements {
 	}
 
 	/**
+	 * Creates view of a group of members
+	 *
+	 *
+	 * @param  array    $users Array of user IDs.
+	 * @param int  $desktop_wide Number of items wide in desktop view
+	 * @param bool $mobile_wide Optional. Number of items wide in mobile view. If false, the default, will be half of $desktop_wide.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return string
+	 */
+	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false ) {
+		if ( is_array( $users ) ) {
+			foreach( $users as $user ) {
+				$name = pods_v( 'name', $user );
+				if ( ! is_null( $name ) ) {
+					$avatar = pods_v( 'avatar', $user, ht_dms_fallback_avatar() );
+					$members[] = sprintf( '<li class="member-view"><div class="avatar">%1s</span><div class="name">%2s</span></li>', $avatar, $name );
+				}
+			}
+		}
+
+		if ( is_array( $members ) ) {
+			if ( ! $mobile_wide ) {
+				$mobile_wide = $desktop_wide / 2;
+			}
+			return sprintf( '<div class="members-view"><ul class="small-block-grid-%1s small-block-grid-%2s">%3s</ul></div>', $mobile_wide, $desktop_wide, implode( $members ) );
+		}
+
+	}
+
+	/**
 	 * Visual display of the current status of a consensus
 	 *
 	 * @TODO make not foundation dependent
@@ -795,36 +827,22 @@ class elements {
 		}
 
 		$user_display = false;
-
+		$build = ht_dms_ui()->build_elements();
 		foreach( $users as $user ) {
 
-			$user_display[ ] = sprintf(
-				'<div class="row consensus-view-user" id="consensus-view">
-					<div class="large-3 small-12 columns">
-						%1s
-					</div>
-					<div class="large-9 small-12 columns">
-						<ul>
-							<li>%2s</li>
-							<li>%3s</li>
-						</ul>
-					</div>
-				</div>
-				',
-				$user[ 'avatar' ],
-				$user[ 'name' ],
-				ht_dms_consensus_status_readable( $user[ 'consensus' ] )
-			);
-		}
+			$member_details[] = $build->member_details( $user );
 
-		if ( is_array( $user_display ) ) {
-			//return print_c3( array( $c, $users, $user_display ) );
+		}
+		$member_details = array( 'fopp' );
+
+		if ( is_array( $member_details ) ) {
+			$member_details = $this->members_details_view( $users );
 			return sprintf( '
 				<div class="consensus-view">
 					<h5>%0s</h5>
 					%1s
 				</div>
-			', __( 'Consensus Status', 'ht_dms' ), implode( $user_display ) );
+			', __( 'Consensus Status', 'ht_dms' ), $member_details );
 		}
 
 	}
