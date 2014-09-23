@@ -30,10 +30,7 @@ class decision extends dms {
 		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
 
-	//add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
 
-
-		//add_filter( "pods_api_pre_save_pod_item_{$type}", array( $this, 'save_proposed_modification' ), 15, 3 );
 	}
 
 	/**
@@ -308,26 +305,6 @@ class decision extends dms {
 	}
 
 
-	function form_fix_jQuery( $jquery, $new ) {
-
-		if ( $new  ) {
-			//fix for new decision form
-			$jQuery = "//fix for new decision form
-			$( 'li.pods-form-ui-row-name-decision-status, li.pods-form-ui-row-name-proposed-by, li.pods-form-ui-row-name-decision-type, li.pods-form-ui-row-name-group, li.pods-form-ui-row-name-change-to, li.pods-form-ui-row-name-organization' ).hide();
-		";
-		}
-		else {
-			//fix for propose-modify form
-			$jQuery =  "//fix for propose-modify form
-		$( 'li.pods-form-ui-row-name-decision-status, li.pods-form-ui-row-name-decision-type, li.pods-form-ui-row-name-manager, li.pods-form-ui-row-name-group, li.pods-form-ui-row-name-change-to' ).hide();
-		";
-		}
-
-		return $jQuery;
-
-
-	}
-
 
 	/**
 	 * Change a decision's consensus
@@ -526,134 +503,6 @@ class decision extends dms {
 		}
 
 	}
-
-	/**
-	 * Action for accepting decision
-	 *
-	 * @return int $id ID of decision user has just accepted
-	 *
-	 * @since 0.0.1
-	 */
-	function action_accept( ) {
-		if ( $this->get_action_var() !== false ) {
-			if ( $this->get_action_var() === 'accept' ) {
-				if ( $this->get_id_var() !== false ) {
-					$id = $this->accept( $this->get_id_var() );
-					return $id;
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Action for blocking decision
-	 *
-	 * @return int $id ID of decision user has just blocked
-	 *
-	 * @since 0.0.1
-	 */
-	function action_block( ) {
-		if ( $this->get_action_var() !== false ) {
-			if ( $this->get_action_var() === 'block' ) {
-				if ( $this->get_id_var() !== false ) {
-					$id = $this->block( $this->get_id_var() );
-					return $id;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Action for unblocking decision
-	 *
-	 * @return int $id ID of decision user has just unblocked
-	 *
-	 * @since 0.0.1
-	 */
-	function action_unblock( ) {
-		if ( $this->get_action_var() !== false ) {
-			if ( $this->get_action_var() === 'unblock' ) {
-				if ( $this->get_id_var() !== false ) {
-					$id = $this->unblock( $this->get_id_var() );
-					return $id;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Action for responding to a decision
-	 *
-	 * @TODO How to get content
-	 *
-	 * @return int $id ID of decision user has just unblocked
-	 *
-	 * @since 0.0.1
-	 */
-	function action_respond( ) {
-		if ( $this->get_action_var() !== false ) {
-			if ( $this->get_action_var() === 'respond' ) {
-				if ( $this->get_id_var() !== false ) {
-					$id = $this->respond( $this->get_id_var() );
-					return id;
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * Form for proposing a modification to a decision
-	 *
-	 * @TODO REMOVE THIS!
-	 *
-	 * @param 	int			$id			ID of decision to propose modification to.
-	 * @param	obj|null	$single_obj	Optional. Decision object of single item that is being modified. If isn't a Pods Object for whole class, bad things will happen.
-	 *
-	 * @return 	string				Pods form
-	 *
-	 * @since 	0.0.1
-	 */
-	function _propose_modify ( $id, $obj = null ) {
-
-		return $this->edit( $id, null, $obj );
-
-		$form_fields = array(
-			'post_title',
-			'decision_description',
-			'tasks',
-			'decision_status',
-			'manager',
-			'proposed_by',
-			'group',
-			'organization',
-		);
-
-		foreach( $form_fields as $field ) {
-			if ( $field === 'post_title' || 'decision_description' || 'decision_status' ) {
-				$field[ 'default' ] = $obj->field( $field );
-			}
-			elseif ( $field === 'group' ) {
-				$field[ 'default' ] = $this->get_group( $id, $obj );
-			}
-			elseif( $field === 'manager' ) {
-				$field[ 'default' ] = (int) $obj->field( 'manager.ID' );
-			}
-			elseif( $field === 'proposed_by' ) {
-
-			}
-		}
-		$form_fields ['change_to' ] =  array(
-			'default' => (string) $id,
-		);
-		$form_fields [ 'reason_for_change' ] = array (
-				'required' => true,
-		);
-
-
-	}
-
 
 	/**
 	 * Accept a proposed modification
