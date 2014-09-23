@@ -228,7 +228,7 @@ class elements {
 			$id = 'tabs';
 		}
 
-		$out .= sprintf( '<div id="#%0s" class="tabs-content %1s" %2s >', $id, $vertical, $attr );
+		$out .= sprintf( '<div id="%0s" class="tabs-content %1s" %2s >', $id, $vertical, $attr );
 
 
 		foreach ( $tabs as $key => $tab) {
