@@ -23,6 +23,16 @@ class automatic_notifications {
 
 	}
 
+	private function send_to_members( $members, $subject, $message ) {
+		if ( is_array( $members ) && ! empty( $members ) ) {
+			foreach( $members as $to => $uneeded ) {
+				$this->new_message( $to, $subject, $message );
+
+			}
+
+		}
+	}
+
 	function new_decision_in_group( $id, $data, $gID, $oID ) {
 		$g = ht_dms_group_class();
 		$d = ht_dms_decision_class();
@@ -33,15 +43,11 @@ class automatic_notifications {
 
 		$members = $g->all_members( $id, $obj );
 
-		if ( is_array( $members ) & ! empty( $members ) ) {
-			$subject = __( sprintf( 'New decision %1s created in the %1s group.', $decision_name, $group_name ), 'ht_dms' );
+		$subject = __( sprintf( 'New decision %1s created in the %1s group.', $decision_name, $group_name ), 'ht_dms' );
 
-			$message = __( sprintf( 'You can see the new decision here: %1s', $decision_link ), 'ht_dms' );
-			foreach ( $members as $to ) {
-				$this->new_message( $to, $subject, $message );
-			}
+		$message = __( sprintf( 'You can see the new decision here: %1s', $decision_link ), 'ht_dms' );
 
-		}
+		$this->send_to_members( $members, $subject, $message );
 
 	}
 
@@ -61,14 +67,8 @@ class automatic_notifications {
 			$subject = __( sprintf( 'The decision %1s has passed', $decision_name ), 'ht_dms' );
 			$message = __( sprintf( 'You can see the decision here: %1s' ), $decision_link );
 
+			$this->send_to_members( $members, $subject, $message );
 
-			if ( is_array( $members ) && ! empty( $members ) ) {
-				foreach( $members as $to => $uneeded ) {
-					$this->new_message( $to, $subject, $message );
-
-				}
-
-			}
 		}
 	}
 
