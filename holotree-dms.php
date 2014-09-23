@@ -325,6 +325,7 @@ function holotree_dms() {
 
 		ht_dms_ui();
 
+		ht_dms_automatic_notifications_class();
 
 		/**
 		 * Make REST API not require auth when HT_DEV_MODE

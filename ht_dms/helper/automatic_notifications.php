@@ -14,6 +14,14 @@ namespace ht_dms\helper;
 
 class automatic_notifications {
 
+	function __construct() {
+
+		add_action( 'ht_dms_new_group', array( $this, 'new_group_in_organization' ), 10, 4 );
+		add_action( 'ht_dms_new_decision', array( $this, 'new_decision_in_group' ), 10, 4 );
+		add_action( 'ht_dms_consensus_changed', array( $this, 'decision_passed' ), 10, 4 );
+		add_action( 'ht_dms_update_decision', array( $this, 'decision_failed' ), 10, 4 );
+
+	}
 
 	function new_decision_in_group( $id, $data, $gID, $oID ) {
 		$g = ht_dms_group_class();
@@ -41,8 +49,9 @@ class automatic_notifications {
 		//@TODO needed?
 	}
 
-	//@todo hook to ht_dms_consensus_changed
+
 	function decision_passed( $id, $status ) {
+
 		if ( $status === 'passed' ) {
 			$d = ht_dms_decision_class();
 			$members = $d->consensus_members( $id );
@@ -201,6 +210,7 @@ class automatic_notifications {
 		}
 
 		return $pending;
+
 	}
 
 
@@ -218,18 +228,6 @@ class automatic_notifications {
 
 		return apply_filters( 'ht_dms_summary_notifications', $summaries );
 
-	}
-
-
-	public function actions() {
-		$actions = array(
-			'new_group' => 'new_decision_in_group',
-			'new_decision' => 'new_group_in_organization',
-			'update_decision' => 'decision_passed',
-			'update_decision' => 'decision_failed'
-		);
-
-		return $actions;
 	}
 
 	/**

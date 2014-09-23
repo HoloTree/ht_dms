@@ -698,16 +698,18 @@ class elements {
 			$sorted_consensus = $id;
 		}
 
-		foreach( $sorted_consensus as $status => $user_ids ) {
-			$users = array();
-			foreach( $user_ids as $uID ) {
-				$users[] = ht_dms_ui()->build_elements()->member_details( $uID );
-			}
+		if ( is_array( $sorted_consensus ) ) {
+			foreach ( $sorted_consensus as $status => $user_ids ) {
+				$users = array ();
+				foreach ( $user_ids as $uID ) {
+					$users[ ] = ht_dms_ui()->build_elements()->member_details( $uID );
+				}
 
-			$tabs[] = array(
-				'label'     => ht_dms_ui()->build_elements()->consensus_tab_header( $status, count( $users ) ),
-				'content'   => $member_details = $this->members_details_view( $users ),
-			);
+				$tabs[ ] = array (
+					'label'   => ht_dms_ui()->build_elements()->consensus_tab_header( $status, count( $users ) ),
+					'content' => $member_details = $this->members_details_view( $users ),
+				);
+			}
 		}
 
 

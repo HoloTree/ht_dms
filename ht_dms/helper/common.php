@@ -37,7 +37,7 @@ class common {
 		$ajax_actions = $ajax_callbacks_class->callbacks();
 
 		foreach( $ajax_actions as $callback ) {
-			add_action( "wp_ajax_ht_dms_{$callback}", array( $ajax_callbacks_class, $callback ) );
+			add_action( "wp_ajax_ht_dms_{$callback}", array( $ajax_callbacks_class, $callback ), 2 );
 			add_action( "wp_ajax_nopriv_ht_dms_{$callback}", '__return_false' );
 
 		}
@@ -46,7 +46,6 @@ class common {
 
 		add_action( 'init', array( $this, 'font_awesome' ), 59 );
 
-		add_action( 'init', array( $this, 'automatic_notification_actions' ) );
 
 	}
 
@@ -496,10 +495,12 @@ class common {
 		do_action( 'ht_dms_update', $id, $type, $new, $data, $gID, $oID );
 
 		if ( $new ) {
-			do_action( "ht_dms_new_{$type}", $id, $data, $gID, $oID );
+			$action = "ht_dms_new_{$type}";
+			do_action( $action, $id, $data, $gID, $oID );
 		}
 		else {
-			do_action( "ht_dms_update_{$type}", $id, $data, $gID, $oID );
+			$action = "ht_dms_update_{$type}";
+			do_action( $action, $id, $data, $gID, $oID );
 		}
 
 
@@ -517,21 +518,6 @@ class common {
 			'font-awesome',
 			true
 		);
-	}
-
-	function automatic_notification_actions() {
-		$class = ht_dms_automatic_notifications_class();
-		$actions = $class->actions();
-		$i = 10;
-		if ( is_array( $actions ) && ! empty( $actions ) ) {
-			$prefix = HT_DMS_PREFIX;
-			foreach( $actions as $action => $callback ) {
-				add_action( "{$prefix}_{$action}", array( $class, $callback ), $i, 4 );
-				$i++;
-			}
-
-		}
-
 	}
 
 

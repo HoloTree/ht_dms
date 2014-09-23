@@ -359,6 +359,8 @@ class decision extends dms {
 			if ( $proper_status !== $status ) {
 				$obj = $this->null_object( $obj, $id );
 				$id  = $this->update( $id, 'decision_status', $proper_status, $obj );
+
+				$status = $proper_status;
 			}
 
 		}
