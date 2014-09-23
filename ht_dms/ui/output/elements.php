@@ -122,22 +122,23 @@ class elements {
 	 *     @type string $label 		Label for tab.
 	 *     @type string $content 	Content of tab.
 	 * }
+	 * @param bool|string    Optional. ID for outermost container.
 	 *
 	 * @return 	string
 	 *
 	 * @since 	0.0.1
 	 */
-	function tab_maker( $tabs, $tab_prefix = 'tab_', $class = '' ) {
+	function tab_maker( $tabs, $tab_prefix = 'tab_', $class = '', $id = false ) {
 		if ( ! $tab_prefix ) {
 			$tab_prefix = 'tab_';
 		}
 
 		if ( HT_FOUNDATION ) {
-			return $this->tab_maker_foundation( $tabs, $tab_prefix );
+			return $this->tab_maker_foundation( $tabs, $tab_prefix, $id );
 
 		}
 		else {
-			return $this->tab_maker_jUI( $tabs, $tab_prefix, $class );
+			return $this->tab_maker_jUI( $tabs, $tab_prefix, $class, $id );
 
 		}
 	}
@@ -169,7 +170,7 @@ class elements {
 		return $out;
 	}
 
-	function tab_maker_foundation( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false ) {
+	function tab_maker_foundation( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
 		$class = $class.' tabs';
 
 		/**
@@ -223,7 +224,11 @@ class elements {
 
 		$i = 1;
 
-		$out .= sprintf( '<div id="tabs" class="tabs-content %1s" %2s >', $vertical, $attr );
+		if ( false == $id ) {
+			$id = 'tabs';
+		}
+
+		$out .= sprintf( '<div id="#%0s" class="tabs-content %1s" %2s >', $id, $vertical, $attr );
 
 
 		foreach ( $tabs as $key => $tab) {
@@ -245,22 +250,22 @@ class elements {
 	}
 
 
-	function accordion(  $panels, $prefix = 'panel_', $class = '' ) {
+	function accordion(  $panels, $prefix = 'panel_', $class = '', $id = false ) {
 		if ( ! $prefix  ) {
 			$prefix = 'panel_';
 		}
 		
 		if ( HT_FOUNDATION ) {
-			return $this->accordion_foundation( $panels, $prefix, $class );
+			return $this->accordion_foundation( $panels, $prefix, $class, $id );
 
 		}
 		else {
-			return $this->accordion_jUI( $panels, $class );
+			return $this->accordion_jUI( $panels, $class, $id );
 
  		}
 	}
 
-	function accordion_jUI(  $panels,  $class = '' ) {
+	function accordion_jUI(  $panels,  $class = '', $id ) {
 		$out = '<div id="accordion"';
 		if ( $class !== '' ) {
 			$out .= ' class="'.$class.'"';
@@ -281,7 +286,7 @@ class elements {
 
 		return $out;
 	}
-	function accordion_foundation( $panels, $prefix= 'panel', $class = '' ) {
+	function accordion_foundation( $panels, $prefix= 'panel', $class = '', $id ) {
 
 			$out = '<dl class="accordion ' . $class . '" data-accordion>';
 			$i = 0;
@@ -715,12 +720,13 @@ class elements {
 	 * @param array        $content The content to output. Should be a multi-dimensional array with each index containing keys for 'content' and 'label'
 	 * @param null|string   $prefix Optional The prefix to use for the t
 	 * @param string $class Optional. Class for outermost container
+	 * @param bool|string    Optional. ID for outermost container.
 	 *
 	 * @return string The container
 	 *
 	 * @since 0.0.1
 	 */
-	function output_container( $content, $prefix = null, $class = '' ) {
+	function output_container( $content, $prefix = null, $class = '', $id = false ) {
 		foreach( $content as $i => $c ) {
 			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c['content'] ) ) {
 				unset( $content[ $i ] );
@@ -732,10 +738,10 @@ class elements {
 		}
 
 		if ( ( function_exists( 'is_phone' ) && is_phone() ) || ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) ) {
-			return $this->accordion( $content, $prefix, $class );
+			return $this->accordion( $content, $prefix, $class, $id );
 		}
 		else {
-			return $this->tab_maker( $content, $prefix, $class );
+			return $this->tab_maker( $content, $prefix, $class, $id );
 		}
 	}
 
@@ -803,8 +809,14 @@ class elements {
 			if ( ! $mobile_wide ) {
 				$mobile_wide = $desktop_wide / 2;
 			}
-			return sprintf( '<div class="members-view"><ul class="small-block-grid-%1s small-block-grid-%2s">%3s</ul></div>', $mobile_wide, $desktop_wide, implode( $members ) );
+
+
+ 			return sprintf( '<div class="members-view"><ul class="small-block-grid-%d large-block-grid-%d">%3s</ul></div>', $mobile_wide, $desktop_wide, implode( $members ) );
 		}
+		else {
+			return '';
+		}
+
 
 	}
 
@@ -844,7 +856,7 @@ class elements {
 
 
 		if ( is_array( $tabs ) ) {
-			$tabs = ht_dms_ui()->output_elements()->tab_maker( $tabs, 'consensus_view_tab_' );
+			$tabs = ht_dms_ui()->output_elements()->tab_maker( $tabs, 'consensus_view_tab_', 'consensus-tabs', 'consensus-tabs' );
 
 			if ( is_string( $tabs ) ) {
 
