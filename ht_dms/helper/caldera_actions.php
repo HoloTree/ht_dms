@@ -63,9 +63,14 @@ class caldera_actions {
 				$id = $d->accept( $dID, $uID );
 			}
 
-			if( $action === 'object' ) {
+			if ( $action === 'remove-objection' ) {
+				$id = $d->unblock( $dID, $uID );
+			}
+
+			if ( $action === 'object' ) {
 				$id = $d->block( $dID, $uID );
 			}
+
 
 		}
 
@@ -111,8 +116,10 @@ class caldera_actions {
 				unset( $field['config']['option'][ $this->decision_option_id( 'accept-change' ) ] );
 			}
 
-			if ( ! $d->is_new( $id, $obj ) && ! $d->is_proposed_change( $id, $obj ) ) {
-				foreach( $this->decision_option_id( '', true ) as $option ) {
+			if ( ! $d->is_new( $id, $obj ) && ! $d->is_proposed_change( $id, $obj ) && ! $d->is_blocked( $id ) ) {
+				$options = $this->decision_option_id( '', true );
+				$options = array_keys( $options );
+				foreach( $options  as $option  ) {
 					if ( $option !== $this->decision_option_id( 'respond' ) && isset( $field['config']['option'][ $option ] ) ) {
 						unset( $field['config']['option'][ $option ] );
 					}
@@ -129,6 +136,10 @@ class caldera_actions {
 				if ( $d->is_blocking( $id ) ){
 					unset( $field[ 'config' ][ 'option' ][ $this->decision_option_id( 'object' ) ] );
 
+				}
+
+				if ( $d->is_blocking( $id ) ) {
+					unset( $field[ 'config' ][ 'option' ][ $this->decision_option_id( 'accept' ) ] );
 				}
 
 			}
