@@ -517,7 +517,11 @@ class view_loaders {
 				}
 
 				if ( ! empty( $out ) ) {
+					$view = basename( $template_file );
 					$out = ht_dms_ui()->build_elements()->icon_substitution( $out );
+					$before = apply_filters( 'ht_dms_before_magic_templates', '', $view );
+					$after = apply_filters( 'ht_dms_after_magic_template', '', $view );
+					$out = $before . $out . $after;
 					return $out;
 				}
 

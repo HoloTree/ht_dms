@@ -162,6 +162,7 @@ class models {
 			}
 
 			if ( !is_null( $in ) ) {
+
 				if ( $in[ 'what' ] === 'group' || $in[ 'what' ] === HT_DMS_GROUP_CPT_NAME ) {
 					$in_where = 'group.ID =';
 				}
@@ -169,6 +170,7 @@ class models {
 					$in_where = 'organization.ID =';
 				}
 				else {
+
 					holotree_error();
 				}
 
@@ -477,7 +479,7 @@ class models {
 	/**
 	 * Handles Model output
 	 *
-	 * @param 	string 		$return 	What to return. Either the results as a template, as a Pods object, as JSON object via the REST API, or URL string to pass to the REST API  template|Pods|JSON|urlstring
+	 * @param 	string|array $return 	What to return. Either the results as a template, as a Pods object, as JSON object via the REST API, or URL string to pass to the REST API  template|Pods|JSON|urlstring May also be an array, which must have a key called 'view' with the name of a view partial to load.
 	 * @param 	string  	$type		Content type
 	 * @param 	array   	$params		Pods::find() params
 	 * @param 	bool 		$preview	Optional. Defaults to false. Used if returning a template.
@@ -488,7 +490,15 @@ class models {
 	 * @return null|string|bool|Pods|JSON
 	 */
 	function output( $return, $type, $params, $preview = false, $obj = null ) {
-		if ( ! is_string( $return ) || intval( $return ) > 0 ) {
+		if ( is_array( $return ) ) {
+
+			if( ! is_null( $view = pods_v( 'view', $return ) ) ) {
+				$return = 'template';
+				$view = trailingslashit( HT_DMS_VIEW_DIR ) . 'partials/' . $view;
+			}
+
+		}
+		elseif ( ! is_string( $return ) || intval( $return ) > 0 ) {
 			$return = 'template';
 		}
 		if ( $return === 'template' || 'Pods' ) {
@@ -519,7 +529,9 @@ class models {
 
 			elseif ( $return === 'template' ) {
 
-				$view = $this->path( $short_type, $preview );
+				if ( ! isset( $view) ) {
+					$view = $this->path( $short_type, $preview );
+				}
 
 				$view = $this->ui()->view_loaders()->magic_template( $view, $obj, false );
 

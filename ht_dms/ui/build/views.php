@@ -209,6 +209,45 @@ class views {
 
 	}
 
+	function active_decisions( $obj = null, $in = null, $uID = null, $limit = 5, $return = 'template', $page = false ) {
+		if ( ! is_array( $obj ) ) {
+			$args = array (
+				'obj'     => $obj,
+				'mine'    => $uID,
+				'in'      => $in,
+				'limit'   => $limit,
+				'page'    => $page,
+				'preview' => true,
+				'return'  => $return,
+			);
+		}
+		else {
+			$args = $obj;
+		}
+
+		if ( ! is_null( $id = pods_v( 'in', $args ) ) ) {
+
+			$in = array();
+			if ( ht_dms_is_group( $id ) ) {
+
+				$in[ 'what' ] = 'group';
+			}
+			elseif ( ht_dms_is_organization( $id ) ) {
+				$in[ 'what' ] = 'organization';
+			}
+			else{
+				holotree_error();
+			}
+
+			$in[ 'ID' ] = $id;
+			$args[ 'in' ] = $in;
+
+		}
+
+		return $this->models()->decision( $args );
+
+	}
+
 	/**
 	 * Get single organization view.
 	 *
@@ -589,3 +628,4 @@ class views {
 
 	}
 } 
+
