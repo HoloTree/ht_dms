@@ -642,10 +642,10 @@ class elements {
 	 * @return string
 	 */
 	function consensus_tab_header( $status_code, $count ) {
-		$status = ht_dms_consensus_status_readable( $status_code );
+		$status = ht_dms_consensus_status_readable( $status_code, false, true );
 		$icon = $this->consensus_icons( $status_code );
 		if ( ! holotree_integer( $count ) ) {
-			$count = '';
+			$count = 0;
 		}
 
 		if ( $status ) {

@@ -171,7 +171,7 @@ function ht_dms_spinner() {
  *
  * @since 0.0.3
  */
-function ht_dms_consensus_status_readable( $value, $with_icons = false ) {
+function ht_dms_consensus_status_readable( $value, $with_icons = false, $ing = false ) {
 	$accepted_values = array( 0,1,2 );
 	if ( ! in_array( $value , $accepted_values ) ) {
 
@@ -184,6 +184,11 @@ function ht_dms_consensus_status_readable( $value, $with_icons = false ) {
 		'1' => __( 'Accepted', 'ht_dms' ),
 		'2' => __( 'Blocked', 'ht_dms' ),
 	);
+
+	if ( $ing ) {
+		$values[1] = __( 'Accepting', 'ht_dms' );
+		$values[2] = __( 'Blocking', 'ht_dms' );
+	}
 
 	/**
 	 * Change what we call each consensus value
