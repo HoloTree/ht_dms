@@ -175,10 +175,10 @@ class ui {
 	 *
 	 * @since 0.0.3
 	 */
-	function activity_stream( $type ) {
+	function activity_stream( $type, $id ) {
 		$this->file( __FUNCTION__, 'build' );
 
-		return new \ht_dms\ui\build\activity_stream( $type );
+		return new \ht_dms\ui\build\activity_stream( $type, $id );
 
 	}
 

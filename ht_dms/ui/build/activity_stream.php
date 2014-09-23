@@ -14,9 +14,7 @@ namespace ht_dms\ui\build;
 
 class activity_stream {
 
-	function __( $type, $id ) {
-		add_filter( 'ht_dms_before_magic_templates', array( $this, 'before' ), 10, 2 );
-		add_filter( 'ht_dms_before_magic_templates', array( $this, 'after' ), 10, 2 );
+	function __construct( $type, $id ) {
 
 	}
 
@@ -41,22 +39,7 @@ class activity_stream {
 		return 'WORKING ON IT!';
 	}
 
-	function before( $content, $view ) {
-		holotree_error();
-		if ( $view === 'decision_activity_stream.php' ) {
-			$content = 'before';
-		}
 
-		return $content;
-	}
-
-	function after( $content, $view ) {
-		if ( $view === 'decision_activity_stream.php' ) {
-			$content = 'after';
-		}
-
-		return $content;
-	}
 
 	private function data( $id ) {
 		$return = array( 'view' => 'decision_activity_stream.php' );

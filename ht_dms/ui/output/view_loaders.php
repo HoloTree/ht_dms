@@ -466,6 +466,8 @@ class view_loaders {
 	function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
 		$no_items = __( 'No items to display', 'ht_dms' );
 		if ( $obj->total() > 0 ) {
+			$view = pathinfo( $template_file );
+			$view = pods_v( 'filename', $view );
 			if ( file_exists( $template_file ) && class_exists( 'Pods_Templates' ) ) {
 
 				$template_file = file_get_contents( $template_file );
@@ -495,7 +497,7 @@ class view_loaders {
 							//reset id
 							$obj->id = $obj->id();
 
-							$out .= $this->template( $template_file, $obj );
+							$out .= $this->template( $template_file, $obj, $view );
 						}
 
 					}
@@ -506,7 +508,7 @@ class view_loaders {
 
 						}
 
-						$out = $this->template( $template_file, $obj );
+						$out = $this->template( $template_file, $obj, $view );
 					}
 				}
 				else {
@@ -517,7 +519,7 @@ class view_loaders {
 				}
 
 				if ( ! empty( $out ) ) {
-					$view = basename( $template_file );
+
 					$out = ht_dms_ui()->build_elements()->icon_substitution( $out );
 					$before = apply_filters( 'ht_dms_before_magic_templates', '', $view );
 					$after = apply_filters( 'ht_dms_after_magic_template', '', $view );
@@ -553,7 +555,7 @@ class view_loaders {
 
 	}
 
-	function template( $template_file, $obj ) {
+	function template( $template_file, $obj, $view ) {
 		$template = '<div class="ht_dms_template" style="">';
 		if ( HT_DEV_MODE ) {
 			$template .= '<span style="float:right">'.$obj->ID().'</span>';
@@ -562,7 +564,10 @@ class view_loaders {
 
 		$template .= '</div>';
 
-		return $template;
+		$before = apply_filters( 'ht_dms_before_magic_template', '', $view );
+		$after = apply_filters( 'ht_dms_after_magic_template', '', $view );
+
+		return $before . $template . $after;
 	}
 
 	/**
