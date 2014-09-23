@@ -114,7 +114,6 @@ class elements {
 	/**
 	 * Creates tabbed UI
 	 *
-	 * @TODO Deal with dependency on foundation?
 	 *
 	 * @param	array	 $tabs {
 	 *     For each tab, label and content. First tab will be active by default.
@@ -133,44 +132,16 @@ class elements {
 			$tab_prefix = 'tab_';
 		}
 
-		if ( HT_FOUNDATION ) {
-			return $this->tab_maker_foundation( $tabs, $tab_prefix, $id );
+		return $this->tabs( $tabs, $tab_prefix, $class, false, $id );
 
-		}
-		else {
-			return $this->tab_maker_jUI( $tabs, $tab_prefix, $class, $id );
 
-		}
 	}
 
-	function tab_maker_jUI( $tabs, $tab_prefix = 'tab_', $class = '' ) {
-		$out = '<div id="tabs"';
-		if ( $class !== '' ) {
-			$out .= ' class="'.$class.'"';
+
+	function tabs( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
+		if ( ! $tab_prefix ) {
+			$tab_prefix = 'tab_';
 		}
-		$out .='>';
-		$out .= '<ul>';
-		$i = 1;
-		foreach ( $tabs as $tab ) {
-				$out .= '<li><a href="#'.$tab_prefix.''.$i.'">'.$tab[ 'label' ].'</a></li>';;
-				$i++;
-		}
-
-		$out .= '</ul>';
-		$i = 1;
-		foreach ( $tabs as $tab ) {
-				$out .= '<div class="content" id="'.$tab_prefix.$i.'">';
-				$out .= $tab[ 'content' ];
-				$out .= '</div><!--#'.$tab_prefix.$i.'-->';
-				$i++;
-		}
-
-		$out .= '</div>';
-
-		return $out;
-	}
-
-	function tab_maker_foundation( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
 		$class = $class.' tabs';
 
 		/**
@@ -188,22 +159,18 @@ class elements {
 			$vertical = 'vertical';
 		}
 
-		$equalizer = false;
 
 		if ( $vertical ) {
 			$class = $class. ' '.$vertical;
-			//$equalizer = true;
+
 		}
 		else {
 			$vertical = '';
 		}
 
-		$attr = '';
-		if ( $equalizer ) {
-			$attr = 'data-equalizer-watch';
-		}
 
-		$out = sprintf( '<ul class="%1s" data-tab %2s>', $class, $attr );
+
+		$out = sprintf( '<ul class="%1s" data-tab >', $class );
 		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'1">'.$tabs[ 0 ][ 'label' ].'</a></li>';
 		$i = 2;
 		foreach ( $tabs as $key => $value ) {
@@ -218,17 +185,13 @@ class elements {
 
 
 
-		if ( $equalizer ) {
-			$attr = 'data-equalizer-watch';
-		}
-
 		$i = 1;
 
 		if ( false == $id ) {
 			$id = 'tabs';
 		}
 
-		$out .= sprintf( '<div id="%0s" class="tabs-content %1s" %2s >', $id, $vertical, $attr );
+		$out .= sprintf( '<div id="%0s" class="tabs-content %1s" >', $id, $vertical );
 
 
 		foreach ( $tabs as $key => $tab) {
@@ -250,43 +213,8 @@ class elements {
 	}
 
 
-	function accordion(  $panels, $prefix = 'panel_', $class = '', $id = false ) {
-		if ( ! $prefix  ) {
-			$prefix = 'panel_';
-		}
-		
-		if ( HT_FOUNDATION ) {
-			return $this->accordion_foundation( $panels, $prefix, $class, $id );
 
-		}
-		else {
-			return $this->accordion_jUI( $panels, $class, $id );
-
- 		}
-	}
-
-	function accordion_jUI(  $panels,  $class = '', $id ) {
-		$out = '<div id="accordion"';
-		if ( $class !== '' ) {
-			$out .= ' class="'.$class.'"';
-		}
-		$out .= '>';
-		foreach ( $panels as $panel ) {
-			$out .= '<h3>'.$panel[ 'label'].'</h3>';
-			$out .= '<div>';
-			$out .= $panel[ 'content' ];
-			$out .= '</div>';
-		}
-
-		$out .= '</div><!--#accordion';
-		if ( $class !== '' ) {
-			$out .= ' '.$class;
-		}
-		$out .= '-->';
-
-		return $out;
-	}
-	function accordion_foundation( $panels, $prefix= 'panel', $class = '', $id ) {
+	function accordion( $panels, $prefix= 'panel', $class = '', $id ) {
 
 			$out = '<dl class="accordion ' . $class . '" data-accordion>';
 			$i = 0;
@@ -335,9 +263,6 @@ class elements {
 		return $pageURL;
 	}
 
-	function project_managment_list( $id ) {
-
-	}
 
 	/**
 	 * Get instance of UI class
@@ -353,50 +278,11 @@ class elements {
 
 	}
 
-	/**
-	 * Wrap a sidebar.
-	 *
-	 * @param 	string      	$content	The sidebar content.
-	 * @param 	bool|string	 	$wrap		Optional. The opening wrapping container for the sidebar.
-	 *
-	 * @return 	string
-	 *
-	 * @since	0.0.1
-	 */
-	function sidebar_wrapper( $content, $wrap = false ) {
-		if ( !$wrap ) {
-			$fclass = htdms_theme_sidebar_class( true );
-			$wrap = '<div id="secondary" class="widget-area '.$fclass.'" role="complementary">';
-			/**
-			 * Override the default sidebar wrapper.
-			 *
-			 * Only add the opening containers. Closing tags are automatically appended.
-			 *
-			 * @param 	string $wrap The opening container(s).
-			 *
-			 * @since 	0.0.1
-			 */
-			$wrap = apply_filters( 'ht_dms_sidebar_wrapper', $wrap );
-		}
 
-		$n = substr_count( $wrap, '<div>' );
-		if ( $n === 1 ) {
-			$end = '</div>';
-		}
-		else {
-			$end = '';
-			for ($i = 1; $i <= $n; $i++) {
-				$end .= '</div>';
-			}
-		}
-
-		return $wrap.$content.$end;
-	}
 
 	/**
-	 * Get title
+	 * Main title section/breadcrumbs
 	 *
-	 * @todo notification
 	 *
 	 * @param 	int  		$id		ID of item to get title of
 	 * @param 	null|obj	$obj	Optional. Single item object of current item. Not used for groups.
@@ -465,36 +351,6 @@ class elements {
 
 		$name = apply_filters( 'ht_dms_title_override', $name, $id );
 		return $name;
-
-	}
-
-	/**
-	 * @param 	string	$file		The location of the file to render, relative to HT_DMS_VIEW_DIR. Unless $other_dir === true.
-	 * @param 	obj		$obj		Pods object to use
-	 * @param 	bool	$partial	Optional. If file is a partial (ie it is in  HT_DMS_VIEW_DIR.'/partials/' ). Default is false.
-	 * @param 	string	$other_dir	Optional. Dir to load file from, if not in HT_DMS_VIEW_DIR. Specify directory only. Put file name in $file.
-	 *
-	 * @return	string				The rendered template, if it source file exists, else false.
-	 */
-	function template( $file, $obj, $partial = false, $other_dir = false ) {
-		if ( $other_dir === false ) {
-			if ( $partial ) {
-				$part = trailingslashit( HT_DMS_VIEW_DIR ) . 'partials/' . $file . '.php';
-			}
-			else {
-				$part = trailingslashit( HT_DMS_VIEW_DIR ) . $file . '.php';
-			}
-		}
-		else {
-			$part = trailingslashit( $file );
-		}
-
-		if ( file_exists( $part ) ) {
-			return \Pods_Templates::do_template( file_get_contents( $part ), $obj );
-		}
-		else {
-			holotree_error( 'template could not be loaded', print_c3( array( '$file' => $file, '$part' => $part )));
-		}
 
 	}
 
@@ -741,7 +597,7 @@ class elements {
 			return $this->accordion( $content, $prefix, $class, $id );
 		}
 		else {
-			return $this->tab_maker( $content, $prefix, $class, $id );
+			return $this->tabs( $content, $prefix, $class, $id );
 		}
 	}
 
@@ -856,7 +712,7 @@ class elements {
 
 
 		if ( is_array( $tabs ) ) {
-			$tabs = ht_dms_ui()->output_elements()->tab_maker( $tabs, 'consensus_view_tab_', 'consensus-tabs', 'consensus-tabs' );
+			$tabs = ht_dms_ui()->output_elements()->tabs( $tabs, 'consensus_view_tab_', 'consensus-tabs', true, 'consensus-tabs' );
 
 			if ( is_string( $tabs ) ) {
 
