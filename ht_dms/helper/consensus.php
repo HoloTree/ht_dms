@@ -289,17 +289,19 @@ class consensus {
 		$user_value = wp_list_pluck( $consensus, 'value' );
 
 
-		foreach( $user_value as $uID => $value ) {
-			$statuses[ $value ][] = $uID;
-		}
-
-		for ( $i=0; $i<=2; $i++ ) {
-			if ( ! isset( $statuses[ $i ] ) ) {
-				$statuses[ $i ] = array();
+		if ( is_array( $consensus ) ) {
+			foreach ( $user_value as $uID => $value ) {
+				$statuses[ $value ][ ] = $uID;
 			}
-		}
 
-		return $statuses;
+			for ( $i = 0; $i <= 2; $i ++ ) {
+				if ( ! isset( $statuses[ $i ] ) ) {
+					$statuses[ $i ] = array ();
+				}
+			}
+
+			return $statuses;
+		}
 
 
 
