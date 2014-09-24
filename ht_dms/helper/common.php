@@ -512,10 +512,10 @@ class common implements \Hook_SubscriberInterface {
 	}
 
 	function font_awesome() {
-		include_once( trailingslashit( HT_ROOT_DIR ) .'inc/cdn_script.php' );
+		include_once( trailingslashit( HT_DMS_ROOT_DIR ) .'inc/cdn_script.php' );
 
 
-		new \holotree_cdn_script(
+		new \ht_dms_cdn_script(
 			'//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',
 			trailingslashit( HT_DMS_ROOT_URL ) .'css/font-awesome.min.css',
 			'font-awesome',

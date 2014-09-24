@@ -299,7 +299,7 @@ function ht_dms_notification_link( $id, $button = false, $title = null, $text = 
 		$url = '#';
 	}
 	else {
-		$url = holotree_action_append( ht_dms_home(), 'notifications', $id );
+		$url = ht_dms_action_append( ht_dms_home(), 'notifications', $id );
 	}
 
 	$url = "#";
@@ -552,4 +552,228 @@ function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 
 function ht_dms_content_types() {
 	return array( HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_ORGANIZATION_NAME );
+}
+
+
+
+function ht_dms_print_r2( $val) {
+	echo '<pre style="background-color:#cccccc">';
+	print_r($val);
+	echo  '</pre>';
+}
+
+if ( ! function_exists( 'print_r2' ) ) {
+	function print_r2( $val ){
+		ht_dms_print_r2( $val );
+	}
+}
+
+function ht_dms_print_x2( $val) {
+	echo '<pre style="background-color:#cccccc">';
+	var_export( $val);
+	echo  '</pre>';
+}
+
+if ( ! function_exists('print_x2') ) {
+	function print_x2($val){
+		ht_dms_print_x2( $val );
+	}
+}
+
+if ( ! function_exists( 'print_c3' ) ) {
+	function print_c3( $val, $r = true ) {
+		ht_dms_print_c3( $val, $r );
+	}
+}
+
+function ht_dms_print_c3( $val, $r = true  ) {
+	if ( ! is_null( $val ) && $val !== false ) {
+		if ( $r ) {
+			echo ht_dms_print_r2( $val );
+
+		}
+		else {
+			ht_dms_print_x2( $val );
+		}
+
+	}
+	else {
+		var_dump( $val );
+	}
+}
+
+/**
+ * Log Errors to debug log
+ */
+if ( ! function_exists( 'log' ) ) {
+	function log ( $log )  {
+		ht_dms_log( $log );
+	}
+
+}
+
+function ht_dms_log() {
+	if ( is_array( $log ) || is_object( $log ) ) {
+		error_log( print_r( $log, true ) );
+	} else {
+		error_log( $log );
+	}
+
+}
+
+/**
+ * Error function
+ *
+ * @uses wp_die()
+ *
+ * @param string| null $error 	Optional. Error message to show.
+ *
+ * @param string| null $method	Optional. Method generating the error.
+ *
+ * @since 0.0.1
+ */
+function ht_dms_error( $error = null, $method = null ) {
+	$app_name = 'HolotTree DMS';
+	if ( is_null( $error )  && is_null( $method ) ) {
+		$trace = debug_backtrace();
+		$caller = array_shift( $trace );
+
+		$in =  $caller[ 'function' ];
+		if ( isset( $caller[ 'method' ] ) ) {
+			$in =  $caller[ 'method' ];
+		}
+		if ( isset($caller['class'] ) ) {
+			$in .= $caller['class'];
+		}
+		$message = __(
+			sprintf( '%0s encountered an error in %1s line %2s', $app_name, $caller[ 'file' ], $caller[ 'line' ] ),
+			'ht_dms'
+		);
+	}
+	elseif ( is_null( $error )  && ! is_null( $method ) ) {
+		$message= __(
+			sprintf( '%1s encountered an in %2s', $app_name, $method ),
+			'holotree' );
+	}
+	elseif ( ! is_null( $error )  && ! is_null( $method ) ) {
+		$message = __(
+			sprintf( '%1s %2s', $error, $method ),
+			'holotree' )
+		;
+	}
+	else {
+		$message = $error;
+	}
+
+	if ( function_exists( 'pods_error' ) ) {
+		pods_error( $message );
+	}
+	else {
+		wp_die( $message );
+	}
+}
+
+
+
+/**
+ * For creating links with optional button, class and ID.
+ *
+ * Wrapper for ui/elements/link()
+ *
+ * @param int|string    $id			ID of post, post type or taxonomy to get link to or a complete URL, as a string.
+ * @param string 		$type		Optional. Type of content being linked to. post|post_type_archive|taxonomy|user. Not used if $id is a string. Default is post.
+ * @param bool|string 	$text		Optional. Text Of the link. If false, post title will be used.
+ * @param null|string	$title		Optional. Text for title attribute. If null none is used.
+ * @param bool|string   $button		Optional. Whether to output as a button or not. Defaults to false.
+ * @param bool|string   $classes	Optional. Any classes to add to link. Defaults to false.
+ * @param bool|string   $link_id	Optional. CSS ID to add to link. Defaults to false.
+ * @param bool|array	$append		Optional. Action and ID to append to array. should be action, id. If ID isn't set $id param is used. Default is true.
+ *
+ *
+ * @return null|string
+ */
+function ht_dms_link( $id, $type = 'permalink', $text= 'view', $title= null, $button = false, $classes = false, $link_id = false, $append = false  ) {
+	return ht_dms_ui()->elements()->link( $id, $type, $text, $title, $button, $classes, $link_id, $append );
+
+}
+
+
+
+
+/**
+ * For safely appending variables to urls
+ *
+ * Wrapper for ui/elements/action_append()
+ *
+ * @TODO Impliment this throughout.
+ *
+ * @param 	string	$url	Base URL
+ * @param 	string	$action	Variables, first one with no ? or &
+ *
+ * @return 	string			URL
+ *
+ * @since 	0.0.1
+ */
+function ht_dms_action_append( $url, $action, $id = false ) {
+	return ht_dms_ui()->elements()->action_append( $url, $action, $id );
+}
+
+
+/**
+ * Get the content type.
+ *
+ * @param bool $specific_type Optional. If true, the default name of content type is returned.  If false the type of content (ie post type, taxonomy) is returned.
+ *
+ * @return bool|string
+ */
+function ht_dms_get_content_type( $specific_type = true ) {
+	$queried_object = get_queried_object();
+	if ( $queried_object ) {
+
+		// Post Type Singular
+		if ( isset( $queried_object->post_type ) ) {
+			$type = 'post_type';
+			$specific_type = $queried_object->post_type;
+		}
+		// Term Archive
+		elseif ( isset( $queried_object->taxonomy ) ) {
+			$type = 'taxonomy';
+			$specific_type = $queried_object->taxonomy;
+		}
+		// Author Archive
+		elseif ( isset( $queried_object->user_login ) ) {
+			$type = $specific_type = 'user';
+		}
+		// Post Type Archive
+		elseif ( isset( $queried_object->public ) && isset( $queried_object->name ) ) {
+			$type = $queried_object->name;
+			$specific_type = $queried_object->name;
+
+		}
+
+		if ( $specific_type && $type  ) {
+			return $specific_type;
+		}
+
+		return $type;
+
+	}
+
+}
+
+/**
+ * Check if a value is an integer or a string representing an integer. If so typecast as int and return
+ *
+ * @param 	mixed $int Value to check
+ *
+ * @return 	int|bool
+ *
+ * @since 0.0.3
+ */
+function ht_dms_integer( $int ) {
+	if ( is_int( $int ) || intval( $int  ) > 0 ){
+
+		return (int) $int;
+
+	}
 }
