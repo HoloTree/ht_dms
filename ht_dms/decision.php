@@ -12,7 +12,7 @@
 ////namespace ht_dms;
 
 
-class decision extends dms {
+class decision extends dms implements Hook_SubscriberInterface {
 
 	/**
 	 * Set name of CPT this class is for.
@@ -23,15 +23,36 @@ class decision extends dms {
 	 */
 	public static $type = HT_DMS_DECISION_CPT_NAME;
 
-	function __construct() {
-		$type = $this->get_type();
 
-		add_filter( "pods_api_post_save_pod_item_{$type}", array( $this, 'user_fix'), 11, 3 );
-		add_filter( "ht_dms_{$type}_select_fields", array( $this, 'set_fields_to_loop' ) );
-		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
+		$type = self::$type;
+		return array();
+	}
 
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_filters() {
+		$type = self::$type;
+		return array(
+			"pods_api_post_save_pod_item_{$type}"   => array( 'user_fix', 11, 3 ),
+			"ht_dms_{$type}_select_fields"          => 'set_fields_to_loop',
+			"ht_dms_{$type}_edit_form_fields"       => array( 'form_fields', 10, 6 ),
+		);
 
 	}
+
 
 	/**
 	 * Set the name of the CPT
@@ -368,7 +389,7 @@ class decision extends dms {
 		if ( $status === 'new' || $status === 'blocked' ) {
 			$obj = $this->null_object( $obj, $id );
 			if ( !is_object( $obj ) ) {
-				holotree_error( __METHOD__ );
+				ht_dms_error( __METHOD__ );
 			}
 			$id = $this->change_consensus( $id, 2, $uID, $obj, false );
 			$obj->save( 'decision_status', 'blocked' );
@@ -602,7 +623,7 @@ class decision extends dms {
 				$finished = $this->finish_proposed_change( $id, $obj );
 			}
 			else {
-				holotree_error();
+				ht_dms_error();
 			}
 
 			return $updated_id;
@@ -1138,7 +1159,7 @@ class decision extends dms {
 			'limit'	=> -1,
 		);
 
-		if ( holotree_integer( $gID ) ) {
+		if ( ht_dms_integer( $gID ) ) {
 			$params[ 'where' ] = $params[ 'where' ] . ' AND group.ID = " ' . $gID. ' " ';
 
 		}

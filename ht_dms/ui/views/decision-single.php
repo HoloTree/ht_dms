@@ -16,7 +16,7 @@ $d = ht_dms_decision_class();
 $ui = ht_dms_ui();
 $obj = $d->item( $id );
 if ( !is_object( $obj) ) {
-	holotree_error( 'Not an object!', __FILE__ );
+	ht_dms_error( 'Not an object!', __FILE__ );
 }
 
 if ( pods_v( 'dms_action', 'get', false, true ) === 'changing' ) {

@@ -58,7 +58,7 @@ class consensus {
 	function create( $dID, $obj = null, $dont_set = false ) {
 		$obj = ht_dms_decision( $dID, $obj );
 		if ( !is_object( $obj ) ) {
-			holotree_error( 'No object in', __METHOD__ );
+			ht_dms_error( 'No object in', __METHOD__ );
 		}
 
 		$gID = (int) $obj->display( 'group.ID' );
@@ -90,7 +90,7 @@ class consensus {
 			}
 		}
 		else {
-			holotree_error( __METHOD__, print_c3( array( 'obj->id()' => $obj->id(), 'users_array' => $users, 'group_id' => $gID ) ) );
+			ht_dms_error( __METHOD__, print_c3( array( 'obj->id()' => $obj->id(), 'users_array' => $users, 'group_id' => $gID ) ) );
 		}
 
 	}

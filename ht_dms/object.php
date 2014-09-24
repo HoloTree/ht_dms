@@ -58,6 +58,7 @@ abstract class object {
 
 	}
 
+
 	/**
 	 * Set length to cache Pods Objects
 	 *
@@ -124,7 +125,7 @@ abstract class object {
 
 		}
 		else {
-			holotree_error( );
+			ht_dms_error( );
 		}
 
 
@@ -176,7 +177,7 @@ abstract class object {
 	 * @since 0.0.1
 	 */
 	function check_obj( $obj ) {
-		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === $this->get_type() ) {
+		if ( is_object( $obj ) && is_pod ( $obj )  ) {
 
 				return true;
 

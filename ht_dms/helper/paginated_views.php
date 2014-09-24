@@ -69,7 +69,7 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 	}
 	else {
 		if ( ! is_object( $obj )  ) {
-			holotree_error();
+			ht_dms_error();
 		}
 		$template_file = trailingslashit( HT_DMS_VIEW_DIR ).'partials/';
 

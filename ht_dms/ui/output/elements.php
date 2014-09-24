@@ -334,7 +334,7 @@ class elements {
 				HT_DMS_GROUP_CPT_NAME => $gID,
 				HT_DMS_DECISION_CPT_NAME => $dID,
 			) as $type => $id ) {
-				if ( holotree_integer( $id ) ) {
+				if ( ht_dms_integer( $id ) ) {
 					$titles[] = sprintf(
 						'<span class="breadcrumbs-component" ><span class="breadcrumbs-label breadcrumbs-component">%1s:</span> %2s </span>',
 						$build_elements->visualize_hierarchy_icon( $type ),
@@ -375,7 +375,7 @@ class elements {
 			$action_name = pods_v( 'var', $action, false, true );
 			$action = pods_v( 'value', $action, false, true );
 			if ( ! $action || ! $action_name ) {
-				holotree_error();
+				ht_dms_error();
 			}
 		}
 		else {
@@ -440,7 +440,7 @@ class elements {
 				$url = get_author_posts_url( $id );
 			}
 			else {
-				holotree_error( $type . ' Is an unacceptable $type for', __FUNCTION__ );
+				ht_dms_error( $type . ' Is an unacceptable $type for', __FUNCTION__ );
 			}
 		}
 		else {
@@ -745,7 +745,7 @@ class elements {
 			$content = call_user_func( array( ht_dms_ui()->activity_stream( $type, $id ),  $type ), $id );
 		}
 		else{
-			holotree_error();
+			ht_dms_error();
 		}
 
 		return sprintf( '<div id="ht-dms-third-element" class="ht-dms-third-element-%1s">%2s</div>', $type, $content );

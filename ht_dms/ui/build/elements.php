@@ -283,13 +283,13 @@ class elements {
 		}
 
 
-		$link = holotree_action_append( $cURL, 'mark-notification', $id );
+		$link = ht_dms_action_append( $cURL, 'mark-notification', $id );
 		$text = $title = 'Mark '.$obj->display( 'status' );
-		$out .= holotree_link( $link, '', $text, $title, true, 'notification-action' );
+		$out .= ht_dms_link( $link, '', $text, $title, true, 'notification-action' );
 
-		$link = holotree_action_append( $cURL, 'archive-notification', $id );
+		$link = ht_dms_action_append( $cURL, 'archive-notification', $id );
 		$text = $title = 'Archive';
-		$out .= holotree_link( $link, '', $text , $title, true, 'notification-action' );
+		$out .= ht_dms_link( $link, '', $text , $title, true, 'notification-action' );
 
 		return $out;
 	}
@@ -644,7 +644,7 @@ class elements {
 	function consensus_tab_header( $status_code, $count ) {
 		$status = ht_dms_consensus_status_readable( $status_code, false, true );
 		$icon = $this->consensus_icons( $status_code );
-		if ( ! holotree_integer( $count ) ) {
+		if ( ! ht_dms_integer( $count ) ) {
 			$count = 0;
 		}
 

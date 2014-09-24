@@ -18,7 +18,7 @@ namespace ht_dms\helper;
  *
  * @since 0.0.3
  */
-class caldera_actions {
+class caldera_actions implements \Hook_SubscriberInterface{
 	public static $join_group_form_id = 'CF54138690b504b';
 	public static $leave_group_form_id = 'CF5413964215412';
 	public static $group_pending_form_id = 'CF5413972657523';
@@ -28,17 +28,40 @@ class caldera_actions {
 	private $decision_actions_field = 'fld_738259';
 	private $force_debug = false;
 
-	function __construct() {
-		add_action( 'ht_dms_decision_action_process', array( $this, 'decision_actions' ) );
-		add_action( 'ht_dms_group_process', array( $this, 'process_group' ) );
 
-		add_filter( 'caldera_forms_render_get_field_type-dropdown', array( $this, 'decision_action_options' ), 5, 2 );
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
 
-		add_action( 'ht_dms_pending_membership_process', array( $this, 'pending_process' ) );
-		add_filter(  'caldera_forms_render_get_field_type-checkbox', array( $this, 'pending_membership_fields' ), 1, 2 );
+		return array(
+			'ht_dms_decision_action_process' => 'decision_actions',
+			'ht_dms_group_process' => 'process_group',
+			'ht_dms_pending_membership_process' => 'pending_process',
 
+		);
+	}
+
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public  static function get_filters() {
+
+		return array(
+			'caldera_forms_render_get_field_type-dropdown' => array( 'decision_action_options', 5, 2 ),
+			'caldera_forms_render_get_field_type-checkbox' => array( 'pending_membership_fields', 1, 2 ),
+		);
 
 	}
+
 
 	/**
 	 * Runs when the decision action form is run and acts on its input

@@ -9,7 +9,38 @@
  * @copyright 2014 Josh Pollock
  */
 
-class notification extends dms{
+class notification extends dms implements \Hook_SubscriberInterface {
+
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
+
+		return array(
+
+		);
+	}
+
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public  static function get_filters() {
+		$type = self::$type;
+
+		return array(
+			 "pods_api_pre_save_pod_item_{$type}" => array(  'to_id', 5 ),
+		);
+
+	}
+
 	/**
 	 * The length to cache Pods Objects
 	 *

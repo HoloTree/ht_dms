@@ -12,7 +12,7 @@
 //namespace ht_dms;
 
 
-class task extends dms {
+class task extends dms implements Hook_SubscriberInterface {
 
 	/**
 	 * Set name of CPT this class is for.
@@ -23,11 +23,33 @@ class task extends dms {
 	 */
 	public static $type = HT_DMS_TASK_CT_NAME;
 
-	function __construct() {
-		$type = $this->get_type();
-		add_filter( "pods_api_post_save_pod_item_{$this->get_type()}", array( $this, 'post_save'), 10, 2 );
-		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6 );
-		//add_filter( "ht_dms_{$type}_form_fix_jQuery", array( $this, 'form_fix_jQuery' ), 10, 2 );
+
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
+		$type = self::$type;
+		return array();
+	}
+
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_filters() {
+		$type = self::$type;
+		return array(
+			"ht_dms_{$type}_edit_form_fields" => array( 'form_fields', 10, 6 ),
+			"pods_api_post_save_pod_item_{$type}" => array( 'post_save', 10, 2 ),
+		);
+
 	}
 
 	/**
@@ -157,7 +179,7 @@ class task extends dms {
 	function status_decider( $id, $obj = null ) {
 		$obj = $this->task( $id, true, false, $obj );
 		if ( $obj->id() != $id ) {
-			holotree_error( __LINE__, var_dump (array( $id, $obj->id() )) );
+			ht_dms_error( __LINE__, var_dump (array( $id, $obj->id() )) );
 		}
 		if ( $this->is_blocked( $id, $obj ) ) {
 			$status = 'blocked';
@@ -174,7 +196,7 @@ class task extends dms {
 		$data ['task_status' ] = $status;
 		$id = $obj->save( $data );
 		if ( $obj->id() != $id ) {
-			holotree_error( __LINE__, __METHOD__ );
+			ht_dms_error( __LINE__, __METHOD__ );
 		}
 		$this->reset_cache( $id );
 		ht_dms_decision_class()->reset_cache( $id );
@@ -203,7 +225,7 @@ class task extends dms {
 
 	function block_change( $id, $which = 'blocker', $add = true, $obj = null ) {
 		if ( $which !== 'blocker' || 'blocking' ) {
-			holotree_error( "$which must ===  'blocker' || 'blocking' in ", __METHOD__ );
+			ht_dms_error( "$which must ===  'blocker' || 'blocking' in ", __METHOD__ );
 		}
 		else {
 			$obj = $this->null_obj( $obj, $id );
@@ -523,7 +545,7 @@ class task extends dms {
 					$tasks[] = $task;
 				}
 				else {
-					$tasks[] = holotree_link( $obj->field( 'term_id' ), 'tax', $obj->display( 'name' ), $obj->display( 'name') );
+					$tasks[] = ht_dms_link( $obj->field( 'term_id' ), 'tax', $obj->display( 'name' ), $obj->display( 'name') );
 				}
 
 			}
@@ -641,7 +663,7 @@ class task extends dms {
 		$oID = (int) $obj->display( 'organization.ID' );
 		if ( ! $oID ) {
 			if ( is_null( $dID ) ) {
-				holotree_error();
+				ht_dms_error();
 			}
 
 			$dObj = ht_dms_decision( $dID );

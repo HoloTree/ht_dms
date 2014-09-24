@@ -12,7 +12,7 @@
 //namespace ht_dms;
 
 
-class organization extends dms {
+class organization extends dms implements Hook_SubscriberInterface{
 
 	/**
 	 * Set name of CPT this class is for.
@@ -27,6 +27,33 @@ class organization extends dms {
 		$type = $this->get_type( );
 
 		add_filter( "ht_dms_{$type}_edit_form_fields", array( $this, 'form_fields' ), 10, 6  );
+
+	}
+
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
+		return array();
+	}
+
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_filters() {
+		$type = self::$type;
+
+		return array(
+			"ht_dms_{$type}_edit_form_fields" => array( 'form_fields', 10, 6 ),
+		);
 
 	}
 
@@ -350,7 +377,7 @@ class organization extends dms {
 
 				}
 				else {
-					holotree_error();
+					ht_dms_error();
 				}
 
 			}

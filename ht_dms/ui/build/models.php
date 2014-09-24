@@ -171,7 +171,7 @@ class models {
 				}
 				else {
 
-					holotree_error();
+					ht_dms_error();
 				}
 
 				$in_where .= ' "'.$in[ 'ID' ].'"';
@@ -230,7 +230,7 @@ class models {
 						$in_where = 'decision.ID =';
 					}
 					else {
-						holotree_error();
+						ht_dms_error();
 					}
 
 					$in_where = $in_where.' "'.$in[ 'id' ].'"';
@@ -281,7 +281,7 @@ class models {
 		$args = $this->args( $args );
 		extract( $args );
 
-		if ( holotree_integer( $id ) ) {
+		if ( ht_dms_integer( $id ) ) {
 			$params[ 'where' ] = 't.id = "' . $id . '"';
 		}
 		else {
@@ -514,7 +514,7 @@ class models {
 
 				}
 				else{
-					holotree_error( __( sprintf( 'Object can not be built for %1s view', $type ), 'ht_dms' ) , __METHOD__ );
+					ht_dms_error( __( sprintf( 'Object can not be built for %1s view', $type ), 'ht_dms' ) , __METHOD__ );
 				}
 
 
@@ -560,7 +560,7 @@ class models {
 
 				$response = wp_remote_get( $url );
 				if ( is_wp_error( $response ) ) {
-					holotree_error( __METHOD__, 'invalid remote get response' );
+					ht_dms_error( __METHOD__, 'invalid remote get response' );
 				}
 
 				$data = wp_remote_retrieve_body( $response );
@@ -573,12 +573,12 @@ class models {
 
 			}
 			else {
-				holotree_error( array( $return,JSON_API_VERSION,PODS_JSON_API_VERSION  ));
+				ht_dms_error( array( $return,JSON_API_VERSION,PODS_JSON_API_VERSION  ));
 			}
 
 		}
 
-		return holotree_error( sprintf( 'The model you requested oculd not be returned as either %1s is an invalid value for $return or the return type you requested was unreachable', $return ) );
+		return ht_dms_error( sprintf( 'The model you requested oculd not be returned as either %1s is an invalid value for $return or the return type you requested was unreachable', $return ) );
 
 	}
 	

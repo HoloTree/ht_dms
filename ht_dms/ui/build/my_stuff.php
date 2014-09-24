@@ -183,7 +183,7 @@ class my_stuff {
 			$panel_content = '<ul>';
 
 			foreach ( $tasks as $task ) {
-				$panel_content .= '<li>' . holotree_link( $task[ 'ID' ], 'tax', $task[ 'name' ], $task[ 'name' ] );
+				$panel_content .= '<li>' . ht_dms_link( $task[ 'ID' ], 'tax', $task[ 'name' ], $task[ 'name' ] );
 				if ( isset( $task[ 'status' ] ) && $task[ 'status'] !== '' ) {
 					$panel_content .= '<br /><span class="my-stuff-task-status">Status- ' . $task[ 'status' ] . '</span></li>';
 				}
@@ -209,7 +209,7 @@ class my_stuff {
 	 * @since 	0.0.1
 	 */
 	function decision( $decision ) {
-		$out = '<li>' . holotree_link( $decision[ 'ID' ], 'permalink', $decision[ 'name' ], $decision[ 'name' ] ) . '</li>';
+		$out = '<li>' . ht_dms_link( $decision[ 'ID' ], 'permalink', $decision[ 'name' ], $decision[ 'name' ] ) . '</li>';
 
 		return $out;
 

@@ -11,7 +11,37 @@
 
 namespace ht_dms\ui\output;
 
-class view_loaders {
+class view_loaders implements \Hook_SubscriberInterface {
+
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
+
+		return array(
+			'ht_dms_paginated_views_template_output' => array( 'after_notification_preview', 10, 2 ),
+		);
+	}
+
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public  static function get_filters() {
+
+		return array(
+			'app_starter_content_part_view' => 'view_loaders',
+			'app_starter_alt_main_view' => 'task_view',
+		);
+
+	}
 
 	/**
 	 * Loads the HoloTree DMS Content
@@ -150,7 +180,7 @@ class view_loaders {
 				return $out;
 			}
 		} else {
-			holotree_error();
+			ht_dms_error();
 		}
 
 	}
@@ -530,7 +560,7 @@ class view_loaders {
 
 			}
 			else {
-				holotree_error( sprintf( 'The view %1s could not be loaded.', $template_file ) );
+				ht_dms_error( sprintf( 'The view %1s could not be loaded.', $template_file ) );
 			}
 		}
 		else {
@@ -583,6 +613,40 @@ class view_loaders {
 		if ( pods_v( 'dms-alert', 'get', false, true ) ) {
 			return ht_dms_ui()->elements()->alert( get_option( 'ht_dms_action_message', '' ), 'success' );
 		}
+	}
+
+	/**
+	 * Adds additional markup for notifications view to allow AJAX-based UI.
+	 *
+	 * @uses ht_dms_models_template_output filter
+	 *
+	 * @param $view
+	 * @param $type
+	 *
+	 * @return string
+	 *
+	 * @#since 0.0.3
+	 */
+	function after_notification_preview( $out, $view ) {
+		if ( $view === 'users_notifications' ) {
+
+			$single_view = '<div id="notification-single-view"> </div>';
+
+			$header = sprintf(
+				'<div id="notifications-header"><h3 style="float:left">%1s</h3> <span id="notification-options" class="button" style="float:right"><a href="#" id="unviewed-only">%2s</a></span></div>',
+
+				__( 'Notifications', 'ht_dms' ),
+				__( 'Show New Notifications Only' , 'ht_dms' )
+
+			);
+
+
+			$out = sprintf( '<div id="notification-viewer">%0s %1s %2s</div>', $header,  $out, $single_view );
+
+		}
+
+		return $out;
+
 	}
 
 

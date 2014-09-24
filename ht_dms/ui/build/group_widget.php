@@ -42,7 +42,7 @@ class group_widget {
 			$out .= $this->ui()->elements()->alert( __( 'Your membership in this group is pending', 'ht_dms' ) );
 		}
 		else {
-			$link = holotree_action_append( get_permalink( $gID ), 'join-group', $gID );
+			$link = ht_dms_action_append( get_permalink( $gID ), 'join-group', $gID );
 			$out .= '<a href="' . $link . '" class="button join-group-button">Join Group</a><br />';
 		}
 

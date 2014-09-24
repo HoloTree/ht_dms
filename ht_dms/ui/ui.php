@@ -14,22 +14,6 @@ namespace ht_dms\ui;
 
 class ui {
 
-	function __construct() {
-
-		if ( 1==1 || defined( 'APP_STARTER_VERSION' ) ) {
-
-			add_filter( 'app_starter_content_part_view', array ( $this->view_loaders(), 'view_loaders' ) );
-			add_filter( 'app_starter_alt_main_view', array( $this->view_loaders(), 'task_view' ) );
-
-
-		}
-		else {
-			add_filter( 'the_content', array ( $this->view_loaders(), 'generic_view_loader' ) );
-			add_filter( 'template_include', array ( $this->view_loaders(), 'task_view' ) );
-		}
-
-	}
-
 	/**
 	 * Initializes the UI() class
 	 *

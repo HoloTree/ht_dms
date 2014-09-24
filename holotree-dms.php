@@ -227,7 +227,7 @@ class HoloTree_DMS {
 
 			}
 			else {
-				holotree_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'ht_dms' ) );
+				ht_dms_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'ht_dms' ) );
 			}
 		}
 	}
@@ -304,7 +304,6 @@ function holotree_dms() {
 
 
 
-
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
 		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
@@ -323,9 +322,6 @@ function holotree_dms() {
 		$classLoader->addDirectory( trailingslashit( HT_DMS_DIR ) . 'helper' );
 		$classLoader->register();
 
-		ht_dms_ui();
-
-		ht_dms_automatic_notifications_class();
 
 		/**
 		 * Make REST API not require auth when HT_DEV_MODE
@@ -343,9 +339,17 @@ function holotree_dms() {
 			}
 		}
 
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/interface.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/manager.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/registration.php' );
+
+		$api_registration = new \HT_DMS_WP_API_Registration();
+		$api_registration->boot();
 
 
 		return ht_dms\ui\ui::init();
+
+
 
 	}
 

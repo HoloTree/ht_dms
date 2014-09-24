@@ -170,7 +170,7 @@ abstract class dms extends object {
 
 		if ( is_null( $oID )  && $type !== HT_DMS_ORGANIZATION_NAME  ) {
 			//find what content type we're on
-			$calling_type = holotree_get_content_type();
+			$calling_type = ht_dms_get_content_type();
 
 			if ( in_array( $calling_type, $this->content_types()) ) {
 				if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
@@ -186,13 +186,13 @@ abstract class dms extends object {
 				}
 			}
 			else {
-					holotree_error( __( sprintf( 'When using %d in this context you must specify organization ID in $oID', __METHOD__ ), 'ht_dms' ) );
+					ht_dms_error( __( sprintf( 'When using %d in this context you must specify organization ID in $oID', __METHOD__ ), 'ht_dms' ) );
 			}
 
 		}
 		elseif (  ! $new && $type !== HT_DMS_ORGANIZATION_NAME ) {
 			if (  ! isset( $oID ) || ! $oID  )  {
-				holotree_error( );
+				ht_dms_error( );
 			}
 
 		}
@@ -203,7 +203,7 @@ abstract class dms extends object {
 			}
 			else {
 				if ( is_null( $id ) ) {
-					holotree_error( __( 'Decision ID must be set when creating new tasks.', 'ht_dms' ) );
+					ht_dms_error( __( 'Decision ID must be set when creating new tasks.', 'ht_dms' ) );
 				}
 			}
 
@@ -347,7 +347,7 @@ abstract class dms extends object {
 		$type = $obj->pod;
 
 		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
-			holotree_error( __METHOD__, __('only supports decisions. For now...', 'ht_dms' ) );
+			ht_dms_error( __METHOD__, __('only supports decisions. For now...', 'ht_dms' ) );
 		}
 
 		$uID = $this->null_user( $uID );

@@ -15,37 +15,40 @@
 
 namespace ht_dms\helper;
 
-class common {
+class common implements \Hook_SubscriberInterface {
 
-	function __construct() {
-		// Loads frontend scripts and styles
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 25 );
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
 
-		add_action( 'init', array( $this, 'dms_actions'), 35 );
+		return array(
+			'wp_enqueue_scripts' => array( 'enqueue_scripts', 25 ),
+			'init' => array( 'dms_actions', 35 ),
+			'pods_api_post_save_pod_item' => array( 'post_edit', 25, 3 ),
+			'ht_before_ht' => 'message',
+			'pods_api_post_save_pod_item' => array( 'update_actions', 99, 3 ),
+			'init' => 'font_awesome',
 
-		//on update make sure to publish item/ decisions have consensus
-		add_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ), 25, 3 );
+		);
+	}
 
-		add_action( 'ht_before_ht', array( $this, 'message' ) );
+	/**
+	 * Set filters
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public  static function get_filters() {
 
-		add_action( "pods_api_post_save_pod_item", array( $this, 'update_actions' ), 99, 3 );
+		return array(
 
-		$notification = HT_DMS_NOTIFICATION_NAME;
-		add_filter( "pods_api_pre_save_pod_item_{$notification}", array( ht_dms_notification_class(), 'to_id' ), 5 );
-
-		$ajax_callbacks_class = ht_dms_ui()->ajax_callbacks();
-		$ajax_actions = $ajax_callbacks_class->callbacks();
-
-		foreach( $ajax_actions as $callback ) {
-			add_action( "wp_ajax_ht_dms_{$callback}", array( $ajax_callbacks_class, $callback ), 2 );
-			add_action( "wp_ajax_nopriv_ht_dms_{$callback}", '__return_false' );
-
-		}
-
-		add_filter( 'ht_dms_paginated_views_template_output', array( ht_dms_ui()->views(), 'after_notification_preview' ), 10, 2 );
-
-		add_action( 'init', array( $this, 'font_awesome' ), 59 );
-
+		);
 
 	}
 
@@ -188,7 +191,7 @@ class common {
 		//special handling for proposed changes
 		if (  $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
 			if ( ! $pmid || intval( $pmid  ) === 0 ) {
-				holotree_error( );
+				ht_dms_error( );
 			}
 
 			$pod = pods( HT_DMS_DECISION_CPT_NAME, $id );
@@ -308,7 +311,7 @@ class common {
 	 */
 	function set_facilitator( $uID = null, $gID = null, $dID = null, $add = true ) {
 		if ( is_null( $gID ) && is_null( $dID) ) {
-			holotree_error( 'You must specify group or decisionID in', __METHOD__ );
+			ht_dms_error( 'You must specify group or decisionID in', __METHOD__ );
 			return false;
 		}
 		else {
@@ -376,7 +379,7 @@ class common {
 
 		if ( $this->user_exists( $uID ) ) {
 			if ( is_null( $gID ) && is_null( $dID ) ) {
-				holotree_error( __METHOD__ . 'Requires that either group or decision ID be specified.' );
+				ht_dms_error( __METHOD__ . 'Requires that either group or decision ID be specified.' );
 			}
 
 			if ( !is_null( $gID ) ) {

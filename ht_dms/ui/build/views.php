@@ -203,7 +203,7 @@ class views {
 		}
 		else {
 
-			return holotree_error( '<a href="https://github.com/HoloTree/ht_dms/issues/25">ISSUE!</a>' );
+			return ht_dms_error( '<a href="https://github.com/HoloTree/ht_dms/issues/25">ISSUE!</a>' );
 
 		}
 
@@ -236,7 +236,7 @@ class views {
 				$in[ 'what' ] = 'organization';
 			}
 			else{
-				holotree_error();
+				ht_dms_error();
 			}
 
 			$in[ 'ID' ] = $id;
@@ -469,7 +469,7 @@ class views {
 
 		}
 		else {
-			holotree_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'ht_dms' ) );
+			ht_dms_error( __( sprintf( '%1s is not a valid type for %2s.', $type, __METHOD__ ), 'ht_dms' ) );
 
 		}
 
@@ -551,40 +551,6 @@ class views {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Adds additional markup for notifications view to allow AJAX-based UI.
-	 *
-	 * @uses ht_dms_models_template_output filter
-	 *
-	 * @param $view
-	 * @param $type
-	 *
-	 * @return string
-	 *
-	 * @#since 0.0.3
-	 */
-	function after_notification_preview( $out, $view ) {
-		if ( $view === 'users_notifications' ) {
-
-			$single_view = '<div id="notification-single-view"> </div>';
-
-			$header = sprintf(
-				'<div id="notifications-header"><h3 style="float:left">%1s</h3> <span id="notification-options" class="button" style="float:right"><a href="#" id="unviewed-only">%2s</a></span></div>',
-
-				__( 'Notifications', 'ht_dms' ),
-				__( 'Show New Notifications Only' , 'ht_dms' )
-
-			);
-
-
-			$out = sprintf( '<div id="notification-viewer">%0s %1s %2s</div>', $header,  $out, $single_view );
-
-		}
-
-		return $out;
-
 	}
 
 

@@ -12,16 +12,25 @@
 namespace ht_dms\helper;
 
 
-class automatic_notifications {
+class automatic_notifications implements \Action_Hook_SubscriberInterface {
 
-	function __construct() {
+	/**
+	 * Set actions
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return array
+	 */
+	public static function get_actions() {
 
-		add_action( 'ht_dms_new_group', array( $this, 'new_group_in_organization' ), 10, 4 );
-		add_action( 'ht_dms_new_decision', array( $this, 'new_decision_in_group' ), 10, 4 );
-		add_action( 'ht_dms_consensus_changed', array( $this, 'decision_passed' ), 10, 4 );
-		add_action( 'ht_dms_update_decision', array( $this, 'decision_failed' ), 10, 4 );
-
+		return array(
+			'ht_dms_new_group' => array( 'new_group_in_organization', 10, 4 ),
+			'ht_dms_new_decision' => array( 'new_group_in_organization', 10, 4 ),
+			'ht_dms_consensus_changed' => array( 'decision_passed', 10, 2 ),
+			'ht_dms_update_decision' => array( 'decision_failed', 10, 4 ),
+		);
 	}
+
 
 	private function send_to_members( $members, $subject, $message ) {
 		if ( is_array( $members ) && ! empty( $members ) ) {
@@ -84,7 +93,7 @@ class automatic_notifications {
 	}
 
 	function create_summaries( $uID ) {
-		if ( ! is_array( $uID ) && holotree_integer( $uID ) ) {
+		if ( ! is_array( $uID ) && ht_dms_integer( $uID ) ) {
 			$users =  array( $uID );
 		}
 		else{
