@@ -430,7 +430,7 @@ class decision extends dms {
 	function accept( $id, $uID = null, $obj = null ) {
 		$status = $this->status( $id );
 		if ( $status === 'new' || $status === 'blocked' ) {
-			$obj = $this->null_object( $obj, $id );
+
 			$id = $this->change_consensus( $id, 1, $uID );
 
 			do_action( 'ht_dms_new_acceptance' );
@@ -893,6 +893,8 @@ class decision extends dms {
 			if ( $this->has_consent( $id, $obj ) ){
 				$this->update( $id, 'decision_status', 'passed', $obj );
 				$status = 'passed';
+
+				do_action( 'ht_dms_decision_passed', $id );
 			}
 
 		}
