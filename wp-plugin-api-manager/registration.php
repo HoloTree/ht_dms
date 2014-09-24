@@ -27,8 +27,9 @@ class HT_DMS_WP_API_Registration {
 			ht_dms_group_class(),
 			ht_dms_notification_class(),
 			ht_dms_automatic_notifications_class(),
-			new ht_dms\helper\caldera_actions(),
+			new ht_dms\helper\caldera\Actions(),
 			ht_dms_common_class(),
+			new ht_dms\helper\theme(),
 		);
 	}
 

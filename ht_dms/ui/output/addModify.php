@@ -11,7 +11,7 @@
 
 namespace ht_dms\ui\output;
 
-class add_modify {
+class addModify {
 
 	function __construct() {
 

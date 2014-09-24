@@ -11,8 +11,7 @@
 
 namespace ht_dms\ui\build;
 
-
-class activity_stream {
+class activity {
 
 	function __construct( $type, $id ) {
 

@@ -132,7 +132,9 @@ class HT_DMS_ClassLoader {
 			$this->forwardClass( $className, $this->aliases[ $className ] );
 		}
 
-		if ( $file = $this->findFile( $className ) ) {
+		$file = $this->findFile( $className );
+
+		if ( $file  ) {
 			require $file;
 
 			return true;
@@ -162,16 +164,18 @@ class HT_DMS_ClassLoader {
 		$classPath .= str_replace( '_', DIRECTORY_SEPARATOR, $className ) . '.php';
 
 		foreach ( $this->directories as $dir ) {
-			if ( file_exists( $dir . DIRECTORY_SEPARATOR . $classPath ) ) {
-				return $dir . DIRECTORY_SEPARATOR . $classPath;
+			$path = $dir . DIRECTORY_SEPARATOR . $classPath;
+			if ( file_exists( $path  ) ) {
+				return $path;
 			}
 		}
 
 		foreach ( $this->directoriesPrefixed as $prefix => $dirs ) {
 			if ( $class === strstr( $class, $prefix ) ) {
 				foreach ( $dirs as $dir ) {
-					if ( file_exists( $dir . DIRECTORY_SEPARATOR . $classPath ) ) {
-						return $dir . DIRECTORY_SEPARATOR . $classPath;
+						$path = $dir . DIRECTORY_SEPARATOR . $classPath;
+					if ( file_exists( $path ) ) {
+						return $path;
 					}
 				}
 			}

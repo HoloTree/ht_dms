@@ -9,7 +9,9 @@
  * @copyright 2014 Josh Pollock
  */
 
-class notification extends dms implements \Hook_SubscriberInterface {
+namespace ht_dms;
+
+class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	/**
 	 * Set actions

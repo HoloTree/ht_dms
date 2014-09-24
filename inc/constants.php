@@ -53,3 +53,6 @@ if ( !defined( 'HT_DMS_PREFIX' ) ) {
 if ( ! defined( 'HT_DEV_MODE' ) ){
 	define( 'HT_DEV_MODE', false );
 }
+if ( ! defined( 'HT_FOUNDATION' ) ) {
+	define( 'HT_FOUNDATION', true );
+}

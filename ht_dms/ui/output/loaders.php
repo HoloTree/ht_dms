@@ -11,7 +11,7 @@
 
 namespace ht_dms\ui\output;
 
-class view_loaders implements \Hook_SubscriberInterface {
+class loaders implements \Hook_SubscriberInterface {
 
 	/**
 	 * Set actions

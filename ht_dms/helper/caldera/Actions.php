@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\helper;
+namespace ht_dms\helper\caldera;
 
 /**
  * Class caldera_actions
@@ -18,7 +18,7 @@ namespace ht_dms\helper;
  *
  * @since 0.0.3
  */
-class caldera_actions implements \Hook_SubscriberInterface{
+class Actions implements \Hook_SubscriberInterface{
 	public static $join_group_form_id = 'CF54138690b504b';
 	public static $leave_group_form_id = 'CF5413964215412';
 	public static $group_pending_form_id = 'CF5413972657523';

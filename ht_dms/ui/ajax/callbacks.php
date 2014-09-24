@@ -9,10 +9,10 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\ui\output;
+namespace ht_dms\ui\ajax;
 
 
-class ajax_callbacks implements \Action_Hook_SubscriberInterface {
+class Callbacks implements \Action_Hook_SubscriberInterface {
 	const ACTION = 'ht_dms';
 
 	public static function get_actions() {

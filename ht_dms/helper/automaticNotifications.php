@@ -12,7 +12,7 @@
 namespace ht_dms\helper;
 
 
-class automatic_notifications implements \Action_Hook_SubscriberInterface {
+class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	/**
 	 * Set actions
@@ -252,13 +252,13 @@ class automatic_notifications implements \Action_Hook_SubscriberInterface {
 	/**
 	 * Returns instance of class
 	 *
-	 * @return automatic_notifications|object
+	 * @return automaticNotifications|object
 	 *
 	 * @since  0.0.3
 	 */
 	public static function init() {
 		if ( !self::$instance )
-			self::$instance = new automatic_notifications();
+			self::$instance = new self();
 
 		return self::$instance;
 

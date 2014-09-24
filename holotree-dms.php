@@ -80,13 +80,12 @@ class HoloTree_DMS {
 		// Localize our plugin
 		add_action( 'init', array( $this, 'localization_setup' ) );
 
-		add_action( 'init', array( $this, 'theme') );
-		add_action( 'init', array( $this, 'helper' ) );
 
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'init', array( $this, 'setup_check' ), 25 );
+		add_action( 'init', array( $this, 'theme' ), 30 );
 
 	}
 
@@ -220,49 +219,14 @@ class HoloTree_DMS {
 	}
 
 	function theme() {
-		if ( defined( 'HT_DMS_THEME' ) ) {
-			if ( HT_DMS_THEME ) {
 
-				return new ht_dms\helper\theme_setup();
-
-			}
-			else {
-				ht_dms_error( _('Your theme is incompatible with The HoloTree Decision Making System. Theme must set HT_DMS_THEME true.', 'ht_dms' ) );
-			}
-		}
-	}
-
-	function helper() {
-		$helpers = array(
-			'common',
-			'consensus',
-			'membership',
-			'paginated_views',
-			'preferences',
-			'caldera_actions',
-
-		);
-
-		$caldera = true;
-
-		if (  ! defined( 'CFCORE_VER' ) ) {
-			$caldera = false;
-			unset( $helpers[ 'caldera_actions' ] );
-		}
-
-		foreach ( $helpers as $helper ) {
-			include_once( trailingslashit( HT_DMS_DIR ).'helper/'.$helper.'.php' );
-		}
-
-
-		new ht_dms\helper\common();
-
-		if ( $caldera ) {
-			new ht_dms\helper\caldera_actions();
-		}
-
+		return new ht_dms\helper\theme();
 
 	}
+
+
+
+
 
 	/**
 	 * On load make sure we have the right DB version. If not run the Pods setup.
@@ -291,7 +255,7 @@ class HoloTree_DMS {
 add_action( 'plugins_loaded', 'holotree_dms', 30 );
 function holotree_dms() {
 
-	if (  defined( 'HT_VERSION' ) && defined( 'PODS_VERSION' ) ) {
+	if (   defined( 'PODS_VERSION' ) ) {
 
 		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
 
@@ -303,13 +267,6 @@ function holotree_dms() {
 		do_action( 'holotree_DMS' );
 
 
-
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
-		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
-		require_once( trailingslashit( HT_DMS_DIR ) . 'helper/theme_setup.php' );
-		new ht_dms\helper\Theme_Setup();
-
 		/**
 		 * Setup Auto Loader
 		 *
@@ -317,10 +274,13 @@ function holotree_dms() {
 		 */
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
 		$classLoader = new HT_DMS_ClassLoader();
-		$classLoader->addDirectory( trailingslashit( HT_DMS_ROOT_DIR ) . 'ht_dms' );
-		$classLoader->addDirectory( HT_DMS_UI_DIR );
-		$classLoader->addDirectory( trailingslashit( HT_DMS_DIR ) . 'helper' );
+		$classLoader->addDirectory( untrailingslashit( HT_DMS_ROOT_DIR ) );
+
 		$classLoader->register();
+
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
+		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
+		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 
 
 		/**
@@ -339,6 +299,7 @@ function holotree_dms() {
 			}
 		}
 
+		require_once( trailingslashit( HT_DMS_DIR ) ) . 'helper/paginated_views.php';
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/interface.php' );
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/manager.php' );
 		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/registration.php' );

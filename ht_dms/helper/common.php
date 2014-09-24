@@ -62,16 +62,6 @@ class common implements \Hook_SubscriberInterface {
 			$var = (string) HT_FOUNDATION;
 			wp_localize_script( 'HoloTree-DMS', 'htFoundation', $var );
 
-			if ( HT_FOUNDATION === false ) {
-				$jquery_ui_components = array ( 'jquery-ui-core', 'jquery-ui-accordion', 'jquery-ui-tabs' );
-
-				$jquery_ui_components = apply_filters( 'ht_dms_jquery_ui_components', $jquery_ui_components );
-
-
-				foreach ( $jquery_ui_components as $componet ) {
-					wp_enqueue_script( $componet );
-				}
-			}
 		}
 
 		wp_enqueue_script( 'pods' );

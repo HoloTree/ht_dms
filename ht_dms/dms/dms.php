@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-//namespace ht_dms;
+namespace ht_dms\dms;
 
 abstract class dms extends object {
 

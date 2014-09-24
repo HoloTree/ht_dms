@@ -33,20 +33,9 @@ class ui {
 
 	}
 
-	function group_widget() {
-		$this->file( 'group_widget', 'build' );
 
-		return new \ht_dms\ui\build\group_widget();
-	}
-
-	function my_stuff() {
-		$this->file( 'my_stuff', 'build' );
-
-		return new \ht_dms\ui\build\my_stuff();
-	}
 
 	function views() {
-		$this->file( 'views', 'build' );
 
 		return new \ht_dms\ui\build\views();
 	}
@@ -60,9 +49,8 @@ class ui {
 	 */
 	function ajax_callbacks() {
 
-		$this->file( 'ajax_callbacks', 'output' );
 
-		return new \ht_dms\ui\output\ajax_callbacks();
+		return new \ht_dms\ui\ajax\Callbacks();
 
 	}
 
@@ -92,7 +80,6 @@ class ui {
 	}
 
 	function models() {
-		$this->file( 'models', 'build' );
 
 		return \ht_dms\ui\build\models::init();
 
@@ -102,33 +89,28 @@ class ui {
 	 * @return \ht_dms\ui\build\elements
 	 */
 	function build_elements() {
-		$this->file( 'elements', 'build' );
 
 		return \ht_dms\ui\build\elements::init();
 
 	}
 
 	function login() {
-		$this->file( 'login', 'build' );
 
 		return new \ht_dms\ui\build\login();
 	}
 
 	function tags() {
-		$this->file( 'views', 'build' );
 
 		return new \ht_dms\ui\build\tags();
 
 	}
 
 	function add_modify() {
-		$this->file( 'add_modify', 'output' );
 
-		return new \ht_dms\ui\output\add_modify();
+		return new \ht_dms\ui\output\addModify();
 	}
 
 	function output_elements() {
-		$this->file( 'elements', 'output' );
 		
 		return new \ht_dms\ui\output\elements;
 
@@ -144,9 +126,9 @@ class ui {
 	}
 
 	function view_loaders() {
-		$this->file( 'view_loaders', 'output' );
 
-		return new \ht_dms\ui\output\view_loaders();
+
+		return new \ht_dms\ui\output\loaders();
 
 	}
 
@@ -155,14 +137,13 @@ class ui {
 	 *
 	 * @param string $type Type of stream network|user|organization|group
 	 *
-	 * @return build\activity_stream
+	 * @return build\activity
 	 *
 	 * @since 0.0.3
 	 */
-	function activity_stream( $type, $id ) {
-		$this->file( __FUNCTION__, 'build' );
+	function activity( $type, $id ) {
 
-		return new \ht_dms\ui\build\activity_stream( $type, $id );
+		return new \ht_dms\ui\build\activity( $type, $id );
 
 	}
 
@@ -174,15 +155,12 @@ class ui {
 	 * @since 0.0.3
 	 */
 	function membership() {
-		$this->file( 'membership', 'build' );
 
 		return new \ht_dms\ui\build\membership();
 
 	}
 
-	private function file( $file, $dir  ) {
-		require_once( trailingslashit( HT_DMS_UI_DIR ) ). trailingslashit( $dir ). $file .'.php';
-	}
+
 
 
 

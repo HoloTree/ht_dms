@@ -30,14 +30,14 @@ function ht_dms_decision( $id = true, $obj = null, $cached = true, $fields = fal
 /**
  * Get an instance of the Decision class
  *
- * @return obj|decision
+ * @return object|ht_dms\decision
  *
  * @since	0.0.1
  */
 function ht_dms_decision_class() {
 
-	return decision::init();
-	//return htdms\decision::init();
+	return ht_dms\decision::init();
+
 
 }
 
@@ -62,13 +62,13 @@ function holotree_group( $id = true, $obj = null, $cached = true, $fields = fals
 /**
  * Get an instance of the Group class
  *
- * @return obj|group
+ * @return object|ht_dms\group
  *
  * @since	0.0.1
  */
 function ht_dms_group_class() {
 
-	return group::init();
+	return ht_dms\group::init();
 
 
 }
@@ -78,13 +78,13 @@ function ht_dms_group_class() {
  *
  * @return 	HoloTree_DMS_Task
  *
- * @return obj|task
+ * @return object|ht_dms\task
  *
  * @since	0.0.1
  */
 function ht_dms_task_class() {
 
-	return task::init();
+	return ht_dms\task::init();
 
 }
 
@@ -137,13 +137,13 @@ function ht_dms_consensus( $dID ) {
 /**
  * Get an instance of the Consensus class
  *
- * @return obj|organization
+ * @return object|ht_dms\organization
  *
  * @since	0.0.1
  */
 function ht_dms_organization_class() {
 
-	return organization::init();
+	return ht_dms\organization::init();
 
 }
 
@@ -169,13 +169,13 @@ function ht_dms_organization( $id = true, $obj = false, $cached = true, $fields 
 /**
  * Returns an instance of the notification class object
  *
- * @return obj|Notification
+ * @return object|ht_dms\notification
  *
  * @since 0.0.3
  */
 function ht_dms_notification_class() {
 
-	return notification::init();
+	return ht_dms\notification::init();
 
 }
 
@@ -281,15 +281,13 @@ function ht_dms_ui_output_elements() {
 /**
  * Returns an instance of the automatic notifications class
  *
- * @return \ht_dms\helper\automatic_notifications|object
+ * @return \ht_dms\helper\automaticNotifications|object
  *
  * @since 0.0.3
  */
 function ht_dms_automatic_notifications_class() {
 
-	include_once( trailingslashit( HT_DMS_DIR ) . '/helper/automatic_notifications.php' );
-
-	return ht_dms\helper\automatic_notifications::init();
+	return ht_dms\helper\automaticNotifications::init();
 
 }
 

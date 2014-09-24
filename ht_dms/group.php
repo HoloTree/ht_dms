@@ -9,10 +9,9 @@
  * @copyright 2014 Josh Pollock
  */
 
-//namespace ht_dms;
+namespace ht_dms;
 
-
-class group extends dms implements Hook_SubscriberInterface {
+class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	/**
 	 * Set name of CPT this class is for.
