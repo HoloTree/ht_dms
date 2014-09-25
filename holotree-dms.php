@@ -355,3 +355,28 @@ function ht_dms_init_translation() {
 }
 
 
+
+
+/**
+ * Schedule Cron
+ *
+ * @since 0.0.3
+ */
+add_action( 'wp', 'ht_dms_schedule_cron' );
+
+function ht_dms_schedule_cron() {
+	if ( ! wp_next_scheduled( 'ht_dms_hourly_event' ) ) {
+		wp_schedule_event( time(), 'hourly', 'ht_dms_hourly_event');
+	}
+}
+
+/**
+ * Do cron
+ *
+ * @since 0.0.3
+ */
+add_action( 'ht_dms_hourly_event', 'ht_dms_do_hourly' );
+function ht_dms_do_hourly() {
+	ht_dms_decision_class()->checks();
+	ht_dms_notification_class()->send();
+}
