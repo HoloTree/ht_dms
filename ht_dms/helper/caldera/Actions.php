@@ -19,11 +19,11 @@ namespace ht_dms\helper\caldera;
  * @since 0.0.3
  */
 class Actions implements \Hook_SubscriberInterface{
-	public static $join_group_form_id = 'CF54138690b504b';
-	public static $leave_group_form_id = 'CF5413964215412';
-	public static $group_pending_form_id = 'CF5413972657523';
+	public $join_group_form_id = 'CF54138690b504b';
+	public $leave_group_form_id = 'CF5413964215412';
+	public $group_pending_form_id = 'CF5413972657523';
 
-	public static $decision_actions_form_id = 'CF5411fb087123d';
+	public $decision_actions_form_id = 'CF5411fb087123d';
 
 	private $decision_actions_field = 'fld_738259';
 	private $force_debug = false;
@@ -121,7 +121,7 @@ class Actions implements \Hook_SubscriberInterface{
 	 * @since 0.0.3
 	 */
 	function decision_action_options( $field, $form ) {
-		if ( $form[ 'ID' ] !== self::$decision_actions_form_id ) {
+		if ( $form[ 'ID' ] !== $this->decision_actions_form_id ) {
 			return $field;
 		}
 
@@ -335,7 +335,7 @@ class Actions implements \Hook_SubscriberInterface{
 	 * @since 0.0.3
 	 */
 	function pending_membership_fields( $field, $form ) {
-		if ( self::$group_pending_form_id !== $form[ 'ID' ] ) {
+		if ( $this->group_pending_form_id !== $form[ 'ID' ] ) {
 
 			return $field;
 		}

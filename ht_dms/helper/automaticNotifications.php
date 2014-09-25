@@ -26,7 +26,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 		return array(
 			'ht_dms_new_group' => array( 'new_group_in_organization', 10, 4 ),
 			'ht_dms_new_decision' => array( 'new_group_in_organization', 10, 4 ),
-			'ht_dms_consensus_changed' => array( 'decision_passed', 10, 2 ),
+			'ht_dms_decision_passed' => array( 'decision_passed', 10, 1 ),
 			'ht_dms_update_decision' => array( 'decision_failed', 10, 4 ),
 		);
 	}
@@ -65,9 +65,9 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 	}
 
 
-	function decision_passed( $id, $status ) {
+	function decision_passed( $id ) {
 
-		if ( $status === 'passed' ) {
+
 			$d = ht_dms_decision_class();
 			$members = $d->consensus_members( $id );
 			$decision_name = $d->title( $id );
@@ -78,7 +78,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 			$this->send_to_members( $members, $subject, $message );
 
-		}
+
 	}
 
 	function decision_failed( $id, $data, $gID, $oID ) {

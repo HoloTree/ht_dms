@@ -107,7 +107,7 @@ class elements {
 	function decision_actions( $caldera_id = false ) {
 		if ( ! $caldera_id ) {
 
-			$caldera_id = \ht_dms\helper\Actions::$decision_actions_form_id;
+			$caldera_id = ht_dms_ui()->caldera_actions()->decision_actions_form_id;
 
 		}
 		$after = '<div id="dms-action-result" style="display:none;"></div>';

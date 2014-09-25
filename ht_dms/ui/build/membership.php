@@ -26,7 +26,7 @@ class membership {
 
 		return  $this->output_container(
 			ht_dms_caldera_loader(
-				\ht_dms\helper\Actions::$join_group_form_id,
+				ht_dms_ui()->caldera_actions()->join_group_form_id,
 				__( 'Click to join this group', 'ht_dms' ),
 				$access_label
 			),
@@ -39,7 +39,7 @@ class membership {
 		$message = __( 'Click to leave this group.', 'ht_dms' );
 
 		return  $this->output_container(
-			ht_dms_caldera_loader( \ht_dms\helper\Actions::$leave_group_form_id, $message ),
+			ht_dms_caldera_loader( ht_dms_ui()->caldera_actions()->leave_group_form_id, $message ),
 			__FUNCTION__
 		);
 
@@ -49,7 +49,7 @@ class membership {
 		$message = __( 'Approve or reject pending members to this group.', 'ht_dms' );
 
 		return  $this->output_container(
-			ht_dms_caldera_loader( \ht_dms\helper\Actions::$group_pending_form_id, $message ),
+			ht_dms_caldera_loader( ht_dms_ui()->caldera_actions()->group_pending_form_id, $message ),
 			__FUNCTION__
 		);
 

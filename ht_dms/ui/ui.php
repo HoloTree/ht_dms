@@ -54,6 +54,11 @@ class ui {
 
 	}
 
+	function caldera_actions() {
+
+		return new \ht_dms\helper\caldera\Actions();
+	}
+
 	/**
 	 * Get any view defined in the ht_dms\ui\build\views class.
 	 *

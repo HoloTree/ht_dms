@@ -751,7 +751,7 @@ function ht_dms_get_content_type( $specific_type = true ) {
 
 		}
 
-		if ( $specific_type && $type  ) {
+		if ( $specific_type && isset( $type ) &&$type  ) {
 			return $specific_type;
 		}
 
