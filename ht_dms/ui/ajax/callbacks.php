@@ -12,17 +12,10 @@
 namespace ht_dms\ui\ajax;
 
 
-class Callbacks implements \Action_Hook_SubscriberInterface {
-	const ACTION = 'ht_dms';
+class Callbacks  {
+	const ACTION = 'ht_dms_';
 
-	public static function get_actions() {
-		foreach( self::callbacks() as $callback ) {
-			$actions[] = array( 'wp_ajax_' . self::ACTION . $callback => $callback );
-		}
 
-		return $actions;
-
-	}
 
 	/**
 	 * Reload consensus on ht_dms_reload_consensus AJAX action
@@ -171,7 +164,7 @@ class Callbacks implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @since 0.0.3
 	 */
-	private static function callbacks() {
+	public function callbacks() {
 
 		$callbacks = get_class_methods( __CLASS__ );
 		foreach( array( 'nonce_check', 'callbacks' ) as $unset ) {

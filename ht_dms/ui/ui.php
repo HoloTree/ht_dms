@@ -43,7 +43,7 @@ class ui {
 	/**
 	 * Ajax callbacks class
 	 *
-	 * @return output\ajax_callbacks
+	 * @return \ht_dms\ui\ajax\Callbacks
 	 *
 	 * @since 0.0.3
 	 */

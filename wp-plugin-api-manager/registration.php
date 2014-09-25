@@ -19,7 +19,6 @@ class HT_DMS_WP_API_Registration {
 
 	public function get_subscribers() {
 		return array(
-			ht_dms_ui()->ajax_callbacks(),
 			ht_dms_ui()->view_loaders(),
 			ht_dms_organization_class(),
 			ht_dms_decision_class(),

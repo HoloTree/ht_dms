@@ -307,6 +307,13 @@ function holotree_dms() {
 		$api_registration = new \HT_DMS_WP_API_Registration();
 		$api_registration->boot();
 
+		$ajax = ht_dms_ui()->ajax_callbacks();
+		$actions = $ajax->callbacks();
+		foreach ( $actions as $callback ) {
+			$action = 'wp_ajax_ht_dms_' . $callback;
+			add_action( $action, array ( $ajax, $callback ) );
+		}
+
 
 		return ht_dms\ui\ui::init();
 
@@ -346,3 +353,4 @@ function ht_dms_init_translation() {
 	load_textdomain( 'ht_dms', WP_LANG_DIR . '/ht_dms/ht_dms-' . $locale . '.mo' );
 	load_plugin_textdomain( 'ht_dms', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
+

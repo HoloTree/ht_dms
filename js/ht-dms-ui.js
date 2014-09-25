@@ -76,11 +76,12 @@ jQuery(document).ready(function( $ ) {
      * @since 0.0.3
      */
     $( document ).ajaxSuccess(function( event, xhr, settings ) {
-        console.log( settings );
-        console.log( htDMS.id );
+
        if ( settings.url == './' ) {
            var consensus = '#consensus-view';
+
            if ( $( consensus ).length ) {
+
                reloadConsensus( consensus, htDMS.id );
            }
 

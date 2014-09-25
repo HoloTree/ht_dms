@@ -719,7 +719,7 @@ class elements {
 			if ( is_string( $tabs ) ) {
 
 				return sprintf( '
-					<div class="consensus-view">
+					<div id="consensus-view" class="consensus-view">
 						<h5>%0s</h5>
 						%1s
 					</div>
