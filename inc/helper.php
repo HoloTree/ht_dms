@@ -777,3 +777,9 @@ function ht_dms_integer( $int ) {
 
 	}
 }
+
+function ht_dms_reset_consensus( $id ) {
+
+	return ht_dms_consensus_class()->reset( $id );
+
+}

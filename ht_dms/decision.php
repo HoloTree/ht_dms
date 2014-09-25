@@ -362,8 +362,6 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 		}
 
-		do_action( 'ht_dms_consensus_changed', $id, $status );
-		do_action( 'ht_dms_consensus_changed_'.$id, $status );
 		return $id;
 	}
 

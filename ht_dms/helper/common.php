@@ -447,7 +447,10 @@ class common implements \Hook_SubscriberInterface {
 
 		$data = $dID = $gID = $oID = null;
 		foreach( $pieces[ 'fields_active' ] as $field ) {
-			$data[ $id ][ $field ] =  $pieces[ 'fields' ][ $field][ 'value'];
+			if ( ! is_null( pods_v( $field, $pieces ) ) ) {
+				$datum                 = $pieces[ 'fields' ][ $field ][ 'value' ];
+				$data[ $id ][ $field ] = $datum;
+			}
 		}
 
 		$type = $pieces['params']->pod;

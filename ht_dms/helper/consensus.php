@@ -84,6 +84,7 @@ class consensus {
 				}
 				else {
 					$id = $obj->save( 'consensus', serialize( $consensus ) );
+					$id = $obj->save( 'decision_status', 'new' );
 					return $id;
 
 				}
@@ -187,6 +188,11 @@ class consensus {
 			$id = $d->update( $dID, 'consensus', $value );
 			$status = $this->status( $value );
 			$d->update( $dID, 'decision_status', $status );
+			do_action( 'ht_dms_consensus_changed', $dID, $status );
+			if ( $status === 'passed' ) {
+				do_action( 'ht_dms_decision_passed', $dID );
+			}
+
 			return $id;
 		}
 
@@ -305,6 +311,13 @@ class consensus {
 
 
 
+	}
+
+	function reset( $dID ) {
+		$obj  = ht_dms_decision( $dID );
+		$consensus = $obj->save( 'consensus', '' );
+		$this->consensus( $dID );
+		$obj->save( array( 'decision_status', 'new' ) );
 	}
 
 

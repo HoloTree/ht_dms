@@ -74,7 +74,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 			$decision_link = sprintf( '<a href="%1s">%2s</a>', get_the_permalink( $id ), $decision_name );
 
 			$subject = __( sprintf( 'The decision %1s has passed', $decision_name ), 'ht_dms' );
-			$message = __( sprintf( 'You can see the decision here: %1s' ), $decision_link );
+			$message = __( sprintf( 'You can see the decision here: %1s', $decision_link ), 'ht_dms' );
 
 			$this->send_to_members( $members, $subject, $message );
 

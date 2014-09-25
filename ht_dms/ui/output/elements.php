@@ -739,6 +739,7 @@ class elements {
 	 */
 	function third_element( $type, $id ) {
 		if ( $type == 'consensus' ) {
+			ht_dms_consensus($id);
 			$content = $this->view_consensus( $id );
 		}
 		elseif ( in_array( $type, array( 'network', 'user', 'organization', 'group' ) ) ) {

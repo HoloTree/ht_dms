@@ -354,3 +354,4 @@ function ht_dms_init_translation() {
 	load_plugin_textdomain( 'ht_dms', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
+
