@@ -16,7 +16,7 @@ add_action( 'wp_ajax_ht_dms_paginate', 'ht_dms_paginate');
 add_action( 'wp_ajax_nopriv_ht_dms_paginate', '__return_false' );
 function ht_dms_paginate() {
 	if ( isset( $_REQUEST['nonce'] ) ) {
-		if ( ! wp_verify_nonce( $_REQUEST[ 'nonce' ], 'ht-dms' ) ) {
+		if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 			wp_die( __( 'Your attempt to request data via ajax using the function ht_dms_ui_ajax_view was denied as the nonce did not match.', 'ht_dms' ) );
 		}
 

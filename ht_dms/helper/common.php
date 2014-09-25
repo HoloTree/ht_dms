@@ -143,8 +143,8 @@ class common implements \Hook_SubscriberInterface {
 
 	function dms_actions() {
 
-		$action =  pods_v( 'dms_action', 'get', false, true );
-		$id = intval( pods_v( 'dms_id', 'get', false, true ) );
+		$action =  pods_v_sanitized( 'dms_action', 'get', false, true );
+		$id = intval( pods_v_sanitized( 'dms_id', 'get', false, true ) );
 
 		if ( in_array( $action, array_keys( ht_dms_ui()->view_loaders()->special_views() ) ) ) {
 			return;
@@ -155,7 +155,7 @@ class common implements \Hook_SubscriberInterface {
 		}
 
 		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
-			$content = pods_v( 'dms_comment_text', 'post', false, true );
+			$content = pods_v_sanitized( 'dms_comment_text', 'post', false, true );
 			if ( false !== $content ) {
 				$data = array (
 					'comment_post_ID'  => $id,

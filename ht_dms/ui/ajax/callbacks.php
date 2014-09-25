@@ -21,9 +21,9 @@ class Callbacks  {
 	 * @since 0.0.3
 	 */
 	function reload_consensus( ) {
-		if ( $this->nonce_check( $_REQUEST ) ) {
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 
-			$dID = pods_v( 'dID', $_REQUEST );
+			$dID = pods_v_sanitized( 'dID', $_REQUEST );
 			if ( $dID ) {
 				$post = get_post( $dID );
 				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_CPT_NAME === $post->post_type ) {
@@ -51,8 +51,8 @@ class Callbacks  {
 	 * @since 0.0.3
 	 */
 	function load_notification( ) {
-		if ( $this->nonce_check( $_REQUEST ) ) {
-			$nID = pods_v( 'nID', $_REQUEST );
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			$nID = pods_v_sanitized( 'nID', $_REQUEST );
 			if ( $nID ) {
 
 				wp_die( ht_dms_ui()->views()->notification( null, $nID ) );
@@ -71,8 +71,8 @@ class Callbacks  {
 	 * @since 0.0.3
 	 */
 	function update_decision_status() {
-		if ( $this->nonce_check( $_REQUEST ) ) {
-			$dID = pods_v( 'dID', $_REQUEST );
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			$dID = pods_v_sanitized( 'dID', $_REQUEST );
 			if ( $dID ) {
 				wp_die( ucwords( ht_dms_decision_class()->status( $dID ) ) );
 
@@ -89,42 +89,14 @@ class Callbacks  {
 	 * @since 0.0.3
 	 */
 	function reload_membership() {
-		if ( $this->nonce_check( $_REQUEST ) ) {
-			$gID = pods_v( 'gID', $_REQUEST );
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			$gID = pods_v_sanitized( 'gID', $_REQUEST );
 			if ( $gID ) {
 				wp_die( ht_dms_ui()->build_elements()->group_membership( $gID) );
 			}
 		}
 	}
 
-	/**
-	 * Check a nonce
-	 *
-	 * @param array      $REQUEST The array with the nonce in it, probably $_REQUEST
-	 * @param string $nonce Name of nonce.
-	 * @param bool   $message Optional. Fail message.
-	 *
-	 * @return bool	Returns true if nonce is good.
-	 *
-	 * @since 0.0.3
-	 */
-	private function nonce_check( $REQUEST, $nonce = 'ht-dms', $message = false ) {
-		if ( ! $message ) {
-			$message = __( 'Request denied for security reasons.', 'ht_dms' );
-		}
-
-		if ( isset( $REQUEST['nonce'] ) ) {
-			if ( ! wp_verify_nonce( $REQUEST[ 'nonce' ], $nonce ) ) {
-
-				wp_die(  $message  );
-
-			}
-
-			return true;
-
-		}
-
-	}
 
 	/**
 	 * Mark a notification viewed or unviewed via AJAX
@@ -134,8 +106,8 @@ class Callbacks  {
 	 * @since 0.0.3
 	 */
 	function mark_notification()  {
-		if ( $this->nonce_check( $_REQUEST ) ) {
-			$nID = pods_v( 'nID', $_REQUEST );
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			$nID = pods_v_sanitized( 'nID', $_REQUEST );
 			$value =  ( pods_v( 'mark', $_REQUEST ) );
 
 			if ( $nID && in_array( $value, array( 1, 0 ) ) ) {
@@ -154,7 +126,7 @@ class Callbacks  {
 	}
 
 	function members() {
-		if ( $this->nonce_check( $_REQUEST ) ) {
+		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 			$id = pods_v_sanitized( 'id', $_REQUEST );
 			$type = pods_v_sanitized( 'id', $_REQUEST );
 			if ( $id && $type ) {
@@ -176,7 +148,7 @@ class Callbacks  {
 	}
 
 	/**
-	 * Returns an array, which is used in the common class' __construct() to build hooks for AJAX actions.
+	 * Returns an array, which is used to build hooks for AJAX actions.
 	 *
 	 * @return array
 	 *
@@ -185,9 +157,8 @@ class Callbacks  {
 	public function callbacks() {
 
 		$callbacks = get_class_methods( __CLASS__ );
-		foreach( array( 'nonce_check', 'callbacks' ) as $unset ) {
-			unset( $callbacks [ array_search( $unset, $callbacks ) ] );
-		}
+
+		unset( $callbacks [ __METHOD__ ] );
 
 		return $callbacks;
 
