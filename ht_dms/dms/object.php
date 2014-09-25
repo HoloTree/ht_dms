@@ -28,7 +28,7 @@ abstract class object {
 	/**
 	 * Cache mode for Pods Objects
 	 *
-	 * object|transient|site-transient
+	 * cache|transient|site-transient
 	 * @var string
 	 *
 	 * @since 0.0.1
@@ -125,7 +125,7 @@ abstract class object {
 
 		}
 		else {
-			ht_dms_error( );
+			ht_dms_error();
 		}
 
 
@@ -177,7 +177,7 @@ abstract class object {
 	 * @since 0.0.1
 	 */
 	function check_obj( $obj ) {
-		if ( is_object( $obj ) && is_pod ( $obj )  ) {
+		if ( is_object( $obj ) && is_pod ( $obj ) && $obj->pod_data['name'] === $this->get_type() ) {
 
 				return true;
 
