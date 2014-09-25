@@ -646,7 +646,7 @@ class elements {
 	 *
 	 * @return string
 	 */
-	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false ) {
+	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false, $mini_mode = false ) {
 		$members = false;
 		if ( is_array( $users ) ) {
 			foreach( $users as $user ) {
@@ -656,7 +656,12 @@ class elements {
 				$name = pods_v( 'name', $user );
 				if ( ! is_null( $name ) ) {
 					$avatar = pods_v( 'avatar', $user, ht_dms_fallback_avatar() );
-					$members[] = sprintf( '<li class="member-view"><div class="avatar">%1s</span><div class="name">%2s</span></li>', $avatar, $name );
+					if ( ! $mini_mode ) {
+						$members[ ] = sprintf( '<li class="member-view"><div class="avatar">%1s</span><div class="name">%2s</span></li>', $avatar, $name );
+					}
+					else {
+						$members[] = sprintf( '<li class="member-view"><div class="mini-avatar" name="%2s">%1s</div></li>', $avatar, $name );
+					}
 				}
 			}
 		}
@@ -666,8 +671,14 @@ class elements {
 				$mobile_wide = $desktop_wide / 2;
 			}
 
+			$class = 'members-view';
+			if ( $mini_mode ) {
+				$class .= ' mini-mode';
+			}
 
- 			return sprintf( '<div class="members-view"><ul class="small-block-grid-%d large-block-grid-%d">%3s</ul></div>', $mobile_wide, $desktop_wide, implode( $members ) );
+ 			return sprintf( '<div class="%0s"><ul class="small-block-grid-%d large-block-grid-%d">%3s</ul></div>', $class, $mobile_wide, $desktop_wide, implode( $members ) );
+
+
 		}
 		else {
 			return '';

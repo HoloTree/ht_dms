@@ -13,10 +13,6 @@ namespace ht_dms\ui\ajax;
 
 
 class Callbacks  {
-	const ACTION = 'ht_dms_';
-
-
-
 	/**
 	 * Reload consensus on ht_dms_reload_consensus AJAX action
 	 *
@@ -155,6 +151,28 @@ class Callbacks  {
 
 		}
 
+	}
+
+	function members() {
+		if ( $this->nonce_check( $_REQUEST ) ) {
+			$id = pods_v_sanitized( 'id', $_REQUEST );
+			$type = pods_v_sanitized( 'id', $_REQUEST );
+			if ( $id && $type ) {
+				if ( in_array( $type, array( 'group', 'organization' ) ) ) {
+					$is_group = false;
+					if ( $type == 'group' ) {
+						$is_group = true;
+					}
+					$members = ht_dms_membership_class()->all_members( $id, null, $is_group );
+					$members = ht_dms_ui()->output_elements()->members_details_view( $members, 20, 20, true );
+					if ( is_string( $members ) ) {
+						wp_die( $members );
+					}
+					die();
+
+				}
+			}
+		}
 	}
 
 	/**

@@ -4,7 +4,7 @@
 		<p class="description">{@group_description}</p>
 		<ul>
 			<li>Organization: {{organization}} {@organization}</li>
-			<li>Members: {@members}</li>
+			<li>Members: <div class="dms-members-load" dms_type="group" dms_id="{@id}"></div></li>
 		</ul>
 	</div>
 </div>

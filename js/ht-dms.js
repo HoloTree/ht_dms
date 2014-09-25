@@ -200,12 +200,40 @@ jQuery(document).ready(function($) {
 
             },
             function( response ) {
-                console.log( response );
                 paginate( "#users_notifications", 1 );
             }
         );
     }
 
     window.markNotification = markNotification;
+
+
+    function get_members( id, type, container ) {
+
+        $.get(
+            ajaxURL, {
+                'action': 'ht_dms_members',
+                'nonce' : htDMS.nonce,
+                'id'    : id,
+                'type'  : type
+
+            },
+            function( response ) {
+                console.log( respone );
+                $( container).html( response );
+            }
+        );
+    }
+
+    $( document ).ajaxComplete( function() {
+        var container = '.dms-members-load';
+        var id = $( container ).attr( 'dms_id' );
+        var type = $( container).attr( 'dms_type' );
+        console.log( type );
+        get_members( id,  type, container );
+    });
+
+
+
 
 });
