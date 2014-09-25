@@ -487,7 +487,7 @@ class elements {
 			'group'	=> '<i class="fa fa-users"></i>',
 			'decision' => '<i class="fa fa-check"></i>',
 			'task'	=> '<i class="fa fa-tag"></i>',
-			'notification' => '<i class="fa fa-inbox"></i>',
+			'notifications' => '<i class="fa fa-inbox"></i>',
 			'preferences' => '<i class="fa fa-cogs"></i>',
 			'close' => '<i class="fa fa-times"></i>',
 			'doc' => '<i class="fa fa-file"></i>',
@@ -509,6 +509,7 @@ class elements {
 			'spinner' => '<i class="fa fa-spinner fa-spin"></i>',
 			'silence' => '<i class="fa fa-circle-o"></i>',
 			'accepted' => '<i class="fa fa-check"></i>',
+			'notification' => '<i class="fa fa-envelope-o"></i>',
 		);
 
 		/**

@@ -17,11 +17,11 @@ $paginated_view_args = ht_dms_default_paginated_view_arguments( array( 'un_viewe
 
 $tabs = array(
 	array(
-		'label'		=> ht_dms_add_icon( __( 'Notifications', 'ht_dms' ), 'notification' ),
+		'label'		=> ht_dms_add_icon( __( 'Notifications', 'ht_dms' ), 'notifications' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_notifications', $paginated_view_args )
 	),
 	array(
-		'label'		=> ht_dms_add_icon( __( 'New Private Message', 'ht_dms' ), array( 'new', 'notification') ),
+		'label'		=> ht_dms_add_icon( __( 'New Private Message', 'ht_dms' ), array( 'new', 'notifications') ),
 		'content' 	=> 'Functionality not yet implemented',
 	),
 );

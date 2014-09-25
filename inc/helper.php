@@ -99,13 +99,12 @@ function ht_dms_home() {
  * @return array
  */
 function ht_dms_mini_menu_items() {
-
-	$elements = ht_dms_ui()->build_elements();
+	
 	$items = array(
-		ht_dms_home() => $elements->icon( 'home' ) . __( 'Home', 'ht_dms' ),
-		ht_dms_preferences_url() => $elements->icon( 'preferences' ) . __( 'Preferences', 'ht_dms' ),
-		ht_dms_notifications_url() => $elements->icon( 'notification' ) . __( 'Notifications', 'ht_dms' ),
-		wp_logout_url() => $elements->icon( 'logout' ) .  __( 'Logout', 'ht_dms' ),
+		ht_dms_home() => ht_dms_add_icon( __( 'Home', 'ht_dms' ), 'home' ),
+		ht_dms_preferences_url() => ht_dms_add_icon( __( 'Preferences', 'ht_dms' ), 'preferences' ),
+		ht_dms_notifications_url() => ht_dms_add_icon(  __( 'Notifications', 'ht_dms' ), 'notifications' ),
+		wp_logout_url() => ht_dms_add_icon(  __( 'Logout', 'ht_dms' ), 'logout' ),
 	);
 
 	/**
