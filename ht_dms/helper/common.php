@@ -150,6 +150,10 @@ class common implements \Hook_SubscriberInterface {
 			return;
 		}
 
+		if ( $action == 'new' && $id ) {
+			pods_redirect( get_permalink( $id ) );
+		}
+
 		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
 			$content = pods_v( 'dms_comment_text', 'post', false, true );
 			if ( false !== $content ) {
