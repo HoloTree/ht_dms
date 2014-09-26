@@ -25,16 +25,16 @@ class membership {
 	 */
 	function null_obj( $id_or_params = null, $obj = null, $group = true ) {
 		if ( is_object( $obj ) && is_pod( $obj ) ) {
-			if ( ( $group  && $obj->pod_data['name'] ===  HT_DMS_GROUP_CPT_NAME ) || ( ! $group && $obj->pod_data[ 'name' ] === HT_DMS_ORGANIZATION_NAME ) ) {
+			if ( ( $group  && $obj->pod_data['name'] ===  HT_DMS_GROUP_POD_NAME ) || ( ! $group && $obj->pod_data[ 'name' ] === HT_DMS_ORGANIZATION_POD_NAME ) ) {
 				return $obj;
 			}
 		}
 
 		if ( $group ) {
-			$name = HT_DMS_GROUP_CPT_NAME;
+			$name = HT_DMS_GROUP_POD_NAME;
 		}
 		else {
-			$name = HT_DMS_ORGANIZATION_NAME;
+			$name = HT_DMS_ORGANIZATION_POD_NAME;
 		}
 
 

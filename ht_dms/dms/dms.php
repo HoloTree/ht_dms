@@ -135,7 +135,7 @@ abstract class dms extends object {
 		}
 
 		$params = null;
-		if ( ! $new && $this->get_type() !== HT_DMS_TASK_CT_NAME ) {
+		if ( ! $new && $this->get_type() !== HT_DMS_TASK_POD_NAME ) {
 			$params = array( 'where' => 't.id = " ' . $id . ' " ' );
 		}
 		else{
@@ -168,12 +168,12 @@ abstract class dms extends object {
 			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
 		}
 
-		if ( is_null( $oID )  && $type !== HT_DMS_ORGANIZATION_NAME  ) {
+		if ( is_null( $oID )  && $type !== HT_DMS_ORGANIZATION_POD_NAME  ) {
 			//find what content type we're on
 			$calling_type = ht_dms_get_content_type();
 
 			if ( in_array( $calling_type, $this->content_types()) ) {
-				if ( $calling_type === HT_DMS_ORGANIZATION_NAME ) {
+				if ( $calling_type === HT_DMS_ORGANIZATION_POD_NAME ) {
 					global $post;
 					$oID = $post->ID;
 				}
@@ -190,14 +190,14 @@ abstract class dms extends object {
 			}
 
 		}
-		elseif (  ! $new && $type !== HT_DMS_ORGANIZATION_NAME ) {
+		elseif (  ! $new && $type !== HT_DMS_ORGANIZATION_POD_NAME ) {
 			if (  ! isset( $oID ) || ! $oID  )  {
 				ht_dms_error( );
 			}
 
 		}
 
-		if ( $type === HT_DMS_TASK_CT_NAME ) {
+		if ( $type === HT_DMS_TASK_POD_NAME ) {
 			if ( !is_null( $dID ) ) {
 				$form_fields[ 'decision' ][ 'default' ] = $dID;
 			}
@@ -346,7 +346,7 @@ abstract class dms extends object {
 
 		$type = $obj->pod;
 
-		if ( $type !== HT_DMS_DECISION_CPT_NAME ) {
+		if ( $type !== HT_DMS_DECISION_POD_NAME ) {
 			ht_dms_error( __METHOD__, __('only supports decisions. For now...', 'ht_dms' ) );
 		}
 
@@ -471,7 +471,7 @@ abstract class dms extends object {
 				$label = __( 'Edit', 'ht_dms' );
 			}
 
-			if ( $type === HT_DMS_TASK_CT_NAME ) {
+			if ( $type === HT_DMS_TASK_POD_NAME ) {
 				$link = add_query_arg( 'task', true, $link );
 			}
 
@@ -581,11 +581,11 @@ abstract class dms extends object {
 	 */
 	function content_types() {
 		return array(
-			HT_DMS_ORGANIZATION_NAME,
-			HT_DMS_GROUP_CPT_NAME,
-			HT_DMS_DECISION_CPT_NAME,
-			HT_DMS_TASK_CT_NAME,
-			HT_DMS_NOTIFICATION_NAME,
+			HT_DMS_ORGANIZATION_POD_NAME,
+			HT_DMS_GROUP_POD_NAME,
+			HT_DMS_DECISION_POD_NAME,
+			HT_DMS_TASK_POD_NAME,
+			HT_DMS_NOTIFICATION_POD_NAME,
 		);
 
 	}

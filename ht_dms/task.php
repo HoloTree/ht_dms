@@ -20,7 +20,7 @@ class task extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @since 0.0.1
 	 */
-	public static $type = HT_DMS_TASK_CT_NAME;
+	public static $type = HT_DMS_TASK_POD_NAME;
 
 
 	/**
@@ -580,7 +580,7 @@ class task extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	}
 
 	function task_exists( $id ) {
-		if ( term_exists( $id, HT_DMS_TASK_CT_NAME ) ) {
+		if ( term_exists( $id, HT_DMS_TASK_POD_NAME ) ) {
 			return true;
 		}
 
@@ -588,7 +588,7 @@ class task extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	function get_link( $id ) {
 		if ( $this->task_exists( $id ) ) {
-			$link = get_term_link( $id, HT_DMS_TASK_CT_NAME );
+			$link = get_term_link( $id, HT_DMS_TASK_POD_NAME );
 			return $link;
 		}
 

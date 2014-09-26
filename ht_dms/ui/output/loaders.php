@@ -138,7 +138,7 @@ class loaders implements \Hook_SubscriberInterface {
 	 * Creates the single view template for tasks.
 	 */
 	function task_view( $view ) {
-		if ( get_query_var( 'taxonomy' ) === HT_DMS_TASK_CT_NAME ) {
+		if ( get_query_var( 'taxonomy' ) === HT_DMS_TASK_POD_NAME ) {
 			return $this->view_cache( 'task', null );
 		}
 
@@ -231,7 +231,7 @@ class loaders implements \Hook_SubscriberInterface {
 			$content = $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
 
 		}
-		elseif ( $post_type === HT_DMS_GROUP_CPT_NAME || $post_type === HT_DMS_DECISION_CPT_NAME || HT_DMS_ORGANIZATION_NAME ) {
+		elseif ( $post_type === HT_DMS_GROUP_POD_NAME || $post_type === HT_DMS_DECISION_POD_NAME || HT_DMS_ORGANIZATION_POD_NAME ) {
 			if ( is_singular( $post_type ) ) {
 				$context = 'single';
 			}
@@ -323,7 +323,7 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 
 		if ( $context === 'task' ) {
-			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ), true, HT_DMS_TASK_CT_NAME );
+			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-single.php' ), true, HT_DMS_TASK_POD_NAME );
 		}
 
 	}
@@ -347,7 +347,7 @@ class loaders implements \Hook_SubscriberInterface {
 			$context = 'home';
 
 		}
-		elseif ( $post_type === HT_DMS_GROUP_CPT_NAME || $post_type === HT_DMS_DECISION_CPT_NAME || HT_DMS_ORGANIZATION_NAME ) {
+		elseif ( $post_type === HT_DMS_GROUP_POD_NAME || $post_type === HT_DMS_DECISION_POD_NAME || HT_DMS_ORGANIZATION_POD_NAME ) {
 			if ( is_singular( $post_type ) ) {
 				$context = 'single';
 			}
@@ -360,7 +360,7 @@ class loaders implements \Hook_SubscriberInterface {
 				$context = null;
 			}
 		}
-		elseif( is_tax( HT_DMS_TASK_CT_NAME ) ) {
+		elseif( is_tax( HT_DMS_TASK_POD_NAME ) ) {
 			$context = 'task';
 		}
 		else {
@@ -435,7 +435,7 @@ class loaders implements \Hook_SubscriberInterface {
 			$type = 'user';
 		}
 		else {
-			if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_CPT_NAME ) ) {
+			if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_POD_NAME ) ) {
 				$type = ht_dms_prefix_remover( $post_type );
 			} else {
 				$type = 'consensus';

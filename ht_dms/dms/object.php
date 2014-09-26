@@ -99,7 +99,7 @@ abstract class object {
 	function object( $cache = true, $params_or_id = null ) {
 
 		if ( is_int( $params_or_id ) || intval( $params_or_id ) > 1 || !is_array( $params_or_id ) ) {
-			if ( $this->get_type() !== HT_DMS_TASK_CT_NAME ) {
+			if ( $this->get_type() !== HT_DMS_TASK_POD_NAME ) {
 				$params[ 'where' ] = 't.id = "' . $params_or_id . '"';
 			}
 			else {

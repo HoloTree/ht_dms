@@ -174,10 +174,10 @@ class addModify {
 	function add_doc( $id ) {
 		$form = false;
 		$post = get_post( $id );
-		if ( ! empty( $post ) && in_array( $post->post_type, array( HT_DMS_DECISION_CPT_NAME, HT_DMS_GROUP_CPT_NAME ) ) ) {
+		if ( ! empty( $post ) && in_array( $post->post_type, array( HT_DMS_DECISION_POD_NAME, HT_DMS_GROUP_POD_NAME ) ) ) {
 			$form = pods( $post->post_type, $id );
 
-			if ( $post->post_type == HT_DMS_DECISION_CPT_NAME ) {
+			if ( $post->post_type == HT_DMS_DECISION_POD_NAME ) {
 				$group = (int) $form->display( 'group.ID' );
 			}
 			else {

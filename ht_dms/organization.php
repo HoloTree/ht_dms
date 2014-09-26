@@ -20,7 +20,7 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	 *
 	 * @since 0.0.1
 	 */
-	public static $type = HT_DMS_ORGANIZATION_NAME;
+	public static $type = HT_DMS_ORGANIZATION_POD_NAME;
 
 	function __construct() {
 		$type = $this->get_type( );

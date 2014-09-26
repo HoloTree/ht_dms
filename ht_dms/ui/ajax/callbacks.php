@@ -26,7 +26,7 @@ class Callbacks  {
 			$dID = pods_v_sanitized( 'dID', $_REQUEST );
 			if ( $dID ) {
 				$post = get_post( $dID );
-				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_CPT_NAME === $post->post_type ) {
+				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_POD_NAME === $post->post_type ) {
 					wp_cache_flush();
 					//$users = ht_dms_decision_class()->consensus_members( $dID );
 					$consensus = ht_dms_ui()->output_elements()->view_consensus( $dID );

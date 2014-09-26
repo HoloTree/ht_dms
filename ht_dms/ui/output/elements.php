@@ -330,9 +330,9 @@ class elements {
 			$build_elements = ht_dms_ui()->build_elements();
 
 			foreach ( array(
-				HT_DMS_ORGANIZATION_NAME => $oID,
-				HT_DMS_GROUP_CPT_NAME => $gID,
-				HT_DMS_DECISION_CPT_NAME => $dID,
+				HT_DMS_ORGANIZATION_POD_NAME => $oID,
+				HT_DMS_GROUP_POD_NAME => $gID,
+				HT_DMS_DECISION_POD_NAME => $dID,
 			) as $type => $id ) {
 				if ( ht_dms_integer( $id ) ) {
 					$titles[] = sprintf(
@@ -427,8 +427,8 @@ class elements {
 				$url = get_post_type_archive_link( $id );
 			}
 			elseif ( $type === 'taxonomy' || $type === 'tax' ) {
-				if ( term_exists( $id, HT_DMS_TASK_CT_NAME ) ) {
-					$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
+				if ( term_exists( $id, HT_DMS_TASK_POD_NAME ) ) {
+					$url = get_term_link( $id, HT_DMS_TASK_POD_NAME );
 				}
 				else {
 					$url = '#';
@@ -536,10 +536,10 @@ class elements {
 			$id = get_queried_object_id();
 		}
 
-		$url = get_term_link( $id, HT_DMS_TASK_CT_NAME );
+		$url = get_term_link( $id, HT_DMS_TASK_POD_NAME );
 
 		if ( is_null( $text ) ) {
-			$term = get_term( $id, HT_DMS_TASK_CT_NAME );
+			$term = get_term( $id, HT_DMS_TASK_POD_NAME );
 			if ( is_object( $term ) && ! is_a( $term, 'WP_Error' ) ) {
 				$text = $term->name;
 			}

@@ -86,7 +86,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		return $this->output( $return, HT_DMS_ORGANIZATION_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_ORGANIZATION_POD_NAME, $params, $preview, $obj );
 
 	}
 
@@ -143,7 +143,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		return $this->output( $return, HT_DMS_GROUP_CPT_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_GROUP_POD_NAME, $params, $preview, $obj );
 
 	}
 
@@ -163,10 +163,10 @@ class models {
 
 			if ( !is_null( $in ) ) {
 
-				if ( $in[ 'what' ] === 'group' || $in[ 'what' ] === HT_DMS_GROUP_CPT_NAME ) {
+				if ( $in[ 'what' ] === 'group' || $in[ 'what' ] === HT_DMS_GROUP_POD_NAME ) {
 					$in_where = 'group.ID =';
 				}
-				elseif ( $in[ 'what' ] === 'organization' || $in[ 'what' ] === HT_DMS_ORGANIZATION_NAME ) {
+				elseif ( $in[ 'what' ] === 'organization' || $in[ 'what' ] === HT_DMS_ORGANIZATION_POD_NAME ) {
 					$in_where = 'organization.ID =';
 				}
 				else {
@@ -195,7 +195,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		return $this->output( $return, HT_DMS_DECISION_CPT_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_DECISION_POD_NAME, $params, $preview, $obj );
 
 	}
 
@@ -220,13 +220,13 @@ class models {
 					//@TODO in more than one thing
 				}
 				else {
-					if ( $in[ 'what' ] === 'group' || $in[ 'what' ] === HT_DMS_GROUP_CPT_NAME ) {
+					if ( $in[ 'what' ] === 'group' || $in[ 'what' ] === HT_DMS_GROUP_POD_NAME ) {
 						$in_where = 'group.ID =';
 					}
-					elseif ( $in[ 'what' ] === 'organization' || $in[ 'what' ] === HT_DMS_ORGANIZATION_NAME ) {
+					elseif ( $in[ 'what' ] === 'organization' || $in[ 'what' ] === HT_DMS_ORGANIZATION_POD_NAME ) {
 						$in_where = 'organization.ID =';
 					}
-					elseif( $in[ 'what' ] === 'decision' || $in[ 'what' ] === HT_DMS_DECISION_CPT_NAME ) {
+					elseif( $in[ 'what' ] === 'decision' || $in[ 'what' ] === HT_DMS_DECISION_POD_NAME ) {
 						$in_where = 'decision.ID =';
 					}
 					else {
@@ -273,7 +273,7 @@ class models {
 
 		$view = $this->path( 'task', $preview );
 
-		return $this->output( $return, HT_DMS_TASK_CT_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_TASK_POD_NAME, $params, $preview, $obj );
 
 	}
 
@@ -302,7 +302,7 @@ class models {
 
 		$params = $this->cache_args( $params );
 
-		return $this->output( $return, HT_DMS_NOTIFICATION_NAME, $params, $preview, $obj );
+		return $this->output( $return, HT_DMS_NOTIFICATION_POD_NAME, $params, $preview, $obj );
 
 	}
 

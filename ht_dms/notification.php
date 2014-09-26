@@ -71,7 +71,7 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 	 *
 	 * @since 0.0.3
 	 */
-	public static $type = HT_DMS_NOTIFICATION_NAME;
+	public static $type = HT_DMS_NOTIFICATION_POD_NAME;
 
 	/**
 	 * Create a new notification
@@ -370,7 +370,7 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 			$params[ 'cache_mode' ] = self::$cache_mode;
 		}
 
-		return pods( HT_DMS_NOTIFICATION_NAME, $params );
+		return pods( HT_DMS_NOTIFICATION_POD_NAME, $params );
 
 	}
 

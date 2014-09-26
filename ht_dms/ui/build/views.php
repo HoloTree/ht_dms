@@ -182,7 +182,7 @@ class views {
 		if ( $page ) {
 			$params[ 'page' ] = $page;
 		}
-		$obj = pods( HT_DMS_TASK_CT_NAME, $params );
+		$obj = pods( HT_DMS_TASK_POD_NAME, $params );
 
 		if ( $return === 'template' ) {
 			if ( $obj->total() > 0 ) {
@@ -490,7 +490,7 @@ class views {
 
 	function action_buttons( $obj, $id, $what ) {
 
-		if ( $what === 'task' || $what === HT_DMS_TASK_CT_NAME ) {
+		if ( $what === 'task' || $what === HT_DMS_TASK_POD_NAME ) {
 
 			return $this->ui()->build_elements()->task_actions( $id, $obj );
 

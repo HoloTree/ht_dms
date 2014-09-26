@@ -24,7 +24,7 @@ class elements {
 	 */
 	function decisions_by_status_tabs( $statuses = null, $gID, $dObj= null  ) {
 		if ( is_null( $dObj ) || !is_object( $dObj ) ) {
-			$dObj = pods( HT_DMS_DECISION_CPT_NAME );
+			$dObj = pods( HT_DMS_DECISION_POD_NAME );
 		}
 		if ( is_null( $statuses ) || ! is_array( $statuses ) ) {
 			$statuses = array ( 'New', 'Blocked', 'Passed' );

@@ -116,7 +116,7 @@ class setup {
 	 */
 	private function delete_existing() {
 		$api = $this->api();
-		$pods = array( HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_TASK_CT_NAME, 'user' );
+		$pods = array( HT_DMS_ORGANIZATION_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_TASK_POD_NAME, 'user' );
 
 		foreach( $pods as $pod ) {
 			$api->delete_pod( $params[ 'name' ] = $pod );
@@ -135,10 +135,10 @@ class setup {
 	 * @return array
 	 */
 	public function relationships() {
-		$d = HT_DMS_DECISION_CPT_NAME;
-		$g = HT_DMS_GROUP_CPT_NAME;
-		$t = HT_DMS_TASK_CT_NAME;
-		$o = HT_DMS_ORGANIZATION_NAME;
+		$d = HT_DMS_DECISION_POD_NAME;
+		$g = HT_DMS_GROUP_POD_NAME;
+		$t = HT_DMS_TASK_POD_NAME;
+		$o = HT_DMS_ORGANIZATION_POD_NAME;
 		return array(
 			'decisions_managing' => array(
 				'from' 		=> array(

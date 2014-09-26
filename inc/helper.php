@@ -51,7 +51,7 @@ function ht_dms_setup_pods( $package_only = false, $skip_package = true, $delete
 function ht_dms_pods_exist() {
 	$key = 'ht_dms_pods_exists';
 	if ( false == pods_transient_get( $key )  ) {
-		$pods = array( HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME );
+		$pods = array( HT_DMS_ORGANIZATION_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_DECISION_POD_NAME, HT_DMS_TASK_POD_NAME );
 		$api = pods_api();
 		foreach( $pods as $pod ) {
 			$params = array( 'name' => $pod );
@@ -122,9 +122,9 @@ function ht_dms_mini_menu_items() {
 
 function ht_dms_url( $id, $type = false ) {
 	if ( $type === 'post-type' || in_array( $type, array(
-			HT_DMS_DECISION_CPT_NAME,
-			HT_DMS_GROUP_CPT_NAME,
-			HT_DMS_ORGANIZATION_NAME,
+			HT_DMS_DECISION_POD_NAME,
+			HT_DMS_GROUP_POD_NAME,
+			HT_DMS_ORGANIZATION_POD_NAME,
 		)
 	) ) {
 		return get_permalink( $id );
@@ -136,9 +136,9 @@ function ht_dms_url( $id, $type = false ) {
 
 	}
 
-	if ( $type === HT_DMS_TASK_CT_NAME || false == $link  ) {
+	if ( $type === HT_DMS_TASK_POD_NAME || false == $link  ) {
 
-		return get_term_link( $id, HT_DMS_TASK_CT_NAME );
+		return get_term_link( $id, HT_DMS_TASK_POD_NAME );
 
 	}
 
@@ -348,7 +348,7 @@ function ht_dms_is( $content_type, $id = false ) {
 		}
 	}
 
-	if (  in_array( $content_type, array(  HT_DMS_ORGANIZATION_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_DECISION_CPT_NAME ) ) ) {
+	if (  in_array( $content_type, array(  HT_DMS_ORGANIZATION_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_DECISION_POD_NAME ) ) ) {
 
 		if ( $id ) {
 			$post = get_post( $id );
@@ -370,7 +370,7 @@ function ht_dms_is( $content_type, $id = false ) {
 		}
 	}
 
-	if ( $content_type === HT_DMS_TASK_CT_NAME ) {
+	if ( $content_type === HT_DMS_TASK_POD_NAME ) {
 		if ( !  $id ) {
 			$id = get_queried_object_id();
 		}
@@ -389,7 +389,7 @@ function ht_dms_is( $content_type, $id = false ) {
 
 	}
 
-	if ( $content_type == HT_DMS_NOTIFICATION_NAME ) {
+	if ( $content_type == HT_DMS_NOTIFICATION_POD_NAME ) {
 		if ( $id && is_object( ht_dms_notification( $id ) ) ) {
 
 			return true;
@@ -412,7 +412,7 @@ function ht_dms_is( $content_type, $id = false ) {
  */
 function ht_dms_is_organization( $id = false ) {
 
-	return ht_dms_is( HT_DMS_ORGANIZATION_NAME, $id );
+	return ht_dms_is( HT_DMS_ORGANIZATION_POD_NAME, $id );
 
 }
 
@@ -427,7 +427,7 @@ function ht_dms_is_organization( $id = false ) {
  */
 function ht_dms_is_group( $id = false ) {
 
-	return ht_dms_is( HT_DMS_GROUP_CPT_NAME, $id );
+	return ht_dms_is( HT_DMS_GROUP_POD_NAME, $id );
 
 }
 
@@ -442,7 +442,7 @@ function ht_dms_is_group( $id = false ) {
  */
 function ht_dms_is_decision( $id = false ) {
 
-	return ht_dms_is( HT_DMS_DECISION_CPT_NAME, $id );
+	return ht_dms_is( HT_DMS_DECISION_POD_NAME, $id );
 
 }
 
@@ -457,7 +457,7 @@ function ht_dms_is_decision( $id = false ) {
  */
 function ht_dms_is_task( $id = false ) {
 
-	return ht_dms_is( HT_DMS_TASK_CT_NAME, $id );
+	return ht_dms_is( HT_DMS_TASK_POD_NAME, $id );
 
 }
 
@@ -472,7 +472,7 @@ function ht_dms_is_task( $id = false ) {
  */
 function ht_dms_is_notification( $id = false ) {
 
-	return ht_dms_is( HT_DMS_NOTIFICATION_NAME, $id );
+	return ht_dms_is( HT_DMS_NOTIFICATION_POD_NAME, $id );
 
 }
 
@@ -550,7 +550,7 @@ function ht_dms_add_icon( $string, $icon, $extra_class = false ) {
 }
 
 function ht_dms_content_types() {
-	return array( HT_DMS_DECISION_CPT_NAME, HT_DMS_TASK_CT_NAME, HT_DMS_GROUP_CPT_NAME, HT_DMS_ORGANIZATION_NAME );
+	return array( HT_DMS_DECISION_POD_NAME, HT_DMS_TASK_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_ORGANIZATION_POD_NAME );
 }
 
 

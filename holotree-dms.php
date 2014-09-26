@@ -145,7 +145,7 @@ class HoloTree_DMS {
 			$consensus_possibilities = false;
 
 			global $post;
-			if ( is_object( $post ) && $post->post_type === HT_DMS_DECISION_CPT_NAME ) {
+			if ( is_object( $post ) && $post->post_type === HT_DMS_DECISION_POD_NAME ) {
 
 				$consensus_possibilities = ht_dms_consensus_class()->possible_changes( $post->ID, get_current_user_id() );
 

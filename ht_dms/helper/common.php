@@ -188,7 +188,7 @@ class common implements \Hook_SubscriberInterface {
 				ht_dms_error( );
 			}
 
-			$pod = pods( HT_DMS_DECISION_CPT_NAME, $id );
+			$pod = pods( HT_DMS_DECISION_POD_NAME, $id );
 			$pod->save( 'proposed_changes', $pmid  );
 
 
@@ -244,7 +244,7 @@ class common implements \Hook_SubscriberInterface {
 	 */
 	function post_edit( $pieces, $is_new_item, $id ) {
 		remove_action( "pods_api_post_save_pod_item", array( $this, 'post_edit' ) );
-		if  ( $is_new_item && isset( $pieces['params']->pod ) && ( $pieces['params']->pod === HT_DMS_DECISION_CPT_NAME || $pieces['params']->pod === HT_DMS_GROUP_CPT_NAME  ) )  {
+		if  ( $is_new_item && isset( $pieces['params']->pod ) && ( $pieces['params']->pod === HT_DMS_DECISION_POD_NAME || $pieces['params']->pod === HT_DMS_GROUP_POD_NAME  ) )  {
 
 			$new_post = array ();
 			$new_post[ 'ID' ] = $id;
@@ -259,7 +259,7 @@ class common implements \Hook_SubscriberInterface {
 		}
 		elseif (  ! isset( $_GET[ 'pmid '] ) ||  ! isset( $_GET[ 'thengo' ]  ) ) {
 
-			if ( is_object( $pieces[ 'params' ] ) && isset( $pieces[ 'params' ]->pod ) && $pieces[ 'params' ]->pod === HT_DMS_DECISION_CPT_NAME ) {
+			if ( is_object( $pieces[ 'params' ] ) && isset( $pieces[ 'params' ]->pod ) && $pieces[ 'params' ]->pod === HT_DMS_DECISION_POD_NAME ) {
 
 				ht_dms_consensus( $id );
 
@@ -312,12 +312,12 @@ class common implements \Hook_SubscriberInterface {
 			$uID = $this->null_user( $uID );
 			if ( $this->user_exists( $uID ) ) {
 				if ( !is_null( $gID ) ) {
-					$pod_name = HT_DMS_GROUP_CPT_NAME;
+					$pod_name = HT_DMS_GROUP_POD_NAME;
 					$item = $gID;
 					$class = HoloTree_DMS_Group::init();
 				}
 				elseif ( !is_null( $dID ) ) {
-					$pod_name = HT_DMS_DECISION_CPT_NAME;
+					$pod_name = HT_DMS_DECISION_POD_NAME;
 					$item = $dID;
 					$class = HoloTree_DMS_Decision::init();
 				}
@@ -377,11 +377,11 @@ class common implements \Hook_SubscriberInterface {
 			}
 
 			if ( !is_null( $gID ) ) {
-				$pod_name = HT_DMS_GROUP_CPT_NAME;
+				$pod_name = HT_DMS_GROUP_POD_NAME;
 				$item = $gID;
 			}
 			elseif ( !is_null( $dID ) ) {
-				$pod_name = HT_DMS_DECISION_CPT_NAME;
+				$pod_name = HT_DMS_DECISION_POD_NAME;
 				$item = $dID;
 
 			}
@@ -460,18 +460,18 @@ class common implements \Hook_SubscriberInterface {
 
 		$type = $pieces['params']->pod;
 
-		if ( $type === HT_DMS_DECISION_CPT_NAME ) {
+		if ( $type === HT_DMS_DECISION_POD_NAME ) {
 			$data[ 'status' ] = ht_dms_decision_class()->status( $id );
 		}
 
-		if ( $type === HT_DMS_TASK_CT_NAME ) {
+		if ( $type === HT_DMS_TASK_POD_NAME ) {
 			if ( isset ( $data[ $id ][ 'decision' ] ) ) {
 				$dID = reset( $data[ $id ][ 'decision' ] );
 				$data[ $id ][ 'decision' ] = $dID;
 			}
 		}
 
-		if ( $type === HT_DMS_GROUP_CPT_NAME ) {
+		if ( $type === HT_DMS_GROUP_POD_NAME ) {
 			$gID = $id;
 		}
 		else {
@@ -481,7 +481,7 @@ class common implements \Hook_SubscriberInterface {
 			}
 		}
 
-		if ( $type === HT_DMS_ORGANIZATION_NAME ) {
+		if ( $type === HT_DMS_ORGANIZATION_POD_NAME ) {
 			$oID = $id;
 		}
 		else {

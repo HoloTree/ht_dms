@@ -20,7 +20,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @since 0.0.1
 	 */
-	public static $type = HT_DMS_DECISION_CPT_NAME;
+	public static $type = HT_DMS_DECISION_POD_NAME;
 
 
 	/**
@@ -281,7 +281,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	function default_values( $id, $obj, $oID, $uID  ) {
 		$obj = $this->null_object( $obj, $id );
 
-		if ( get_post_type() === HT_DMS_GROUP_CPT_NAME ) {
+		if ( get_post_type() === HT_DMS_GROUP_POD_NAME ) {
 			global $post;
 			$gID = $post->ID;
 		}
