@@ -49,7 +49,6 @@ jQuery(document).ready(function($) {
 
 
 
-
         $.get(
             ajaxURL, {
                 'action': 'ht_dms_paginate',
@@ -68,6 +67,8 @@ jQuery(document).ready(function($) {
                 $( container ).hide().append( response ).fadeIn( 800 );
                 $( container + "-spinner") .hide();
                 $( container ).attr('page', page );
+
+
 
             }
         );
@@ -122,7 +123,10 @@ jQuery(document).ready(function($) {
      *
      * @since 0.0.3
      */
-    function reloadConsensus( container, dID ) {
+    function reloadConsensus(  ) {
+
+        var container = '#consensus-view';
+        var dID =   htDMS.id;
 
         $.get(
             ajaxURL, {
@@ -166,7 +170,10 @@ jQuery(document).ready(function($) {
 
     }
 
-    function reloadMembership( container, gID ) {
+    function reloadMembership( ) {
+        var container = "#group-membership";
+
+        var gID = htDMS.id;
         $.get(
             ajaxURL, {
                 'action': 'ht_dms_reload_membership',
@@ -219,19 +226,14 @@ jQuery(document).ready(function($) {
 
             },
             function( response ) {
-                console.log( respone );
+
                 $( container).html( response );
+
             }
         );
+        
     }
 
-    $( document ).ajaxComplete( function() {
-        var container = '.dms-members-load';
-        var id = $( container ).attr( 'dms_id' );
-        var type = $( container).attr( 'dms_type' );
-        console.log( type );
-        get_members( id,  type, container );
-    });
 
 
 

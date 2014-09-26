@@ -68,32 +68,6 @@ jQuery(document).ready(function( $ ) {
         result( select_field, consensusPossibilities );
     });
 
-    /**
-     * Reload views on Caldera submit
-     *
-     * Acts on decision consensus & group membership
-     *
-     * @since 0.0.3
-     */
-    $( document ).ajaxSuccess(function( event, xhr, settings ) {
-
-       if ( settings.url == './' ) {
-           var consensus = '#consensus-view';
-
-           if ( $( consensus ).length ) {
-
-               reloadConsensus( consensus, htDMS.id );
-           }
-
-           var membership = "#group-membership";
-           if ( $( membership).length ) {
-               reloadMembership( membership, htDMS.id );
-           }
-
-       }
-
-    });
-
     $( document ).ajaxComplete(function( event, xhr, settings ) {
         $('.notification-mark' ).each(function(i, el) {
 

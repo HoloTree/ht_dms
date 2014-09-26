@@ -54,9 +54,37 @@ class ui {
 
 	}
 
-	function caldera_actions() {
+	/**
+	 * @param bool $fields
+	 *
+	 * @return \ht_dms\helper\caldera\Fields|\ht_dms\helper\caldera\Filters
+	 */
+	function caldera_actions( $fields = true ) {
 
-		return new \ht_dms\helper\caldera\Actions();
+		if ( $fields  ) {
+			return $this->caldera_fields_class();
+		}
+		else {
+			return $this->caldera_filters_class();
+		}
+
+	}
+
+	/**
+	 * @return \ht_dms\helper\caldera\Fields
+	 */
+	function caldera_fields_class() {
+
+		return new \ht_dms\helper\caldera\Fields();
+
+	}
+
+	/**
+	 * @return \ht_dms\helper\caldera\Filters
+	 */
+	function caldera_filters_class() {
+
+		return new \ht_dms\helper\caldera\Filters();
 	}
 
 	/**

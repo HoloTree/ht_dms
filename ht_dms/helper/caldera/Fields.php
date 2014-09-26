@@ -18,12 +18,8 @@ namespace ht_dms\helper\caldera;
  *
  * @since 0.0.3
  */
-class Actions implements \Hook_SubscriberInterface{
-	public $join_group_form_id = 'CF54138690b504b';
-	public $leave_group_form_id = 'CF5413964215412';
-	public $group_pending_form_id = 'CF5413972657523';
+class Fields extends Forms implements \Hook_SubscriberInterface{
 
-	public $decision_actions_form_id = 'CF5411fb087123d';
 
 	private $decision_actions_field = 'fld_738259';
 	private $force_debug = false;
