@@ -34,7 +34,7 @@ class Filters extends Forms implements \Filter_Hook_SubscriberInterface {
 		$form_id = pods_v( 'ID', $form );
 		$callback = false;
 		if ( in_array( $form_id, $this->membership_forms() ) ) {
-			//$callbacks = 'reloadMembership';
+			$callbacks = 'reloadMembership';
 		}
 
 		if ( $form_id== $this->form_id( 'decision_actions_form' ) ) {
