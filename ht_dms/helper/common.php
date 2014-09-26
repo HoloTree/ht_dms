@@ -451,7 +451,8 @@ class common implements \Hook_SubscriberInterface {
 
 		$data = $dID = $gID = $oID = null;
 		foreach( $pieces[ 'fields_active' ] as $field ) {
-			if ( ! is_null( pods_v( $field, $pieces ) ) ) {
+
+			if ( isset( $pieces[ 'fields' ][ $field ][ 'value' ]) ) {
 				$datum                 = $pieces[ 'fields' ][ $field ][ 'value' ];
 				$data[ $id ][ $field ] = $datum;
 			}
