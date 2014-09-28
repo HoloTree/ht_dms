@@ -318,7 +318,10 @@ function holotree_dms() {
 			$ajaxed = true;
 		}
 
-
+		//put current user ID in a global.
+		global $current_user;
+		global $cuID;
+		$cuID = pods_v( 'ID', $current_user );
 
 		return ht_dms\ui\ui::init();
 

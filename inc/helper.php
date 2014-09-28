@@ -251,7 +251,7 @@ function ht_dms_fallback_avatar() {
 }
 
 /**
- * Pass null or user ID, returns same ID or current user ID if null
+ * Pass null or user ID, returns same ID or current user ID if null.
  *
  * @param null $uID
  *
@@ -262,7 +262,8 @@ function ht_dms_fallback_avatar() {
 function ht_dms_null_user( $uID = null ) {
 
 	if ( is_null( $uID ) ) {
-		$uID = get_current_user_id();
+		global $cuID;
+		$uID = $cuID;
 
 	}
 

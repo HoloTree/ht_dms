@@ -416,20 +416,17 @@ class common implements \Hook_SubscriberInterface {
 	}
 
 	/**
-	 * Pass null or user ID, returns same ID or current user ID if null
+	 * Convert null value for user ID to current user ID.
 	 *
-	 * @param null $uID
+	 * @param 	int|null $uID	Optional. A user ID.
 	 *
-	 * @return int|null
+	 * @return 	int				Same as input or current user ID if input is null.
+	 *
+	 * @since 	0.0.1
 	 */
-	function null_user( $uID = null ) {
+	function null_user( $uID ) {
 
-		if ( is_null( $uID ) ) {
-			$uID = get_current_user_id();
-
-		}
-
-		return $uID;
+		return ht_dms_null_user( $uID );
 
 	}
 

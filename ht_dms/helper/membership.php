@@ -192,19 +192,17 @@ class membership {
 	}
 
 	/**
-	 * Convert null value for $uID to current user ID.
+	 * Convert null value for user ID to current user ID.
 	 *
-	 * Alias of HoloTree_DMS::null_user()
+	 * @param 	int|null $uID	Optional. A user ID.
 	 *
-	 * @param 	int	$uID	A user ID.
-	 *
-	 * @return 	int		 	Same as input or current user ID.
+	 * @return 	int				Same as input or current user ID if input is null.
 	 *
 	 * @since 	0.0.1
 	 */
 	function null_user( $uID ) {
 
-		return ht_dms_common_class()->null_user( $uID );
+		return ht_dms_null_user( $uID );
 
 	}
 

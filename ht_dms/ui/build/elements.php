@@ -594,7 +594,7 @@ class elements {
 	 * @return mixed|void
 	 */
 	function member_details( $uID = null, $avatar_size = 96 ) {
-		$uID = ht_dms_common_class()->null_user( $uID );
+		$uID = ht_dms_null_user( $uID );
 		$data = get_userdata( $uID );
 
 		if ( $data ) {

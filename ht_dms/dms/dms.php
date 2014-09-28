@@ -281,20 +281,17 @@ abstract class dms extends object {
 	}
 
 	/**
-	 * Convert null value for $id to current user ID
+	 * Convert null value for user ID to current user ID.
 	 *
-	 * @param 	int|null	$id	Optional. A user ID.
+	 * @param 	int|null $uID	Optional. A user ID.
 	 *
 	 * @return 	int				Same as input or current user ID if input is null.
 	 *
 	 * @since 	0.0.1
 	 */
-	function null_user( $id ) {
-		if ( is_null( $id ) ) {
-			$id = get_current_user_id();
-		}
+	function null_user( $uID ) {
 
-		return $id;
+		return ht_dms_null_user( $uID );
 
 	}
 

@@ -322,20 +322,18 @@ class consensus {
 
 
 	/**
-	 * Convert null value for $uID to current user ID
+	 * Convert null value for user ID to current user ID.
 	 *
-	 * @param 	int	$uID	A user ID.
+	 * @param 	int|null $uID	Optional. A user ID.
 	 *
-	 * @return 	int	$uID 	Same as input or current user ID.
+	 * @return 	int				Same as input or current user ID if input is null.
 	 *
-	 * @since 0.0.1
+	 * @since 	0.0.1
 	 */
-	function null_user( $uID  = null ) {
-		if( is_null( $uID ) ) {
-			$uID = get_current_user_id();
-		}
+	function null_user( $uID ) {
 
-		return $uID;
+		return ht_dms_null_user( $uID );
+
 	}
 
 	/**
