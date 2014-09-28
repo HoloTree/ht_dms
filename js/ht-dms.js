@@ -68,6 +68,15 @@ jQuery(document).ready(function($) {
                 $( container + "-spinner") .hide();
                 $( container ).attr('page', page );
 
+                $( container ).find( '.dms-members-load' ).each( function() {
+
+                    var type = $( this ).attr( 'dms_type' );
+                    var id = $( this ).attr( 'dms_id' );
+                    var containerID = $( this ).attr( 'id' );
+                    console.log( this + type + id + containerID );
+                    getMembers( id, type, containerID );
+
+                });
 
 
             }
@@ -110,6 +119,8 @@ jQuery(document).ready(function($) {
             );
 
         });
+
+
 
     });
 
@@ -215,8 +226,8 @@ jQuery(document).ready(function($) {
     window.markNotification = markNotification;
 
 
-    function get_members( id, type, container ) {
-
+    function getMembers( id, type, container ) {
+        console.log( container );
         $.get(
             ajaxURL, {
                 'action': 'ht_dms_members',
@@ -226,13 +237,14 @@ jQuery(document).ready(function($) {
 
             },
             function( response ) {
-
-                $( container).html( response );
+                document.getElementById( container ).innerHTML = '<span class="members-label">Members:</span>' + response;
 
             }
         );
         
     }
+
+    window.getMembers = getMembers;
 
 
 

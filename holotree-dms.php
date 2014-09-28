@@ -307,12 +307,17 @@ function holotree_dms() {
 		$api_registration = new \HT_DMS_WP_API_Registration();
 		$api_registration->boot();
 
-		$ajax = ht_dms_ui()->ajax_callbacks();
-		$actions = $ajax->callbacks();
-		foreach ( $actions as $callback ) {
-			$action = 'wp_ajax_ht_dms_' . $callback;
-			add_action( $action, array ( $ajax, $callback ) );
+		global $ajaxed;
+		if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
+			$ajax = ht_dms_ui()->ajax_callbacks();
+			$actions = $ajax->callbacks();
+			foreach ( $actions as $callback ) {
+				$action = 'wp_ajax_ht_dms_' . $callback;
+				add_action( $action, array ( $ajax, $callback ) );
+			}
+			$ajaxed = true;
 		}
+
 
 
 		return ht_dms\ui\ui::init();

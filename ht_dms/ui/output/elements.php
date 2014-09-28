@@ -650,17 +650,24 @@ class elements {
 		$members = false;
 		if ( is_array( $users ) ) {
 			foreach( $users as $user ) {
+				if ( ht_dms_integer( $user ) ) {
+					$user = ht_dms_ui()->build_elements()->member_details( $user );
+				}
 				if ( ! pods_v( 'name', $user ) && isset( $user[0] )) {
 					$user = $user[0];
+
 				}
+
+
 				$name = pods_v( 'name', $user );
+
 				if ( ! is_null( $name ) ) {
 					$avatar = pods_v( 'avatar', $user, ht_dms_fallback_avatar() );
 					if ( ! $mini_mode ) {
 						$members[ ] = sprintf( '<li class="member-view"><div class="avatar">%1s</span><div class="name">%2s</span></li>', $avatar, $name );
 					}
 					else {
-						$members[] = sprintf( '<li class="member-view"><div class="mini-avatar" name="%2s">%1s</div></li>', $avatar, $name );
+						$members[] = sprintf( '<li class="member-view"><div class="mini-avatar" name="%1s">%2s</div></li>', $name, $avatar );
 					}
 				}
 			}
