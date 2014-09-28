@@ -116,6 +116,11 @@ function ht_dms_mini_menu_items() {
 	 */
 	$items = apply_filters( 'ht_dms_mini_menu_items', $items );
 
+	if ( current_user_can( 'edit_users') ) {
+		$items[ admin_url() ] = __( 'WP Admin', 'ht_dms' );
+	}
+
+
 	return $items;
 
 }
