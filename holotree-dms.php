@@ -132,11 +132,16 @@ class HoloTree_DMS {
 	 */
 	public function enqueue_scripts() {
 		if ( ! is_admin() ) {
+			$version = GUS_UI_VERSION;
+			if ( HT_DEV_MODE ) {
+				$version = rand();
+			}
+
 			wp_enqueue_style( 'pods-select2' );
 			wp_enqueue_script( 'pods-select2' );
 			wp_enqueue_style( 'pods-form' );
-			wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array ( 'jquery' ), HT_DMS_VERSION, true );
-			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery', 'ht-dms' ), HT_DMS_VERSION, true );
+			wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array ( 'jquery' ), $version, true );
+			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery', 'ht-dms' ), $version, true );
 
 			if ( is_array( $this->htDMS_js_var() ) ) {
 				wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
