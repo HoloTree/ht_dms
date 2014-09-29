@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
                     var type = $( this ).attr( 'dms_type' );
                     var id = $( this ).attr( 'dms_id' );
                     var containerID = $( this ).attr( 'id' );
-                    console.log( this + type + id + containerID );
+
                     getMembers( id, type, containerID );
 
                 });
@@ -243,11 +243,6 @@ jQuery(document).ready(function($) {
         );
         
     }
-
-    window.getMembers = getMembers;
-
-
-
 
 
 });

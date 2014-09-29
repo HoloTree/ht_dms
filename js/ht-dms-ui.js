@@ -97,9 +97,9 @@ jQuery(document).ready(function( $ ) {
 
         });
 
-        $( '#unviewed-only').click( function() {
+        $( '#unviewed-only' ).click( function() {
             container = '#users_notifications';
-            paginate( container, $( container).attr( 'page' ), 1 );
+            paginate( container, $( container ).attr( 'page' ), 1 );
 
         });
 
