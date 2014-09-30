@@ -267,7 +267,7 @@ class elements {
 	/**
 	 * Get instance of UI class
 	 *
-	 * @return 	\holotree\ui
+	 * @return \ht_dms\ui\ui
 	 *
 	 * @since 	0.0.1
 	 */
@@ -649,7 +649,7 @@ class elements {
 	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false, $mini_mode = false ) {
 		$members = false;
 		if ( is_array( $users ) ) {
-			foreach( $users as $user ) {
+			foreach( $users as $key => $user ) {
 				if ( ht_dms_integer( $user ) ) {
 					$user = ht_dms_ui()->build_elements()->member_details( $user );
 				}
@@ -718,14 +718,21 @@ class elements {
 
 		if ( is_array( $sorted_consensus ) ) {
 			foreach ( $sorted_consensus as $status => $user_ids ) {
-				$users = array ();
-				foreach ( $user_ids as $uID ) {
-					$users[ ] = ht_dms_ui()->build_elements()->member_details( $uID );
+				$users = '';
+
+
+				$container_id = "consensus-status-{$status}";
+				if ( is_array( $user_ids ) ) {
+					$users = implode( $user_ids, ',' );
 				}
+				$js =  'loadUsers( [' . $users . '], "'.$container_id.'" )';
+
+				$content = $this->ui()->view_loaders()->handlebars( 'user', $container_id, $js );
+
 
 				$tabs[ ] = array (
 					'label'   => ht_dms_ui()->build_elements()->consensus_tab_header( $status, count( $users ) ),
-					'content' => $member_details = $this->members_details_view( $users ),
+					'content' => $content,
 				);
 			}
 		}

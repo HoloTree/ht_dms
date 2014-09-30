@@ -24,7 +24,9 @@ class loaders implements \Hook_SubscriberInterface {
 
 		return array(
 			'ht_dms_paginated_views_template_output' => array( 'after_notification_preview', 10, 2 ),
+
 		);
+
 	}
 
 	/**
@@ -39,6 +41,7 @@ class loaders implements \Hook_SubscriberInterface {
 		return array(
 			'app_starter_content_part_view' => 'view_loaders',
 			'app_starter_alt_main_view' => 'task_view',
+			'ht_dms_after_magic_template' => array( 'after_group', 10, 3 ),
 		);
 
 	}
@@ -428,22 +431,27 @@ class loaders implements \Hook_SubscriberInterface {
 
 		$out .= sprintf( '<div id="holotree-dms-content" data-equalizer >%1s</div>', $content );
 
-		if ( $post_type == 'home' ) {
-			$type = 'network';
-		}
-		elseif( in_array( $post_type, array_keys( $this->special_views() ) ) ){
-			$type = 'user';
-		}
-		else {
-			if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_POD_NAME ) ) {
-				$type = ht_dms_prefix_remover( $post_type );
+		/**
+		 * Third UI element is bypassed for now
+		 *
+		 * @see https://github.com/HoloTree/ht_dms/issues/70
+		 */
+		if ( HT_DEV_MODE ) {
+			if ( $post_type == 'home' ) {
+				$type = 'network';
+			} elseif ( in_array( $post_type, array_keys( $this->special_views() ) ) ) {
+				$type = 'user';
 			} else {
-				$type = 'consensus';
+				if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_POD_NAME ) ) {
+					$type = ht_dms_prefix_remover( $post_type );
+				} else {
+					$type = 'consensus';
+				}
+
 			}
 
+			$out .= $this->ui()->output_elements()->third_element( $type, $id );
 		}
-
-		$out .= $this->ui()->output_elements()->third_element( $type, $id );
 
 		/**
 		 * Output something or trigger something after HoloTree Main content happens.
@@ -552,7 +560,7 @@ class loaders implements \Hook_SubscriberInterface {
 
 					$out = ht_dms_ui()->build_elements()->icon_substitution( $out );
 					$before = apply_filters( 'ht_dms_before_magic_templates', '', $view );
-					$after = apply_filters( 'ht_dms_after_magic_template', '', $view );
+					$after = apply_filters( 'ht_dms_after_magic_templates', '', $view );
 					$out = $before . $out . $after;
 					return $out;
 				}
@@ -587,15 +595,16 @@ class loaders implements \Hook_SubscriberInterface {
 
 	function template( $template_file, $obj, $view ) {
 		$template = '<div class="ht_dms_template" style="">';
+		$id = $obj->id();
 		if ( HT_DEV_MODE ) {
-			$template .= '<span style="float:right">'.$obj->ID().'</span>';
+			$template .= '<span style="float:right">'.$id.'</span>';
 		}
 		$template .= \Pods_Templates::do_template( $template_file, $obj );
 
 		$template .= '</div>';
 
-		$before = apply_filters( 'ht_dms_before_magic_template', '', $view );
-		$after = apply_filters( 'ht_dms_after_magic_template', '', $view );
+		$before = apply_filters( 'ht_dms_before_magic_template', '', $view, $id );
+		$after = apply_filters( 'ht_dms_after_magic_template', '', $view, $id );
 
 		return $before . $template . $after;
 	}
@@ -646,6 +655,79 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 
 		return $out;
+
+	}
+
+	function after_group( $out, $view, $id ) {
+		if ( in_array( $view, array( 'group', 'group_preview' ) ) ) {
+
+			$js = $this->group_prepare( $id );
+			$template = $this->handlebars( 'user', 'group-members-'.$id, $js );
+			if ( is_string( $template ) ) {
+				$out .= $template;
+			}
+		}
+
+		return $out;
+	}
+
+	function handlebars( $file, $id = false, $js = false, $partial = true ) {
+		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
+		if ( $partial ) {
+			$template .= 'partials/';
+		}
+		$template .= $file . '.html';
+		if ( file_exists( $template ) ) {
+			if ( ! $id ) {
+				$id = $template;
+			}
+
+			$file = str_replace( ' ', '-', $file );
+
+
+			if ( is_string( $js ) ) {
+				$out[] = '<script type="text/javascript">'.$js.'</script>';
+			}
+
+
+			$out[] = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
+			$out[] = sprintf( '<ul class="small-block-grid-10 large-block-grid-20" id="%1s"></ul>', $id );
+
+			$out = implode( $out );
+
+			return $out;
+		}
+		else{
+			if ( HT_DEV_MODE ) {
+				ht_dms_error( var_Dump( array( $template, $file ) ) );
+			}
+		}
+
+	}
+
+	function group_prepare( $id ) {
+		$key = "group_handlebars_prepare_{$id}";
+		if ( HT_DEV_MODE ) {
+			pods_cache_clear( $key );
+		}
+
+		if ( false == ( $js = pods_cache_get( $key )  ) ) {
+			$members = ht_dms_group_class()->all_members( $id );
+
+			if ( is_array( $members ) ) {
+				$members = implode( $members, ',' );
+
+				$js = 'loadUsers( [' . $members . '], "#group-members-'.$id.'" )';
+
+				if ( is_string( $js ) ) {
+					pods_cache_set( $key, $js );
+				}
+
+			}
+
+		}
+
+		return $js;
 
 	}
 

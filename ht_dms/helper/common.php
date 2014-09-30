@@ -33,6 +33,7 @@ class common implements \Hook_SubscriberInterface {
 			'ht_before_ht' => 'message',
 			'pods_api_post_save_pod_item' => array( 'update_actions', 99, 3 ),
 			'init' => 'font_awesome',
+			'init' => 'handlebars',
 
 		);
 	}
@@ -515,6 +516,18 @@ class common implements \Hook_SubscriberInterface {
 			trailingslashit( HT_DMS_ROOT_URL ) .'css/font-awesome.min.css',
 			'font-awesome',
 			true
+		);
+	}
+
+	function handlebars() {
+		include_once( trailingslashit( HT_DMS_ROOT_DIR ) .'inc/cdn_script.php' );
+
+
+		new \ht_dms_cdn_script(
+			'//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js',
+			trailingslashit( HT_DMS_ROOT_URL ) .'js/handlebars.min.js',
+			'handlebars',
+			false
 		);
 	}
 

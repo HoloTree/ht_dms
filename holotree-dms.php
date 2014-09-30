@@ -47,6 +47,7 @@ define( 'HT_DMS_DB_VERSION', '1' );
 define( 'HT_DMS_SLUG', plugin_basename( __FILE__ ) );
 define( 'HT_DMS_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'HT_DMS_ROOT_DIR', plugin_dir_path( __FILE__ ) );
+
 require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/constants.php' );
 
 
@@ -86,6 +87,8 @@ class HoloTree_DMS {
 
 		add_action( 'init', array( $this, 'setup_check' ), 25 );
 		add_action( 'init', array( $this, 'theme' ), 30 );
+
+
 
 	}
 
@@ -157,6 +160,16 @@ class HoloTree_DMS {
 			}
 
 			wp_localize_script( 'ht-dms-ui', 'consensusPossibilities', $consensus_possibilities );
+
+			if ( ! function_exists( 'json_get_url_prefix' ) ) {
+				return;
+			}
+
+			wp_enqueue_script( 'wp-api-js', plugins_url( '/js/wp-api.min.js', __FILE__ ), array( 'jquery', 'underscore', 'backbone' ), '1.0', true );
+
+			$settings = array( 'root' => home_url( json_get_url_prefix() ), 'nonce' => wp_create_nonce( 'wp_json' ) );
+
+			wp_localize_script( 'wp-api-js', 'WP_API_Settings', $settings );
 
 		}
 

@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
                     var id = $( this ).attr( 'dms_id' );
                     var containerID = $( this ).attr( 'id' );
 
-                    getMembers( id, type, containerID );
+                    //getMembers( id, type, containerID );
 
                 });
 
@@ -243,6 +243,39 @@ jQuery(document).ready(function($) {
         );
         
     }
+
+    function loadUsers ( users, container  ) {
+        $.each(users, function( i, val ) {
+            var user = new wp.api.models.User( { ID: val } );
+            user.fetch().done(function () {
+                loadUser( user, container );
+            });
+        });
+    }
+
+    window.loadUsers = loadUsers;
+
+    function loadUser( user, container  ) {
+        var name = user.attributes.name;
+        var avatar = user.attributes.avatar;
+        var ID = user.attributes.ID;
+
+        var source   = $('#user').html();
+
+        var data = {
+            name: name,
+            avatar: avatar,
+            ID: ID
+        };
+        var template = Handlebars.compile( source );
+        var html    = template(data);
+
+        $( container ).append( html );
+
+    }
+
+    window.loadUser = loadUser;
+
 
 
 });
