@@ -265,81 +265,75 @@ class HoloTree_DMS {
 }
 
 /**
- * Activate if core plugin and Pods is active.
+ * Activate
+ */
+
+$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
+
+/**
+ * Action that runs right after main Holotree DMS class is initialized.
  *
  * @since 0.0.1
  */
+do_action( 'holotree_DMS' );
 
 
-		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
+/**
+ * Setup Auto Loader
+ *
+ * @TODO MAKE THIS WORK RIGHT
+ */
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
+$classLoader = new HT_DMS_ClassLoader();
+$classLoader->addDirectory( untrailingslashit( HT_DMS_ROOT_DIR ) );
 
-		/**
-		 * Action that runs right after main Holotree DMS class is initialized.
-		 *
-		 * @since 0.0.1
-		 */
-		do_action( 'holotree_DMS' );
+$classLoader->register();
 
-
-		/**
-		 * Setup Auto Loader
-		 *
-		 * @TODO MAKE THIS WORK RIGHT
-		 */
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
-		$classLoader = new HT_DMS_ClassLoader();
-		$classLoader->addDirectory( untrailingslashit( HT_DMS_ROOT_DIR ) );
-
-		$classLoader->register();
-
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
-		require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
+require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 
 
-		/**
-		 * Make REST API not require auth when HT_DEV_MODE
-		 *
-		 * THIS MUST GET REPLACED WITH PROPER AUTH!
-		 */
+/**
+ * Make REST API not require auth when HT_DEV_MODE
+ *
+ * THIS MUST GET REPLACED WITH PROPER AUTH!
+ */
 
-		$filters = array( 'pods_json_api_access_pods', 'pods_json_api_access_api' );
-		foreach ( $filters as $filter ) {
-			if ( HT_DEV_MODE ) {
-				add_filter( $filter, '__return_true' );
-			}
-			else {
-				add_filter( $filter, '__return_false' );
-			}
-		}
+$filters = array( 'pods_json_api_access_pods', 'pods_json_api_access_api' );
+foreach ( $filters as $filter ) {
+	if ( HT_DEV_MODE ) {
+		add_filter( $filter, '__return_true' );
+	}
+	else {
+		add_filter( $filter, '__return_false' );
+	}
+}
 
-		require_once( trailingslashit( HT_DMS_DIR ) ) . 'helper/paginated_views.php';
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/interface.php' );
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/manager.php' );
-		require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/registration.php' );
+require_once( trailingslashit( HT_DMS_DIR ) ) . 'helper/paginated_views.php';
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/interface.php' );
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/manager.php' );
+require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/registration.php' );
 
-		$api_registration = new \HT_DMS_WP_API_Registration();
-		$api_registration->boot();
+$api_registration = new \HT_DMS_WP_API_Registration();
+$api_registration->boot();
 
-		global $ajaxed;
-		if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
-			$ajax = ht_dms_ui()->ajax_callbacks();
-			$actions = $ajax->callbacks();
-			foreach ( $actions as $callback ) {
-				$action = 'wp_ajax_ht_dms_' . $callback;
-				add_action( $action, array ( $ajax, $callback ) );
-			}
-			$ajaxed = true;
-		}
+global $ajaxed;
+if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
+	$ajax = ht_dms_ui()->ajax_callbacks();
+	$actions = $ajax->callbacks();
+	foreach ( $actions as $callback ) {
+		$action = 'wp_ajax_ht_dms_' . $callback;
+		add_action( $action, array ( $ajax, $callback ) );
+	}
+	$ajaxed = true;
+}
 
-		//put current user ID in a global.
-		global $current_user;
-		global $cuID;
-		$cuID = $current_user[ 'ID' ];
-		ht_dms_common_class();
-
-
-
+//put current user ID in a global.
+global $current_user;
+global $cuID;
+$cuID = $current_user[ 'ID' ];
+ht_dms_common_class();
 
 /**
  * Check and correct Permalinks
