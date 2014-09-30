@@ -149,47 +149,6 @@ class loaders implements \Hook_SubscriberInterface {
 	}
 
 	/**
-	 * Outputs layout for new JS-based UI
-	 *
-	 * @return string
-	 */
-	function new_view() {
-		$phone = $this->mobile_detect();
-
-		$main_view = 'dms-tabs.html';
-		if ( $phone ) {
-			$main_view = 'dms-accordion.html';
-		}
-
-		$main_view = trailingslashit( HT_DMS_VIEW_DIR ).$main_view;
-
-		/**
-		 * Change which view file is used.
-		 *
-		 * @param string $main_view Path to file to be loaded.
-		 * @param bool $phone Whether mobile detection returned as phone view or not.
-		 *
-		 * @return string Path to view to load.
-		 *
-		 * @since 0.0.2
-		 */
-		$main_view = apply_filters( 'ht_dms_main_view', $main_view, $phone  );
-
-		if ( file_exists( $main_view ) ) {
-			$main_view = file_get_contents( $main_view );
-			$main_view = str_replace( '{{main_title}}', $this->main_title( $this->id() ), $main_view );
-			$out = $main_view;
-			if ( is_string( $out ) ) {
-				return $out;
-			}
-		} else {
-			ht_dms_error();
-		}
-
-	}
-
-
-	/**
 	 * Mobile-device detection
 	 *
 	 * @return bool True if phone view false if not
@@ -209,68 +168,6 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-
-
-	/**
-	 * View loaders based on the content filter.
-	 *
-	 * Not used if app_starter is current theme.
-	 *
-	 * @TODO Clean up using $this->view_context() or delete.
-	 *
-	 * @param $content
-	 *
-	 * @return mixed|string
-	 */
-	function generic_view_loader( $content ) {
-
-
-		$post_type = get_post_type();
-		if ( HT_DEV_MODE ) {
-			echo $post_type;
-		}
-
-		if ( is_home() || is_front_page() ) {
-			$content = $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ) );
-
-		}
-		elseif ( $post_type === HT_DMS_GROUP_POD_NAME || $post_type === HT_DMS_DECISION_POD_NAME || HT_DMS_ORGANIZATION_POD_NAME ) {
-			if ( is_singular( $post_type ) ) {
-				$context = 'single';
-			}
-			elseif ( is_post_type_archive( $post_type ) ) {
-				//$context = 'list';
-				$context = null;
-			}
-			else {
-				$context = null;
-			}
-
-			if ( HT_DEV_MODE ) {
-				echo $context;
-			}
-
-
-			if ( !is_null( $context ) ) {
-				$post_type = str_replace( 'ht_dms_', '', $post_type );
-				$content = $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . $post_type . '-' . $context . '.php' ) );
-			}
-		}
-		else {
-			global $wp_query;
-			if ( isset( $wp_query->query_vars[ 'taxonomy'] ) ) {
-				$taxonomy = $wp_query->query_vars[ 'taxonomy' ];
-				if ( $taxonomy === 'task' ) {
-					$content = include( trailingslashit( HT_DMS_VIEW_DIR ) . 'task-list.php' );
-				}
-			}
-
-		}
-
-
-		return $content;
-
-	}
 
 	/**
 	 * Gets views from the view cache or gets view and caches it.
@@ -371,26 +268,6 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 
 		return $context;
-
-	}
-
-	function sidebar( $name ) {
-		$name = apply_filters( 'ht_sidebar', $name );
-		echo $this->sidebar_loader( $name );
-	}
-
-	function sidebar_loader( $name ) {
-		if ( file_exists( trailingslashit( get_stylesheet_directory_uri() ).'sidebar-'.$name.'.php' ) ) {
-			$view = trailingslashit( get_stylesheet_directory_uri() ).'sidebar-'.$name.'.php';
-		}
-		elseif ( file_exists( trailingslashit( get_template_directory_uri() ).'sidebar-'.$name.'.php' ) ) {
-			$view = trailingslashit( get_template_directory_uri() ).'sidebar-'.$name.'php';
-		}
-		else {
-			$view = trailingslashit( HT_DMS_VIEW_DIR ).'views/'.'sidebar-'.$name.'.php';
-		}
-
-		include_once( $view );
 
 	}
 
