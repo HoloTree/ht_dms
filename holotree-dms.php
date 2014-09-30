@@ -85,8 +85,7 @@ class HoloTree_DMS {
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		add_action( 'init', array( $this, 'setup_check' ), 25 );
-		add_action( 'init', array( $this, 'theme' ), 30 );
+
 
 
 
@@ -270,10 +269,7 @@ class HoloTree_DMS {
  *
  * @since 0.0.1
  */
-add_action( 'plugins_loaded', 'holotree_dms', 30 );
-function holotree_dms() {
 
-	if (   defined( 'PODS_VERSION' ) ) {
 
 		$GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
 
@@ -339,16 +335,12 @@ function holotree_dms() {
 		//put current user ID in a global.
 		global $current_user;
 		global $cuID;
-		$cuID = pods_v( 'ID', $current_user );
-
-		return ht_dms\ui\ui::init();
-
+		$cuID = $current_user[ 'ID' ];
+		ht_dms_common_class();
 
 
-	}
 
 
-}
 /**
  * Check and correct Permalinks
  */

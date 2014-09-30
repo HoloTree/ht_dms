@@ -15,8 +15,18 @@
 
 namespace ht_dms\helper;
 
-class common implements \Hook_SubscriberInterface {
+class common  {
 
+	function __construct() {
+		add_action( 'init', array( $this, 'font_awesome' ) );
+		add_action( 'init', array( $this, 'handlebars' ) );
+		add_action( 'init', array( $this, 'dms_actions' ), 35 );
+		add_action( 'pods_api_post_save_pod_item', array( $this,'post_edit' ),  25, 3 );
+		add_action( 'ht_before_ht', array( $this, 'message' ) );
+
+
+
+	}
 	/**
 	 * Set actions
 	 *
@@ -30,10 +40,10 @@ class common implements \Hook_SubscriberInterface {
 			'wp_enqueue_scripts' => array( 'enqueue_scripts', 25 ),
 			'init' => array( 'dms_actions', 35 ),
 			'pods_api_post_save_pod_item' => array( 'post_edit', 25, 3 ),
-			'ht_before_ht' => 'message',
+
 			'pods_api_post_save_pod_item' => array( 'update_actions', 99, 3 ),
-			'init' => 'font_awesome',
-			'init' => 'handlebars',
+			'init' => array( 'font_awesome', 10, 1 ),
+			'init' => array( 'handlebars', 10, 1 ),
 
 		);
 	}
@@ -55,6 +65,7 @@ class common implements \Hook_SubscriberInterface {
 
 
 	function enqueue_scripts() {
+
 		if ( ! is_admin() ) {
 			//wp_enqueue_style( 'HoloTree-DMS', plugins_url( 'css/HT-DMS.css', __FILE__ ) );
 			//wp_enqueue_script( 'HoloTree-DMS', plugins_url( 'js/HT-DMS.js', __FILE__), array( 'jquery'), false, true );
@@ -520,6 +531,7 @@ class common implements \Hook_SubscriberInterface {
 	}
 
 	function handlebars() {
+
 		include_once( trailingslashit( HT_DMS_ROOT_DIR ) .'inc/cdn_script.php' );
 
 
