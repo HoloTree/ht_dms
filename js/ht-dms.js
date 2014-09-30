@@ -68,16 +68,6 @@ jQuery(document).ready(function($) {
                 $( container + "-spinner") .hide();
                 $( container ).attr('page', page );
 
-                $( container ).find( '.dms-members-load' ).each( function() {
-
-                    var type = $( this ).attr( 'dms_type' );
-                    var id = $( this ).attr( 'dms_id' );
-                    var containerID = $( this ).attr( 'id' );
-
-                    //getMembers( id, type, containerID );
-
-                });
-
 
             }
         );
@@ -250,6 +240,7 @@ jQuery(document).ready(function($) {
             user.fetch().done(function () {
                 loadUser( user, container );
             });
+
         });
     }
 
@@ -260,15 +251,15 @@ jQuery(document).ready(function($) {
         var avatar = user.attributes.avatar;
         var ID = user.attributes.ID;
 
-        var source   = $('#user').html();
+        var source   = $( '#user' ).html();
 
         var data = {
             name: name,
             avatar: avatar,
             ID: ID
         };
-        var template = Handlebars.compile( source );
-        var html    = template(data);
+        var template    = Handlebars.compile( source );
+        var html        = template(data);
 
         $( container ).append( html );
 
