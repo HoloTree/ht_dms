@@ -501,7 +501,7 @@ class models {
 		elseif ( ! is_string( $return ) || intval( $return ) > 0 ) {
 			$return = 'template';
 		}
-		if ( $return === 'template' || 'Pods' ) {
+		if ( $return === 'template' || 'Pods' || 'simple_json' ) {
 			$short_type = strtolower( $type );
 
 			$short_type = ht_dms_prefix_remover( $short_type );
@@ -517,6 +517,21 @@ class models {
 					ht_dms_error( __( sprintf( 'Object can not be built for %1s view', $type ), 'ht_dms' ) , __METHOD__ );
 				}
 
+
+			}
+
+			if ( $return === 'simple_json' ) {
+				if ( $obj->total() > 0 ) {
+					while( $obj->fetch() )  {
+						$datum = \ht_dms\helper\json::group( $obj->id(), $obj );
+						$data[ $obj->id() ] =  $datum;
+					}
+
+				}
+
+				if ( is_array( $data ) ) {
+					return json_encode( $data );
+				}
 
 			}
 

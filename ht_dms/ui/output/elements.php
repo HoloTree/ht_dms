@@ -725,9 +725,9 @@ class elements {
 				if ( is_array( $user_ids ) ) {
 					$users = implode( $user_ids, ',' );
 				}
-				$js =  'loadUsers( [' . $users . '], "'.$container_id.'" )';
+				$js =  'loadUsers( [' . $users . '], "'.$container_id.'", "#user-mini" )';
 
-				$content = $this->ui()->view_loaders()->handlebars( 'user', $container_id, $js );
+				$content = $this->ui()->view_loaders()->handlebars( 'user-mini', $container_id, $js );
 
 
 				$tabs[ ] = array (
@@ -805,3 +805,4 @@ class elements {
 	}
 
 }
+

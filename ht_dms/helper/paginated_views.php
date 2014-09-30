@@ -62,7 +62,14 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 	$view_args = pods_v( 'args', $pagination_args_and_path  );
 
 	$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
-	if ( $return_obj === true ) {
+
+	if ( in_array( $view, array( 'users_groups' ) ) ) {
+		$js = "groupPreview( {$obj})";
+		$out = ht_dms_ui()->view_loaders()->handlebars( 'group_preview', 'group-previews', $js );
+		return $out;
+
+	}
+	elseif ( $return_obj === true ) {
 
 		return $obj;
 
@@ -175,7 +182,7 @@ function ht_dms_paginated_views( $args = null ) {
 
 	$paginated_views = array(
 		'users_groups' => array(
-			'args' => array( null, get_current_user_id(), null, $args[ 'limit'], 'Pods', $args[ 'page'] ),
+			'args' => array( null, get_current_user_id(), null, $args[ 'limit'], 'simple_json', $args[ 'page'] ),
 			'view' => 'group_preview.php',
 		),
 		'public_groups' => array(

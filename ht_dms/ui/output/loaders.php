@@ -41,7 +41,7 @@ class loaders implements \Hook_SubscriberInterface {
 		return array(
 			'app_starter_content_part_view' => 'view_loaders',
 			'app_starter_alt_main_view' => 'task_view',
-			'ht_dms_after_magic_template' => array( 'after_group', 10, 3 ),
+			//'ht_dms_after_magic_template' => array( 'after_group', 10, 3 ),
 		);
 
 	}
@@ -539,7 +539,8 @@ class loaders implements \Hook_SubscriberInterface {
 		if ( in_array( $view, array( 'group', 'group_preview' ) ) ) {
 
 			$js = $this->group_prepare( $id );
-			$template = $this->handlebars( 'user', 'group-members-'.$id, $js );
+			$class = 'small-block-grid-10 large-block-grid-20';
+			$template = $this->handlebars( 'user-mini', 'group-members-'.$id, $js, $class, 'ul' );
 			if ( is_string( $template ) ) {
 				$out .= $template;
 			}
@@ -548,7 +549,7 @@ class loaders implements \Hook_SubscriberInterface {
 		return $out;
 	}
 
-	function handlebars( $file, $id = false, $js = false, $partial = true ) {
+	function handlebars( $file, $id = false, $js = false, $class='', $container_type = 'div', $partial = true ) {
 		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
 		if ( $partial ) {
 			$template .= 'partials/';
@@ -559,16 +560,14 @@ class loaders implements \Hook_SubscriberInterface {
 				$id = $template;
 			}
 
-			$file = str_replace( ' ', '-', $file );
-
-
 			if ( is_string( $js ) ) {
 				$out[] = '<script type="text/javascript">'.$js.'</script>';
 			}
 
 
 			$out[] = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
-			$out[] = sprintf( '<ul class="small-block-grid-10 large-block-grid-20" id="%1s"></ul>', $id );
+			$out[] = "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
+
 
 			$out = implode( $out );
 
@@ -594,7 +593,7 @@ class loaders implements \Hook_SubscriberInterface {
 			if ( is_array( $members ) ) {
 				$members = implode( $members, ',' );
 
-				$js = 'loadUsers( [' . $members . '], "#group-members-'.$id.'" )';
+				$js = 'loadUsers( [' . $members . '], "#group-members-'.$id.'", "#user-mini" )';
 
 				if ( is_string( $js ) ) {
 					pods_cache_set( $key, $js );

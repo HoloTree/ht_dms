@@ -234,11 +234,12 @@ jQuery(document).ready(function($) {
         
     }
 
-    function loadUsers ( users, container  ) {
+    function loadUsers ( users, container, templateID  ) {
+
         $.each(users, function( i, val ) {
             var user = new wp.api.models.User( { ID: val } );
             user.fetch().done(function () {
-                loadUser( user, container );
+                loadUser( user, container, templateID );
             });
 
         });
@@ -246,12 +247,13 @@ jQuery(document).ready(function($) {
 
     window.loadUsers = loadUsers;
 
-    function loadUser( user, container  ) {
+    function loadUser( user, container, templateID  ) {
+
         var name = user.attributes.name;
         var avatar = user.attributes.avatar;
         var ID = user.attributes.ID;
 
-        var source   = $( '#user' ).html();
+        var source   = $( templateID ).html();
 
         var data = {
             name: name,
@@ -259,7 +261,8 @@ jQuery(document).ready(function($) {
             ID: ID
         };
         var template    = Handlebars.compile( source );
-        var html        = template(data);
+        var html        = template( data );
+
 
         $( container ).append( html );
 
@@ -267,6 +270,23 @@ jQuery(document).ready(function($) {
 
     window.loadUser = loadUser;
 
+    function groupPreview( json ) {
+        $.each( json, function( i, val ) {
+            var data = JSON.parse( val );
+
+            var source   = $( '#group-preview' ).html();
+            var template    = Handlebars.compile( source );
+            var html        = template( data );
+
+            $( '#group-previews' ).append( html );
+
+
+            console.log( data.members );
+
+        });
+    }
+
+    window.groupPreview = groupPreview;
 
 
 });

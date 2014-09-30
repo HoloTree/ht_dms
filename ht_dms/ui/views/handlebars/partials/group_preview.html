@@ -1,0 +1,16 @@
+<script id="group-preview" type="text/x-handlebars-template">
+    <div class="group group-preview" id="group-{{ID}}">
+        <h3><a href="{{link}}" class="group-link button" group="{{ID}}" title="View group" id="group-link">{{name}}</a></h3>
+        <div class="details">
+            <p class="description">{{description}}</p>
+            <p><a href="{{organizationLink}}" class="organization-link">Organization: {{organizationName}}</a></p>
+            <ul id="group-members-{{ID}}" class="small-block-grid-10 large-block-grid-20">
+                {{#each members}}
+                <li id="user-{{ID}}" class="user mini-mode">
+                 <span class="avatar">{{avatar}}</span>
+
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</script>
