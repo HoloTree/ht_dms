@@ -24,9 +24,8 @@ class common  {
 		add_action( 'pods_api_post_save_pod_item', array( $this,'post_edit' ),  25, 3 );
 		add_action( 'ht_before_ht', array( $this, 'message' ) );
 
-
-
 	}
+
 	/**
 	 * Set actions
 	 *
@@ -64,70 +63,6 @@ class common  {
 	}
 
 
-	function enqueue_scripts() {
-
-		if ( ! is_admin() ) {
-			//wp_enqueue_style( 'HoloTree-DMS', plugins_url( 'css/HT-DMS.css', __FILE__ ) );
-			//wp_enqueue_script( 'HoloTree-DMS', plugins_url( 'js/HT-DMS.js', __FILE__), array( 'jquery'), false, true );
-			wp_enqueue_script( 'jquery' );
-
-			$var = (string) HT_FOUNDATION;
-			wp_localize_script( 'HoloTree-DMS', 'htFoundation', $var );
-
-		}
-
-		wp_enqueue_script( 'pods' );
-		wp_enqueue_style( 'pods-select2' );
-		wp_enqueue_script( 'pods-select2' );
-		wp_enqueue_style( 'pods-form' );
-
-
-	}
-
-	/**
-	 * Clear view cache or the whole cache.
-	 *
-	 * @param bool     $view_cache
-	 * @param bool $full
-	 *
-	 * @since 0.0.2
-	 */
-	function clear_dms_cache( $view_cache, $full = false ) {
-		$clear = false;
-		//@TODO Can we target only DMS related?
-		if ( $full ) {
-			pods_cache_clear();
-			pods_transient_clear();
-			$clear = true;
-		}
-		elseif( $view_cache && ! $full ) {
-			foreach ( array( 'cache', 'transient') as $mode  ) {
-				pods_view_clear( true, $mode, 'ht_dms_front_end_views'  );
-			}
-			$clear = true;
-		}
-
-
-		if ( $clear ) {
-			/**
-			 * Fires after DMS cache is cleared via this method.
-			 *
-			 * Note: Cache can be cleared via other means.
-			 *
-			 * @since 0.0.1
-			 */
-			do_action( 'ht_dms_post_clear_cache' );
-		}
-
-	}
-
-	//@TODO REMOVE THIS.
-	function big_delete() {
-		$this->clear_dms_cache( false );
-		$this->clear_dms_cache( );
-		pods_cache_clear( true );
-
-	}
 
 
 	/**
