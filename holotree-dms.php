@@ -415,3 +415,15 @@ function ht_dms_do_hourly() {
 	ht_dms_decision_class()->checks();
 	ht_dms_notification_class()->send();
 }
+
+add_action('template_redirect', 'ht_dms_archive_redirect');
+function ht_dms_archive_redirect() {
+
+	if ( is_post_type_archive( ht_dms_content_types() ) ) {
+
+		pods_redirect( ht_dms_home() );
+	}
+}
+
+
+
