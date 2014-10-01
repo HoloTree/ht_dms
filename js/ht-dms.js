@@ -281,7 +281,6 @@ jQuery(document).ready(function($) {
             $( '#group-previews' ).append( html );
 
 
-            console.log( data.members );
 
         });
     }
