@@ -64,8 +64,13 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 	$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
 
 	if ( in_array( $view, array( 'users_groups' ) ) ) {
-		$js = "groupPreview( {$obj})";
-		$out = ht_dms_ui()->view_loaders()->handlebars( 'group_preview', 'group-previews', $js );
+		if ( $obj ) {
+			$js  = "groupPreview( {$obj})";
+			$out = ht_dms_ui()->view_loaders()->handlebars( 'group_preview', 'group-previews', $js );
+		}
+		else {
+			$out = __( 'No groups found.', 'ht_dms' );
+		}
 		return $out;
 
 	}

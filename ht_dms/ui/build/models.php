@@ -521,6 +521,7 @@ class models {
 			}
 
 			if ( $return === 'simple_json' ) {
+				$data = false;
 				if ( $obj->total() > 0 ) {
 					while( $obj->fetch() )  {
 						$datum = \ht_dms\helper\json::group( $obj->id(), $obj );
@@ -530,8 +531,10 @@ class models {
 				}
 
 				if ( is_array( $data ) ) {
-					return json_encode( $data );
+					$data = json_encode( $data );
 				}
+
+				return $data;
 
 			}
 
