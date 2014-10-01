@@ -26,7 +26,7 @@ class ui {
 		static $instance = false;
 
 		if ( ! $instance ) {
-			$instance = new \ht_dms\ui\ui();
+			$instance = new self;
 		}
 
 		return $instance;
@@ -37,7 +37,7 @@ class ui {
 
 	function views() {
 
-		return new \ht_dms\ui\build\views();
+		return new build\views();
 	}
 
 	/**
@@ -50,7 +50,7 @@ class ui {
 	function ajax_callbacks() {
 
 
-		return new \ht_dms\ui\ajax\Callbacks();
+		return new ajax\Callbacks();
 
 	}
 
@@ -114,7 +114,7 @@ class ui {
 
 	function models() {
 
-		return \ht_dms\ui\build\models::init();
+		return build\models::init();
 
 	}
 
@@ -123,29 +123,29 @@ class ui {
 	 */
 	function build_elements() {
 
-		return \ht_dms\ui\build\elements::init();
+		return build\elements::init();
 
 	}
 
 	function login() {
 
-		return new \ht_dms\ui\build\login();
+		return new build\login();
 	}
 
 	function tags() {
 
-		return new \ht_dms\ui\build\tags();
+		return new build\tags();
 
 	}
 
 	function add_modify() {
 
-		return new \ht_dms\ui\output\addModify();
+		return new output\addModify();
 	}
 
 	function output_elements() {
 		
-		return new \ht_dms\ui\output\elements;
+		return new output\elements;
 
 	}
 
@@ -161,7 +161,7 @@ class ui {
 	function view_loaders() {
 
 
-		return new \ht_dms\ui\output\loaders();
+		return new output\loaders();
 
 	}
 
@@ -176,7 +176,7 @@ class ui {
 	 */
 	function activity( $type, $id ) {
 
-		return new \ht_dms\ui\build\activity( $type, $id );
+		return new build\activity( $type, $id );
 
 	}
 
@@ -189,7 +189,7 @@ class ui {
 	 */
 	function membership() {
 
-		return new \ht_dms\ui\build\membership();
+		return new build\membership();
 
 	}
 
