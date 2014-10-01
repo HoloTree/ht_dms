@@ -1,8 +1,10 @@
 <?php
 /**
- * @TODO What this does.
+ * Loads UI SUB Classes
  *
- * @package   @TODO
+ * Use these methods to access sub classes, instead of accessing directly.
+ *
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
