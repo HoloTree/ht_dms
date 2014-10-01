@@ -56,6 +56,10 @@ class consensus {
 	 * @since 	0.0.1
 	 */
 	function create( $dID, $obj = null, $dont_set = false ) {
+		if ( ! $dID || ! ht_dms_is_decision( $dID ) ) {
+			return;
+		}
+
 		$obj = ht_dms_decision( $dID, $obj );
 		if ( !is_object( $obj ) ) {
 			ht_dms_error( 'No object in', __METHOD__ );
@@ -285,11 +289,18 @@ class consensus {
 	 * @since 0.0.3
 	 */
 	function sort_consensus( $dID, $js_output = false ) {
+		if ( ! $dID || ! ht_dms_is_decision( $dID ) ) {
+			return false;
+		}
 		if ( ! is_array( $dID ) ) {
 			$consensus = $this->consensus( $dID );
 		}
 		else {
 			$consensus = $dID;
+		}
+
+		if ( ! is_array( $consensus ) ) {
+			$consensus = $this->create( $dID );
 		}
 
 		$user_value = wp_list_pluck( $consensus, 'value' );

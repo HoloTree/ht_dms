@@ -16,6 +16,8 @@ $id = $post->ID;
 $d = ht_dms_decision_class();
 $ui = ht_dms_ui();
 $obj = $d->item( $id );
+$consensus = ht_dms_consensus( $id );
+
 if ( !is_object( $obj) ) {
 	ht_dms_error( 'Not an object!', __FILE__ );
 }
@@ -63,7 +65,7 @@ else {
 	//add consensus visualization as a tabs within a tab until 3rd UI element exists
 	//@see https://github.com/HoloTree/ht_dms/issues/70
 	if ( 1==1 || ! HT_DEV_MODE ) {
-		$consensus_status = $ui->output_elements()->view_consensus( ht_dms_consensus( $id ) );
+		$consensus_status = $ui->output_elements()->view_consensus( $consensus );
 
 		$tabs[] =
 			array (
