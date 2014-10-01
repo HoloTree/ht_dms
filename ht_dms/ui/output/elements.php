@@ -811,7 +811,7 @@ class elements {
 		else {
 			$sorted_consensus = $id;
 		}
-
+		$build_elements = ht_dms_ui()->build_elements();
 		if ( is_array( $sorted_consensus ) ) {
 			foreach ( $sorted_consensus as $status => $user_ids ) {
 				$users = '';
@@ -819,23 +819,26 @@ class elements {
 					$users = implode( $user_ids, ',' );
 				}
 
-				$consensus_status[ 'status'.$status ] = $users;
+				$consensus_status[ $status ] = $users;
 				$count[ $status ] = count( $user_ids );
+				foreach( $user_ids as $uID ) {
+					$details[ $status ] = $build_elements->member_details( $uID );
+				}
 
 			}
 
  		}
 
 		for ( $i=0; $i<=3; $i++ ) {
-			$consensus_status[ 'headers' ][ "header{$i}" ] = $this->ui()->build_elements()->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
+			$consensus_status[ 'headers' ][ $i ] = $this->ui()->build_elements()->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
 		}
 
 
 		$title = __( 'Consensus Status', 'ht_dms' );
 		$js = \ht_dms\helper\json::encode_to_script( $consensus_status, 'consensusStatus' );
-		$out = $js;
+		//$out = $js;
 
-		$out .= $this->ui()->view_loaders()->handlebars( 'consensus_view', false, false );
+		$out = $this->ui()->view_loaders()->handlebars( 'consensus_view', false, false );
 
 		$out .= '<div id="consensus-view" class="consensus-view"></div>';
 

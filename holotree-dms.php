@@ -189,7 +189,27 @@ class HoloTree_DMS {
 			'ajaxURL' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'ht-dms' ),
 			'id' => get_queried_object_id(),
+			'consensusMembers' => 0,
+			'consensusHeaders' => 0,
+			'consensusMemberDetails' => 0,
 		);
+
+		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision(get_queried_object_id()  ) ) {
+			$consensus = ht_dms_consensus_class()->sort_consensus( 396, true );
+			$consensusMembers = $consensus;
+			unset( $consensusMembers[ 'headers' ] );
+			unset( $consensusMembers[ 'details' ] );
+			$htDMS[ 'consensusHeaders' ] = pods_v( 'headers', $consensus, array() );
+
+
+			if ( $consensusMembers  ) {
+				$htDMS[ 'consensusMembers' ] = $consensusMembers;
+			}
+
+
+			$htDMS[ 'consensusMemberDetails' ] = pods_v( 'details', $consensus, array() );
+
+		}
 
 		/**
 		 * Override or add to variables passed into htDMS JavaScript object.

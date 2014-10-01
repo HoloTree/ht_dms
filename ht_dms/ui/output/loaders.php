@@ -313,7 +313,7 @@ class loaders implements \Hook_SubscriberInterface {
 		 *
 		 * @see https://github.com/HoloTree/ht_dms/issues/70
 		 */
-		if ( HT_DEV_MODE ) {
+		if ( 1==2 ) {
 			if ( $post_type == 'home' ) {
 				$type = 'network';
 			} elseif ( in_array( $post_type, array_keys( $this->special_views() ) ) ) {

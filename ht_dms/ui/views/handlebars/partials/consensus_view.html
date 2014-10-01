@@ -1,21 +1,49 @@
 <script id="consensus-view-template" type="text/x-handlebars-template">
+    <style>p.avatar img{display: inline-block;}</style>
+    <ul class="small-block-grid-3" id="consensus-views-chooser">
+        <li><a href="#" cst="ct0">{{{header0}}}</a></li>
+        <li><a href="#" cst="ct1">{{{header1}}}</a></li>
+        <li><a href="#" cst="ct2">{{{header2}}}</a></li>
+    </ul>
+    <div id="consensus-views-by-status">
+        <ul class="small-block-grid-4  large-block-grid-8" id="ct0">
+            {{#each users0}}
+            <li>
+                <p class="avatar text-center">
+                    {{{avatar}}}
+                </p>
+                <p class="name text-center">
+                    {{name}}
+                </p>
+            </li>
+            {{/each}}
+        </ul>
+        <ul class="small-block-grid-4  large-block-grid-8" id="ct1" style="display:none;">
+            {{#each users1}}
+            <li>
+                <p class="avatar text-center">
+                    {{{avatar}}}
+                </p>
+                <p class="name text-center">
+                    {{name}}
+                </p>
+            </li>
+            {{/each}}
+        </ul>
+        <ul class="small-block-grid-4  large-block-grid-8 hide" id="ct2" style="display:none;">
+            {{#each users2}}
+            <li>
+                <p class="avatar text-center">
+                    {{{avatar}}}
+                </p>
+                <p class="name text-center">
+                    {{name}}
+                </p>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
 
-    <dl>
-        <dd class="active"><a href="#ct0">{{{header0}}}</a></dd>
-        <dd><a href="#ct1">{{{header1}}}</a></dd>
-        <dd><a href="#ct2">{{{header2}}}</a></dd>
-        </dl>
-
-        <div class="content active" id="ct0">
-            {{#users status0}}{{name}} {{avatar}}{{/users}}
-
-        </div>
-        <div class="content" id="ct1">
-            {{#users status1}}{{name}} {{avatar}}{{/users}}
-        </div>
-        <div class="content" id="ct2">
-            {{#users status2}}{{name}} {{avatar}}{{/users}}
-        </div>
 
 
 </script>

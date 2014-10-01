@@ -284,7 +284,7 @@ class consensus {
 	 *
 	 * @since 0.0.3
 	 */
-	function sort_consensus( $dID ) {
+	function sort_consensus( $dID, $js_output = false ) {
 		if ( ! is_array( $dID ) ) {
 			$consensus = $this->consensus( $dID );
 		}
@@ -294,7 +294,7 @@ class consensus {
 
 		$user_value = wp_list_pluck( $consensus, 'value' );
 
-
+		$statuses = array();
 		if ( is_array( $consensus ) ) {
 			foreach ( $user_value as $uID => $value ) {
 				$statuses[ $value ][ ] = $uID;
@@ -302,11 +302,50 @@ class consensus {
 
 			for ( $i = 0; $i <= 2; $i ++ ) {
 				if ( ! isset( $statuses[ $i ] ) ) {
-					$statuses[ $i ] = array ();
+					$statuses[ $i ] = array (array());
 				}
 			}
 
-			return $statuses;
+			for ( $i = 0; $i <= 2; $i ++ ) {
+				$count[ $i ] = count( $statuses[ $i ] );
+			}
+
+			if ( ! $js_output ) {
+				return $statuses;
+			}
+			else {
+				$build_elements =ht_dms_ui()->build_elements();
+				$details = array();
+				$consensus_status = array();
+				if ( is_array( $statuses ) ) {
+					foreach ( $statuses as $status => $user_ids ) {
+
+
+						$consensus_status[ $status ] = $user_ids;
+						$count[ $status ] = count( $user_ids );
+
+						foreach( $user_ids as $uID ) {
+							$user = $build_elements->member_details( $uID );
+							$details[ $status ][] = array( 'name' => pods_v( 'name', $user[0] ), 'avatar' => pods_v( 'avatar', $user[0] ) );
+						}
+
+					}
+
+				}
+
+				$consensus_status[ 'details' ] = json_encode( $details );
+
+				for ( $i=0; $i<=2; $i++ ) {
+					$consensus_status[ 'headers' ][ "header{$i}" ] = $build_elements->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
+
+				}
+
+
+
+
+				return $consensus_status;
+
+			}
 		}
 
 

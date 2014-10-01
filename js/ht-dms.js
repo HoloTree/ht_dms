@@ -293,66 +293,52 @@ jQuery(document).ready(function($) {
     window.groupPreview = groupPreview;
 
 
-    Handlebars.registerHelper('users', function(items, options) {
-        var out = "<ul class='small-block-grid-10 large-block-grid-20'>";
-
-        for(var i=0, l=items.length; i<l; i++) {
-            out = out + "<li class='user'>" + options.fn(items[i]) + "</li>";
-        }
-
-        return out + "</ul>";
-    });
-
-
+    /**
+     * Consensus Visualization
+     *
+     * @since 0.0.3
+     */
     $( document).ready( function()  {
-        if (typeof consensusStatus != 'undefined') {
-            consensusView( consensusStatus );
+        if (typeof htDMS.consensusMembers != 0) {
+            consensusView();
         }
     });
 
-    function consensusView( consensusStatus ) {
+    function consensusView() {
 
-        var status0 = consensusStatus.status0;
-        var status1 = consensusStatus.status1;
-        var status2 = consensusStatus.status2;
+    var users =  JSON.parse( htDMS.consensusMemberDetails );
 
-        $.each([status0], function( i, val ) {
-            console.log( val );
-            var user = new wp.api.models.User( { ID: val } );
-            users0 = [{
-                name: user.attributes.name,
-                avatar: user.attributes.avatar,
-                ID: user.attributes.ID
-            } ];
-
-        });
-        console.log( users0 );
         var data = {
-            status0: users0,
-            status1: [status1],
-            status2: [status2],
-            header0: consensusStatus.headers.header0,
-            header1: consensusStatus.headers.header1,
-            header2: consensusStatus.headers.header2
+            header0: htDMS.consensusHeaders.header0,
+            header1: htDMS.consensusHeaders.header1,
+            header2: htDMS.consensusHeaders.header2,
+            users0: users[0],
+            users1: users[1],
+            users2: users[2]
         }
+
 
         var source   = $( '#consensus-view-template' ).html();
         var template    = Handlebars.compile( source );
         var html        = template( data );
         $( '#consensus-view' ).append( html );
-    }
-    function consensusUsers( uID ) {
 
-        var user = new wp.api.models.User( { ID: uID } );
-        var data = {
-            name: name,
-            avatar: avatar,
-            ID: ID
-        };
-
-        return data;
+        $( '#consensus-views-chooser li a' ).click( function () {
+            var cst = $( this).first().attr( 'cst' );
+            consensusViewUpdate( cst );
+        });
 
     }
+
+    function consensusViewUpdate( id ) {
+        $( '#consensus-views-by-status').children().fadeOut();
+        var container = '#' + id;
+        $( container ).fadeIn();
+
+    }
+
+
+
 
 
 
