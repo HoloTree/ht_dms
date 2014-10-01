@@ -523,9 +523,14 @@ class models {
 			if ( $return === 'simple_json' ) {
 				$data = false;
 				if ( $obj->total() > 0 ) {
+					$type = $obj->pod;
+					$type = ht_dms_prefix_remover( $type );
 					while( $obj->fetch() )  {
-						$datum = \ht_dms\helper\json::group( $obj->id(), $obj );
+
+						$datum = call_user_func( array( '\ht_dms\helper\json', $type  ),  $obj->id(), $obj );
+
 						$data[ $obj->id() ] =  $datum;
+
 					}
 
 				}

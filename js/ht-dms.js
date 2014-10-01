@@ -292,6 +292,23 @@ jQuery(document).ready(function($) {
 
     window.groupPreview = groupPreview;
 
+    function organizationPreview( json ) {
+        $.each( json, function( i, val ) {
+            var data = JSON.parse( val );
+
+            var source   = $( '#organization-preview' ).html();
+            var template    = Handlebars.compile( source );
+            var html        = template( data );
+
+            $( '#organization-previews' ).append( html );
+
+
+
+        });
+    }
+
+    window.organizationPreview = organizationPreview;
+
 
     /**
      * Consensus Visualization

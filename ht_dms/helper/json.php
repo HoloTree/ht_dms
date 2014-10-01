@@ -64,6 +64,59 @@ class json {
 
 	}
 
+	static public function organization( $id, $obj = null ) {
+
+		$obj = ht_dms_organization_class()->null_obj( $obj, $id );
+
+		$fields = array (
+			'name'          => 'post_title',
+			'members'       => 'members',
+			'description'   => 'description',
+
+		);
+
+		$data = array ();
+		foreach ( $fields as $index => $field ) {
+			if ( $index == 'members' ) {
+				$members = false;
+				$members = $obj->field( $field );
+
+				if ( is_array( $members ) ) {
+					foreach( $members as $member ) {
+						$uID = pods_v( 'ID', $member );
+						$member = array(
+							'name' => pods_v( 'display_name', $member ),
+							'avatar' => get_avatar( $uID ),
+							'ID' => $uID,
+						);
+
+
+						$org_members[ $uID ] = $member;
+					}
+
+				}
+
+				if ( is_array( $org_members ) ) {
+					$data[ $index ] = $org_members;
+				}
+
+			} else {
+
+				$data[ $index ] = $obj->display( $field );
+
+			}
+		}
+
+
+		$data[ 'link' ] = get_permalink( $id );
+		$data[ 'ID' ] =  $id;
+
+		if ( is_array( $data ) ) {
+			return json_encode( $data );
+		}
+
+	}
+
 	static public function encode_to_script( $data, $var_name ) {
 		if ( ! is_array( $data ) ) {
 			explode( ',', $data );
