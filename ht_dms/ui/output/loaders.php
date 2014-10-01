@@ -543,9 +543,7 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 		$template .= $file . '.html';
 		if ( file_exists( $template ) ) {
-			if ( ! $id ) {
-				$id = $template;
-			}
+
 
 			if ( is_string( $js ) ) {
 				$out[] = '<script type="text/javascript">'.$js.'</script>';
@@ -553,7 +551,9 @@ class loaders implements \Hook_SubscriberInterface {
 
 
 			$out[] = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
-			$out[] = "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
+			if ( is_string( $id ) ) {
+				$out[ ] = "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
+			}
 
 
 			$out = implode( $out );

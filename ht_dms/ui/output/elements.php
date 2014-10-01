@@ -676,11 +676,15 @@ class elements {
 	 */
 	function output_container( $content, $prefix = null, $class = '', $id = false ) {
 		foreach( $content as $i => $c ) {
-			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c['content'] ) ) {
+
+			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c[ 'content' ] ) ) {
+
 				unset( $content[ $i ] );
 				if ( HT_DEV_MODE ) {
-					echo sprintf( __('The tab %1s was not a string, so it was unset from output container.', 'ht_dms' ), $i );
+					echo sprintf( __( 'The tab %1s was not a string, so it was unset from output container.', 'ht_dms' ), $i );
+					print_c3( $c );
 				}
+
 			}
 
 		}
@@ -811,39 +815,31 @@ class elements {
 		if ( is_array( $sorted_consensus ) ) {
 			foreach ( $sorted_consensus as $status => $user_ids ) {
 				$users = '';
-
-
-				$container_id = "consensus-status-{$status}";
 				if ( is_array( $user_ids ) ) {
 					$users = implode( $user_ids, ',' );
 				}
-				$js =  'loadUsers( [' . $users . '], "'.$container_id.'", "#user-mini" )';
 
-				$content = $this->ui()->view_loaders()->handlebars( 'user-mini', $container_id, $js );
+				$consensus_status[ 'status'.$status ] = $users;
+				$count[ $status ] = count( $user_ids );
 
-
-				$tabs[ ] = array (
-					'label'   => ht_dms_ui()->build_elements()->consensus_tab_header( $status, count( $users ) ),
-					'content' => $content,
-				);
 			}
+
+ 		}
+
+		for ( $i=0; $i<=3; $i++ ) {
+			$consensus_status[ 'headers' ][ "header{$i}" ] = $this->ui()->build_elements()->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
 		}
 
 
-		if ( is_array( $tabs ) ) {
-			$tabs = ht_dms_ui()->output_elements()->tabs( $tabs, 'consensus_view_tab_', 'consensus-tabs', true, 'consensus-tabs' );
+		$title = __( 'Consensus Status', 'ht_dms' );
+		$js = \ht_dms\helper\json::encode_to_script( $consensus_status, 'consensusStatus' );
+		$out = $js;
 
-			if ( is_string( $tabs ) ) {
+		$out .= $this->ui()->view_loaders()->handlebars( 'consensus_view', false, false );
 
-				return sprintf( '
-					<div id="consensus-view" class="consensus-view">
-						<h5>%0s</h5>
-						%1s
-					</div>
-				', __( 'Consensus Status', 'ht_dms' ), $tabs );
+		$out .= '<div id="consensus-view" class="consensus-view"></div>';
 
-			}
-		}
+		return $out;
 
 	}
 

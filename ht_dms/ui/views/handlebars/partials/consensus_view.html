@@ -1,0 +1,21 @@
+<script id="consensus-view-template" type="text/x-handlebars-template">
+
+    <dl>
+        <dd class="active"><a href="#ct0">{{{header0}}}</a></dd>
+        <dd><a href="#ct1">{{{header1}}}</a></dd>
+        <dd><a href="#ct2">{{{header2}}}</a></dd>
+        </dl>
+
+        <div class="content active" id="ct0">
+            {{#users status0}}{{name}} {{avatar}}{{/users}}
+
+        </div>
+        <div class="content" id="ct1">
+            {{#users status1}}{{name}} {{avatar}}{{/users}}
+        </div>
+        <div class="content" id="ct2">
+            {{#users status2}}{{name}} {{avatar}}{{/users}}
+        </div>
+
+
+</script>
