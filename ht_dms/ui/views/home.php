@@ -36,10 +36,12 @@ $tabs = array(
 		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'ht_dms' ), 'task' ),
 		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	),
+	/*
 	array (
 		'label'		=> ht_dms_add_icon( __( 'All Public Groups', 'ht_dms' ), array( 'public', 'group' ) ),
 		'content' 	=> ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 	),
+	*/
 );
 
 if ( HT_DEV_MODE ) {
