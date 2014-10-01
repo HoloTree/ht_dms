@@ -312,13 +312,13 @@ class consensus {
 			}
 
 			for ( $i = 0; $i <= 2; $i ++ ) {
-				if ( ! isset( $statuses[ $i ] ) ) {
-					$statuses[ $i ] = array (array());
+				if ( isset( $statuses[ $i ] ) ) {
+					$count[ $i ] = count( $statuses[ $i ] );
 				}
-			}
-
-			for ( $i = 0; $i <= 2; $i ++ ) {
-				$count[ $i ] = count( $statuses[ $i ] );
+				else {
+					$count[ $i ] = 0;
+					$statuses[ $i ] = array ();
+				}
 			}
 
 			if ( ! $js_output ) {

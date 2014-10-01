@@ -322,8 +322,8 @@ jQuery(document).ready(function($) {
     });
 
     function consensusView() {
-
-    var users =  JSON.parse( htDMS.consensusMemberDetails );
+        console.log(htDMS.consensusMemberDetails );
+        var users =  JSON.parse( htDMS.consensusMemberDetails );
 
         var data = {
             header0: htDMS.consensusHeaders.header0,

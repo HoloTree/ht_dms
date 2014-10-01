@@ -241,7 +241,7 @@ function ht_dms_consensus_status_readable( $value, $with_icons = false, $ing = f
  * @since 0.0.3
  */
 function ht_dms_fallback_avatar() {
-	$fallback = 'http://joshpress.net/jp-content/uploads/sites/10/2013/08/gus.jpg';
+	$fallback = trailingslashit( HT_DMS_UI_DIR ) .'img/gus.jpg';
 	/**
 	 * Fallback avatar for users without one set.
 	 *

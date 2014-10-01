@@ -194,8 +194,8 @@ class HoloTree_DMS {
 			'consensusMemberDetails' => 0,
 		);
 
-		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision(get_queried_object_id()  ) ) {
-			$consensus = ht_dms_consensus_class()->sort_consensus( 396, true );
+		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision( get_queried_object_id()  ) ) {
+			$consensus = ht_dms_consensus_class()->sort_consensus( get_queried_object_id(), true );
 			$consensusMembers = $consensus;
 			unset( $consensusMembers[ 'headers' ] );
 			unset( $consensusMembers[ 'details' ] );

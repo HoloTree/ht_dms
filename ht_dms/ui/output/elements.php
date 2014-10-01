@@ -811,18 +811,28 @@ class elements {
 		else {
 			$sorted_consensus = $id;
 		}
+
 		$build_elements = ht_dms_ui()->build_elements();
 		if ( is_array( $sorted_consensus ) ) {
 			foreach ( $sorted_consensus as $status => $user_ids ) {
 				$users = '';
-				if ( is_array( $user_ids ) ) {
+				if ( is_array( $user_ids ) && ! empty( $user_ids ) && isset( $user_ids[0] )  && ! empty( $user_ids[ 0 ] ) ) {
+
 					$users = implode( $user_ids, ',' );
 				}
+				else {
+					$user_ids = '';
+				}
+
 
 				$consensus_status[ $status ] = $users;
 				$count[ $status ] = count( $user_ids );
-				foreach( $user_ids as $uID ) {
-					$details[ $status ] = $build_elements->member_details( $uID );
+				if ( is_array( $user_ids ) ) {
+					foreach ( $user_ids as $uID ) {
+						$details[ $status ] = $build_elements->member_details( $uID );
+					}
+				} else {
+					$details[ $status ] = array();
 				}
 
 			}

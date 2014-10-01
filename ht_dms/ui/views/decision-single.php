@@ -65,7 +65,7 @@ else {
 	//add consensus visualization as a tabs within a tab until 3rd UI element exists
 	//@see https://github.com/HoloTree/ht_dms/issues/70
 	if ( 1==1 || ! HT_DEV_MODE ) {
-		$consensus_status = $ui->output_elements()->view_consensus( $consensus );
+		$consensus_status = $ui->output_elements()->view_consensus( $id );
 
 		$tabs[] =
 			array (
