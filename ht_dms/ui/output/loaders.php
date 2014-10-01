@@ -346,24 +346,11 @@ class loaders implements \Hook_SubscriberInterface {
 
 	function main_title( $id, $task = false ) {
 		if ( apply_filters( 'ht_dms_view_title', true ) ) {
-			$name = $this->ui()->output_elements()->title( $id, null, $task );
-			$class = 'entry-title';
+			return $this->ui()->output_elements()->breadcrumbs();
 
-			/**
-			 * Change or add to title class
-			 *
-			 * @param string $class
-			 *
-			 * @since 0.0.1
-			 */
-			$class = apply_filters( 'ht_dms_entry_title_class', $class );
-
-			$out = '<h2 class="' . $class . '">' . $name . '</h2>';
 		}
 
-		if ( isset( $out ) ) {
-			return $out;
-		}
+
 	}
 
 	private function id() {

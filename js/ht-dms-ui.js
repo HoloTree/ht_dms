@@ -105,6 +105,104 @@ jQuery(document).ready(function( $ ) {
 
     });
 
+    /**
+     * Breadcrumbs JS
+     */
+
+    var breadNames = breadNamesJSON;
+    console.log( breadNames );
+    var oName = breadNames.organization;
+    var gName = breadNames.group;
+    var dName = breadNames.decision;
+
+    $( document).ready( function()  {
+        bakeTheBread();
+    });
+
+    function bakeTheBread() {
+
+        //store the breadcrumb string names into vars
+        var org = document.getElementById("breadNames");
+        var group = document.getElementById("breadGroup");
+        var decid = document.getElementById("breadDecid");
+
+
+        //store the screen-size into var
+        console.log(window.innerWidth);
+        var screen = window.innerWidth;
+        if (screen < 658) {
+            if ( oName != '' ) {
+                org.innerText = abbreviate(oName, 5);
+            }
+            if ( gName != '' ) {
+                group.innerText = abbreviate(gName, 5);
+            }
+            if ( dName != '') {
+                decid.innerText = abbreviate(dName, 5);
+            }
+        } else if (screen > 658) {
+            if ( oName != '' ) {
+                org.innerText = oName;
+            }
+            if ( gName != '' ) {
+                group.innerText = gName;
+            }
+            if ( dName != '' ) {
+                decid.innerText = dName;
+            }
+        }
+
+        window.addEventListener('resize', sizeBread );
+
+        return screen;
+
+    }
+
+    function sizeBread() {
+        var org = document.getElementById("breadNames");
+        var group = document.getElementById("breadGroup");
+        var decid = document.getElementById("breadDecid");
+
+        var nowScreen = bakeTheBread();
+
+        if ( nowScreen < 658) {
+            if ( oName != '' ) {
+                org.innerText = abbreviate(oName, 5);
+            }
+            if ( gName != '' ) {
+                group.innerText = abbreviate(gName, 5);
+            }
+            if ( dName != '' ) {
+                decid.innerText = abbreviate(dName, 5);
+            }
+        }
+
+    }
+
+    function abbreviate(str, max, suffix) {
+        if((str = str.replace(/^s+|s+$/g, '').replace(/[rn]*s*[rn]+/g, ' ').replace(/[ t]+/g, ' ')).length <= max)
+        {
+            return str;
+        }
+
+        var
+            abbr = '',
+            str = str.split(' '),
+            suffix = (typeof suffix !== 'undefined' ? suffix : ' ...'),
+            max = (max - suffix.length);
+
+        for(var len = str.length, i = 0; i < len; i ++)
+        {
+            if((abbr + str[i]).length > max)
+            {
+                abbr += str[i] + ' ';
+            }
+            else { break; }
+        }
+
+        return abbr.replace(/[ ]$/g, '') + suffix;
+    }
+
 
 
 

@@ -64,4 +64,15 @@ class json {
 
 	}
 
+	static public function encode_to_script( $data, $var_name ) {
+		if ( ! is_array( $data ) ) {
+			explode( ',', $data );
+		}
+
+		$data = json_encode( $data );
+
+		return "<script type='text/javascript'>var {$var_name} = {$data};</script>";
+
+	}
+
 } 

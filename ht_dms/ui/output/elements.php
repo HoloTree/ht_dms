@@ -278,6 +278,98 @@ class elements {
 
 	}
 
+	function breadcrumbs() {
+		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
+
+		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
+
+		if ( $logo  ) {
+			$name = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', $logo );
+		}
+
+		$bread_names = array(
+			'organization' => '',
+			'group'=> '',
+			'decision' => '',
+		);
+
+		$script = \ht_dms\helper\json::encode_to_script( $bread_names, 'breadNamesJSON' );
+
+		$name = $this->link( null, 'front', $name );
+
+		if (  ! ht_dms_is( 'home' ) || ht_dms_is_notification() ) {
+			$titles = $oID = $gID = $dID = $tID = false;
+
+			$id = get_queried_object_id();
+
+			if ( ht_dms_is_organization( $id ) ) {
+				$oID = $id;
+			} elseif ( ht_dms_is_group( $id ) ) {
+				$gID = $id;
+				$oID = ht_dms_group_class()->get_organization( $gID );
+
+			} elseif ( ht_dms_is_decision( $id ) ) {
+
+				$dID = $id;
+				$obj = ht_dms_decision( $id );
+				$oID = ht_dms_decision_class()->get_organization( $id, $obj );
+				$gID = ht_dms_decision_class()->get_group( $id, $obj );
+			}
+
+		}
+		else{
+			$out = $script;
+			$out .= sprintf( '<div id="breadcrumbs" class="bread"><img heigth="30" width="30" src="%1s" /></div>', $logo );
+			return $out;
+		}
+
+
+
+		foreach ( array(
+			HT_DMS_ORGANIZATION_POD_NAME => $oID,
+			HT_DMS_GROUP_POD_NAME => $gID,
+			HT_DMS_DECISION_POD_NAME => $dID,
+		) as $type => $id ) {
+			if ( ht_dms_integer( $id ) ) {
+				$name = get_the_title( $id );
+				$link = get_the_permalink( $id );
+
+				$bread_names[ ht_dms_prefix_remover( $type ) ] = $name;
+
+				if ( $type == HT_DMS_ORGANIZATION_POD_NAME ) {
+					$span_class= 'org fa fa-university';
+					$font_id = 'breadNames';
+					$font_class = 'orgName';
+				}
+				elseif ( $type == HT_DMS_GROUP_POD_NAME ) {
+					$span_class= 'gru fa fa-group';
+					$font_id = 'breadGroup';
+					$font_class = 'orgName';
+				}
+				elseif( $type === HT_DMS_DECISION_POD_NAME ) {
+					$span_class= 'dec fa fa-check';
+					$font_id = 'breadDecid';
+					$font_class = 'orgName';
+				}
+				$titles[] = sprintf( '<div class="in"><a href="%1s"><span class="%2s"><font id="%3s" class="%4s">%5s</font></a></span></div>', $link, $span_class, $font_id, $font_class, $name );
+
+			}
+
+
+
+		}
+
+		end( $titles );
+		$key = key( $titles );
+		$titles[ $key ] = str_replace( '<div class="in">', '<div class="inLast">', $titles[ $key ] );
+
+		$out = $script;
+		$out .= sprintf( '<div id="breadcrumbs" class="bread">%1s</div>', implode( $titles ) );
+
+		return $out;
+
+	}
+
 
 
 	/**
@@ -293,7 +385,7 @@ class elements {
 	 * @since	0.0.1
 	 */
 	function title( $id, $obj = null, $task = false, $separator = ' - ' ) {
-
+		return $this->breadcrumbs();
 		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
 
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
@@ -327,7 +419,7 @@ class elements {
 				//@todo if ! https://github.com/HoloTree/ht_dms/issues/55
 			}
 
-			$build_elements = ht_dms_ui()->build_elements();
+
 
 			foreach ( array(
 				HT_DMS_ORGANIZATION_POD_NAME => $oID,
