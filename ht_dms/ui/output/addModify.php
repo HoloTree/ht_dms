@@ -132,7 +132,21 @@ class addModify {
 	 * @since 	0.0.1
 	 */
 	function new_organization( $uID = null, $obj = null ) {
+		/**
+		 * Filter to swap out new organization form.
+		 *
+		 * @param null|string $form the form
+		 *
+		 * @since 0.0.3
+		 */
+		$alt_org_edit_form = apply_filters( 'ht_dms_new_organization_form', null, $uID, $obj );
 
+		if ( is_string( $alt_org_edit_form ) ) {
+
+			return $alt_org_edit_form;
+
+		}
+		
 		return ht_dms_organization_class()->edit( null, $uID, $obj );
 
 	}
