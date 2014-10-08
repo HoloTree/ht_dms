@@ -22,7 +22,7 @@ class HT_DMS_WP_API_Registration {
 			ht_dms_ui()->view_loaders(),
 			ht_dms_organization_class(),
 			ht_dms_decision_class(),
-			ht_dms_task_class(),
+			//ht_dms_task_class(),
 			ht_dms_group_class(),
 			ht_dms_notification_class(),
 			ht_dms_automatic_notifications_class(),

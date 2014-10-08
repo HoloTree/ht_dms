@@ -146,7 +146,7 @@ class addModify {
 			return $alt_org_edit_form;
 
 		}
-		
+
 		return ht_dms_organization_class()->edit( null, $uID, $obj );
 
 	}
