@@ -359,10 +359,6 @@ class elements {
 
 		}
 
-		end( $titles );
-		$key = key( $titles );
-		$titles[ $key ] = str_replace( '<div class="in">', '<div class="inLast">', $titles[ $key ] );
-
 		$out = $script;
 		$out .= sprintf( '<div id="breadcrumbs" class="bread">%1s</div>', implode( $titles ) );
 
