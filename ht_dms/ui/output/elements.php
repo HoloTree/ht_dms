@@ -284,7 +284,7 @@ class elements {
 		$logo = apply_filters( 'ht_dms_logo_instead_of_name_in_title', false );
 
 		if ( $logo  ) {
-			$name = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', $logo );
+			$logo = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', $logo );
 		}
 
 		$bread_names = array(
@@ -295,7 +295,8 @@ class elements {
 
 		$script = \ht_dms\helper\json::encode_to_script( $bread_names, 'breadNamesJSON' );
 
-		$name = $this->link( null, 'front', $name );
+		$home_link = ht_dms_home();
+		$home_link = sprintf( '<div class="in" id="site-logo-home-link"><a href="%0s" title="HoloTree Home">%1s</a></div>', $home_link, $logo );
 
 		if (  ! ht_dms_is( 'home' ) || ht_dms_is_notification() ) {
 			$titles = $oID = $gID = $dID = $tID = false;
@@ -319,12 +320,12 @@ class elements {
 		}
 		else{
 			$out = $script;
-			$out .= sprintf( '<div id="breadcrumbs" class="bread"><img heigth="30" width="30" src="%1s" /></div>', $logo );
+			$out .= sprintf( '<div id="breadcrumbs" class="bread">%1s</div>', $home_link );
 			return $out;
 		}
 
 
-
+		$titles = array( $home_link);
 		foreach ( array(
 			HT_DMS_ORGANIZATION_POD_NAME => $oID,
 			HT_DMS_GROUP_POD_NAME => $gID,
@@ -351,11 +352,10 @@ class elements {
 					$font_id = 'breadDecid';
 					$font_class = 'orgName';
 				}
+
 				$titles[] = sprintf( '<div class="in"><a href="%1s"><span class="%2s"><font id="%3s" class="%4s">%5s</font></a></span></div>', $link, $span_class, $font_id, $font_class, $name );
 
 			}
-
-
 
 		}
 
