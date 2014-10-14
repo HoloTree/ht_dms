@@ -110,8 +110,8 @@ class elements {
 			$caldera_id = ht_dms_ui()->caldera_actions()->decision_actions_form_id;
 
 		}
-		$after = '<div id="dms-action-result" style="display:none;"></div>';
-		return ht_dms_caldera_loader( $caldera_id, '', $after );
+		$before = '<div id="dms-action-result" style="display:none;"></div>';
+		return ht_dms_caldera_loader( $caldera_id, $before, '' );
 
 	}
 
