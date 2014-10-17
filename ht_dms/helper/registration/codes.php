@@ -19,7 +19,7 @@ class codes {
 
 	public static function create_invite_code( $oID, $email ) {
 
-		if ( holotree_integer( $oID ) && is_email( $email ) ) {
+		if ( ht_dmd_integer( $oID ) && is_email( $email ) ) {
 			$public = self::generate_public( $oID, $email );
 			if ( $public ) {
 				$public = $oID . self::$prehash . $public;
@@ -44,7 +44,7 @@ class codes {
 	public static function verify_code( $email, $code ) {
 		if ( is_email( $email ) && $code  ) {
 			$exploder = explode( self::$prehash, $code  );
-			if ( is_array( $exploder  ) && isset( $exploder[1] ) && holotree_integer( $exploder[0] ) ) {
+			if ( is_array( $exploder  ) && isset( $exploder[1] ) && ht_dmd_integer( $exploder[0] ) ) {
 				$oID = $exploder [0];
 				$check_public = $exploder[1];
 				if ( self::generate_public( $oID, $email )  === $check_public ) {
@@ -64,7 +64,7 @@ class codes {
 	}
 
 	private static function generate_public($oID, $email  ) {
-		if ( holotree_integer( $oID ) && is_email( $email ) ) {
+		if ( ht_dmd_integer( $oID ) && is_email( $email ) ) {
 			return md5( $oID . $email );
 		}
 

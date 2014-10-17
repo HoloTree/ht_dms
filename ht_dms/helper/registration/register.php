@@ -26,6 +26,7 @@ class register implements \Hook_SubscriberInterface {
 
 		return array(
 			'user_register' => array( 'add_to_organization', 10, 1 ),
+			'login_message' => 'change_login_message',
 
 		);
 
@@ -46,7 +47,7 @@ class register implements \Hook_SubscriberInterface {
 
 	function add_to_organization( $user_id ) {
 		if (  ! is_null( $code = pods_v_sanitized( 'invitation_code', 'post' ) ) ) {
-			if ( $oID = holotree_integer( $this->verify_code( $code, pods_v_sanitized( 'user_email', 'post' ) ) ) ) {
+			if ( $oID = ht_dms_integer( $this->verify_code( $code, pods_v_sanitized( 'user_email', 'post' ) ) ) ) {
 
 				ht_dms_organization_class()->add_member( $oID, $user_id );
 
@@ -66,10 +67,32 @@ class register implements \Hook_SubscriberInterface {
 
 	private function verify_code( $email, $code ) {
 
-		return holotree_invite_code( false, $email, false, $code );
+		return ht_dms_invite_code( false, $email, false, $code );
 
 	}
 
+	/**
+	 * Change login messages
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param $message
+	 *
+	 * @return string
+	 */
+
+	function change_login_message( $message ) {
+
+		// Registration
+		if ( strpos( $message, 'Register' ) !== false ) {
+			$message = '<p class="message register">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the from below to register.', 'holotree' ) . '</p>';
+			$message .= '<p class="message register">' . __( sprintf( 'If you are already registered, %1s to register.', ht_dms_login_link() ), 'holotree' );
+
+		}
+
+		return $message;
+
+	}
 
 	/**
 	 * Holds the instance of this class.
