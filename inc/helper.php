@@ -807,6 +807,29 @@ function ht_dms_login_link( $button = true ) {
 
 }
 
+/**
+ * Login link
+ *
+ * @since 0.0.3
+ *
+ * @param bool $button
+ *
+ * @return null|string
+ */
+function ht_dms_registeration_link( $button = true ) {
+	$text = __( 'Register For HoloTree', 'holotree' );
+
+	return ht_dms_link( wp_registration_url(), '', $text, $text, $button );
+
+}
+
+function ht_dms_lost_password_link( $button = true ) {
+	$text = __( 'Reset Password', 'holotree' );
+
+	return ht_dms_link( wp_lostpassword_url(), '', $text, $text, $button );
+
+}
+
 
 /**
  * Generate or check an invite code

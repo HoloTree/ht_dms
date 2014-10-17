@@ -90,6 +90,11 @@ class register implements \Hook_SubscriberInterface {
 
 		}
 
+		//login
+		if ( $message == '' ) {
+			$message = '<p class="message register">' . ht_dms_registeration_link() . ht_dms_lost_password_link() . '</p>';
+		}
+
 		return $message;
 
 	}
