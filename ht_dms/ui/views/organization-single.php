@@ -40,12 +40,15 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 			'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'ht_dms' ), array( 'public', 'group' ) ),
 			ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 		),
-		array (
-			'label'   => ht_dms_add_icon( __( 'Assigned Tasks In This Organization', 'ht_dms' ), 'task' ),
-			'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
-		),
 
 	);
+
+	if ( HT_DEV_MODE ) {
+		$tabs[] = array (
+			'label'   => ht_dms_add_icon( __( 'Assigned Tasks In This Organization', 'ht_dms' ), 'task' ),
+			'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
+		);
+	}
 
 	$is_facilitator = $org_class->is_facilitator( $id, $uID );
 
