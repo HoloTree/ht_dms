@@ -31,6 +31,7 @@ class HT_DMS_WP_API_Registration {
 			new ht_dms\helper\theme(),
 			ht_dms_ui()->caldera_filters_class(),
 			ht_dms_ui()->caldera_fields_class(),
+			ht_dms\helper\registration\register::init()
 		);
 	}
 

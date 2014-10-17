@@ -813,10 +813,27 @@ function holotree_change_login_message( $message ) {
 }
 
 /**
+ * Check if a value is an integer or a string representing an integer. If so typecast as int and return
+ *
+ * @param 	mixed $int Value to check
+ *
+ * @return 	int|bool
+ *
+ * @since 0.0.3
+ */
+function holotree_integer( $int ) {
+	if ( is_int( $int ) || intval( $int  ) > 0 ){
+
+		return (int) $int;
+
+	}
+}
+
+/**
  * Login link
  *
  * @since 0.0.3
- *        
+ *
  * @param bool $button
  *
  * @return null|string
@@ -850,4 +867,29 @@ function holotree_link( $id, $type = 'permalink', $text= 'view', $title = null, 
 
 }
 
+/**
+ * Generate or check an invite code
+ *
+ *
+ * @since 0.0.3
+ *
+ * @param bool $generate
+ * @param      $email
+ * @param bool $oID
+ * @param bool $code
+ *
+ * @return string The code if generating or the organization ID contained in the code if checking, and checks pass.
+ */
+function holotree_invite_code( $generate = true, $email, $oID = false, $code = false  ) {
+	if ( $generate && ! is_array( $generate )  ) {
 
+		return ht_dms\helper\registration\codes::create_invite_code( $oID, $email );
+
+	}
+	else{
+
+		return ht_dms\helper\registration\codes::verify_code( $email, $code );
+
+	}
+
+}
