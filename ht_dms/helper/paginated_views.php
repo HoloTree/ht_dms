@@ -63,9 +63,9 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 
 	$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
 
-	if ( in_array( $view, array( 'users_groups', 'users_organizations' ) ) ) {
+	if ( in_array( $view, array( 'users_groups', 'public_groups', 'users_organizations' ) ) ) {
 		if ( $obj ) {
-			if ( $view == 'users_groups' ) {
+			if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
 				$js  = "groupPreview( {$obj})";
 				$out = ht_dms_ui()->view_loaders()->handlebars( 'group_preview', 'group-previews', $js );
 			} elseif( $view == 'users_organizations') {
@@ -197,7 +197,7 @@ function ht_dms_paginated_views( $args = null ) {
 			'view' => 'group_preview.php',
 		),
 		'public_groups' => array(
-			'args' => array( null, $args[ 'oID' ], $args[ 'limit' ], 'Pods', $args[ 'page'] ),
+			'args' => array( null, $args[ 'oID' ], $args[ 'limit' ], 'simple_json', $args[ 'page'] ),
 			'view' => 'group_preview.php',
 		),
 		'users_organizations' => array(
