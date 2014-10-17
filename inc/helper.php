@@ -788,3 +788,66 @@ function ht_dms_reset_consensus( $id ) {
 	return ht_dms_consensus_class()->reset( $id );
 
 }
+
+/**
+ * Change login messages
+ *
+ * @since 0.0.3
+ *
+ * @param $message
+ *
+ * @return string
+ */
+add_action('login_message', 'holotree_change_login_message');
+function holotree_change_login_message( $message ) {
+
+	// Registration
+	if ( strpos( $message, 'Register' ) !== false) {
+		$message = '<p class="message register">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the from below to register.', 'holotree') . '</p>';
+		$message .= '<p class="message register">' . __( sprintf( 'If you are already registered, %1s to register.', holotree_login_link() ), 'holotree' );
+
+	}
+
+	return $message;
+
+}
+
+/**
+ * Login link
+ *
+ * @since 0.0.3
+ *        
+ * @param bool $button
+ *
+ * @return null|string
+ */
+function holotree_login_link( $button = true ) {
+	$text = __( 'Login To HoloTree', 'holotree' );
+
+	return holotree_link( wp_login_url(), '', $text, $text, $button );
+
+}
+
+/**
+ * For creating links with optional button, class and ID.
+ *
+ * Wrapper for ui/elements/link()
+ *
+ * @param int|string    $id			ID of post, post type or taxonomy to get link to or a complete URL, as a string.
+ * @param string 		$type		Optional. Type of content being linked to. post|post_type_archive|taxonomy|user. Not used if $id is a string. Default is post.
+ * @param bool|string 	$text		Optional. Text Of the link. If false, post title will be used.
+ * @param null|string	$title		Optional. Text for title attribute. If null none is used.
+ * @param bool|string   $button		Optional. Whether to output as a button or not. Defaults to false.
+ * @param bool|string   $classes	Optional. Any classes to add to link. Defaults to false.
+ * @param bool|string   $link_id	Optional. CSS ID to add to link. Defaults to false.
+ * @param bool|array	$append		Optional. Action and ID to append to array. should be action, id. If ID isn't set $id param is used. Default is true.
+ *
+ *
+ * @return null|string
+ */
+function holotree_link( $id, $type = 'permalink', $text= 'view', $title = null, $button = false, $classes = false, $link_id = false, $append = false  ) {
+	return ht_dms_ui()->elements()->link( $id, $type, $text, $title, $button, $classes, $link_id, $append );
+
+}
+
+
