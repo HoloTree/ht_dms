@@ -510,6 +510,7 @@ class elements {
 			'silence' => '<i class="fa fa-circle-o"></i>',
 			'accepted' => '<i class="fa fa-check"></i>',
 			'notification' => '<i class="fa fa-envelope-o"></i>',
+            'user'  => '<i class="fa fa-user"></i>',
 		);
 
 		/**

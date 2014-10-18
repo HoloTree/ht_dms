@@ -27,45 +27,6 @@ class common  {
 	}
 
 	/**
-	 * Set actions
-	 *
-	 * @since 0.0.3
-	 *
-	 * @return array
-	 */
-	public static function get_actions() {
-
-		return array(
-			'wp_enqueue_scripts' => array( 'enqueue_scripts', 25 ),
-			'init' => array( 'dms_actions', 35 ),
-			'pods_api_post_save_pod_item' => array( 'post_edit', 25, 3 ),
-
-			'pods_api_post_save_pod_item' => array( 'update_actions', 99, 3 ),
-			'init' => array( 'font_awesome', 10, 1 ),
-			'init' => array( 'handlebars', 10, 1 ),
-
-		);
-	}
-
-	/**
-	 * Set filters
-	 *
-	 * @since 0.0.3
-	 *
-	 * @return array
-	 */
-	public  static function get_filters() {
-
-		return array(
-
-		);
-
-	}
-
-
-
-
-	/**
 	 * Callback for action that runs at top of ht content
 	 *
 	 * @uses $message_text
@@ -119,6 +80,16 @@ class common  {
 
 		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
 			return;
+		}
+
+		if ( $action == 'accept-invite' && ! is_null( $uID = pods_v_sanitized( 'user' ) ) && ! is_null( $type = ( pods_v_sanitized( 'type' ) ) ) ) {
+			$group = true;
+			if ( $type === 'organization' ) {
+				$group = false;
+			}
+
+			ht_dms_membership_class()->accept_internal_invite( $id, $uID, null, $group );
+			pods_redirect( get_permalink( $id ) );
 		}
 
 		if( $action == 'accept-change' ) {

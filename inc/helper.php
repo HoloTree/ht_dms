@@ -706,20 +706,22 @@ function ht_dms_link( $id, $type = 'permalink', $text= 'view', $title= null, $bu
 
 
 /**
- * For safely appending variables to urls
+ * For safely appending variables to urls. By default in the dms_action={action}&dms_id={id} pattern.
  *
- * Wrapper for ui/elements/action_append()
+ * @param 	string			$url	Base URL
+ * @param 	string|array	$action	Variable to append. If string should be value for 'dms_action'. To set action and value pass array.
+ *   Array arguments {
+ * 		@type string var 	The name of the variable to append.
+ * 		@type string value	The value of the variable.
+ *   }
+ * @param int               $id     ID of post.
  *
- * @TODO Impliment this throughout.
- *
- * @param 	string	$url	Base URL
- * @param 	string	$action	Variables, first one with no ? or &
- *
- * @return 	string			URL
+ * @return 	string					URL
  *
  * @since 	0.0.1
  */
 function ht_dms_action_append( $url, $action, $id = false ) {
+
 	return ht_dms_ui()->elements()->action_append( $url, $action, $id );
 }
 
@@ -800,8 +802,10 @@ function ht_dms_reset_consensus( $id ) {
  *
  * @return null|string
  */
-function ht_dms_login_link( $button = true ) {
-	$text = __( 'Login To HoloTree', 'holotree' );
+function ht_dms_login_link( $button = true, $text = false ) {
+    if ( ! $text ) {
+        $text = __('Login To HoloTree', 'holotree');
+    }
 
 	return ht_dms_link( wp_login_url(), '', $text, $text, $button );
 

@@ -221,6 +221,16 @@ class addModify {
 
 	}
 
+	function invite_member( $id, $obj = null, $group = true ){
+		//$out[] = ht_dms_membership_class()->invite_existing( $id, $obj = null, $group = true );
+		$caldera_id = ht_dms_ui()->caldera_actions()->invite_new_user_form_id;
+		$out[] = ht_dms_caldera_loader( $caldera_id );
+		$container_id = "invite-members-{$id}";
+
+		return sprintf( '<div class="invite-members" id="%1s">%2s</div>', esc_attr( $container_id ), implode( $out ) );
+
+	}
+
 	/**
 	 * Get instance of UI class
 	 *

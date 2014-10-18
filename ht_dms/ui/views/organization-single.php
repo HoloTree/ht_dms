@@ -61,6 +61,10 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'ht_dms' ), array( 'edit', 'organization') ),
 			'content'	=> $ui->add_modify()->edit_organization( $id, $uID, $obj ),
 		);
+		$tabs[] = array(
+			'label'		=> ht_dms_add_icon( __( 'Invite Members', 'ht_dms' ), array( 'new', 'user') ),
+			'content'	=> $ui->add_modify()->invite_member( $id, $obj, false ),
+		);
 	}
 
 

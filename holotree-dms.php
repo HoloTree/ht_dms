@@ -85,10 +85,6 @@ class HoloTree_DMS {
 		// Loads frontend scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-
-
-
-
 	}
 
 
@@ -134,7 +130,7 @@ class HoloTree_DMS {
 	 */
 	public function enqueue_scripts() {
 		if ( ! is_admin() ) {
-			$version = GUS_UI_VERSION;
+			$version = HT_DMS_VERSION;
 			if ( HT_DEV_MODE ) {
 				$version = rand();
 			}
@@ -172,10 +168,8 @@ class HoloTree_DMS {
 
 		}
 
-
-
-
 	}
+
 
 	/**
 	 * Variables to pass into htDMS JavaScript object, via ht-dms.js
@@ -424,6 +418,4 @@ function ht_dms_archive_redirect() {
 		pods_redirect( ht_dms_home() );
 	}
 }
-
-
 

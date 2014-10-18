@@ -224,7 +224,7 @@ class membership {
 	 * Checks the value of the 'visibility' field.
 	 * @param  int    $id Group or organization ID
 	 * @param null|obj|Pods $obj
-	 * @param bool $group If true group, if false organization.
+	 * @param bool $group Optional. If true group, if false organization.
 	 *
 	 * @return false|null|string
 	 *
@@ -237,13 +237,111 @@ class membership {
 
 	}
 
-	function invite( $id, $obj = null, $group = true ) {
-		$obj = $this->null_object( $id, $obj, $group )
-		$obj->form( 'invite_existing_user')
+	/**
+	 * @var string The field for storing invited members in.
+	 *
+	 * @since 0.0.3
+	 */
+	private $invite_field = 'invited_members';
+
+	/**
+	 * Add an existing user to the invite field for an organization
+	 *
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int       $id    Group or organization ID
+	 * @param int       $uID    ID of user to add.
+	 * @param null|Pods $obj
+	 * @param bool      $group Optional. If true group, if false organization.
+	 *
+	 * @return int      ID of group/organization
+	 */
+	function invite_existing( $id, $uID, $obj = null, $group = true ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+
+		$invited_members = $this->get_invited_members( $id, $obj, $group );
+		$invited_members = array_push( $invited_members, $uID );
+		$invited_members = serialize( $invited_members );
+		return $obj->save( $invited_members );
+
 
 	}
 
 
+	/**
+	 * Add an invited user to a group/organization
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int $id Group or organization ID
+     * @prams int       $uID    User ID to Add/
+     * @param null|pods $obj
+	 * @param bool      $group Optional. If true group, if false organization.
+	 *
+	 * @return bool True if added
+	 */
+	function accept_internal_invite( $id, $uID, $obj = null, $group = true ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+
+		$invited_members = (array) $this->get_invited_members( $id, $obj, $group );
+		if ( ! empty( $invited_members)  && in_array( $uID, $invited_members ) ) {
+			$this->add_member( $id, $uID, $obj, $group );
+			unset( $invited_members[ $uID ] );
+			$invited_members = serialize( $invited_members );
+			$this->add_member( $id, $uID, $obj, $group );
+
+			return $obj->save( $this->invite_field, $invited_members, $id );
+
+		}
+
+	}
+
+	/**
+	 * Get members invited to a organization/group that have not accepted yet.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int       $id Group/organization ID
+	 * @param null|Pods $obj
+	 * @param bool      $group Optional. If true group, if false organization.
+	 *
+	 * @return array    Invited members.
+	 */
+	private function get_invited_members( $id, $obj = null, $group = null ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+
+		return $invited_members = (array) unserialize( $obj->field( $this->invite_field ) );
+
+	}
+
+	function invite_message( $name, $oID, $organization_name, $email, $new_user = true ) {
+		$message[] = $name . '-';
+		if ( $new_user ) {
+			$link = sprintf( '<a href="%1s">HoloTree</a>', esc_url( ht_dms_home() ) );
+			$message[] =  __( sprintf( '%1s is a decision making system that turns ideas in decisions and decisions into actions.', $link ), 'holotree' ) .
+			              __( sprintf( 'You have been invited to work with %1s on HoloTree', $organization_name ), 'holotree' );
+			$accept_link = add_query_arg( 'ht_dms_invite_code', ht_dms_invite_code( true, $email, $oID ), wp_registration_url() );
+
+		}
+		else{
+			$link = ht_dms_link( $oID, 'permalink', $organization_name );
+			$message[] = __( sprintf( 'You have been invited to join the organization %1s.', $link ), 'holotree' );
+			$accept_link = ht_dms_action_append( $link, 'accept-invite', $oID );
+			$args = array(
+				'user' => $new_user,
+				'type' => 'organization',
+			);
+			$accept_link = add_query_arg( $args, get_permalink( $oID) );
+		}
+
+		$accept_text = __( sprintf( 'Click here to accept the invitation to join %1s.', $organization_name ), 'holotree' );
+		$message[] = sprintf( '<a href="%1s">%2s</a>', esc_url( $accept_link ), $accept_text );
+
+        pods_error( $message );
+		return implode( $message );
+
+	}
 
 	/**
 	 * Holds the instance of this class.

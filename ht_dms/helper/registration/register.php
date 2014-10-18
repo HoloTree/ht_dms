@@ -27,6 +27,7 @@ class register implements \Hook_SubscriberInterface {
 		return array(
 			'user_register' => array( 'add_to_organization', 10, 1 ),
 			'login_message' => 'change_login_message',
+			'login_enqueue_scripts' => 'js',
 
 		);
 
@@ -85,8 +86,9 @@ class register implements \Hook_SubscriberInterface {
 
 		// Registration
 		if ( strpos( $message, 'Register' ) !== false ) {
-			$message = '<p class="message register">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the from below to register.', 'holotree' ) . '</p>';
-			$message .= '<p class="message register">' . __( sprintf( 'If you are already registered, %1s to register.', ht_dms_login_link() ), 'holotree' );
+			$message = '<p class="message register" id="invite-code-message">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the from below to register.', 'holotree' ) . '</p>';
+            $login_text = __( 'Existing Users May Click Here To Login', 'holotree' );
+			$message .= '<p class="message register">' . ht_dms_login_link( true, $login_text ) . '</p>';
 
 		}
 
@@ -96,6 +98,28 @@ class register implements \Hook_SubscriberInterface {
 		}
 
 		return $message;
+
+	}
+
+	function js() {
+		$version = HT_DMS_VERSION;
+		if ( HT_DEV_MODE ) {
+			$version = rand();
+		}
+
+		wp_enqueue_script( 'ht-dms-login', HT_DMS_ROOT_URL . 'js/ht-dms-login.js', array( 'jquery'), $version, true );
+
+		$l10n = array(
+			'codeGood' => __( 'Your invitation code is valid! Please fill in all required fields and click "submit".', 'holotree' ),
+			'codeNotGood' => __( 'Your invitation code could not be validated. You must use the same email address as the invitation was sent to.', 'holotree' ),
+			'processing' => __( 'Processing invitation code.', 'holotree' ),
+			'needEmail' => __( 'An invitation code has been recognized. Please enter your email address in order to validate it.', 'holotree' ),
+			'nonce' => wp_create_nonce( 'ht-dms-login' ),
+			'ajaxURL' => admin_url( 'admin-ajax.php' ),
+            'noSubmit' => __( 'You must enter a valid email and invite code combination before registering.', 'holotree' ),
+		);
+
+		wp_localize_script( 'ht-dms-login', 'loginData', $l10n );
 
 	}
 

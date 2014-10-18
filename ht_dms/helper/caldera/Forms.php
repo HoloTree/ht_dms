@@ -17,6 +17,7 @@ class Forms {
 	public $leave_group_form_id = 'CF5413964215412';
 	public $group_pending_form_id = 'CF5413972657523';
 	public $decision_actions_form_id = 'CF5411fb087123d';
+	public $invite_new_user_form_id = 'CF5441caf7dddf7';
 
 	/**
 	 * Get the ID for a form

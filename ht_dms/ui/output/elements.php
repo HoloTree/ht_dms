@@ -443,9 +443,7 @@ class elements {
 	}
 
 	/**
-	 * For safely appending variables to urls
-	 *
-	 * @TODO Impliment this throughout.
+	 * For safely appending variables to urls. By default in the dms_action={action}&dms_id={id} pattern.
 	 *
 	 * @param 	string			$url	Base URL
 	 * @param 	string|array	$action	Variable to append. If string should be value for 'dms_action'. To set action and value pass array.
@@ -453,6 +451,7 @@ class elements {
 	 * 		@type string var 	The name of the variable to append.
 	 * 		@type string value	The value of the variable.
 	 *   }
+	 * @param int               $id     ID of post.
 	 *
 	 * @return 	string					URL
 	 *
@@ -652,7 +651,8 @@ class elements {
 
 
 		if ( is_string( $url ) && is_string( $title ) && is_string( $text ) ) {
-			$out = sprintf( '<a href="%1s" text="%2s" %3s>%4s</a>', $url, $title, $class, $text );
+			$out = '<a href=' . esc_url( $url ) . '" text="' . esc_attr( $title ) . '">' . $text . '</a>';
+
 			return $out;
 		}
 

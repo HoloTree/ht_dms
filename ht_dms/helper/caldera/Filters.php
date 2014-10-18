@@ -47,5 +47,6 @@ class Filters extends Forms implements \Filter_Hook_SubscriberInterface {
 		}
 
 		return $form_attributes;
+
 	}
 } 
