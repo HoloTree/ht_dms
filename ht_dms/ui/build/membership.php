@@ -15,7 +15,7 @@ namespace ht_dms\ui\build;
 class membership {
 
 	function join( $gID, $obj = null ) {
-		$obj = holotree_group( $gID, $obj );
+		$obj = ht_dms_group( $gID, $obj );
 		$access = ht_dms_group_class()->open_access( $gID, $obj );
 		if ( $access == 0 ) {
 			$access_label = __( 'Membership to this group does not require approval.', 'ht_dms' );
@@ -56,7 +56,7 @@ class membership {
 	}
 
 	function view( $gID, $obj = null ) {
-		$obj = holotree_group( $gID, $obj );
+		$obj = ht_dms_group( $gID, $obj );
 		$members = ht_dms_group_class()->all_members(  $gID, $obj );
 
 		$out = false;

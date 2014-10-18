@@ -45,7 +45,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 	function new_decision_in_group( $id, $data, $gID, $oID ) {
 		$g = ht_dms_group_class();
 		$d = ht_dms_decision_class();
-		$obj = holotree_group( $gID );
+		$obj = ht_dms_group( $gID );
 		$group_name = $g->title( $gID, $obj );
 		$decision_name = $d->title($id );
 		$decision_link = sprintf( '<a href="%1s">%2s</a>', get_the_permalink( $id ), $decision_name );

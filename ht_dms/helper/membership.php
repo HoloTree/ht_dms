@@ -17,13 +17,13 @@ class membership {
 	/**
 	 * Test input object to ensure it is valid
 	 *
-	 * @param   int|arraynull 	$id_or_params
+	 * @param   int|	$id
 	 * @param 	obj|null 		$obj
 	 * @param	bool			$group.			Optional. If acting on group or organization. Set to the default (true) for group, false for organization.
 	 *
-	 * @return bool|\holotree\object|mixed|null|\Pods|void
+	 * @return \Pods
 	 */
-	function null_obj( $id_or_params = null, $obj = null, $group = true ) {
+	function null_obj( $id = null, $obj = null, $group = true ) {
 		if ( is_object( $obj ) && is_pod( $obj ) ) {
 			if ( ( $group  && $obj->pod_data['name'] ===  HT_DMS_GROUP_POD_NAME ) || ( ! $group && $obj->pod_data[ 'name' ] === HT_DMS_ORGANIZATION_POD_NAME ) ) {
 				return $obj;
@@ -31,14 +31,10 @@ class membership {
 		}
 
 		if ( $group ) {
-			$name = HT_DMS_GROUP_POD_NAME;
-		}
-		else {
-			$name = HT_DMS_ORGANIZATION_POD_NAME;
+			return ht_dms_group( $id, $obj );
 		}
 
-
-		return pods( $name, $id_or_params );
+		return ht_dms_organization( $id, $obj );
 
 
 	}
@@ -240,6 +236,14 @@ class membership {
 		return $obj->display( 'visibility' );
 
 	}
+
+	function invite( $id, $obj = null, $group = true ) {
+		$obj = $this->null_object( $id, $obj, $group )
+		$obj->form( 'invite_existing_user')
+
+	}
+
+
 
 	/**
 	 * Holds the instance of this class.

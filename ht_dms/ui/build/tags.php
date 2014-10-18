@@ -37,7 +37,7 @@ class tags {
 	function tags() {
 		$tags = array(
 			'name' 		=> 'is_pending',
-			'callback' => array( holotree_group(), 'is_pending',
+			'callback' => array( ht_dms_group(), 'is_pending',
 			'args'		 =>
 		);
 

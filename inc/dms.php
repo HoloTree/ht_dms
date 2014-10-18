@@ -53,7 +53,7 @@ function ht_dms_decision_class() {
  *
  * @since 	0.0.1
  */
-function holotree_group( $id = true, $obj = null, $cached = true, $fields = false ) {
+function ht_dms_group( $id = true, $obj = null, $cached = true, $fields = false ) {
 
 	return ht_dms_group_class()->item( $id, $obj, null, $cached, $fields );
 

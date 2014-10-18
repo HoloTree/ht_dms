@@ -343,7 +343,7 @@ class elements {
 
 	function group_membership( $gID, $obj = null ) {
 		$uID = get_current_user_id();
-		$obj = holotree_group( $gID, $obj  );
+		$obj = ht_dms_group( $gID, $obj  );
 		$g = ht_dms_group_class();
 		$out = false;
 		$membership = $this->ui()->membership();

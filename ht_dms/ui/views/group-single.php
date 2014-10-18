@@ -13,7 +13,7 @@ global $post;
 $id = $post->ID;
 $ui = ht_dms_ui();
 $g = ht_dms_group_class();
-$obj = holotree_group( $id );
+$obj = ht_dms_group( $id );
 $uID = get_current_user_id();
 
 $oID = (int) $obj->display( 'organization.ID' );

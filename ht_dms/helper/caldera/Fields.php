@@ -344,7 +344,7 @@ class Fields extends Forms implements \Hook_SubscriberInterface{
 				$gID = $post->ID;
 
 
-				$pending = holotree_group( $gID )->field( 'pending_members.ID' );
+				$pending = ht_dms_group( $gID )->field( 'pending_members.ID' );
 				if ( is_array( $pending ) ) {
 					foreach( $pending as $user ) {
 						$label = $user;

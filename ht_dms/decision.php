@@ -292,7 +292,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		if ( is_null( $oID ) ) {
 			$oID = (int) $obj->display( 'organization.ID' );
 			if ( empty( $oID ) ) {
-				$gObj = holotree_group( $gID );
+				$gObj = ht_dms_group( $gID );
 				$oID = (int) $gObj->display( 'organization.ID' );
 				unset( $gOBj );
 			}
