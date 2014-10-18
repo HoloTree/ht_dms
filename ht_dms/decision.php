@@ -921,32 +921,6 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	}
 
-	/*
-	function _time_frame( $obj = null, $id ) {
-		$obj = $this->null_object( $obj, $id );
-		if ( ! empty( $length = $obj->field( 'time_frame' ) )  ) {
-
-			return $length;
-
-		}
-		elseif( ! empty ( $length = $obj->field( 'group.time_frame ' ) ) ) {
-
-			return $length;
-
-		}
-		elseif( ! empty ( $length = $obj->field( 'organization.time_frame' ) ) ) {
-
-			return $length;
-
-		}
-		else {
-
-			return get_option( 'ht_dms_default_time_frame', WEEK_IN_SECONDS );
-
-		}
-	}
-	*/
-
 	function time_frame( $obj = null, $id ) {
 		$obj = $this->null_object( $obj, $id );
 
@@ -976,104 +950,59 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	}
 
 	/**
+	 * Check time frame/status
+     *
+     * @since 0.0.1
 	 *
-	 * @TODO incremental?
 	 */
 	function checks () {
 		$params = array(
 			'where' => 'd.decision_status = "new"' OR 'd.decision_status = "blocked"'
 		);
 		$obj = $this->object( false, $params );
-		$changes = $this->time_checks( $obj );
-		$notifications_sent = $this->post_check_notifications( $changes, $obj );
-		$checks = array(
-			'changes'			 => $changes,
-			'notifications_sent' => $notifications_sent,
-		);
 
-		return $checks;
-	}
+        if ( $obj->total() > 0 ) {
+            while( $obj->fetch() ) {
+                $this->check_time_frame( $obj );
+            }
+
+        }
+
+    }
 
 
-	function time_checks ( $obj ) {
-		$changes = false;
+    /**
+     * @param Pods $obj
+     */
+    function check_time_frame( $obj ) {
 
-		if ( $obj->total() > 0 ) {
-			while ( $obj->fetch() ) {
-				$created = strtotime( $obj->field( 'post_date' ) );
-				$id = $obj->id();
-				$length = $this->time_frame( $obj, $id  );
 
-				$elapsed = time() - $created;
-				if ( $length > $elapsed ) {
-					$change = false;
-					$status = $this->status( $id, $obj );
+        $created = strtotime( $obj->field( 'post_date' ) );
+        $id = $obj->id();
+        $length = $this->time_frame( $obj, $id  );
 
-					if ( $status === 'new' ) {
-						$change = 'passed';
-					}
-					elseif ( $status === 'blocked' ) {
-						$change = 'failed';
-					}
+        $elapsed = time() - $created;
+        if ( $length > $elapsed ) {
+            $change = false;
+            $status = $this->status( $id, $obj );
 
-					if ( $change ) {
-						$this->update( $id, 'decision_status', $change, $obj );
-					}
+            if ( $status === 'new' ) {
+                $change = 'passed';
+            }
+            elseif ( $status === 'blocked' ) {
+                $change = 'failed';
 
-					//@TODO More efficent/ less redundant way fo doing this?
-					$gID = $this->get_group( $id, $obj);
-					$group_name = get_the_title( $gID );
-					$changes[] = array(
-						'id' 			=> $id,
-						'gID'			=> $gID,
-						'what_changed'	=> $change,
-						'name'			=> $obj->field( 'post_title' ),
-						'group_name'	=> $group_name,
-					);
-				}
-				else {
-					$id = $obj->id;
-					$changes[] = array(
-						'id' 		=> $id,
-						'change'	=> 'none'
-					);
-				}
+            }
 
-			}
-		}
+            if ( $change ) {
+                do_action( "ht_dms_decision_{$change}" );
 
-		return $changes;
+                $this->update( $id, 'decision_status', $change, $obj );
+            }
+    }
 
-	}
 
-	function post_check_notifications( $changes ) {
-		return __METHOD__.' not ready:(';
-		$dms = $GLOBALS[ 'ht_dms' ];
-		foreach ( $changes as $change ) {
-			extract( $change );
-			$members = $GLOBALS[ 'dms_group' ]->all_members( $gID );
-			foreach ( $members as $uID  ) {
-				if ( $what_changed !== 'none' ) {
 
-					$message = 'The pending decision ' . $name . ' in the group ' . $group_name . ' has ' . $what_changed . '.';
-					$subject = '[HT Decision Making System] ' . $name . ' update';
-					$dms->notification( $uID, $message, $subject );
-
-					$notifications_sent[ ] = array (
-						'group_id' 	=> $gID,
-						'user_id'  	=> $uID,
-						'decision'	=> $name,
-						'change'	=> $what_changed,
-					);
-				}
-
-			}
-
-		}
-
-		return $notifications_sent;
-
-	}
 
 
 
