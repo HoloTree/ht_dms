@@ -63,8 +63,7 @@ jQuery(document).ready(function($) {
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
                 $( container + "-spinner" ).show().delay( 400 );
-                $( container ).html('');
-                $( container ).hide().append( response ).fadeIn( 800 );
+                $( container ).html('').hide().append( response ).fadeIn( 800 );
                 $( container + "-spinner") .hide();
                 $( container ).attr('page', page );
 
@@ -275,32 +274,46 @@ jQuery(document).ready(function($) {
 
     window.loadUser = loadUser;
 
-    function groupPreview( json ) {
+    function groupPreview( json, templateID, htmlID ) {
+        htmlID = idCheck( htmlID );
+        templateID = idCheck( templateID );
+
         $.each( json, function( i, val ) {
             var data = JSON.parse( val );
 
-            var source   = $( '#group-preview' ).html();
-            var template    = Handlebars.compile( source );
-            var html        = template( data );
-
-            $( '#group-previews' ).append( html );
-
-
+            var source   = $( templateID ).html();
+            if ( typeof source === 'string' ) {
+                var template    = Handlebars.compile( source );
+                var html        = template( data );
+                $( htmlID ).append(html);
+            }
+            else{
+                console.log( 'groupPreview i=' + i );
+                console.log( templateID + '=' + source );
+            }
 
         });
+
     }
 
     window.groupPreview = groupPreview;
 
-    function organizationPreview( json ) {
+    function organizationPreview( json, templateID, htmlID ) {
+        htmlID = idCheck( htmlID );
+        templateID = idCheck( templateID );
+
         $.each( json, function( i, val ) {
             var data = JSON.parse( val );
 
-            var source   = $( '#organization-preview' ).html();
-            var template    = Handlebars.compile( source );
-            var html        = template( data );
-
-            $( '#organization-previews' ).append( html );
+            var source   = $( templateID ).html();
+            if ( typeof source === 'string' ) {
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $ (htmlID ).append(html);
+            }
+            else{
+                console.log( 'organizationPreview i=' + i );
+            }
 
 
 
@@ -336,9 +349,11 @@ jQuery(document).ready(function($) {
 
 
         var source   = $( '#consensus-view-template' ).html();
-        var template    = Handlebars.compile( source );
-        var html        = template( data );
-        $( '#consensus-view' ).append( html );
+        if ( typeof source === 'string' ) {
+            var template = Handlebars.compile(source);
+            var html = template(data);
+            $('#consensus-view').append(html);
+        }
 
         $( '#consensus-views-chooser li a' ).click( function () {
             var cst = $( this).first().attr( 'cst' );
@@ -354,8 +369,22 @@ jQuery(document).ready(function($) {
 
     }
 
+    /**
+     * Check if an ID has the # in it, if not, add it.
+     *
+     * @param id
+     * @returns {*}
+     */
+    function idCheck( id ) {
+        if ( id.indexOf( '#' ) < 0 ) {
+            id = '#' + id;
+        }
 
+        return id;
 
+    }
+
+    window.idCheck = idCheck;
 
 
 

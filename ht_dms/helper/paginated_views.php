@@ -64,13 +64,16 @@ function ht_dms_pagination_views( $view, $args, $return_obj = false ) {
 	$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
 
 	if ( in_array( $view, array( 'users_groups', 'public_groups', 'users_organizations' ) ) ) {
+		$html_id = str_replace( '_', '-', $view ).'-container';
 		if ( $obj ) {
 			if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
-				$js  = "groupPreview( {$obj})";
-				$out = ht_dms_ui()->view_loaders()->handlebars( 'group_preview', 'group-previews', $js );
+				$template_id = 'group-preview';
+				$js  = "groupPreview( {$obj}, '{$template_id}', '{$html_id}' );";
+				$out = ht_dms_ui()->view_loaders()->handlebars( $template_id, $html_id, $js );
 			} elseif( $view == 'users_organizations') {
-				$js = "organizationPreview( {$obj} );";
-				$out = ht_dms_ui()->view_loaders()->handlebars( 'organization_preview', 'organization-previews', $js );
+				$template_id = 'organization-preview';
+				$js = "organizationPreview( {$obj}, '{$template_id}', '{$html_id}' );";
+				$out = ht_dms_ui()->view_loaders()->handlebars( $template_id, $html_id, $js );
 			}
 		}
 		else {
@@ -147,7 +150,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 
 	$attributes = '';
 	foreach( $attrs as $attr => $value  ) {
-		$attributes .= $attr.'="'.$value.'"';
+		$attributes .= $attr.'="'.esc_attr( $value ) .'" ';
 	}
 
 	$spinner = ht_dms_spinner();

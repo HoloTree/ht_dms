@@ -38,7 +38,7 @@ if ( $org_class->is_member( $id, $uID, $obj ) || $org_class->open_access( $id, $
 		),
 		array (
 			'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'ht_dms' ), array( 'public', 'group' ) ),
-			ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
+			'content' => ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
 		),
 
 	);
