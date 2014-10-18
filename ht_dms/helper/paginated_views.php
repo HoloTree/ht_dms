@@ -155,7 +155,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 
 	$spinner = ht_dms_spinner();
 	$out = sprintf( '<div id="%1s" %2s>%3s</div>', $view, $attributes, $content );
-	$out .= sprintf( '<div id="%1s-spinner">%2s</div>', $view, $spinner );
+	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );
 
 
 	return $out;
