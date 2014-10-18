@@ -24,33 +24,64 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 	public static function get_actions() {
 
 		return array(
-			'ht_dms_new_group' => array( 'new_group_in_organization', 10, 4 ),
-			'ht_dms_new_decision' => array( 'new_group_in_organization', 10, 4 ),
+
 			'ht_dms_decision_passed' => array( 'decision_passed', 10, 1 ),
-			'ht_dms_update_decision' => array( 'decision_failed', 10, 4 ),
+			'ht_dms_decision_failed' => array( 'decision_failed', 10, 1 ),
+            'ht_dms_new_decision'    => array( 'new_decision', 10, 4)
 		);
 	}
 
+    /**
+     * Notify all members of group that a decision passed
+     *
+     * @since 0.0.3
+     *
+     * @param int $id Decision ID
+     *
+     * @uses 'ht_dms_decision_passed' action
+     */
+    function decision_passed( $id ) {
 
-	private function send_to_members( $members, $subject, $message ) {
-		if ( is_array( $members ) && ! empty( $members ) ) {
-			foreach( $members as $to => $uneeded ) {
-				$this->new_message( $to, $subject, $message );
+        $this->decision_status_change_message( $id, 'passed' );
 
-			}
+    }
 
-		}
-	}
+    /**
+     * Notify all members of group that a decision failed
+     *
+     * @since 0.0.3
+     *
+     * @param int $id Decision ID
+     *
+     * @uses 'ht_dms_decision_failed' action
+     */
+    function decision_failed( $id ) {
 
-	function new_decision_in_group( $id, $data, $gID, $oID ) {
+        $this->decision_status_change_message( $id, 'failed' );
+
+    }
+
+    /**
+     * Notify all members of group that a new decision was created
+     *
+     *
+     * @since 0.0.3
+     * @uses 'ht_dms_new_decision'
+     *
+     * @param $dID
+     * @param $data
+     * @param $gID
+     * @param $oID
+     */
+	function new_decision( $dID, $data, $gID, $oID ) {
 		$g = ht_dms_group_class();
 		$d = ht_dms_decision_class();
-		$obj = ht_dms_group( $gID );
-		$group_name = $g->title( $gID, $obj );
-		$decision_name = $d->title($id );
-		$decision_link = sprintf( '<a href="%1s">%2s</a>', get_the_permalink( $id ), $decision_name );
+		$gObj = ht_dms_group( $gID );
+		$group_name = $g->title( $gID, $gObj );
+		$decision_name = $d->title( $dID );
+		$decision_link = ht_dms_link( $dID );
 
-		$members = $g->all_members( $id, $obj );
+		$members = $g->all_members( $gID, $gObj );
 
 		$subject = __( sprintf( 'New decision %1s created in the %1s group.', $decision_name, $group_name ), 'ht_dms' );
 
@@ -60,38 +91,75 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	}
 
-	function new_group_in_organization( $id, $data, $gID, $oID) {
-		//@TODO needed?
-	}
+    /**
+     * Send to all members
+     *
+     * @since 0.0.3
+     *
+     * @param array $members Array of IDs to send to
+     * @param string $subject The message subject
+     * @param string $message The message
+     */
+    private function send_to_members( $members, $subject, $message ) {
+        if ( is_array( $members ) && ! empty( $members ) ) {
+            foreach( $members as $to => $uneeded ) {
+                $this->new_message( $to, $subject, $message );
+
+            }
+
+        }
+    }
+
+    /**
+     * Create a decision status change message
+     *
+     * @todo set $change in a translation friendly fashion.
+     *
+     * @since 0.0.3
+     *
+     * @param int $id The decision's ID
+     * @param string $change Change message.
+     */
+    private function decision_status_change_message( $id, $change ) {
+        $d = ht_dms_decision_class();
+        $obj = $d->item( $id );
+        $members = $d->consensus_members( $id );
+
+        $decision_name = $d->title( $id, $obj );
+        $decision_link = ht_dms_link( $id );
+        $group_link = ht_dms_link( $d->get_group( $id, $obj ) );
 
 
-	function decision_passed( $id ) {
+        $subject = __( sprintf( 'The decision %1s has %2s', $decision_name, $change ), 'ht_dms' );
+        $message = __( sprintf( 'The decision %1s in the group %2s has %3s.', $decision_link, $group_link ), 'ht_dms' );
+
+        $this->send_to_members( $members, $subject, $message );
+    }
 
 
-			$d = ht_dms_decision_class();
-			$members = $d->consensus_members( $id );
-			$decision_name = $d->title( $id );
-			$decision_link = sprintf( '<a href="%1s">%2s</a>', get_the_permalink( $id ), $decision_name );
-
-			$subject = __( sprintf( 'The decision %1s has passed', $decision_name ), 'ht_dms' );
-			$message = __( sprintf( 'You can see the decision here: %1s', $decision_link ), 'ht_dms' );
-
-			$this->send_to_members( $members, $subject, $message );
-
-
-	}
-
-	function decision_failed( $id, $data, $gID, $oID ) {
-		//@TODO turn $this->decision_passed() into a creator function and use for this, that
-
-	}
-
+    /**
+     * Send a message.
+     *
+     * @since 0.0.3
+     *
+     * @param $to
+     * @param $subject
+     * @param $message
+     * @return int
+     */
 	function new_message( $to, $subject, $message  ) {
 
 		return ht_dms_notification_class()->create( $to, $subject, $message );
 
 	}
 
+    /**
+     * Create summary messages
+     *
+     * @since 0.0.3
+     *
+     * @param int $uID User ID
+     */
 	function create_summaries( $uID ) {
 		if ( ! is_array( $uID ) && ht_dms_integer( $uID ) ) {
 			$users =  array( $uID );
@@ -115,7 +183,17 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	}
 
-	function create_summary( $uID, $type ) {
+    /**
+     * Creates the summaries specified in $this->summaries
+     *
+     * @since 0.0.3
+     *
+     * @param int $uID
+     * @param string $type The type of summary.
+     *
+     * @return array
+     */
+	private function create_summary( $uID, $type ) {
 		$types = $this->summaries();
 		$types = wp_list_pluck( $types, 'type' );
 		if ( in_array( $type, $types ) ) {
@@ -129,7 +207,16 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	}
 
-	function decision_summary( $uID ) {
+    /**
+     * Decision summary create, this does.
+     *
+     * @since 0.0.3
+     *
+     * @param $uID
+     *
+     * @return string
+     */
+	private function decision_summary( $uID ) {
 		$out = $decisions = false;
 		$g = ht_dms_group_class();
 		$groups = $g->users_groups_obj( $uID, null, -1,false, true );
@@ -166,7 +253,16 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	}
 
-	function membership_summary( $uID ) {
+    /**
+     * Creates membership summary
+     *
+     * @since 0.0.3
+     *
+     * @param $uID
+     *
+     * @return bool|string
+     */
+	private function membership_summary( $uID ) {
 		$g = ht_dms_group_class();
 		$params = array(
 			'where' => 'facilitators.ID = "' . $uID . ' " ',
@@ -222,9 +318,15 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 	}
 
-
+    /**
+     * List of summaries to create
+     *
+     * @since 0.0.3
+     *
+     * @return array
+     */
 	private function summaries() {
-		$summaries = array(
+		return array(
 			array(
 				'type' => 'membership',
 				'subject' => __( 'Daily Group Membership Updates', 'ht_dms' ),
@@ -233,9 +335,8 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 				'type' => 'decisions',
 				'subject' => __( 'Active Decision Updates', 'ht_dms' ),
 			)
-		);
 
-		return apply_filters( 'ht_dms_summary_notifications', $summaries );
+		);
 
 	}
 
