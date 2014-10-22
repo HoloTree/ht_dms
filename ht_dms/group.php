@@ -387,15 +387,15 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			}
 		}
 
-		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false );
+		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false, false );
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
 		$form_fields[ 'group_description' ] = array();
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
-		$form_fields[ 'facilitators' ] = $org_facilitators;
+		$form_fields[ 'facilitators' ] = array( 'default' => $org_facilitators );
 		$form_fields[ 'organization' ][ 'default' ] = $oID;
 
-		$hides = array( 'members', 'pending-members', 'decisions', 'organization' );
+		$hides = array( 'pending_members', 'decisions', 'organization' );
 
 		foreach( $hides as $field ) {
 			if ( isset( $form_fields[ $field ] ) ) {
