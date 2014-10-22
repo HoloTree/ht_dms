@@ -376,7 +376,7 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			unset( $form_fields[ 'organization' ] );
 		}
 
-		$unset_fields = array( 'pending_members', 'tasks' );
+		$unset_fields = array( 'pending_members', 'tasks', 'invited_members' );
 		if ( ! $new ) {
 			$unset_fields[] = 'organization';
 		}
@@ -387,11 +387,12 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			}
 		}
 
+		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false );
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
 		$form_fields[ 'group_description' ] = array();
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
-		$form_fields[ 'facilitators' ] = array();
+		$form_fields[ 'facilitators' ] = $org_facilitators;
 		$form_fields[ 'organization' ][ 'default' ] = $oID;
 
 		$hides = array( 'members', 'pending-members', 'decisions', 'organization' );
