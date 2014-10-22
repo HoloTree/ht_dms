@@ -63,6 +63,10 @@ class common  {
 		}
 
 		if ( 'add-comment' === pods_v( 'dms_action', 'post', false, true )  && ! is_null( pods_v( 'dms_id', 'post' ) ) ) {
+			if ( ! wp_verify_nonce( pods_v_sanitized( 'ht_dms_nonce', 'post' ), 'ht_dms_comment_nonce' ) ) {
+				return false;
+			}
+
 			$content = pods_v_sanitized( 'dms_comment_text', 'post', false, true );
 			if ( false !== $content ) {
 				$data = array (

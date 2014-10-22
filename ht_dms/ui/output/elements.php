@@ -72,7 +72,7 @@ class elements {
 
 		$form = sprintf(  '<form action="%1s" method="POST" id="dms-comment-form">', $link );
 		$form .= sprintf( '<input type="hidden" name="dms_id" value="%1s">', $id );
-		$form .= wp_nonce_field( 'ht_dms_comment_nonce' );
+		$form .= wp_nonce_field( 'ht_dms_comment_nonce', 'ht_dms_nonce' );
 		$form .= '<input type="hidden" name="dms_action" value="add-comment">';
 		$form .= '<label>Comment Text
 						<textarea name="dms_comment_text" placeholder=""></textarea>
