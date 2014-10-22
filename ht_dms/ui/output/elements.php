@@ -47,7 +47,8 @@ class elements {
 
 		$out .=  '</ol>';
 		if ( $form !== false ) {
-			$out .= $this->modal( $this->comment_form( $id ), 'large', 'Add Comment', 'Leave Comment' );
+			$text = __( 'Respond', 'holotree' );
+			$out .= $this->modal( $this->comment_form( $id ), 'discussion-modal', $text, 'large', true );
 		}
 
 		return $out;
