@@ -386,6 +386,28 @@ jQuery(document).ready(function($) {
 
     window.idCheck = idCheck;
 
+    /**
+     * Open the discussion Modal
+     *
+     * @since 0.0.3
+     */
+    function openCommentModal() {
+        $( '#discussion-modal' ).foundation('reveal', 'open');
+    }
+
+    /**
+     * If respond is chosen for the decision action form, open the modal
+     *
+     * @since 0.0.3
+     */
+    $( ".CF5411fb087123d" ).submit(function( event ) {
+        if ( $( '#fld_738259_1').val() == 'respond' ) {
+            event.preventDefault();
+            openCommentModal();
+        }
+
+    });
+
 
 
 });
