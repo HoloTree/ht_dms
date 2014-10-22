@@ -344,6 +344,30 @@ class membership {
 	}
 
 	/**
+	 * Get the IDs of group or organizations facilitators.
+	 *
+	 * @param  int    $id Group or organization ID
+	 * @param null|obj|Pods $obj
+	 * @param bool $group Optional. If true group, if false organization.
+	 *
+	 * @return array Array of facilitator IDs if they exists or empty array if they do not.
+	 *
+	 * @since 0.0.3
+	 */
+	function facilitators( $id, $obj = null, $group = null ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+		$facilitators = array();
+
+		$field = $obj->field( 'facilitators' );
+		if ( is_array( $field ) && ! empty( $field ) ) {
+			$facilitators =  wp_list_pluck( $field, 'ID' );
+		}
+
+		return $facilitators;
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.0.1
