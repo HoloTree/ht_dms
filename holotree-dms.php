@@ -436,3 +436,11 @@ function ht_dms_404_redirect( $template ) {
 	
 }
 
+/**
+ * Shorten nonce lifespan
+ *
+ * @since 0.1.0
+ */
+add_filter( 'nonce_life', function () {
+	return HOUR_IN_SECONDS;
+} );
