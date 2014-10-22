@@ -101,8 +101,8 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @since 	0.0.1
 	 */
-	function all_members( $id, $obj = null ) {
-		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, true );
+	function all_members( $id, $obj = null, $ids_only = true ) {
+		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, true, $ids_only );
 
 		return $user_ids;
 

@@ -168,13 +168,41 @@ abstract class dms extends object {
 			$form_fields[ 'members' ] = array ( 'default' => $initial_members );
 		}
 
+		global $post;
+		$gID = $dID = false;
+
+		if ( HT_DMS_DECISION_POD_NAME === $type ) {
+			if ( is_null( $id ) ) {
+				if ( ht_dms_is_decision( $post->ID )) {
+					$dID = $post->ID;
+				}
+			}
+			else {
+				$dID = $id;
+			}
+
+			if ( ht_dms_integer( $dID ) ) {
+				$gID = $this->get_group( $dID );
+			}
+
+
+
+
+		}
+
+		if ( HT_DMS_GROUP_POD_NAME === $type || false == $dID ) {
+			if ( ht_dms_is_group( $post->ID ) ) {
+				$gID = $post->ID;
+			}
+		}
+
 		if ( is_null( $oID )  && $type !== HT_DMS_ORGANIZATION_POD_NAME  ) {
 			//find what content type we're on
 			$calling_type = ht_dms_get_content_type();
 
 			if ( in_array( $calling_type, $this->content_types()) ) {
 				if ( $calling_type === HT_DMS_ORGANIZATION_POD_NAME ) {
-					global $post;
+
 					$oID = $post->ID;
 				}
 				else {
@@ -209,7 +237,7 @@ abstract class dms extends object {
 
 		}
 
-		return $this->form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type );
+		return $this->form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type, $gID );
 
 	}
 
@@ -405,13 +433,12 @@ abstract class dms extends object {
 		);
 
 
-		$oID = (int) $this->get_group( $id, $obj );
-		$gID = (int) $this->get_organization( $id, $obj );
+		$gID = (int) $this->get_group( $id, $obj );
+		$oID = (int) $this->get_organization( $id, $obj );
 
+		$form_fields[ 'organization' ][ 'default' ] = $oID;
 
-		$form_fields[ 'organization' ][ 'default' ] = $gID;
-
-		$form_fields[ 'group' ][ 'default' ] = $oID;
+		$form_fields[ 'group' ][ 'default' ] = $gID;
 
 		$dID = $id;
 
@@ -438,11 +465,11 @@ abstract class dms extends object {
 
 		}
 
-		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type );
+		return $this->form( $obj, $form_fields, 'modify', $id, $obj, $oID, $uID, $type, $gID );
 
 	}
 
-	private function form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type ) {
+	private function form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type, $gID ) {
 
 
 		/**
@@ -462,7 +489,7 @@ abstract class dms extends object {
 		 */
 
 		if ( $new !== 'modify' ) {
-			$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type );
+			$form_fields = apply_filters( "ht_dms_{$type}_edit_form_fields", $form_fields, $new, $id, $obj, $oID, $uID, $type, $gID );
 		}
 
 		/**
@@ -542,7 +569,9 @@ abstract class dms extends object {
 	function get_group( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
-		return (int) $obj->display( 'group.ID' );
+		$gID =  (int) $obj->display( 'group.ID' );
+
+		return $gID;
 
 	}
 
@@ -667,6 +696,33 @@ abstract class dms extends object {
 
 		return $value;
 
+	}
+
+	/**
+	 * Format a member field.
+	 *
+	 * Input must contain at least ID and display_name for each user. Pods field value realated to user makes good input.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param array $members Members to format.
+	 *
+	 * @return array
+	 */
+	function format_member_field( $members ) {
+		$member_options = array();
+		if ( is_array( $members )  && ! empty( $members ) ) {
+			foreach ( $members as $member ) {
+				$name = pods_v( 'display_name', $member );
+				$id = pods_v( 'ID', $member );
+				if ( $name && $id ) {
+					$member_options[ $id ] = $name;
+				}
+			}
+
+		}
+
+		return $member_options;
 	}
 
 }

@@ -47,7 +47,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		return array(
 			"pods_api_post_save_pod_item_{$type}"   => array( 'user_fix', 11, 3 ),
 			"ht_dms_{$type}_select_fields"          => 'set_fields_to_loop',
-			"ht_dms_{$type}_edit_form_fields"       => array( 'form_fields', 10, 6 ),
+			"ht_dms_{$type}_edit_form_fields"       => array( 'form_fields', 10, 8 ),
 		);
 
 	}
@@ -230,16 +230,16 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @since 0.0.2
 	 */
-	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID  ) {
+	function form_fields( $form_fields, $new, $id, $obj, $oID, $uID, $type, $gID  ) {
 
 		if ( $new !== 'modify' ) {
 			$defaults = $this->default_values( $id, $obj, $oID, $uID );
-
+			$group_members = $this->member_options( false, null, $gID );
 			$form_fields = array (
 				'post_title'      => array (
 					'label' => 'Decision Name',
 				),
-				'decision_description',
+				'decision_description' => array(),
 				'decision_type'   => array (
 					'default' => $defaults[ 'decision_type' ],
 					'type' 		=> 'hidden'
@@ -250,6 +250,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 				),
 				'manager'         => array (
 					'default' => $defaults[ 'user_id' ],
+					'data'  => $group_members,
 				),
 				'proposed_by'     => array (
 					'default' => $defaults[ 'user_id' ],
@@ -1120,6 +1121,49 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			}
 
 		}
+
+	}
+
+	/**
+	 *  Get members of the group for this decision
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int|bool $id Optional. Decision ID. Required if ! $gID, ignored if that is used.
+	 * @param null|\pods $obj
+	 * @param bool|int $gID Optional. Group ID. If set $id and $obj are ignored.
+	 * @param bool $ids_only    Optional. If true, the default, return ids of users only. If false, return field info for each memeber.
+	 *
+	 * @return array
+	 */
+	function group_members( $id = false, $obj = null, $gID = false, $ids_only = true ) {
+		if ( ! $gID && ht_dms_integer( $gID ) ) {
+			$gID = $this->get_group( $id, $obj );
+		}
+
+		$g = ht_dms_group_class();
+		$members = $g->all_members( $gID, null, $ids_only );
+
+		return $members;
+
+	}
+
+	/**
+	 * Format members of the group for this decision for use in form field data
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int|bool $id Optional. Decision ID. Required if ! $gID, ignored if that is used.
+	 * @param null|\pods $obj
+	 * @param bool|int $gID Optional. Group ID. If set $id and $obj are ignored.
+	 *
+	 * @return array
+	 */
+	private function member_options( $id = false, $obj = null, $gID = false ) {
+		$members = $this->group_members( $id, $obj, $gID, false );
+		$member_options = $this->format_member_field( $members );
+
+		return $member_options;
 
 	}
 

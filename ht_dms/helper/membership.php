@@ -50,9 +50,13 @@ class membership {
 	 *
 	 * @since 	0.0.1
 	 */
-	function all_members( $id, $obj = null, $group = true ) {
+	function all_members( $id, $obj = null, $group = true, $ids_only = true ) {
 		$obj = $this->null_obj( $id, $obj, $group );
-		$user_ids = $obj->field( 'members.ID' );
+		if ( $ids_only ) {
+			$user_ids = $obj->field( 'members.ID' );
+		} else {
+			$user_ids = $obj->field( 'members' );
+		}
 
 		return $user_ids;
 
