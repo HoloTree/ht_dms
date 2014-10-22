@@ -387,7 +387,7 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			}
 		}
 
-		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false, false );
+		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false, true );
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
 		$form_fields[ 'group_description' ] = array();
 		$form_fields[ 'visibility' ] = array();
