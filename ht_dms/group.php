@@ -388,12 +388,17 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		}
 
 		$org_facilitators = ht_dms_membership_class()->facilitators( $oID, null, false, true );
+		$org_members = $this->format_member_field( $this->organization_members( $oID ) );
 		$form_fields[ 'post_title' ] = array( 'label' => 'Group Name' );
 		$form_fields[ 'group_description' ] = array();
 		$form_fields[ 'visibility' ] = array();
 		$form_fields[ 'open_access' ] = array();
-		$form_fields[ 'facilitators' ] = array( 'default' => $org_facilitators );
+		$form_fields[ 'facilitators' ] = array(
+			'default' => $org_facilitators,
+			'data' => $org_members,
+		);
 		$form_fields[ 'organization' ][ 'default' ] = $oID;
+		$form_fields[ 'members' ] = array( 'data' => $org_members );
 
 		$hides = array( 'pending_members', 'decisions', 'organization' );
 
@@ -532,5 +537,20 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			update_user_meta( $uID, 'groups', $groups );
 		}
 	}
+
+	/**
+	 * Get members of the organization for a group
+	 *
+	 * @param $oID
+	 *
+	 * @return array
+	 */
+	function organization_members( $oID ) {
+
+		$members = ht_dms_organization_class()->all_members( $oID, null, false );
+
+		return $members;
+	}
+
 
 } 

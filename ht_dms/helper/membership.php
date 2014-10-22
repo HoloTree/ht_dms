@@ -45,6 +45,7 @@ class membership {
 	 * @param   int 		$id 		ID of group or organization.
 	 * @param	obj|null	$obj
 	 * @param	bool		$group.	Optional. If acting on group or organization. Set to the default (true) for group, false for organization.
+	 * @param bool $ids_only Optional. If true., the default, only IDs are returned. If false, full field data returned foreach.
 	 *
 	 * @return 	array					IDs of user IDs.
 	 *

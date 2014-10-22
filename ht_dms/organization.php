@@ -130,13 +130,15 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	 *
 	 * @param   int 	 	$id 		ID of organization.
 	 * @param	obj|null	$obj
+	 * @param bool $ids_only Optional. If true., the default, only IDs are returned. If false, full field data returned foreach.
+	 *
 	 *
 	 * @return 	array 					IDs for all members of organization.
 	 *
 	 * @since 	0.0.1
 	 */
-	function all_members( $id, $obj = null ) {
-		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, false );
+	function all_members( $id, $obj = null, $ids_only = true ) {
+		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, false, $ids_only );
 
 		return $user_ids;
 
