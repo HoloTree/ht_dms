@@ -263,6 +263,10 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 					'default' 	=> $defaults[ 'organization_id' ],
 					'type' 		=> 'hidden'
 				),
+				'time_frame' => array(
+					'default' => pods_v( 'timeframe', $defaults ),
+					'description' => __( 'How long to allow for decision making.', 'holotree' ),
+				),
 			);
 
 		}
@@ -305,6 +309,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			'status'   			=> 'new',
 			'decision_type' 	=> 'original',
 			'organization_id'	=> $oID,
+			'timeframe'         => $this->time_frame( $obj, $id ),
 		);
 
 		/**
