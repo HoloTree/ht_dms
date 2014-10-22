@@ -410,6 +410,11 @@ function ht_dms_do_hourly() {
 	ht_dms_notification_class()->send();
 }
 
+/**
+ * Redirect to home when accessing post type archives
+ *
+ * @since 0.0.3
+ */
 add_action('template_redirect', 'ht_dms_archive_redirect');
 function ht_dms_archive_redirect() {
 
@@ -417,5 +422,17 @@ function ht_dms_archive_redirect() {
 
 		pods_redirect( ht_dms_home() );
 	}
+}
+
+/**
+ * Redirect to home on 404
+ *
+ * @since 0.0.3
+ */
+add_filter( '404_template', 'ht_dms_404_redirect' );
+function ht_dms_404_redirect( $template ) {
+
+	pods_redirect( ht_dms_home() );
+	
 }
 
