@@ -349,7 +349,7 @@ if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
 //put current user ID in a global.
 global $current_user;
 global $cuID;
-$cuID = $current_user[ 'ID' ];
+$cuID = get_current_user_id();
 ht_dms_common_class();
 
 /**
