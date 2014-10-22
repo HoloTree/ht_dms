@@ -92,7 +92,7 @@ abstract class object {
 	 * @param 	bool 			$cache	Optional. Whether to use cache or not.
 	 * @param 	null|array|int 	$params	Optional. Either the item ID, or pods::find() params
 	 *
-	 * @return 	bool|mixed|null|Pods|void
+	 * @return 	bool|mixed|null|\pods|void
 	 *
 	 * @since 0.0.1
 	 */

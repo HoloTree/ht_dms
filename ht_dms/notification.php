@@ -84,7 +84,7 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 	 *
 	 * @since 0.0.3
 	 */
-	function create( $to, $subject, $message ) {
+	function new_notification( $to, $subject, $message ) {
 		$data = array(
 			'to' => $to,
 			'subject' => $subject,

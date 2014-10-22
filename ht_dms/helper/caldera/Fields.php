@@ -438,7 +438,7 @@ class Fields extends Forms implements \Hook_SubscriberInterface{
 		if ( $uID ) {
 			$subject = sprintf( __( 'You have been invited to join the organization %1s', $organization_name ), 'holotree' );
 
-			return ht_dms_notification_class()->create( $uID, $subject, $message );
+			return ht_dms_notification_class()->new_notification( $uID, $subject, $message );
 
 		}
 

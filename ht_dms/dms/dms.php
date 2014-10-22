@@ -270,11 +270,30 @@ abstract class dms extends object {
 		$fields = apply_filters( "{$this->get_type()}_select_fields", null );
 
 		if ( $all || is_null( $fields ) ) {
-			$fields_array = $obj->fields();
-			foreach ( $fields_array as $key => $value ) {
-				$fields[ $key ] = $value;
-			}
+			$fields = $this->field_names( $obj );
 
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Get field names for all fields of current Pod
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param null $obj
+	 *
+	 * @return array
+	 */
+	function field_names( $obj = null ) {
+		$obj = $this->null_object( $obj );
+		$fields_array = $obj->fields();
+
+		$fields = array();
+
+		foreach ( $fields_array as $key => $value ) {
+			$fields[ $key ] = $value;
 		}
 
 		return $fields;
@@ -621,6 +640,32 @@ abstract class dms extends object {
 		$api = pods_v( 'api', $obj  );
 
 		return  $api->pod_data[ 'type' ];
+
+	}
+
+	function create( $data ) {
+		if ( is_array( $data ) ) {
+			$obj = $this->object();
+			$fields = $this->field_names( $obj );
+			$save_data = array();
+			foreach( $fields as $field ) {
+				if ( isset( $data[ 'field' ] ) ) {
+					$value = $this->sanitize_save( $field, $data[ 'field' ] );
+					if ( $value  ) {
+						$save_data['field'] = $value;
+					}
+				}
+			}
+
+			if ( ! empty( $save_data ) ) {
+				return $obj->save( $save_data );
+			}
+		}
+	}
+
+	function sanitize_save( $field, $value ) {
+
+		return $value;
 
 	}
 

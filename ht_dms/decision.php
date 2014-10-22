@@ -975,30 +975,30 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
      * @param Pods $obj
      */
     function check_time_frame( $obj ) {
-
-
         $created = strtotime( $obj->field( 'post_date' ) );
         $id = $obj->id();
         $length = $this->time_frame( $obj, $id  );
 
         $elapsed = time() - $created;
         if ( $length > $elapsed ) {
-            $change = false;
-            $status = $this->status( $id, $obj );
+	        $change = false;
+	        $status = $this->status( $id, $obj );
 
-            if ( $status === 'new' ) {
-                $change = 'passed';
-            }
-            elseif ( $status === 'blocked' ) {
-                $change = 'failed';
+	        if ( $status === 'new' ) {
+		        $change = 'passed';
+	        } elseif ( $status === 'blocked' ) {
+		        $change = 'failed';
 
-            }
+	        }
 
-            if ( $change ) {
-                do_action( "ht_dms_decision_{$change}" );
+	        if ( $change ) {
+		        do_action( "ht_dms_decision_{$change}" );
 
-                $this->update( $id, 'decision_status', $change, $obj );
-            }
+		        $this->update( $id, 'decision_status', $change, $obj );
+	        }
+	        
+        }
+
     }
 
 
