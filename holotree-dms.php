@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: HoloTree Decision Making System
-Version: 0.0.3
+Version: 0.1.0
 License: GPL v2 or Later
 Text Domain: ht_dms
 Domain Path: /languages/
@@ -42,8 +42,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * 
  * @since 0.0.1
  */
-define( 'HT_DMS_VERSION', '0.0.3.a.1' );
-define( 'HT_DMS_DB_VERSION', '1' );
+define( 'HT_DMS_VERSION', '0.1.0' );
+define( 'HT_DMS_DB_VERSION', '2' );
 define( 'HT_DMS_SLUG', plugin_basename( __FILE__ ) );
 define( 'HT_DMS_ROOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'HT_DMS_ROOT_DIR', plugin_dir_path( __FILE__ ) );
