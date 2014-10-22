@@ -410,8 +410,21 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	 */
 	function form_fields( $fields, $new, $id, $obj, $oID, $uID ) {
 		if ( $new ) {
-			$fields[ 'members' ][ 'type' ] = 'hidden';
+			global $cuID;
+			$fields[ 'members' ][ 'type' ][ 'default' ] = $cuID;
 		}
+
+		$fields[ 'members' ][ 'type' ] = 'hidden';
+
+		if ( $new ) {
+			unset($fields['facilitators'] );
+		}
+		else{
+			$fields['facilitators'] = array(
+				'data' => $this->format_member_field( $this->all_members( $id, false, false ) )
+			);
+		}
+
 		$unset_fields = array( 'groups', 'decisions', 'tasks' );
 		foreach( $unset_fields as $field ) {
 
