@@ -50,6 +50,10 @@ class common  {
 
 
 	function dms_actions() {
+		if ( is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			return;
+		}
+
 
 		$action =  pods_v_sanitized( 'dms_action', 'get', false, true );
 		$id = intval( pods_v_sanitized( 'dms_id', 'get', false, true ) );
