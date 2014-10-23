@@ -193,18 +193,20 @@ class HoloTree_DMS {
 
 		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision( get_queried_object_id()  ) ) {
 			$consensus = ht_dms_consensus_class()->sort_consensus( get_queried_object_id(), true );
-			$consensusMembers = $consensus;
-			unset( $consensusMembers[ 'headers' ] );
-			unset( $consensusMembers[ 'details' ] );
-			$htDMS[ 'consensusHeaders' ] = pods_v( 'headers', $consensus, array() );
+			if ( $consensus ) {
+				$consensusMembers = $consensus;
+				unset( $consensusMembers['headers'] );
+				unset( $consensusMembers['details'] );
+				$htDMS['consensusHeaders'] = pods_v( 'headers', $consensus, array() );
 
 
-			if ( $consensusMembers  ) {
-				$htDMS[ 'consensusMembers' ] = $consensusMembers;
+				if ( $consensusMembers ) {
+					$htDMS['consensusMembers'] = $consensusMembers;
+				}
+
+
+				$htDMS['consensusMemberDetails'] = ht_dms_sorted_consensus_details( $consensus );
 			}
-
-
-			$htDMS[ 'consensusMemberDetails' ] = pods_v( 'details', $consensus, array() );
 
 		}
 

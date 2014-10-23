@@ -908,3 +908,18 @@ function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
 
 }
 
+/**
+ * Get the members details from a sorted consensus
+ *
+ *
+ * @since 0.1.0
+ * 
+ * @param $sorted_consensus
+ *
+ * @return array
+ */
+function ht_dms_sorted_consensus_details( $sorted_consensus ) {
+
+	return pods_v( 'details', $sorted_consensus, array() );
+
+}

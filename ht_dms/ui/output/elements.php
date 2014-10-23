@@ -791,60 +791,9 @@ class elements {
 	/**
 	 * Visual display of the current status of a consensus
 	 *
-	 * @param int|array $id Decision ID. Or can be an array. If array, must be in format ht_dms_decision_class()->consensus_members() returns.
-	 * @param int  $desktop_wide Number of items wide in desktop view
-	 * @param bool $mobile_wide Optional. Number of items wide in mobile view. If false, the default, will be half of $desktop_wide.
-	 *
-	 * @return string
-	 *
 	 * @since 0.0.3
 	 */
-	function view_consensus( $id, $desktop_wide = 8, $mobile_wide = false ) {
-
-		$tabs = false;
-
-		if ( ! is_array( $id ) ) {
-			$sorted_consensus = ht_dms_consensus_class()->sort_consensus( $id );
-		}
-		else {
-			$sorted_consensus = $id;
-		}
-
-		$build_elements = ht_dms_ui()->build_elements();
-		if ( is_array( $sorted_consensus ) ) {
-			foreach ( $sorted_consensus as $status => $user_ids ) {
-				$users = '';
-				if ( is_array( $user_ids ) && ! empty( $user_ids ) && isset( $user_ids[0] )  && ! empty( $user_ids[ 0 ] ) ) {
-
-					$users = implode( $user_ids, ',' );
-				}
-				else {
-					$user_ids = '';
-				}
-
-
-				$consensus_status[ $status ] = $users;
-				$count[ $status ] = count( $user_ids );
-				if ( is_array( $user_ids ) ) {
-					foreach ( $user_ids as $uID ) {
-						$details[ $status ] = $build_elements->member_details( $uID );
-					}
-				} else {
-					$details[ $status ] = array();
-				}
-
-			}
-
- 		}
-
-		for ( $i=0; $i<=3; $i++ ) {
-			$consensus_status[ 'headers' ][ $i ] = $this->ui()->build_elements()->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
-		}
-
-
-		$title = __( 'Consensus Status', 'ht_dms' );
-		$js = \ht_dms\helper\json::encode_to_script( $consensus_status, 'consensusStatus' );
-		//$out = $js;
+	function view_consensus(  ) {
 
 		$out = $this->ui()->view_loaders()->handlebars( 'consensus_view', false, false );
 

@@ -23,23 +23,14 @@ class Callbacks  {
 	function reload_consensus( ) {
 		if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 
-			$dID = pods_v_sanitized( 'dID', $_REQUEST );
+			$dID = pods_v_sanitized( 'dID', 'post' );
 			if ( $dID ) {
-				$post = get_post( $dID );
-				if ( is_object( $post ) && isset( $post->post_type ) && HT_DMS_DECISION_POD_NAME === $post->post_type ) {
-					wp_cache_flush();
-					//$users = ht_dms_decision_class()->consensus_members( $dID );
-					$consensus = ht_dms_ui()->output_elements()->view_consensus( $dID );
-
-					if ( is_string( $consensus ) ) {
-						wp_die(  $consensus );
-					}
+				$consensus = ht_dms_sorted_consensus_details( ht_dms_consensus_class()->sort_consensus( $dID, true ) );
+				wp_send_json( $consensus );
 
 				}
 
 			}
-
-		}
 
 	}
 

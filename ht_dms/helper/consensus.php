@@ -303,6 +303,13 @@ class consensus {
 			$consensus = $this->create( $dID );
 		}
 
+		reset( $consensus );
+		$first_key = key( $consensus );
+
+		if ( ! isset( $consensus[$first_key][ 'value' ] ) ) {
+			return '';
+		}
+
 		$user_value = wp_list_pluck( $consensus, 'value' );
 
 		$statuses = array();

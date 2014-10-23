@@ -98,21 +98,18 @@ jQuery(document).ready(function($) {
         var container = '#consensus-view';
         var dID =   htDMS.id;
 
-        $.get(
+        $.post(
             ajaxURL, {
                 action: 'ht_dms_reload_consensus',
                 nonce : htDMS.nonce,
-                dID : dID,
-                container :container,
-                localCache : true,
-                cacheTTL : 1
+                dID : dID
             },
             function( response ) {
-                $( container ).fadeOut( 800 ).hide();
-                $( container ).empty();
+                console.log( response );
+                consensusView( response );
                 update_decision_status( dID );
 
-                $( container).html( response ).fadeIn( 800 );
+
 
 
 
@@ -314,9 +311,10 @@ jQuery(document).ready(function($) {
         }
     });
 
-    function consensusView() {
-
-        var users =  JSON.parse( htDMS.consensusMemberDetails );
+    function consensusView( users ) {
+        if ( undefined == users ) {
+            users =  JSON.parse( htDMS.consensusMemberDetails );
+        }
 
         var data = {
             header0: htDMS.consensusHeaders.header0,

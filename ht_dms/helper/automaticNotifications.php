@@ -131,7 +131,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 
         $subject = __( sprintf( 'The decision %1s has %2s', $decision_name, $change ), 'ht_dms' );
-        $message = __( sprintf( 'The decision %1s in the group %2s has %3s.', $decision_link, $group_link ), 'ht_dms' );
+        $message = __( sprintf( 'The decision %1s in the group %2s has %3s.', $decision_link, $group_link, $change ), 'ht_dms' );
 
         $this->send_to_members( $members, $subject, $message );
     }
