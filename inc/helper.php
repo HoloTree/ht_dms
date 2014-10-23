@@ -241,7 +241,7 @@ function ht_dms_consensus_status_readable( $value, $with_icons = false, $ing = f
  * @since 0.0.3
  */
 function ht_dms_fallback_avatar() {
-	$fallback = trailingslashit( HT_DMS_UI_DIR ) .'img/gus.jpg';
+	$fallback = trailingslashit( HT_DMS_ROOT_URL ) .'/ht_dms/ui/img/gus.jpg';
 	/**
 	 * Fallback avatar for users without one set.
 	 *
