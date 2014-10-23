@@ -2,39 +2,6 @@ jQuery(document).ready(function($) {
     ajaxURL = htDMS.ajaxURL;
 
 
-    /**
-     * Allows for getting views of the ht_dms\ui\build\views class via AJAX
-     *
-     * @param view Which view to get. Options: users_groups|public_groups|assigned_tasks|users_organizations|decision_tasks|organization|group|decision|task
-     * @param args Array of arguments, varies by view.
-     * @param returnType  Optional. What to return. Options: template|JSON|urlstring
-     * @param put The ID of the container to put the view in.
-     */
-    function viewGet( view, args, returnType, put ) {
-        $.get(
-            ajaxURL, {
-                'action': 'ht_dms_ui_ajax_view',
-                'nonce' : htDMS.nonce,
-                'view' : view,
-                'args' : args,
-                'returnType' : returnType
-            },
-            function( response ) {
-                var string = response.toString();
-
-            }
-        );
-    }
-
-
-
-
-    //defaults for our view getters
-    var limit = 5;
-    var returnType = 'template';
-    var uID = null;
-    var oID = null;
-
 
     /**
      * Pagination view loader
@@ -51,14 +18,15 @@ jQuery(document).ready(function($) {
 
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_paginate',
-                'nonce' : htDMS.nonce,
-                'view' : view,
-                'page' : page,
-                'limit' : limit,
-                'container' :container,
-                'extraArg' : extraArg
-
+                action: 'ht_dms_paginate',
+                nonce : htDMS.nonce,
+                view : view,
+                page : page,
+                limit : limit,
+                container :container,
+                extraArg : extraArg,
+                localCache : true,
+                cacheTTL : 1
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
@@ -87,9 +55,11 @@ jQuery(document).ready(function($) {
 
             $.get(
                 ajaxURL, {
-                    'action': 'ht_dms_load_notification',
-                    'nonce' : htDMS.nonce,
-                    'nID' : nID
+                    action: 'ht_dms_load_notification',
+                    nonce : htDMS.nonce,
+                    nID : nID,
+                    localCache : true,
+                    cacheTTL : 1
                 },
                 function( response ) {
                     var container = '#notification-viewer';
@@ -130,10 +100,12 @@ jQuery(document).ready(function($) {
 
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_reload_consensus',
-                'nonce' : htDMS.nonce,
-                'dID' : dID,
-                'container' :container
+                action: 'ht_dms_reload_consensus',
+                nonce : htDMS.nonce,
+                dID : dID,
+                container :container,
+                localCache : true,
+                cacheTTL : 1
             },
             function( response ) {
                 $( container ).fadeOut( 800 ).hide();
@@ -155,9 +127,11 @@ jQuery(document).ready(function($) {
         var container = '#decision-status';
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_update_decision_status',
-                'nonce' : htDMS.nonce,
-                'dID'   : dID
+                action: 'ht_dms_update_decision_status',
+                nonce : htDMS.nonce,
+                dID   : dID,
+                localCache : true,
+                cacheTTL : 1
 
             },function( response ) {
                 $( container ).fadeOut( 400 );
@@ -176,10 +150,12 @@ jQuery(document).ready(function($) {
         var gID = htDMS.id;
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_reload_membership',
-                'nonce' : htDMS.nonce,
-                'gID'   : gID,
-                'container' :container
+                action: 'ht_dms_reload_membership',
+                nonce : htDMS.nonce,
+                gID   : gID,
+                container :container,
+                localCache : true,
+                cacheTTL : 1
             },
             function( response ) {
                 $( container ).fadeOut( 400 );
@@ -200,10 +176,12 @@ jQuery(document).ready(function($) {
 
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_mark_notification',
-                'nonce' : htDMS.nonce,
-                'nID'   : nID,
-                'mark'  : mark
+                action: 'ht_dms_mark_notification',
+                nonce : htDMS.nonce,
+                nID   : nID,
+                mark  : mark,
+                localCache : true,
+                cacheTTL : 1
 
             },
             function( response ) {
@@ -219,10 +197,12 @@ jQuery(document).ready(function($) {
         console.log( container );
         $.get(
             ajaxURL, {
-                'action': 'ht_dms_members',
-                'nonce' : htDMS.nonce,
-                'id'    : id,
-                'type'  : type
+                action: 'ht_dms_members',
+                nonce : htDMS.nonce,
+                id    : id,
+                type  : type,
+                localCache : true,
+                cacheTTL : 1
 
             },
             function( response ) {
@@ -335,7 +315,7 @@ jQuery(document).ready(function($) {
     });
 
     function consensusView() {
-        console.log(htDMS.consensusMemberDetails );
+
         var users =  JSON.parse( htDMS.consensusMemberDetails );
 
         var data = {
@@ -345,7 +325,7 @@ jQuery(document).ready(function($) {
             users0: users[0],
             users1: users[1],
             users2: users[2]
-        }
+        };
 
 
         var source   = $( '#consensus-view-template' ).html();
