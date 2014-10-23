@@ -90,16 +90,15 @@ class common  {
 			return;
 		}
 
-		$nonce = pods_v_sanitized( ht_dms_ui()->output_elements()->action_nonce_name  );
-		$verify = wp_verify_nonce( $nonce, ht_dms_ui()->output_elements()->action_nonce_action );
+		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
+			return;
+		}
 
+		$verify = ht_dms_verify_action_nonce();
 		if ( ! $verify ) {
 			ht_dms_error( __( 'Alert! Alert! Security Check Failed!', 'ht_dms' ) );
 		}
 
-		if ( ! $action || $action === 'propose-change' || $action === 'changing' ) {
-			return;
-		}
 
 		if ( $action == 'accept-invite' && ! is_null( $uID = pods_v_sanitized( 'user' ) ) && ! is_null( $type = ( pods_v_sanitized( 'type' ) ) ) ) {
 			$group = true;
