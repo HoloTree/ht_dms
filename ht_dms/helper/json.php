@@ -34,7 +34,7 @@ class json {
 						$uID = pods_v( 'ID', $member );
 						$member = array(
 							'name' => pods_v( 'display_name', $member ),
-							'avatar' => get_avatar( $uID ),
+							'avatar' => get_avatar( $uID, '96', ht_dms_fallback_avatar() ),
 							'ID' => $uID,
 						);
 
@@ -86,7 +86,7 @@ class json {
 						$uID = pods_v( 'ID', $member );
 						$member = array(
 							'name' => pods_v( 'display_name', $member ),
-							'avatar' => get_avatar( $uID ),
+							'avatar' => get_avatar( $uID, '96', ht_dms_fallback_avatar() ),
 							'ID' => $uID,
 						);
 
