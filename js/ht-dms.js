@@ -105,7 +105,7 @@ jQuery(document).ready(function($) {
                 dID : dID
             },
             function( response ) {
-                console.log( response );
+                $( container ).html( '' );
                 consensusView( response );
                 update_decision_status( dID );
 
