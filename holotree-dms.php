@@ -189,6 +189,8 @@ class HoloTree_DMS {
 			'consensusMembers' => 0,
 			'consensusHeaders' => 0,
 			'consensusMemberDetails' => 0,
+			'homeURL' => untrailingslashit( ht_dms_home() ),
+			'proposeModifyURL' => 0
 		);
 
 		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision( get_queried_object_id()  ) ) {
@@ -204,9 +206,10 @@ class HoloTree_DMS {
 					$htDMS['consensusMembers'] = $consensusMembers;
 				}
 
-
 				$htDMS['consensusMemberDetails'] = ht_dms_sorted_consensus_details( $consensus );
 			}
+
+			$htDMS[ 'proposeModifyURL' ] = ht_dms_action_append( ht_dms_home(), 'propose-change', get_queried_object_id() );
 
 		}
 

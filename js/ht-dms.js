@@ -386,6 +386,14 @@ jQuery(document).ready(function($) {
 
     });
 
+    $( ".CF5411fb087123d" ).submit(function( event ) {
+        if ( $( '#fld_738259_1').val() == 'propose-modify' ) {
+            event.preventDefault();
+            document.location = htDMS.proposeModifyURL;
+        }
+
+    });
+
 
 
 });
