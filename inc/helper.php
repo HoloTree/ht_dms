@@ -924,3 +924,19 @@ function ht_dms_sorted_consensus_details( $sorted_consensus ) {
 	return pods_v( 'details', $sorted_consensus, array() );
 
 }
+
+/**
+ * Verify the dms-action nonce
+ *
+ * @since 0.1.0
+ *
+ * @param string $method Optional. Transport method being used. Default is 'get'. Only other valid option is 'post'.
+ *
+ * @return bool
+ */
+function ht_dms_verify_action_nonce( $method = 'get' ) {
+	$nonce = pods_v_sanitized( ht_dms_ui()->output_elements()->action_nonce_name, $method  );
+	$verify = wp_verify_nonce( $nonce, ht_dms_ui()->output_elements()->action_nonce_action );
+
+	return $verify;
+}

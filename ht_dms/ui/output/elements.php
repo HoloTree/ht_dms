@@ -454,12 +454,13 @@ class elements {
 	 * 		@type string value	The value of the variable.
 	 *   }
 	 * @param int               $id     ID of post.
+	 * @param bool              $add_nonce Add the dms action nonce.
 	 *
 	 * @return 	string					URL
 	 *
 	 * @since 	0.0.1
 	 */
-	function action_append( $url, $action, $id = false ) {
+	function action_append( $url, $action, $id = false, $add_nonce = true ) {
 		if ( is_array( $action ) ) {
 			$action_name = pods_v( 'var', $action, false, true );
 			$action = pods_v( 'value', $action, false, true );
@@ -479,8 +480,51 @@ class elements {
 			$url = add_query_arg( $id_var, $id, $url );
 		}
 
+		if ( $add_nonce  ) {
+			$url = $this->action_nonce( $url );
+		}
+
 		return $url;
+
 	}
+
+	/**
+	 * @var string Nonce name used for action nonce
+	 *
+	 * @since 0.1.0
+	 */
+	public $action_nonce_name = 'dms-action-nonce';
+
+	/**
+	 * @var string Nonce action for action nonce
+	 *
+	 * @since 0.1.0
+	 */
+	public $action_nonce_action = 'dms-nonce-action';
+
+	/**
+	 * Add the action nonce to dms_action URLs.
+	 *
+	 * Designed to be used by $this->action_append() only.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @access private
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	private function action_nonce( $url ) {
+
+		return add_query_arg( $this->action_nonce_name, wp_create_nonce( $this->action_nonce_action ), $url );
+
+	}
+
+	function check_action_nonce( $url ) {
+
+	}
+
 
 	/**
 	 * For creating links with optional button, class and ID.
