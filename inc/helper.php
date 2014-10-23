@@ -118,6 +118,7 @@ function ht_dms_mini_menu_items() {
 
 	if ( current_user_can( 'edit_users') ) {
 		$items[ admin_url() ] = __( 'WP Admin', 'ht_dms' );
+		$items[ get_edit_post_link() ] =  __( 'Edit Post', 'ht_dms' );
 	}
 
 
