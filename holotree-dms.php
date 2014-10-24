@@ -452,3 +452,18 @@ function ht_dms_404_redirect( $template ) {
 add_filter( 'nonce_life', function () {
 	return HOUR_IN_SECONDS;
 } );
+
+/**
+ * Hack to change the decision_type in propose modify form.
+ *
+ * @since 0.1.0
+ *
+ * @see https://github.com/HoloTree/ht_dms/issues/86
+ */
+add_filter( 'pods_form_ui_field_hidden', function( $output, $name ) {
+		if ( $name === 'pods_field_decision_type' ) {
+			$output = str_replace( 'original', 'change', $output );
+		}
+
+	return $output;
+	}, 10, 2 );

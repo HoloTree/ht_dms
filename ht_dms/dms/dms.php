@@ -409,6 +409,7 @@ abstract class dms extends object {
 		unset( $old[ 'tasks' ] );
 		unset( $old[ 'group' ] );
 		unset( $old[ 'organization' ] );
+		unset( $old[ 'decision_type' ] );
 
 		$form_fields[ 'post_title'][ 'default' ] = $obj->field('post_title' );
 
@@ -430,6 +431,7 @@ abstract class dms extends object {
 
 		$form_fields[ 'decision_type' ] = array (
 			'default' 	=> 'change',
+			'type'      => 'hidden',
 		);
 
 
@@ -446,7 +448,6 @@ abstract class dms extends object {
 		$hides = array(
 			'change_to',
 			'organization',
-			'decision_type',
 			'decision_status',
 			'group',
 			'proposed_by'
@@ -526,7 +527,7 @@ abstract class dms extends object {
 		else {
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
-
+			
 			$form .= $obj->form( $form_fields, 'Propose Change', $link );
 		}
 
