@@ -884,7 +884,13 @@ function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
 		$alt = __( 'User Avatar', 'ht_dms' );
 	}
 
-	if ( ht_dms_integer( $id_or_email ) ) {
+	if ( is_object( $id_or_email ) ) {
+		if ( false == ( $id = pods_v( 'user_id', $id_or_email, false, true  ) ) ) {
+			$id = 0;
+		}
+
+	}
+	elseif ( ht_dms_integer( $id_or_email ) ) {
 		$id = $id_or_email;
 	}
 	else {
