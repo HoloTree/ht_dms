@@ -24,7 +24,7 @@ class elements {
 	 */
 	function decisions_by_status_tabs( $statuses = null, $gID, $dObj= null  ) {
 		if ( is_null( $dObj ) || !is_object( $dObj ) ) {
-			$dObj = pods( HT_DMS_DECISION_POD_NAME );
+			$dObj = ht_dms_decision_class()->object();
 		}
 		if ( is_null( $statuses ) || ! is_array( $statuses ) ) {
 			$statuses = array ( 'New', 'Blocked', 'Passed' );
@@ -36,7 +36,7 @@ class elements {
 			//@TODO limit/ pagination for individual statuses: How to do that?
 			//@todo use $g->decisions_by_status() for this
 			$params = array (
-				'where' => 'd.decision_type <> "accepted_change" AND group.ID = " ' . $gID. ' "  AND d.decision_status = "'. strtolower( $status ) .'" ',
+				'where' => 'd.decision_type <> "accepted_change" AND d.decision_type <> "change" AND group.ID = " ' . $gID. ' "  AND d.decision_status = "'. strtolower( $status ) .'" ',
 				'limit'	=> -1,
 			);
 			$dObj = $dObj->find( $params );
