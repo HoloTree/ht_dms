@@ -1167,5 +1167,37 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Names of statuses that constitute an "active" decision.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
+	function active_statuses() {
+
+		return array( 'new', 'blocked', 'passed' );
+	}
+
+	/**
+	 * Params for use in Pods::find() where params for selecting decisions with an active status.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	function active_status_params() {
+
+		$pre = 'd.decision_type = ';
+		foreach( $this->active_statuses() as $status ) {
+			$where[] = sprintf( '%1s "%2s" ', $pre, esc_attr( $status ) );
+		}
+
+		$where = implode( 'OR ', $where  );
+
+		return $where;
+
+	}
+
 
 } 

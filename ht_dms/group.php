@@ -33,6 +33,7 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		$type = self::$type;
 		return array(
 			"pods_api_post_save_pod_item_{$type}" => array( 'user_fix', 9, 3 ),
+			//'ht_dms_update_group'
 		);
 	}
 
@@ -558,5 +559,35 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		return $members;
 	}
 
+	/**
+	 * Returns all decisions in a group, as an array of IDs, or Pods object.
+	 *
+	 * Will return false if no decsions exist.
+	 *
+	 * @param int $gID Group ID
+	 * @param bool $return_obj Optional. If false, the default array of IDs is returned.
+	 *
+	 * @return array|bool|mixed|null|\pods|void
+	 */
+	function all_decisions( $gID, $return_obj = false, $active_only = true ) {
+		$params = array( 'where' => "group.ID = \"{$gID}\"" );
+		if ( $active_only ) {
+			$params[ 'where' ] .= ' '.ht_dms_decision_class()->active_status_params();
+		}
+		$obj = ht_dms_decision_class()->object( true, $params );
+
+		if ( ! is_object( $obj ) ||  $obj->total() == 0 ) {
+			return false;
+
+		}
+
+		if ( $return_obj ) {
+			return $obj;
+
+		}
+
+		return wp_list_pluck( $obj->rows, 'ID' );
+
+	}
 
 } 

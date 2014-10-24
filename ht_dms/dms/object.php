@@ -138,7 +138,7 @@ abstract class object {
 	 * @param 	obj|null 		$obj			Optional. Object to check.
 	 * @param 	null|array|int 	$params_or_id	Optional. Either the item ID, or pods::find() params
 	 *
-	 * @return bool|mixed|null|Pods|void
+	 * @return bool|mixed|null|\Pods|void
 	 *
 	 * @since 0.0.1
 	 */

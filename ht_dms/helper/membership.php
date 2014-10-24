@@ -86,6 +86,9 @@ class membership {
 			$members[] = $uID;
 			$id = $this->update( $id, 'members', $members );
 
+			$type = $this->type( $group );
+			do_action( "ht_dms_add_member_to_{$type}", $uID, $id );
+
 			return $id;
 
 		}
@@ -377,6 +380,26 @@ class membership {
 
 		return $facilitators;
 
+	}
+
+	/**
+	 * Convert the $group bool param to the type, as a string.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param bool $group
+	 *
+	 * @return string
+	 */
+	private function type( $group  ) {
+		if ( $group ) {
+			$type = ht_dms_prefix_remover( HT_DMS_GROUP_POD_NAME );
+		}
+		else {
+			$type = ht_dms_prefix_remover( HT_DMS_ORGANIZATION_POD_NAME );
+		}
+
+		return $type;
 	}
 
 	/**

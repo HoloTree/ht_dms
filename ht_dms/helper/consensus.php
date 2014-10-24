@@ -18,13 +18,7 @@
  */
 namespace ht_dms\helper;
 
-class consensus {
-
-	function __construct() {
-
-
-	}
-
+class consensus  {
 
 	/**
 	 * Get a consensus or create one if it does not exist.
@@ -186,19 +180,7 @@ class consensus {
 			$value = $this->modify( $dID, $value, $uID );
 		}
 
-
-		if ( is_array( $value ) ) {
-			$d = ht_dms_decision_class();
-			$id = $d->update( $dID, 'consensus', $value );
-			$status = $this->status( $value );
-			$d->update( $dID, 'decision_status', $status );
-			do_action( 'ht_dms_consensus_changed', $dID, $status );
-			if ( $status === 'passed' ) {
-				do_action( 'ht_dms_decision_passed', $dID );
-			}
-
-			return $id;
-		}
+		return \ht_dms\helper\consensus\update::save( $value, $dID );
 
 	}
 
