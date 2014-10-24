@@ -377,8 +377,12 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		}
 
 		$unset_fields = array( 'pending_members', 'tasks', 'invited_members' );
-		if ( ! $new ) {
+		if ( $new ) {
 			$unset_fields[] = 'organization';
+
+		}
+		else {
+			$unset_fields[] = 'members';
 		}
 
 		foreach( $unset_fields as $field ) {
@@ -398,7 +402,9 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			'data' => $org_members,
 		);
 		$form_fields[ 'organization' ][ 'default' ] = $oID;
-		$form_fields[ 'members' ] = array( 'data' => $org_members );
+		if ( $new  ) {
+			$form_fields['members'] = array( 'data' => $org_members );
+		}
 
 		$hides = array( 'pending_members', 'decisions', 'organization' );
 
