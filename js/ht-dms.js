@@ -399,7 +399,6 @@ jQuery(document).ready(function($) {
             ajaxURL, {
                 action: 'ht_dms_full_view_refresh',
                 nonce : htDMS.nonce,
-                u
                 //view : view,
 
 
