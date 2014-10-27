@@ -5,7 +5,7 @@ Plugin Name: HoloTree Decision Making System
 * Author: Josh Pollock
 * Author URI: http://joshpress.net
 * Plugin URI: https://holotree.com
-Version: 0.1.0
+Version: 0.1.0-dev
 License: GPL v2 or Later
 Text Domain: ht_dms
 Domain Path: /languages/
