@@ -303,11 +303,8 @@ $GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
  */
 do_action( 'holotree_DMS' );
 
-
 /**
  * Setup Auto Loader
- *
- * @TODO MAKE THIS WORK RIGHT
  */
 require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
 $classLoader = new HT_DMS_ClassLoader();
@@ -319,25 +316,6 @@ require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/dms.php' );
 require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'inc/helper.php' );
 require_once( trailingslashit( HT_DMS_UI_DIR ). 'ui.php' );
 
-
-
-
-
-/**
- * Make REST API not require auth when HT_DEV_MODE
- *
- * THIS MUST GET REPLACED WITH PROPER AUTH!
- */
-
-$filters = array( 'pods_json_api_access_pods', 'pods_json_api_access_api' );
-foreach ( $filters as $filter ) {
-	if ( HT_DEV_MODE ) {
-		add_filter( $filter, '__return_true' );
-	}
-	else {
-		add_filter( $filter, '__return_false' );
-	}
-}
 
 require_once( trailingslashit( HT_DMS_DIR ) ) . 'helper/paginated_views.php';
 require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/interface.php' );
@@ -471,3 +449,5 @@ add_filter( 'pods_form_ui_field_hidden', function( $output, $name ) {
 
 	return $output;
 	}, 10, 2 );
+
+add_filter( 'pods_deploy_deploy_in_one_package', '__return_true' );
