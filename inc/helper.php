@@ -863,19 +863,20 @@ function ht_dms_invite_code( $generate = true, $email, $oID = false, $code = fal
 
 }
 
-/**
- * Replacement for built-in get_avatar to use our fallback avatar & Pods Avatar properly.
- *
- * @since 0.1.0
- *
- * @param int|string|object $id_or_email A user ID,  email address, or comment object
- * @param int $size Size of the avatar image
- * @param string $default URL to a default image to use if no avatar is available
- * @param string $alt Alternative text to use in image tag. Defaults to blank
- *
- * @return string <img> tag for the user's avatar
- */
-function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
+if ( ! function_exists( 'get_avatar' ) ) :
+	/**
+	 * Replacement for built-in get_avatar to use our fallback avatar & Pods Avatar properly.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int|string|object $id_or_email A user ID,  email address, or comment object
+	 * @param int $size Size of the avatar image
+	 * @param string $default URL to a default image to use if no avatar is available
+	 * @param string $alt Alternative text to use in image tag. Defaults to blank
+	 *
+	 * @return string <img> tag for the user's avatar
+	 */
+}function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
 	if ( ! $default ) {
 		$default = ht_dms_fallback_avatar();
 	}
@@ -885,19 +886,16 @@ function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
 	}
 
 	if ( is_object( $id_or_email ) ) {
-		if ( false == ( $id = pods_v( 'user_id', $id_or_email, false, true  ) ) ) {
+		if ( false == ( $id = pods_v( 'user_id', $id_or_email, false, true ) ) ) {
 			$id = 0;
 		}
 
-	}
-	elseif ( ht_dms_integer( $id_or_email ) ) {
+	} elseif ( ht_dms_integer( $id_or_email ) ) {
 		$id = $id_or_email;
-	}
-	else {
-		if ( is_email( $id_or_email ) ){
+	} else {
+		if ( is_email( $id_or_email ) ) {
 			$id = get_user_by( 'email', $id_or_email );
-		}
-		else {
+		} else {
 			ht_dms_error();
 		}
 	}
@@ -906,14 +904,13 @@ function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
 	$avatar = get_user_meta( $id, 'avatar', true );
 	if ( $avatar ) {
 		return pods_image( $avatar, array( $size, $size ) );
-	}
-	else {
+	} else {
 		return sprintf( '<img src="%1s" width="%2s" height="%3s" alt="%4s" />',
 			esc_url( $default ), esc_attr( $size ), esc_attr( $size ), esc_attr( $alt )
 		);
 	}
-
 }
+endif;
 
 /**
  * Get the members details from a sorted consensus
