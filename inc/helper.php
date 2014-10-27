@@ -876,40 +876,40 @@ if ( ! function_exists( 'get_avatar' ) ) :
 	 *
 	 * @return string <img> tag for the user's avatar
 	 */
-}function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
-	if ( ! $default ) {
-		$default = ht_dms_fallback_avatar();
-	}
-
-	if ( ! $alt ) {
-		$alt = __( 'User Avatar', 'ht_dms' );
-	}
-
-	if ( is_object( $id_or_email ) ) {
-		if ( false == ( $id = pods_v( 'user_id', $id_or_email, false, true ) ) ) {
-			$id = 0;
+	function get_avatar( $id_or_email, $size = '96', $default = '', $alt = false ) {
+		if ( ! $default ) {
+			$default = ht_dms_fallback_avatar();
 		}
 
-	} elseif ( ht_dms_integer( $id_or_email ) ) {
-		$id = $id_or_email;
-	} else {
-		if ( is_email( $id_or_email ) ) {
-			$id = get_user_by( 'email', $id_or_email );
+		if ( ! $alt ) {
+			$alt = __( 'User Avatar', 'ht_dms' );
+		}
+
+		if ( is_object( $id_or_email ) ) {
+			if ( false == ( $id = pods_v( 'user_id', $id_or_email, false, true ) ) ) {
+				$id = 0;
+			}
+
+		} elseif ( ht_dms_integer( $id_or_email ) ) {
+			$id = $id_or_email;
 		} else {
-			ht_dms_error();
+			if ( is_email( $id_or_email ) ) {
+				$id = get_user_by( 'email', $id_or_email );
+			} else {
+				ht_dms_error();
+			}
+		}
+
+
+		$avatar = get_user_meta( $id, 'avatar', true );
+		if ( $avatar ) {
+			return pods_image( $avatar, array( $size, $size ) );
+		} else {
+			return sprintf( '<img src="%1s" width="%2s" height="%3s" alt="%4s" />',
+				esc_url( $default ), esc_attr( $size ), esc_attr( $size ), esc_attr( $alt )
+			);
 		}
 	}
-
-
-	$avatar = get_user_meta( $id, 'avatar', true );
-	if ( $avatar ) {
-		return pods_image( $avatar, array( $size, $size ) );
-	} else {
-		return sprintf( '<img src="%1s" width="%2s" height="%3s" alt="%4s" />',
-			esc_url( $default ), esc_attr( $size ), esc_attr( $size ), esc_attr( $alt )
-		);
-	}
-}
 endif;
 
 /**
