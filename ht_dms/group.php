@@ -286,7 +286,7 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		$obj = $this->null_object( null, $id  );
 
 		if ( $approve ) {
-			$this->join( $id, $uID, $obj  );
+			$this->add_member( $id, $uID, $obj  );
 
 		}
 
