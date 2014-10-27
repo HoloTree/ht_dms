@@ -110,14 +110,6 @@ class common  {
 			pods_redirect( get_permalink( $id ) );
 		}
 
-		if( $action == 'accept-change' ) {
-
-			$id = ht_dms_decision_class()->make_modification( $id );
-			ht_dms_consensus_class()->create( $id );
-			pods_redirect( get_permalink( $id ) );
-			return;
-		}
-
 		//special handling for proposed changes
 		if (  $action === 'change-proposed' && false !== ( $pmid = pods_v( 'pmid', 'get', false, true )  ) ) {
 			if ( ! $pmid || intval( $pmid  ) === 0 ) {

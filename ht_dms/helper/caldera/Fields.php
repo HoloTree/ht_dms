@@ -81,16 +81,17 @@ class Fields extends Forms implements \Hook_SubscriberInterface{
 
 			if ( 'accept' === $action ) {
 				$id = $d->accept( $dID, $uID );
-			}
 
-			if ( $action === 'remove-objection' ) {
+			}
+			elseif ( $action === 'remove-objection' ) {
 				$id = $d->unblock( $dID, $uID );
 			}
-
-			if ( $action === 'object' ) {
+			elseif ( $action === 'object' ) {
 				$id = $d->block( $dID, $uID );
 			}
-
+			elseif ( 'accept-change' == $action ) {
+				$id = $d->accept_modify( $dID );
+			}
 
 		}
 
@@ -293,7 +294,6 @@ class Fields extends Forms implements \Hook_SubscriberInterface{
 				$members = pods_v( $action, $data );
 
 				$approve = true;
-
 
 				if ( is_array( $members ) ) {
 

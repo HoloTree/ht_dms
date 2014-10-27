@@ -538,8 +538,8 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @since 	0.0.1
 	 */
-	function accept_modify( $id, $obj = null ) {
-
+	function accept_modify( $id, $obj = null, $uID = null ) {
+		$uID = $this->null_user( $uID );
 		$obj =  $this->null_object( $obj, $id );
 
 		$original_id = $obj->field( 'change_to.ID' );
@@ -885,7 +885,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	}
 
 	function is_proposed_change( $id, $obj = null ) {
-		$type = $this->get_type( $id, $obj );
+		$type = $this->type( $id, $obj );
 		if ( $type === 'change' ) {
 
 			return true;
@@ -917,6 +917,9 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			if ( $this->has_consent( $id, $obj ) ){
 				$this->update( $id, 'decision_status', 'passed', $obj );
 				$status = 'passed';
+				if ( $this->is_proposed_change( $id, $obj ) ) {
+					$this->accept_modify( $id, $obj );
+				}
 
 				do_action( 'ht_dms_decision_passed', $id );
 			}
@@ -1002,7 +1005,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 		        $this->update( $id, 'decision_status', $change, $obj );
 	        }
-	        
+
         }
 
     }
@@ -1199,4 +1202,4 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	}
 
 
-} 
+}
