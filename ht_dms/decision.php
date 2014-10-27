@@ -1089,6 +1089,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		$params = array (
 			'where' => 'd.decision_type <> "accepted_change"  AND d.decision_status = "'. strtolower( $status ) .'" ',
 			'limit'	=> -1,
+			'expires' => HOUR_IN_SECONDS,
 		);
 
 		if ( ht_dms_integer( $gID ) ) {
@@ -1097,8 +1098,6 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		}
 
 		$obj = $obj->find( $params );
-
-
 
 		if ( $obj->total() > 0 ) {
 			if ( ! $return_type || $return_type == 'obj' ) {

@@ -32,29 +32,29 @@ class elements {
 
 		$ui = $this->ui();
 
+		$dObj = ht_dms_decision_class()->object();
 		foreach ( $statuses as $status  ) {
-			//@TODO limit/ pagination for individual statuses: How to do that?
-			//@todo use $g->decisions_by_status() for this
-			$params = array (
-				'where' => 'd.decision_type <> "accepted_change" AND d.decision_type <> "change" AND group.ID = " ' . $gID. ' "  AND d.decision_status = "'. strtolower( $status ) .'" ',
-				'limit'	=> -1,
-			);
-			$dObj = $dObj->find( $params );
-			$total = $dObj->total();
-			if ( HT_DEV_MODE ) {
-				echo $status . ':'. $total. ' ';
+			$s_obj = ht_dms_decision_class()->decisions_by_status( $status, $gID, 'obj', $dObj );
+
+			if ( is_object( $s_obj ) ) {
+				$dObj = $s_obj;
+				unset( $s_obj );
+				$total = $dObj->total();
+				if ( HT_DEV_MODE ) {
+					echo $status . ':' . $total . ' ';
+				}
+
+				if ( $dObj->total() > 0 ) {
+
+					$view_loaders         = ht_dms_ui()->view_loaders();
+					$view                 = ht_dms_ui()->models()->path( 'decision', true );
+					$d_s                  = $view_loaders->magic_template( $view, $dObj );
+					$decisions[ $status ] = $d_s;
+
+
+				} //endif have pods
+				$dObj->reset();
 			}
-
-			if ( $dObj->total() > 0 ) {
-
-				$view_loaders = ht_dms_ui()->view_loaders();
-				$view =  ht_dms_ui()->models()->path( 'decision', true  );
-				$d_s = $view_loaders->magic_template( $view, $dObj );
-				$decisions[ $status ] = $d_s;
-
-
-			} //endif have pods
-
 
 
 		}
