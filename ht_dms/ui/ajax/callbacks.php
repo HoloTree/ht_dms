@@ -147,7 +147,7 @@ class Callbacks  {
 		if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
 			wp_die( ht_dms_ui()->view_loaders()->view_loaders( null ) );
 		}
-		
+
 	}
 
 	function validate_invite_code() {

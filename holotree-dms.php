@@ -1,6 +1,10 @@
 <?php
 /*
 Plugin Name: HoloTree Decision Making System
+* Description: Consensus based decision making system.
+* Author: Josh Pollock
+* Author URI: http://joshpress.net
+* Plugin URI: https://holotree.com
 Version: 0.1.0
 License: GPL v2 or Later
 Text Domain: ht_dms
