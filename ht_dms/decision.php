@@ -564,6 +564,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 		if ( $make_mod ) {
 			$this->make_modification( $id, $original_id, $obj, $uID, $original_obj );
+			pods_redirect( get_permalink( $original_id ) );
 			return true;
 
 		}
