@@ -1,211 +1,151 @@
 <?php
-
 /**
- * Adapted from Class PodsClassLoader, PSR-0 compatible autoloader.
+ * Class HT_DMS_ClassLoader
  *
- * Example usage:
- *
- * <code>
- *     $classLoader = new HolotreeClassLoader( );
- *     $classLoader->addDirectory( 'path/to/load' );
- *     $classLoader->addDirectory( 'path/to/load', 'namespace/prefix' );
- *     $classLoader->addAlias( 'Class_From', 'Class_To' );
- *     $classLoader->register( );
- * </code>
- *
+ * Totally lifted from: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
+ * 
+ * @package   @holotree_dms
+ * @author    Josh Pollock <Josh@JoshPress.net>
+ * @license   GPL-2.0+
+ * @link
+ * @copyright 2014 Josh Pollock
  */
 class HT_DMS_ClassLoader {
-
-	private $directoriesPrefixed = array();
-
-	private $directories = array();
-
-	private $aliases = array();
-
 	/**
-	 * Returns aliases
+	 * An associative array where the key is a namespace prefix and the value
+	 * is an array of base directories for classes in that namespace.
 	 *
-	 * @return array
+	 * @var array
 	 */
-	public function getAliases() {
-		return $this->aliases;
-	}
+	protected $prefixes = array();
 
 	/**
-	 * Returns prefixes.
-	 *
-	 * @return array
-	 */
-	public function getDirectoriesPrefixed() {
-		return $this->directoriesPrefixed;
-	}
-
-	/**
-	 * Returns fallback directories.
-	 *
-	 * @return array
-	 */
-	public function getDirectories() {
-		return $this->directories;
-	}
-
-	/**
-	 * Adds a new class alias, forwarding the class to the new class.
-	 *
-	 * @param string $fromClass The class name we want to forward
-	 * @param string $toClass   The class name we are forwarding to
-	 */
-	public function addAlias( $fromClass, $toClass ) {
-		$this->aliases[ $fromClass ] = $toClass;
-	}
-
-	/**
-	 * Adds one or more aliases from an associative array.
-	 *
-	 * @param array $aliases associative array of aliases.
-	 */
-	public function addAliases( array $aliases ) {
-		foreach ( $aliases as $fromClass => $toClass ) {
-			$this->addAlias( $fromClass, $toClass );
-		}
-	}
-
-	/**
-	 * Adds prefixes.
-	 *
-	 * @param array $prefixes Prefixes to add
-	 */
-	public function addDirectoriesPrefixed( array $prefixes ) {
-		foreach ( $prefixes as $prefix => $path ) {
-			$this->addDirectory( $path, $prefix );
-		}
-	}
-
-	/**
-	 * Registers a set of classes
-	 *
-	 * @param array|string $paths  The location(s) of the classes
-	 * @param string       $prefix The classes prefix
-	 */
-	public function addDirectory( $paths, $prefix = null ) {
-		if ( ! $prefix ) {
-			foreach ( (array) $paths as $path ) {
-				$this->directories[] = $path;
-			}
-
-			return;
-		}
-		if ( isset( $this->directoriesPrefixed[ $prefix ] ) ) {
-			$this->directoriesPrefixed[ $prefix ] = array_merge( $this->directoriesPrefixed[ $prefix ],
-				(array) $paths );
-		} else {
-			$this->directoriesPrefixed[ $prefix ] = (array) $paths;
-		}
-	}
-
-	/**
-	 * Registers this instance as an autoloader.
-	 *
-	 * @param Boolean $prepend Whether to prepend the autoloader or not
-	 */
-	public function register( $prepend = false ) {
-		spl_autoload_register( array( $this, 'loadClass' ), true, $prepend );
-	}
-
-	/**
-	 * Unregisters this instance as an autoloader.
-	 */
-	public function unregister() {
-		spl_autoload_unregister( array( $this, 'loadClass' ) );
-	}
-
-	/**
-	 * Loads the given class.
-	 *
-	 * @param string $className The name of the class to load.
-	 *
-	 * @return boolean|null
-	 */
-	public function loadClass( $className ) {
-
-		if ( isset( $this->aliases[ $className ] ) ) {
-			$this->forwardClass( $className, $this->aliases[ $className ] );
-		}
-
-		$file = $this->findFile( $className );
-
-		if ( $file  ) {
-			require $file;
-
-			return true;
-		}
-
-		return null;
-
-	}
-
-	/**
-	 * Finds the path to the file where the class is defined.
-	 *
-	 * @param string $class The classname to find
-	 *
-	 * @return bool|string
-	 */
-	public function findFile( $class ) {
-		if ( false !== $pos = strrpos( $class, '\\' ) ) {
-			// namespaced class name
-			$classPath = str_replace( '\\', DIRECTORY_SEPARATOR, substr( $class, 0, $pos ) ) . DIRECTORY_SEPARATOR;
-			$className = substr( $class, $pos + 1 );
-		} else {
-			// PEAR-like class name
-			$classPath = null;
-			$className = $class;
-		}
-		$classPath .= str_replace( '_', DIRECTORY_SEPARATOR, $className ) . '.php';
-
-		foreach ( $this->directories as $dir ) {
-			$path = $dir . DIRECTORY_SEPARATOR . $classPath;
-			if ( file_exists( $path  ) ) {
-				return $path;
-			}
-		}
-
-		foreach ( $this->directoriesPrefixed as $prefix => $dirs ) {
-			if ( $class === strstr( $class, $prefix ) ) {
-				foreach ( $dirs as $dir ) {
-						$path = $dir . DIRECTORY_SEPARATOR . $classPath;
-					if ( file_exists( $path ) ) {
-						return $path;
-					}
-				}
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Creates a fallback class that maps to the correct class (PodsInit >> HolotreeInit).
-	 *
-	 * @param string $fromClass The name of the original class to map from.
-	 * @param string $toClass   The name of the class to map to.
+	 * Register loader with SPL autoloader stack.
 	 *
 	 * @return void
 	 */
-	public function forwardClass( $fromClass, $toClass ) {
+	public function register()
+	{
+		spl_autoload_register(array($this, 'loadClass'));
+	}
 
-		eval( "
-			class {$fromClass} extends {$toClass} {
+	/**
+	 * Adds a base directory for a namespace prefix.
+	 *
+	 * @param string $prefix The namespace prefix.
+	 * @param string $base_dir A base directory for class files in the
+	 * namespace.
+	 * @param bool $prepend If true, prepend the base directory to the stack
+	 * instead of appending it; this causes it to be searched first rather
+	 * than last.
+	 * @return void
+	 */
+	public function addNamespace($prefix, $base_dir, $prepend = false)
+	{
+		// normalize namespace prefix
+		$prefix = trim($prefix, '\\') . '\\';
 
-				public function __construct() {
+		// normalize the base directory with a trailing separator
+		$base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
 
-					parent::__construct();
+		// initialize the namespace prefix array
+		if (isset($this->prefixes[$prefix]) === false) {
+			$this->prefixes[$prefix] = array();
+		}
 
-				}
+		// retain the base directory for the namespace prefix
+		if ($prepend) {
+			array_unshift($this->prefixes[$prefix], $base_dir);
+		} else {
+			array_push($this->prefixes[$prefix], $base_dir);
+		}
+	}
 
+	/**
+	 * Loads the class file for a given class name.
+	 *
+	 * @param string $class The fully-qualified class name.
+	 * @return mixed The mapped file name on success, or boolean false on
+	 * failure.
+	 */
+	public function loadClass($class)
+	{
+		// the current namespace prefix
+		$prefix = $class;
+
+		// work backwards through the namespace names of the fully-qualified
+		// class name to find a mapped file name
+		while (false !== $pos = strrpos($prefix, '\\')) {
+
+			// retain the trailing namespace separator in the prefix
+			$prefix = substr($class, 0, $pos + 1);
+
+			// the rest is the relative class name
+			$relative_class = substr($class, $pos + 1);
+
+			// try to load a mapped file for the prefix and relative class
+			$mapped_file = $this->loadMappedFile($prefix, $relative_class);
+			if ($mapped_file) {
+				return $mapped_file;
 			}
-		" );
 
+			// remove the trailing namespace separator for the next iteration
+			// of strrpos()
+			$prefix = rtrim($prefix, '\\');
+		}
+
+		// never found a mapped file
+		return false;
+	}
+
+	/**
+	 * Load the mapped file for a namespace prefix and relative class.
+	 *
+	 * @param string $prefix The namespace prefix.
+	 * @param string $relative_class The relative class name.
+	 * @return mixed Boolean false if no mapped file can be loaded, or the
+	 * name of the mapped file that was loaded.
+	 */
+	protected function loadMappedFile($prefix, $relative_class)
+	{
+		// are there any base directories for this namespace prefix?
+		if (isset($this->prefixes[$prefix]) === false) {
+			return false;
+		}
+
+		// look through base directories for this namespace prefix
+		foreach ($this->prefixes[$prefix] as $base_dir) {
+
+			// replace the namespace prefix with the base directory,
+			// replace namespace separators with directory separators
+			// in the relative class name, append with .php
+			$file = $base_dir
+			        . str_replace('\\', '/', $relative_class)
+			        . '.php';
+
+			// if the mapped file exists, require it
+			if ($this->requireFile($file)) {
+				// yes, we're done
+				return $file;
+			}
+		}
+
+		// never found it
+		return false;
+	}
+
+	/**
+	 * If a file exists, require it from the file system.
+	 *
+	 * @param string $file The file to require.
+	 * @return bool True if the file exists, false if not.
+	 */
+	protected function requireFile($file)
+	{
+		if (file_exists($file)) {
+			require $file;
+			return true;
+		}
+		return false;
 	}
 }
-

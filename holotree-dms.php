@@ -308,7 +308,7 @@ do_action( 'holotree_DMS' );
  */
 require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'ClassLoader.php' );
 $classLoader = new HT_DMS_ClassLoader();
-$classLoader->addDirectory( untrailingslashit( HT_DMS_ROOT_DIR ) );
+$classLoader->addNamespace( 'ht_dms', untrailingslashit( HT_DMS_DIR ) );
 
 $classLoader->register();
 
