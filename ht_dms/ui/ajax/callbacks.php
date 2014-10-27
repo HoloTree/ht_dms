@@ -143,6 +143,13 @@ class Callbacks  {
 
 	}
 
+	function full_view_refresh() {
+		if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
+			wp_die( ht_dms_ui()->view_loaders()->view_loaders( null ) );
+		}
+		
+	}
+
 	function validate_invite_code() {
 		if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
 			$code = pods_v_sanitized( 'code', 'post' );

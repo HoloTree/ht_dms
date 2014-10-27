@@ -394,6 +394,36 @@ jQuery(document).ready(function($) {
 
     });
 
+    function reloadHT() {
+        $.get(
+            ajaxURL, {
+                action: 'ht_dms_full_view_refresh',
+                nonce : htDMS.nonce,
+                u
+                //view : view,
+
+
+                //localCache : true,
+                //cacheTTL : 1
+                success: function( response ) {
+
+                    container = '#holotree-dms';
+                    $( container ).fadeOut( 800 ).hide();
+                    //$( container + "-spinner" ).show().delay( 400 );
+                    $( container ).html('').hide().append( response ).fadeIn( 800 );
+                    // $( container + "-spinner") .hide();
+
+
+
+                },
+                error: function() {
+                    alert();
+                    document.location = document.URL;
+                }
+            }
+        );
+    }
+
 
 
 });

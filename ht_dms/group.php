@@ -570,6 +570,10 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 * @return array|bool|mixed|null|\pods|void
 	 */
 	function all_decisions( $gID, $return_obj = false, $active_only = true ) {
+		if ( ! ht_dms_is_group( $gID ) ) {
+			return;
+		}
+
 		$params = array( 'where' => "group.ID = \"{$gID}\"" );
 		if ( $active_only ) {
 			$params[ 'where' ] .= ' '.ht_dms_decision_class()->active_status_params();
