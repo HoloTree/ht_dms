@@ -12,7 +12,7 @@
 namespace ht_dms\ui\ajax;
 
 
-class Callbacks  {
+class callbacks  {
 	/**
 	 * Reload consensus on ht_dms_reload_consensus AJAX action
 	 *

@@ -45,14 +45,14 @@ class ui {
 	/**
 	 * Ajax callbacks class
 	 *
-	 * @return \ht_dms\ui\ajax\Callbacks
+	 * @return \ht_dms\ui\ajax\callbacks
 	 *
 	 * @since 0.0.3
 	 */
 	function ajax_callbacks() {
 
 
-		return new ajax\Callbacks();
+		return new ajax\callbacks();
 
 	}
 
