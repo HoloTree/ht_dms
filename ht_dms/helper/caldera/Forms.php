@@ -12,7 +12,7 @@
 namespace ht_dms\helper\caldera;
 
 
-class Forms {
+class forms {
 	public $join_group_form_id = 'CF54138690b504b';
 	public $leave_group_form_id = 'CF5413964215412';
 	public $group_pending_form_id = 'CF5413972657523';

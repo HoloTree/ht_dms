@@ -18,7 +18,7 @@ namespace ht_dms\helper\caldera;
  *
  * @since 0.0.3
  */
-class Fields extends Forms implements \Hook_SubscriberInterface{
+class fields extends forms implements \Hook_SubscriberInterface{
 
 
 	private $decision_actions_field = 'fld_738259';

@@ -59,7 +59,7 @@ class ui {
 	/**
 	 * @param bool $fields
 	 *
-	 * @return \ht_dms\helper\caldera\Fields|\ht_dms\helper\caldera\Filters
+	 * @return \ht_dms\helper\caldera\fields|\ht_dms\helper\caldera\filters
 	 */
 	function caldera_actions( $fields = true ) {
 
@@ -73,20 +73,20 @@ class ui {
 	}
 
 	/**
-	 * @return \ht_dms\helper\caldera\Fields
+	 * @return \ht_dms\helper\caldera\fields
 	 */
 	function caldera_fields_class() {
 
-		return new \ht_dms\helper\caldera\Fields();
+		return new \ht_dms\helper\caldera\fields();
 
 	}
 
 	/**
-	 * @return \ht_dms\helper\caldera\Filters
+	 * @return \ht_dms\helper\caldera\filters
 	 */
 	function caldera_filters_class() {
 
-		return new \ht_dms\helper\caldera\Filters();
+		return new \ht_dms\helper\caldera\filters();
 	}
 
 	/**

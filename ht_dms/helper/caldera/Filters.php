@@ -12,7 +12,7 @@
 namespace ht_dms\helper\caldera;
 
 
-class Filters extends Forms implements \Filter_Hook_SubscriberInterface {
+class filters extends forms implements \Filter_Hook_SubscriberInterface {
 
 	/**
 	 * Set filters
