@@ -9,7 +9,7 @@ class import {
 	 */
 	static public function import_forms() {
 		$files = self::files();
-
+		
 		if ( is_array( $files ) ) {
 			$path = self::form_directory();
 			foreach( $files as $file ) {
@@ -70,15 +70,15 @@ class import {
 				update_option( '_caldera_forms', $forms );
 				do_action('caldera_forms_save_form_register', $data);
 
-				return __( 'Import Successful!', 'cf-mark-viewed' );
+				return __( sprintf( 'Import of form from % achieved!', $file ), 'ht-dms' );
 
 			}
 			else {
-				new \WP_Error( 'ht-dms-caldera-bad-import-file', __( 'Import file is invalid.', 'ht-dms' ) );
+				return new \WP_Error( 'ht-dms-caldera-bad-import-file', __( 'Import file is invalid.', 'ht-dms' ) );
 			}
 		}
-		else{
-			new \WP_Error( 'ht-dms-caldera-no-import-file', __( 'No import file found:(', 'ht_dms' ) );
+		else {
+			return new \WP_Error( 'ht-dms-caldera-no-import-file', __( 'No import file found:(', 'ht-dms' ) );
 		}
 
 	}

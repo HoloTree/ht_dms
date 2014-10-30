@@ -951,6 +951,6 @@ function ht_dms_verify_action_nonce( $method = 'get' ) {
  */
 function ht_dms_caldera_import() {
 
-	return \ht_dms\helper\caldera\import::import_forms();
+	echo \ht_dms\helper\caldera\import::import_forms();
 
 }
