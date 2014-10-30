@@ -45,5 +45,35 @@ class HT_DMS_WP_API_Registration {
 
 		$this->booted = true;
 	}
+
+	/**
+	 * Work towards getting subscribers automatically.
+	 *
+	 * @see https://github.com/HoloTree/ht_dms/issues/96
+	 *
+	 * @since 0.1.0
+	 * 
+	 * @return array
+	 */
+	private function find_implimenting() {
+		$classes = get_declared_classes();
+		$impliments = array();
+		foreach( $classes as $class) {
+			$reflect = new ReflectionClass( $class );
+			if( $reflect->implementsInterface('Filter_Hook_SubscriberInterface') || $reflect->implementsInterface('Action_Hook_SubscriberInterface') ) {
+				if ( method_exists( $class, 'init' ) ) {
+					$impliments[ 'static' ] = $class;
+				}
+				else {
+					$impliments[ 'non-static' ] = $class;
+				}
+
+			}
+
+		}
+
+		return $impliments;
+	}
+
 }
 
