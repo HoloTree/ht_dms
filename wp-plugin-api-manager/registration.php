@@ -30,7 +30,8 @@ class HT_DMS_WP_API_Registration {
 			new ht_dms\helper\theme(),
 			ht_dms_ui()->caldera_filters_class(),
 			ht_dms_ui()->caldera_fields_class(),
-			ht_dms\helper\registration\register::init()
+			ht_dms\helper\registration\register::init(),
+			new ht_dms\helper\caldera\processors\add(),
 		);
 	}
 
@@ -52,7 +53,7 @@ class HT_DMS_WP_API_Registration {
 	 * @see https://github.com/HoloTree/ht_dms/issues/96
 	 *
 	 * @since 0.1.0
-	 * 
+	 *
 	 * @return array
 	 */
 	private function find_implimenting() {
