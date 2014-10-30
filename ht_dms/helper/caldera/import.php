@@ -9,8 +9,11 @@ class import {
 	 */
 	static public function import_forms() {
 		$files = self::files();
+
 		if ( is_array( $files ) ) {
+			$path = self::form_directory();
 			foreach( $files as $file ) {
+				$file = trailingslashit( $path ) . $file;
 				self::import_form( $file );
 			}
 
@@ -71,11 +74,11 @@ class import {
 
 			}
 			else {
-				new WP_Error( 'ht-dms-caldera-bad-import-file', __( 'Import file is invalid.', 'ht-dms' ) );
+				new \WP_Error( 'ht-dms-caldera-bad-import-file', __( 'Import file is invalid.', 'ht-dms' ) );
 			}
 		}
 		else{
-			new WP_Error( 'ht-dms-caldera-no-import-file', __( 'No import file found:(', 'ht_dms' ) );
+			new \WP_Error( 'ht-dms-caldera-no-import-file', __( 'No import file found:(', 'ht_dms' ) );
 		}
 
 	}
@@ -92,19 +95,24 @@ class import {
 		if ( ! $dir ) {
 			return false;
 		}
+
+		$forms = false;
 		$files = scandir( $dir  );
 		foreach ( $files as $file  ) {
-			if ( 'json' !== pathinfo( $file, PATHINFO_EXTENSION ) ) {
-				unset( $files[ $file ] );
+			$path = pathinfo( $file, PATHINFO_EXTENSION );
+			if ( 'json' == $path ) {
+				$forms[] = $file;
 			}
 		}
 
-		if ( is_array( $files ) ) {
-			return $files;
+		if ( is_array( $forms ) ) {
+			return $forms;
+
 		}
 		else {
 			ht_dms_error( var_dump( $dir  ) );
 		}
+
 	}
 
 	/**
@@ -115,7 +123,7 @@ class import {
 	 * @return string|bool
 	 */
 	static private function form_directory() {
-		$dir = trailingslashit( basename( __FILE__ ) ) . 'forms';
+		$dir = trailingslashit( dirname( __FILE__ ) ) . 'forms';
 		if ( file_exists( $dir ) ) {
 			return $dir;
 		}
@@ -123,7 +131,5 @@ class import {
 	}
 
 }
-
-
 
 

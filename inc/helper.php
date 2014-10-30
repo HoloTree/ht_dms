@@ -943,3 +943,14 @@ function ht_dms_verify_action_nonce( $method = 'get' ) {
 
 	return $verify;
 }
+
+/**
+ * Run Caldera Forms Input
+ *
+ * @since 0.1.0
+ */
+function ht_dms_caldera_import() {
+
+	return \ht_dms\helper\caldera\import::import_forms();
+
+}
