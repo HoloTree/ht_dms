@@ -15,16 +15,18 @@
 add_action( 'wp_ajax_ht_dms_paginate', 'ht_dms_paginate');
 add_action( 'wp_ajax_nopriv_ht_dms_paginate', '__return_false' );
 function ht_dms_paginate() {
-	if ( isset( $_REQUEST['nonce'] ) ) {
+
+	if ( isset( $_GET['nonce'] ) ) {
 		if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 			wp_die( __( 'Your attempt to request data via ajax using the function ht_dms_ui_ajax_view was denied as the nonce did not match.', 'ht_dms' ) );
 		}
 
-		if ( isset( $_REQUEST[ 'view' ] ) && isset( $_REQUEST[ 'limit' ] ) && isset( $_REQUEST[ 'page' ] ) ) {
-			$view = $_REQUEST[ 'view' ];
-			$limit = $_REQUEST[ 'limit' ];
-			$page = $_REQUEST[ 'page' ];
-			$extra_arg = pods_v( 'extra_arg', $_REQUEST );
+		if ( isset( $_GET[ 'view' ] ) && isset( $_GET[ 'limit' ] ) && isset( $_GET[ 'page' ] ) ) {
+			$view = $_GET[ 'view' ];
+			$limit = $_GET[ 'limit' ];
+			$page = $_GET[ 'page' ];
+			$extra_arg = pods_v( 'extra_arg', $_GET );
+
 
 			$args = array(
 				'limit' => $limit,
