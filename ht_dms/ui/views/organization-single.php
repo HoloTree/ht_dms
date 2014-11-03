@@ -9,17 +9,9 @@
  * @copyright 2014 Josh Pollock
  */
 
-if ( HT_DEV_MODE ) {
-	$link = get_post_type_archive_link( HT_DMS_DECISION_POD_NAME );
-	echo '<a href="' . $link . '">Decisions</a><br>';
-	$link = get_post_type_archive_link( HT_DMS_GROUP_POD_NAME );
-	echo '<a href="' . $link . '">Groups</a><br>';
-}
-
 global $post;
 $id = $post->ID;
 
-//@TODO Use where/or select to only get the groups/tasks in organziation
 $obj = ht_dms_organization( $id );
 $org_class = ht_dms_organization_class();
 
