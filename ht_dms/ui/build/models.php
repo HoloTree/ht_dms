@@ -110,7 +110,7 @@ class models {
 				$where[] = 'members.ID = "'.$mine.'"';
 			}
 
-			if ( is_array( $in ) || is_int( $in ) ) {
+			if ( is_array( $in ) || ht_dms_integer( $in ) ) {
 				if ( is_array( $in ) ) {
 					if ( isset( $in[ 'ID' ] ) ) {
 						$in = $in[ 'ID' ];
