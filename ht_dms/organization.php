@@ -461,4 +461,30 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 
 	}
 
+	/**
+	 *  Get total number of groups in an organization.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $oID Organization ID
+	 * @param null|Pods $obj
+	 *
+	 * @return int|null
+	 */
+	function group_count( $oID, $obj = null ){
+		$obj = $this->null_obj( $obj );
+		$obj->reset();
+
+		$params[ 'where' ] = 'organization.ID "' . esc_attr( $oID );
+		$obj = $obj->find( $params );
+
+		if ( is_object( $obj ) ) {
+
+			return $obj->total();
+
+		}
+
+	}
+
+
 } 
