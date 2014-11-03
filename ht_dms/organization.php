@@ -473,16 +473,12 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	 */
 	function group_count( $oID, $obj = null ){
 		$obj = $this->null_obj( $obj );
-		$obj->reset();
 
-		$params[ 'where' ] = 'organization.ID "' . esc_attr( $oID );
-		$obj = $obj->find( $params );
+		$groups = $obj->field( 'groups' );
 
-		if ( is_object( $obj ) ) {
+		$total = count( $groups );
 
-			return $obj->total();
-
-		}
+		return $total;
 
 	}
 
