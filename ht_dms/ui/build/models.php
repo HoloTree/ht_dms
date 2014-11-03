@@ -490,6 +490,10 @@ class models {
 	 * @return null|string|bool|Pods|JSON
 	 */
 	function output( $return, $type, $params, $preview = false, $obj = null ) {
+		//make sure params['where' ] is string, not array
+		if ( is_array( $params ) && isset( $params[ 'where' ] ) && is_array( isset( $params[ 'where' ] ) ) ) {
+			$params[ 'where' ] = (string) reset( $params[ 'where' ] );
+		}
 		if ( is_array( $return ) ) {
 
 			if( ! is_null( $view = pods_v( 'view', $return ) ) ) {
