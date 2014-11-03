@@ -33,6 +33,10 @@ function ht_dms_paginate() {
 				'page' => $page,
 			);
 
+			if ( in_array( $view, array( 'users_groups', 'public_groups' ) ) && ! is_null( $oID = pods_v( 'oID' ) ) ) {
+				$args[ 'oID' ] = $oID;
+			}
+
 			if ( $view == 'users_notifications' ) {
 				$args[ 'un_viewed_only' ] = $extra_arg;
 			}
@@ -150,13 +154,17 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 		$attrs[ 'unViewedOnly' ] = 1;
 	}
 
+	if ( isset( $args[ 'oID' ] ) ) {
+		$attrs[ 'oID' ] = $args[ 'oID' ];
+	}
+
 	$attributes = '';
 	foreach( $attrs as $attr => $value  ) {
 		$attributes .= $attr.'="'.esc_attr( $value ) .'" ';
 	}
 
 	$spinner = ht_dms_spinner();
-	$out = sprintf( '<div id="%1s" %2s>%3s</div>', $view, $attributes, $content );
+	$out = '<div id="' .esc_attr( $view ) . '" '.$attributes . ' >' . esc_html( $content ) . '</div>';
 	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );
 
 
@@ -198,7 +206,7 @@ function ht_dms_paginated_views( $args = null ) {
 
 	$paginated_views = array(
 		'users_groups' => array(
-			'args' => array( null, get_current_user_id(), null, $args[ 'limit'], 'simple_json', $args[ 'page'] ),
+			'args' => array( null, get_current_user_id(), $args[ 'oID' ], $args[ 'limit'], 'simple_json', $args[ 'page'] ),
 			'view' => 'group_preview.php',
 		),
 		'public_groups' => array(

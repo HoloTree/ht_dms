@@ -13,6 +13,10 @@ jQuery(document).ready(function($) {
         //var page = $( container ).attr( "page" );
         var limit = $( container ).attr( "limit" );
         var view = $( container ).attr( "view" );
+        var oID = 0;
+        if ( undefined !== $( container ).attr( "oid" ) ) {
+            oID = $( container ).attr( "oid" );
+        }
 
 
 
@@ -26,6 +30,7 @@ jQuery(document).ready(function($) {
                 container :container,
                 extraArg : extraArg,
                 localCache : true,
+                oID: oID,
                 cacheTTL : 1
             },
             function( response ) {
