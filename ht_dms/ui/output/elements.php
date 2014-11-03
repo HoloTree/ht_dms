@@ -870,6 +870,35 @@ class elements {
 
 	}
 
+	/**
+	 * Tabs for organization facilitators to use to faciliate organizations
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param $oID
+	 * @param $uID
+	 * @param $oObj
+	 *
+	 * @return array
+	 */
+	function organization_facilitator_tabs( $oID, $uID, $oObj ) {
+		$ui = ht_dms_ui();
+		$tabs[] = array (
+			'label'   => ht_dms_add_icon( __( 'New Group In Organization', 'ht_dms' ), array( 'new', 'group') ),
+			'content' => $ui->add_modify()->new_group(  $oID, $uID ),
+		);
+		$tabs[] = array(
+			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'ht_dms' ), array( 'edit', 'organization') ),
+			'content'	=> $ui->add_modify()->edit_organization( $oID, $uID, $oObj ),
+		);
+		$tabs[] = array(
+			'label'		=> ht_dms_add_icon( __( 'Invite Members', 'ht_dms' ), array( 'new', 'user') ),
+			'content'	=> $ui->add_modify()->invite_member( $oID, $oObj, false ),
+		);
+
+		return $tabs;
+	}
+
 
 	/**
 	 * Holds the instance of this class.

@@ -472,15 +472,19 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	 * @return int|null
 	 */
 	function group_count( $oID, $obj = null ){
-		$obj = $this->null_obj( $obj );
+		$obj = $this->null_obj( $obj, $oID );
 
 		$groups = $obj->field( 'groups' );
 
-		$total = count( $groups );
+		if (  is_array( $groups ) ) {
+			$total = count( $groups );
+		}
+		else {
+			$total = 0;
+		}
 
 		return $total;
 
 	}
-
 
 } 
