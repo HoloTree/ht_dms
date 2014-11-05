@@ -297,11 +297,11 @@ class HoloTree_DMS {
 $GLOBALS[ 'HoloTree_DMS' ] = HoloTree_DMS::init();
 
 /**
- * Action that runs right after main Holotree DMS class is initialized.
+ * Action that runs right before Holotree DMS system is initialized.
  *
  * @since 0.0.1
  */
-do_action( 'holotree_DMS' );
+do_action( 'holotree_before_DMS_activation' );
 
 /**
  * Setup Auto Loader
@@ -341,6 +341,13 @@ global $current_user;
 global $cuID;
 $cuID = get_current_user_id();
 ht_dms_common_class();
+
+/**
+ * Action that runs right after Holotree DMS system is initialized.
+ *
+ * @since 0.1.0
+ */
+do_action( 'holotree_after_DMS_activation' );
 
 /**
  * Check and correct Permalinks
