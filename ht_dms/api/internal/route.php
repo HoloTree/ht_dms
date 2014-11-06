@@ -11,7 +11,6 @@
 
 namespace ht_dms\api\internal;
 
-
 class route implements \Action_Hook_SubscriberInterface {
 
 	/**
@@ -55,7 +54,8 @@ class route implements \Action_Hook_SubscriberInterface {
 		if ( ! empty( $action )  ) {
 			$status_code = $this->check_access( $action );
 			if ( 200 == $status_code  ) {
-				$response = $this->dispatch( $action );
+				$params = $this->args( $action );
+				$response = $this->dispatch( $action, $params  );
 				$response            = json_encode( $response );
 				status_header( $status_code );
 				wp_send_json( $response );
@@ -66,6 +66,54 @@ class route implements \Action_Hook_SubscriberInterface {
 			}
 
 		}
+
+	}
+
+
+
+	/**
+	 * Get required args for the action
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action name.
+	 *
+	 * @return array
+	 */
+	private function args( $action ) {
+		$class = $this->action_class( $action );
+
+		$desired_args = $class::args();
+		$params = array();
+
+		foreach( $desired_args as $arg ) {
+			$params[ $arg ] = pods_v_sanitized( $arg );
+		}
+
+		return $params;
+
+	}
+
+	/**
+	 * Get a static class object, by action.
+	 *
+	 * Does not check if class exists. Use only for those allowed by $this->action_allowed()
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action name.
+	 *
+	 * @param $action
+	 *
+	 * @return object The class object.
+	 */
+	private function action_class( $action ) {
+
+		return $class = __NAMESPACE__ . '\\' . $action;
 
 	}
 
@@ -82,9 +130,14 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return mixed The result of the action to return.
 	 */
 	private function dispatch( $action, $params = null ) {
+		if ( is_array( $params ) ) {
+			$action = array_merge( array( $action ), $params );
+		}
+
 		return $action;
+
 	}
-	 
+
 	/**
 	 * Check if access is allowed and return the status code accordingly.
 	 *
