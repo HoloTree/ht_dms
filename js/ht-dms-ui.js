@@ -252,6 +252,8 @@ jQuery(document).ready(function( $ ) {
 
 
     function groupPreview( json, templateID, htmlID ) {
+        alert( 'gp');
+        console.log( json );
         htmlID = idCheck( htmlID );
         templateID = idCheck( templateID );
 

@@ -111,7 +111,10 @@ class route implements \Action_Hook_SubscriberInterface {
 		$params = array();
 
 		foreach( $desired_args as $arg ) {
-			$params[ $arg ] = pods_v_sanitized( $arg );
+			$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
+			if ( '' == $params[ $arg ] )  {
+				$params[ $arg ] = 0;
+			}
 		}
 
 		return $params;

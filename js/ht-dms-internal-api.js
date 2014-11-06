@@ -228,7 +228,16 @@ jQuery( function () {
                 oID = $( container ).attr( "oid" );
             }
 
+            if ( undefined == extraArg ) {
+                extraArg = 0;
+            }
+            if ( undefined == page ) {
+                page = 0;
+            }
+
+
             params = {};
+            params.page = page;
             params.extraArg = extraArg;
             params.oID = oID;
             params.view = $( container ).attr( "view" );
@@ -239,7 +248,7 @@ jQuery( function () {
         },
         cb: function() {
             if ( app.request.ready() ) {
-                containter = this.container;
+                container = this.container;
                 response = app.httpRequest.responseText;
                 $( container ).fadeOut( 800 ).hide();
                 $( container + "-spinner" ).show().delay( 400 );
