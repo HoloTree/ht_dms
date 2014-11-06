@@ -56,15 +56,37 @@ class route implements \Action_Hook_SubscriberInterface {
 			if ( 200 == $status_code  ) {
 				$params = $this->args( $action );
 				$response = $this->dispatch( $action, $params  );
-				$response            = json_encode( $response );
-				status_header( $status_code );
-				wp_send_json( $response );
+
 			}
 			else {
-				status_header( $status_code );
-				die( __( 'Access denied.', 'ht-dms' ) );
+				$response = __( 'Access denied.', 'ht-dms' );
 			}
 
+			$this->respond( $response, $status_code );
+
+		}
+
+	}
+
+	/**
+	 * Send the response
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string|array $response Response to send. Will be encoded as JSON if is array.
+	 * @param int $status_code Status code to set for the response.
+	 *
+	 * @return string
+	 */
+	private function respond( $response, $status_code ) {
+		status_header( $status_code );
+		if ( is_array( $response ) ) {
+			wp_send_json( $response );
+		}
+		else{
+			wp_die( esc_html( $response ) );
 		}
 
 	}
@@ -148,8 +170,10 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return int Status code
 	 */
 	private function check_access( $action ) {
-		if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
-			return 550;
+		if ( ! HT_DEV_MODE ) {
+			if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+				return 550;
+			}
 		}
 
 		if ( ! $this->action_allowed( $action ) ) {
@@ -158,6 +182,7 @@ class route implements \Action_Hook_SubscriberInterface {
 		}
 
 		return 200;
+
 	}
 
 	/**
