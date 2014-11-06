@@ -91,7 +91,8 @@ class route implements \Action_Hook_SubscriberInterface {
 			wp_send_json( $response );
 		}
 		else{
-			wp_die( esc_html( $response ) );
+			echo esc_html( $response );
+			die();
 		}
 
 	}
