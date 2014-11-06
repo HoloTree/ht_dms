@@ -1,5 +1,5 @@
+/*globals jQuery, htDMSinternalAPI, htDMS*/
 jQuery(document).ready(function( $ ) {
-    ajaxURL = htDMS.ajaxURL;
 
     /**
      * Containers to use paginated views for
@@ -9,14 +9,13 @@ jQuery(document).ready(function( $ ) {
      * @since 0.0.2
      */
     var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks', "#users_notifications" ];
-    window.paginatedViews = paginatedViews;
 
     //loop through paginatedViews running each one, if we have that div already.
     $.each( paginatedViews, function( index, value ){
         if ( $( value ).length ) {
             var spinner = value + "-spinner.spinner";
             $( spinner ).show();
-            paginate( value , 1 );
+            htDMSinternalAPI.paginate.request( value , 1 );
         };
     });
 
@@ -32,7 +31,7 @@ jQuery(document).ready(function( $ ) {
             var p2 = consensusPossibilities.possible_results[2];
 
             var selected_action = $( select_field ) .val();
-            console.log( selected_action );
+
             var result = false;
             if ( selected_action === 'accept' ) {
                 var result = 'Decision will be ' + p1 + '.';
@@ -58,8 +57,6 @@ jQuery(document).ready(function( $ ) {
                 $( '#dms-action-result' ).append( result).show();
             }
 
-
-            console.log(selected_action);
         }
     }
 
@@ -88,18 +85,18 @@ jQuery(document).ready(function( $ ) {
         var mark = '.notification-mark';
         $( mark ).click(function () {
 
-            markNotification( $( this ).attr('nid' ), $( this ).attr( 'viewed' ) );
+            htDMSinternalAPI.markNotification.request( $( this ).attr('nid' ), $( this ).attr( 'viewed' ) );
         });
 
         $( '#notification-single-close' ).click(function () {
 
-            markNotification( $( this ).attr('nid' ) );
+            htDMSinternalAPI.markNotification.request( $( this ).attr('nid' ) );
 
         });
 
         $( '#unviewed-only' ).click( function() {
             container = '#users_notifications';
-            paginate( container, $( container ).attr( 'page' ), 1 );
+            htDMSinternalAPI.paginate.request( container, $( container ).attr( 'page' ), 1 );
 
         });
 
@@ -108,9 +105,7 @@ jQuery(document).ready(function( $ ) {
     /**
      * Breadcrumbs JS
      */
-
     var breadNames = breadNamesJSON;
-    console.log( breadNames );
     var oName = breadNames.organization;
     var gName = breadNames.group;
     var dName = breadNames.decision;
@@ -128,7 +123,6 @@ jQuery(document).ready(function( $ ) {
 
 
         //store the screen-size into var
-        console.log(window.innerWidth);
         var screen = window.innerWidth;
         if (screen < 658) {
             if ( oName != '' ) {
@@ -202,6 +196,201 @@ jQuery(document).ready(function( $ ) {
 
         return abbr.replace(/[ ]$/g, '') + suffix;
     }
+
+    /**
+     * Consensus reload via ajax
+     *
+     * @since 0.0.3
+     */
+    function reloadConsensus() {
+
+        return htDMSinternalAPI.reloadConsensus.request();
+
+    }
+
+    window.reloadConsensus = reloadConsensus;
+
+
+
+    function loadUsers ( users, container, templateID  ) {
+
+        $.each(users, function( i, val ) {
+            var user = new wp.api.models.User( { ID: val } );
+            user.fetch().done(function () {
+                loadUser( user, container, templateID );
+            });
+
+        });
+    }
+
+
+    function loadUser( user, container, templateID  ) {
+
+        var name = user.attributes.name;
+        var avatar = user.attributes.avatar;
+        var ID = user.attributes.ID;
+
+        var source   = $( templateID ).html();
+
+        var data = {
+            name: name,
+            avatar: avatar,
+            ID: ID
+        };
+
+        if ( container == 'return' ) {
+            return data;
+        }
+
+        var template    = Handlebars.compile( source );
+        var html        = template( data );
+
+
+        $( container ).append( html );
+
+    }
+
+
+    function groupPreview( json, templateID, htmlID ) {
+        htmlID = idCheck( htmlID );
+        templateID = idCheck( templateID );
+
+        $.each( json, function( i, val ) {
+            var data = JSON.parse( val );
+
+            var source   = $( templateID ).html();
+            if ( typeof source === 'string' ) {
+                var template    = Handlebars.compile( source );
+                var html        = template( data );
+                $( htmlID ).append(html);
+            }
+            else{
+                console.log( 'groupPreview i=' + i );
+                console.log( templateID + '=' + source );
+            }
+
+        });
+
+    }
+
+
+    function organizationPreview( json, templateID, htmlID ) {
+        htmlID = idCheck( htmlID );
+        templateID = idCheck( templateID );
+
+        $.each( json, function( i, val ) {
+            var data = JSON.parse( val );
+
+            var source   = $( templateID ).html();
+            if ( typeof source === 'string' ) {
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $ (htmlID ).append(html);
+            }
+            else{
+                console.log( 'organizationPreview i=' + i );
+            }
+
+
+
+        });
+    }
+
+    //init foundation
+    $( document ).foundation();
+
+    tabHeight();
+    window.addEventListener( 'resize', tabHeight );
+
+    $( document ).ajaxComplete(function() {
+        //tabHeight();
+    });
+
+
+    function tabHeight() {
+        var width = $(document).width();
+        var divs = '#tabs .content';
+        if (width > 640) {
+            var maxHeight = -1;
+
+
+            if (undefined != paginatedViews) {
+                $.each( paginatedViews, function (index, value) {
+                    if ( $(value).length > 0 ) {
+                        maxHeight = maxHeight > $(value).height() ? maxHeight : $(value).height();
+                    };
+                });
+            }
+
+            $(divs).each(function () {
+                maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+            });
+
+
+            if (maxHeight > 0) {
+                $(divs).each(function () {
+                    $(this).height(maxHeight);
+                });
+
+                $('ul.tabs').height(maxHeight);
+            }
+        }
+        else {
+
+            $('ul.tabs').removeAttr( 'style' );
+            $(divs).each(function () {
+                $(this).removeAttr( 'style' );
+            });
+        }
+    }
+
+
+    $( '#ht-sub-menu-button' ).click(function() {
+        $( this ).toggleClass( 'expanded' ).siblings( 'div' ).slideToggle();
+    });
+
+
+    /**
+     * Consensus Visualization
+     *
+     * @since 0.0.3
+     */
+    $( document).ready( function()  {
+        if (typeof htDMS.consensusMembers != 0) {
+            htDMSinternalAPI.consensusView();
+        }
+    });
+
+
+    /**
+     * Open the discussion Modal
+     *
+     * @since 0.0.3
+     */
+    function openCommentModal() {
+        $( '#discussion-modal' ).foundation('reveal', 'open');
+    }
+
+    /**
+     * If respond is chosen for the decision action form, open the modal
+     *
+     * @since 0.0.3
+     */
+    $( ".CF5411fb087123d" ).submit(function( event ) {
+        if ( $( '#fld_738259_1').val() == 'respond' ) {
+            event.preventDefault();
+            openCommentModal();
+        }
+
+    });
+
+    $( ".CF5411fb087123d" ).submit(function( event ) {
+        if ( $( '#fld_738259_1').val() == 'propose-modify' ) {
+            event.preventDefault();
+            document.location = htDMS.proposeModifyURL;
+        }
+
+    });
 
 
 });

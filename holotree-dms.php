@@ -139,17 +139,15 @@ class HoloTree_DMS {
 				$version = rand();
 			}
 
-			wp_enqueue_style( 'pods-select2' );
-			wp_enqueue_script( 'pods-select2' );
 			wp_enqueue_style( 'pods-form' );
-			wp_enqueue_script( 'ht-dms', plugins_url( 'js/ht-dms.js', __FILE__ ), array ( 'jquery' ), $version, true );
-			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery', 'ht-dms' ), $version, true );
 
-			wp_enqueue_script( 'modernizer-cache', HT_DMS_ROOT_URL . 'js/modernizer.cache.min.js', array(), $version, false );
-			wp_enqueue_script( 'ajax-cache', HT_DMS_ROOT_URL . 'js/jquery-ajax-localstorage-cache.min.js', array( 'modernizer-cache' ), $version, true );
+			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery' ), $version, true );
+
+			//wp_enqueue_script( 'modernizer-cache', HT_DMS_ROOT_URL . 'js/modernizer.cache.min.js', array(), $version, false );
+			//wp_enqueue_script( 'ajax-cache', HT_DMS_ROOT_URL . 'js/jquery-ajax-localstorage-cache.min.js', array( 'modernizer-cache' ), $version, true );
 
 			if ( is_array( $this->htDMS_js_var() ) ) {
-				wp_localize_script( 'ht-dms', 'htDMS', $this->htDMS_js_var() );
+				wp_localize_script( 'ht-dms-ui', 'htDMS', $this->htDMS_js_var() );
 			}
 
 			$consensus_possibilities = false;

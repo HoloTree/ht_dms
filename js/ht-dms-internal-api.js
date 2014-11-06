@@ -11,25 +11,287 @@ jQuery( function () {
      * @since 0.1.0
      */
     app.init = function() {
-        app.test();
+        $( document ).ajaxComplete(function( event,request, settings ) {
+            app.events.ajaxComplete();
+        });
 
     };
 
-    app.test = function() {
-        params = {
-            nog: 'f',
-            action: 'foo'
-        };
-        app.request.make( params);
-        app.httpRequest.onreadystatechange = app.cb;
+    /**
+     * Event Handlers
+     *
+     * @since 0.1.0
+     *
+     * @type {{ajaxComplete: Function, click: Function}}
+     */
+    app.events = {
+        ajaxComplete: function() {
+          $( "[notification]" ).click( function() {
+              nID = $(this).attr( 'notification' );
+              app.notificationView( nID );
+          });
+        },
+        click : function() {
+            //@todo
+        }
+
+
     };
 
-    app.cb = function() {
-        if ( app.request.ready() ) {
 
-            console.log( app.httpRequest.responseText );
+    /**
+     * Notification UI
+     *
+     * @since 0.1.0
+     *
+     * @type {{request: Function, cb: Function}}
+     */
+    app.notificationView = {
+        request : function( nID ) {
+            params.nID = nID;
+            params.nID = 'load_notification';
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+                response = app.httpRequest.responseText;
+                var container = '#notification-viewer';
+                var previews = $( container ).html();
+                $( container ).html('');
+                $( container ).hide().append( response ).fadeIn( 400 );
+                $( '#notification-single-close').show();
+
+                $( "#notification-single-close").click( function () {
+                    $( '#notification-viewer').fadeOut( 400 ).html( '' );
+                    $( container ).hide().append( previews ).fadeIn( 400 );
+                });
+            }
         }
     };
+
+    /**
+     * Reload consensus views
+     *
+     * Called from the window scoped reloadConsensus() function
+     *
+     * @type {{container: string, request: Function, cb: Function}}
+     */
+    app.reloadConsensus = {
+        container: '#consensus-view',
+        request:  function(){
+            params.action = 'reload_consensus';
+            params.dID = htDMS.id;
+
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+                response = app.httpRequest.responseText;
+                $( this.container ).html( '' );
+                app.consensusView( response );
+                app.updateDecisionStatus.request();
+
+            }
+        }
+
+    };
+
+    /**
+     * Render consensus view
+     *
+     * @since 0.1.0
+     *
+     * @param user
+     */
+    app.consensusView = function( users ) {
+        if ( undefined == users ) {
+            users =  JSON.parse( htDMS.consensusMemberDetails );
+        }
+
+        var data = {
+            header0: htDMS.consensusHeaders.header0,
+            header1: htDMS.consensusHeaders.header1,
+            header2: htDMS.consensusHeaders.header2,
+            users0: users[0],
+            users1: users[1],
+            users2: users[2]
+        };
+
+
+        var source   = $( '#consensus-view-template' ).html();
+        if ( typeof source === 'string' ) {
+            var template = Handlebars.compile(source);
+            var html = template(data);
+            $('#consensus-view').append(html);
+        }
+
+        $( '#consensus-views-chooser li a' ).click( function () {
+            var cst = $( this).first().attr( 'cst' );
+           app.consensusViewUpdate( cst );
+        });
+    };
+
+    app.consensusViewUpdate = function( id ) {
+        $( '#consensus-views-by-status' ).children().fadeOut();
+        var container = '#' + id;
+        $( container ).fadeIn();
+
+    };
+
+    app.contentView = {
+
+    };
+
+
+    app.updateDecisionStatus = {
+        container: '#decision-status',
+        request: function() {
+            params.action = 'update_decision_status';
+            params.dID = htDMS.id;
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+
+                response = app.httpRequest.responseText;
+                $( this.container ).fadeOut( 400 );
+                $( this.container ).html('');
+                $( this.container ).append( response ).fadeIn( 400 );
+            }
+
+        }
+
+    };
+
+    app.reloadMembership = {
+        container: "#group-membership",
+        gID : htDMS.id,
+        request: function() {
+            params.action = 'reload_membership';
+            params.gID = htDMS.id;
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+                response = app.httpRequest.responseText;
+                $( this.container ).fadeOut( 400 );
+                $( this.container ).html( '' );
+                $( this.container ).append( response ).fadeIn( 400 );
+            }
+        }
+
+    };
+
+    /**
+     * Mark a notification as read
+     *
+     * @since 0.0.1
+     *
+     * @type {{request: Function, cb: Function}}
+     */
+    app.markNotification = {
+        request: function( nID, viewed  ) {
+            var mark = 1;
+            if ( viewed == 'Yes' ) {
+                mark = 0;
+            }
+            app.params.nID = nID;
+            app.params.viewed = viewed;
+            app.params.action = 'mark_notification';
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+                app.paginate.request( "#users_notifications", 1 );
+            }
+        }
+    };
+
+
+    /**
+     * Paginated view loader
+     *
+     * @type {{container: boolean, request: Function, cb: Function}}
+     */
+    app.paginate = {
+        container:false,
+        request: function( container, page, extraArg ) {
+            app.paginate.container = container;
+            var oID = 0;
+            if ( undefined !== $( container ).attr( "oid" ) ) {
+                oID = $( container ).attr( "oid" );
+            }
+
+            params = {};
+            params.extraArg = extraArg;
+            params.oID = oID;
+            params.view = $( container ).attr( "view" );
+            params.limit = $( container ).attr( "limit" );
+            params.action = 'paginate';
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb;
+        },
+        cb: function() {
+            if ( app.request.ready() ) {
+                containter = this.container;
+                response = app.httpRequest.responseText;
+                $( container ).fadeOut( 800 ).hide();
+                $( container + "-spinner" ).show().delay( 400 );
+                $( container ).html('').hide().append( response ).fadeIn( 800 );
+                $( container + "-spinner") .hide();
+                $( container ).attr('page', page );
+            }
+        }
+
+
+    };
+
+    /**
+     * Get members of a group or organization
+     *
+     * @since 0.1.0
+     *
+     * @type {{request: Function, cb: Function}}
+     */
+    app.getMembers = {
+        request: function( id, type, container ) {
+            this.container = container;
+            app.params.id = id;
+            app.params.tyoe = viewed;
+            app.params.action = 'mark_notification';
+            app.request.make( params );
+            app.httpRequest.onreadystatechange = this.cb( container );
+        },
+        cb: function( container ) {
+            if ( app.request.ready() ) {
+                response = app.httpRequest.responseText;
+                document.getElementById(  container ).innerHTML = '<span class="members-label">Members:</span>' + response;
+            }
+        }
+
+    };
+
+    /**
+     * Check if an ID has the # in it, if not, add it.
+     *
+     * @param id
+     * @returns {*}
+     */
+    app.idCheck = function( id ) {
+        if ( id.indexOf( '#' ) < 0 ) {
+            id = '#' + id;
+        }
+
+        return id;
+    };
+
+
 
     /**
      * Initialize XMLHttpRequest object
@@ -44,7 +306,6 @@ jQuery( function () {
      * @since 0.1.0
      */
     app.request = {
-
 
         /**
          * Make a request to internal API
