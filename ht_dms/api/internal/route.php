@@ -53,9 +53,14 @@ class route implements \Action_Hook_SubscriberInterface {
 
 		if ( ! empty( $action )  ) {
 			$status_code = $this->check_access( $action );
+
 			if ( 200 == $status_code  ) {
-				$params = $this->args( $action );
-				$response = $this->dispatch( $action, $params  );
+				$cache_key = implode( $_GET, '=' );
+				if ( ! $response = pods_cache_get( $cache_key )  ) {
+					$params = $this->args( $action );
+					$response = $this->dispatch( $action, $params  );
+					pods_cache_set( $cache_key, $response );
+				}
 
 			}
 			else {
