@@ -48,14 +48,21 @@ class route implements \Action_Hook_SubscriberInterface {
 
 		$action = $wp_query->get( 'action' );
 
-		if ( ! empty( $action ) && check_ajax_referer( 'ht-dms', 'nonce' ) ) {
-			$response = array();
-			$response[ $action ] = 'foo';
-			$response = json_encode( $response );
-			status_header( 200 );
-			wp_send_json( $response );
-
+		if ( ! empty( $action )  ) {
+			if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+				$response = array();
+				$response[ $action ] = 'foo';
+				$response            = json_encode( $response );
+				status_header( 200 );
+				wp_send_json( $response );
+			}
+			else {
+				status_header( 550 );
+				die( __( 'Access denied.', 'ht-dms' ) );
+			}
 		}
+
+
 
 	}
 
@@ -90,5 +97,5 @@ class route implements \Action_Hook_SubscriberInterface {
 		);
 
 	}
-	
+
 } 

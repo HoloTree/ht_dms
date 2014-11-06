@@ -83,17 +83,20 @@ jQuery( function () {
             return url;
         },
         /**
-         * Check if the response is ready
+         * Check if the response is ready & status code is 200.
          *
          * @since 0.1.0
          *
          * @returns {boolean}
          */
         ready: function() {
-            if ( app.httpRequest.readyState === 4) {
-                if ( app.httpRequest.status === 200) {
+            if ( app.httpRequest.readyState === 4 ) {
+                if ( app.httpRequest.status === 200 ) {
                     return true;
 
+                }
+                if ( app.httpRequest.status === 550 ) {
+                    console.log( app.httpRequest.responseText );
                 }
 
             }
