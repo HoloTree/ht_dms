@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\api\internal;
+namespace ht_dms\api\internal\actions;
 
 
 class foo {

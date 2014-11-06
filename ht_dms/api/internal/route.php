@@ -113,7 +113,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 */
 	private function action_class( $action ) {
 
-		return $class = __NAMESPACE__ . '\\' . $action;
+		return $class = __NAMESPACE__ . '\\actions\\' . $action;
 
 	}
 
