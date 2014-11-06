@@ -41,7 +41,11 @@ class route implements \Action_Hook_SubscriberInterface {
 	}
 
 	/**
-	 * @TODO this right
+	 * Main router for internal API.
+	 *
+	 * Checks permission, and dispatches and returns, or retruns error.
+	 *
+	 * @since 0.1.0
 	 */
 	function do_api() {
 		global $wp_query;
@@ -49,20 +53,102 @@ class route implements \Action_Hook_SubscriberInterface {
 		$action = $wp_query->get( 'action' );
 
 		if ( ! empty( $action )  ) {
-			if ( check_ajax_referer( 'ht-dms', 'nonce' ) ) {
-				$response = array();
-				$response[ $action ] = 'foo';
+			$status_code = $this->check_access( $action );
+			if ( 200 == $status_code  ) {
+				$response = $this->dispatch( $action );
 				$response            = json_encode( $response );
-				status_header( 200 );
+				status_header( $status_code );
 				wp_send_json( $response );
 			}
 			else {
-				status_header( 550 );
+				status_header( $status_code );
 				die( __( 'Access denied.', 'ht-dms' ) );
 			}
+
 		}
 
+	}
 
+	/**
+	 * Dispatch requests
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action name.
+	 * @param array|null $params
+	 *
+	 * @return mixed The result of the action to return.
+	 */
+	private function dispatch( $action, $params = null ) {
+		return $action;
+	}
+	 
+	/**
+	 * Check if access is allowed and return the status code accordingly.
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action to take
+	 *
+	 * @return int Status code
+	 */
+	private function check_access( $action ) {
+		if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			return 550;
+		}
+
+		if ( ! $this->action_allowed( $action ) ) {
+			return 501;
+
+		}
+
+		return 200;
+	}
+
+	/**
+	 * Actions to allow via internal API
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array Allowed actions
+	 */
+	private function allowed_actions() {
+		$actions = array(
+			'foo'
+		);
+
+		/**
+		 * Filter allowable actions for internal API
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param array $actions Actions to allow
+		 *
+		 * @return array
+		 */
+		return apply_filters( 'ht_dms_internal_api_allowed_actions', $actions );
+	}
+
+	/**
+	 * Check if an action is allowed.
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action name.
+	 *
+	 * @return bool
+	 */
+	private function action_allowed( $action ) {
+
+		return ( in_array( $action, $this->allowed_actions() ) );
 
 	}
 

@@ -57,7 +57,7 @@ jQuery( function () {
             url = app.request.url( params );
 
             app.httpRequest.open( 'GET', url, true );
-            app.httpRequest.send( null) ;
+            app.httpRequest.send( null ) ;
 
         },
         /**
