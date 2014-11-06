@@ -16,4 +16,8 @@ class foo {
 	 public static function args() {
 		 return array( 'nog' );
 	 }
+
+	public static function act( $params ) {
+		return $params;
+	}
 } 

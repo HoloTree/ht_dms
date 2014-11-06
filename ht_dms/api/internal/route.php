@@ -130,11 +130,9 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return mixed The result of the action to return.
 	 */
 	private function dispatch( $action, $params = null ) {
-		if ( is_array( $params ) ) {
-			$action = array_merge( array( $action ), $params );
-		}
+		$class = $this->action_class( $action );
 
-		return $action;
+		return $class::act( $params );
 
 	}
 
@@ -172,9 +170,15 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return array Allowed actions
 	 */
 	private function allowed_actions() {
-		$actions = array(
-			'foo'
-		);
+		$dir =  trailingslashit( dirname( __FILE__ ) ) . 'actions';
+		$files = scandir( $dir  );
+		foreach ( $files as $file  ) {
+			$path = pathinfo( $file, PATHINFO_EXTENSION );
+			if ( 'php' == $path ) {
+				$file = str_replace( '.php', '', $file );
+				$actions[] = $file;
+			}
+		}
 
 		/**
 		 * Filter allowable actions for internal API
