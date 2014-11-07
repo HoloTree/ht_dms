@@ -251,55 +251,6 @@ jQuery(document).ready(function( $ ) {
     }
 
 
-    function groupPreview( json, templateID, htmlID ) {
-
-        htmlID = idCheck( htmlID );
-        templateID = idCheck( templateID );
-
-        $.each( json, function( i, val ) {
-            var data = JSON.parse( val );
-
-            var source   = $( templateID ).html();
-            if ( typeof source === 'string' ) {
-                var template    = Handlebars.compile( source );
-                var html        = template( data );
-                $( htmlID ).append(html);
-            }
-            else{
-                console.log( 'groupPreview i=' + i );
-                console.log( templateID + '=' + source );
-            }
-
-        });
-
-    }
-
-    window.groupPreview = groupPreview;
-
-
-    function organizationPreview( json, templateID, htmlID ) {
-        htmlID = idCheck( htmlID );
-        templateID = idCheck( templateID );
-
-        $.each( json, function( i, val ) {
-            var data = JSON.parse( val );
-
-            var source   = $( templateID ).html();
-            if ( typeof source === 'string' ) {
-                var template = Handlebars.compile(source);
-                var html = template(data);
-                $ (htmlID ).append(html);
-            }
-            else{
-                console.log( 'organizationPreview i=' + i );
-            }
-
-
-
-        });
-    }
-
-    window.organizationPreview = organizationPreview;
 
     //init foundation
     $( document ).foundation();
