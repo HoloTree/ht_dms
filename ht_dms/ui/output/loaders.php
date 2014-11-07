@@ -294,13 +294,13 @@ class loaders implements \Hook_SubscriberInterface {
 		$out = sprintf( '<div class="holotree %1s" id="holotree-dms">', $container_id );
 
 		/**
-		 * Output something or trigger something before HoloTree Main content happens.
+		 * Output something or trigger something before HoloTree DMS main content happens.
 		 *
-		 * Output occurs inside the main HoloTree container.
+		 * Output occurs inside the main HoloTree DMS container.
 		 *
 		 * @since 0.0.1
 		 */
-		$out .= do_action( 'ht_before_ht' );
+		do_action( 'ht_dms_before_output' );
 		$out .= $this->ui()->output_elements()->hamburger( ht_dms_mini_menu_items() );
 		$out .= $this->alert();
 
@@ -331,13 +331,13 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 
 		/**
-		 * Output something or trigger something after HoloTree Main content happens.
+		 * Output something or trigger something after HoloTree DMS main content happens.
 		 *
 		 * Output occurs inside the main HoloTree container.
 		 *
 		 * @since 0.0.1
 		 */
-		$out .= do_action( 'ht_after_ht' );
+		do_action( 'ht_dms_after_output' );
 
 		$out .= '</div>';
 
@@ -537,6 +537,30 @@ class loaders implements \Hook_SubscriberInterface {
 	}
 
 	function handlebars( $file, $id = false, $js = false, $class='', $container_type = 'div', $partial = true ) {
+		$out = array();
+		$template = $this->handlebars_template( $file, $partial );
+
+		if ( $template ) {
+			$out[] = $template;
+		}
+
+		if ( is_string( $id ) ) {
+			$out[ ] =$this->handlebars_container( $id, $class, $container_type );
+		}
+
+		if ( is_string( $js ) ) {
+			$out[] = '<script type="text/javascript">' . $js . '</script>';
+		}
+
+
+		$out = implode( $out );
+
+		return $out;
+
+
+	}
+
+	function handlebars_template( $file, $partial = true ) {
 		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
 		if ( $partial ) {
 			$template .= 'partials/';
@@ -545,26 +569,17 @@ class loaders implements \Hook_SubscriberInterface {
 		if ( file_exists( $template ) ) {
 
 
-			if ( is_string( $js ) ) {
-				$out[] = '<script type="text/javascript">'.$js.'</script>';
-			}
 
+			$template = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
 
-			$out[] = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
-			if ( is_string( $id ) ) {
-				$out[ ] = "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
-			}
-
-
-			$out = implode( $out );
-
-			return $out;
+			return $template;
 		}
-		else{
-			if ( HT_DEV_MODE ) {
-				ht_dms_error( var_Dump( array( $template, $file ) ) );
-			}
-		}
+
+	}
+
+	function handlebars_container(  $id, $class='', $container_type = 'div' ) {
+
+		return "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
 
 	}
 

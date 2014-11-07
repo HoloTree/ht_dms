@@ -22,7 +22,7 @@ class common  {
 		add_action( 'init', array( $this, 'handlebars' ) );
 		add_action( 'init', array( $this, 'dms_actions' ), 35 );
 		add_action( 'pods_api_post_save_pod_item', array( $this,'post_edit' ),  25, 3 );
-		add_action( 'ht_before_ht', array( $this, 'message' ) );
+		//add_action( 'ht_dms_before_output', array( $this, 'message' ) );
 
 	}
 
