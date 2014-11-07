@@ -41,7 +41,7 @@ $tabs = array(
 	*/
 );
 
-if ( HT_DEV_MODE ) {
+if ( 1==9 && HT_DEV_MODE ) {
 	$tabs[] = array(
 		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'ht_dms' ), 'task' ),
 		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )

@@ -44,7 +44,7 @@ class paginate {
 
 		$view_args = array_keys( self::view_args()  );
 		if ( in_array( $view, $view_args  ) ) {
-			$out = self::pagination_views( $view, $args );
+			$out = self::output( $view, $args );
 			return $out;
 
 		}
@@ -62,6 +62,46 @@ class paginate {
 		return array( 'view', 'limit', 'page', 'extraArg', 'oID' );
 
 	}
+
+	public static $templates_to_load = array();
+
+	private static function output( $view, $args ) {
+		$args[ 'return' ] = 'Pods';
+		$pagination_args_and_path = self::view_args( $args );
+		$pagination_args_and_path = pods_v( $view, $pagination_args_and_path );
+		$view_args = pods_v( 'args', $pagination_args_and_path  );
+		if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
+			$template_id = 'group-preview';
+		}
+		elseif ( $view == 'users_organizations') {
+			$template_id = 'organization-preview';
+		}
+		else {
+			ht_dms_error();
+		}
+
+		$output[ 'outer_html_id' ] = '#' . $view;
+		$output[ 'html_id' ] = $html_id = str_replace( '_', '-', $view ).'-container';
+
+		$output[ 'template_id' ] = $template_id;
+		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
+		$output[ 'json' ] = self::get_json( $view, $view_args );
+		$output[ 'html' ] = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
+		return $output;
+	}
+
+	private static function get_json( $view, $view_args ) {
+		$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
+		if ( $obj ) {
+			return $obj;
+		}
+		else {
+			return json_encode( array( 0 ) );
+		}
+
+	}
+
+
 
 	/**
 	 *  Loads the paginated view.

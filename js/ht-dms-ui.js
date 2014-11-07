@@ -11,11 +11,11 @@ jQuery(document).ready(function( $ ) {
     var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks', "#users_notifications" ];
 
     //loop through paginatedViews running each one, if we have that div already.
-    $.each( paginatedViews, function( index, value ){
-        if ( $( value ).length ) {
-            var spinner = value + "-spinner.spinner";
+    $.each( paginatedViews, function( index, containerID ){
+        if ( $( containerID ).length ) {
+            var spinner = containerID + "-spinner.spinner";
             $( spinner ).show();
-            htDMSinternalAPI.paginate.request( value , 1 );
+            htDMSinternalAPI.paginate.request( containerID , 1 );
         };
     });
 
@@ -252,8 +252,7 @@ jQuery(document).ready(function( $ ) {
 
 
     function groupPreview( json, templateID, htmlID ) {
-        alert( 'gp');
-        console.log( json );
+
         htmlID = idCheck( htmlID );
         templateID = idCheck( templateID );
 
@@ -274,6 +273,8 @@ jQuery(document).ready(function( $ ) {
         });
 
     }
+
+    window.groupPreview = groupPreview;
 
 
     function organizationPreview( json, templateID, htmlID ) {
@@ -297,6 +298,8 @@ jQuery(document).ready(function( $ ) {
 
         });
     }
+
+    window.organizationPreview = organizationPreview;
 
     //init foundation
     $( document ).foundation();
@@ -344,6 +347,10 @@ jQuery(document).ready(function( $ ) {
                 $(this).removeAttr( 'style' );
             });
         }
+    }
+
+    function idCheck( id ) {
+        return htDMSinternalAPI.idCheck( id );
     }
 
 

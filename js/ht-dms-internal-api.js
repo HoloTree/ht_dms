@@ -223,6 +223,7 @@ jQuery( function () {
         container:false,
         request: function( container, page, extraArg ) {
             app.paginate.container = container;
+
             var oID = 0;
             if ( undefined !== $( container ).attr( "oid" ) ) {
                 oID = $( container ).attr( "oid" );
@@ -237,25 +238,53 @@ jQuery( function () {
 
 
             params = {};
+            params.view = view = container.replace( '#', '' );
             params.page = page;
             params.extraArg = extraArg;
             params.oID = oID;
             params.view = $( container ).attr( "view" );
             params.limit = $( container ).attr( "limit" );
             params.action = 'paginate';
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
-        },
-        cb: function() {
-            if ( app.request.ready() ) {
-                container = this.container;
-                response = app.httpRequest.responseText;
-                $( container ).fadeOut( 800 ).hide();
-                $( container + "-spinner" ).show().delay( 400 );
-                $( container ).html('').hide().append( response ).fadeIn( 800 );
-                $( container + "-spinner") .hide();
-                $( container ).attr('page', page );
-            }
+            url = app.url( params );
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                success: function ( response ) {
+
+                    var htmlID = app.idCheck( response.html_id );
+                    var templateID = app.idCheck( response.template_id );
+                    var html = response.html;
+                    var outer_html_id = response.outer_html_id;
+                    var spinner = outer_html_id + "-spinner";
+
+                    $( outer_html_id ).fadeOut( 800 ).hide();
+                    $( outer_html_id ).append( html ).append( response.template );
+                    $( spinner ).show().delay( 400 );
+
+
+                    var rendered = '';
+
+                    $.each( JSON.parse( response.json ), function ( i, val ) {
+
+                        data = JSON.parse( val );
+                        var source = $( templateID ).html();
+                        template = Handlebars.compile( source );
+                        rendered += template( data );
+                        delete template;
+                        delete source;
+                    } );
+
+
+                    $( htmlID ).html( rendered );
+                    $( spinner ).hide();
+                    $( outer_html_id ).attr( 'page', page );
+                    $( outer_html_id ).fadeIn( 800 );
+
+                }
+            });
         }
 
 
@@ -299,8 +328,28 @@ jQuery( function () {
 
         return id;
     };
+    /**
+     * Construct a nonced URL for the request
+     *
+     * @since 0.1.0
+     *
+     * @param params
+     *
+     * @returns {string|*} The URL
+     */
+    app.url = function( params ) {
+        rootURL = htDMSinternalAPIvars.url;
 
 
+        nonce = htDMS.nonce;
+        params[ 'nonce' ] = nonce;
+
+        params = $.param( params );
+
+        url = rootURL +  '?' + params;
+
+        return url;
+    };
 
     /**
      * Initialize XMLHttpRequest object
@@ -340,17 +389,7 @@ jQuery( function () {
          * @returns {string|*} The URL
          */
         url: function( params ) {
-            rootURL = htDMSinternalAPIvars.url;
-            rootURL = 'http://gus.dev/ht-dms-internal-api';
-
-            nonce = htDMS.nonce;
-            params[ 'nonce' ] = nonce;
-
-            params = $.param( params );
-
-            url = rootURL +  '?' + params;
-
-            return url;
+            return app.url( params );
         },
         /**
          * Check if the response is ready & status code is 200.
