@@ -9,13 +9,6 @@
  * @copyright 2014 Josh Pollock
  */
 
-if ( HT_DEV_MODE ) {
-	$link = get_post_type_archive_link( HT_DMS_DECISION_POD_NAME );
-	echo '<a href="' . $link . '">Decisions</a><br>';
-	$link = get_post_type_archive_link( HT_DMS_GROUP_POD_NAME );
-	echo '<a href="' . $link . '">Groups</a><br>';
-}
-
 $ui = ht_dms_ui();
 
 $uID = get_current_user_id();
