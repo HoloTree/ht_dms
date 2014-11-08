@@ -23,9 +23,14 @@ $tabs = array();
 $count = $org_class->group_count( $id, $obj );
 $is_member = $org_class->is_member( $id, $uID, $obj );
 $is_facilitator = $org_class->is_facilitator( $id, $uID );
+$facilitator_tabs = array();
+
+if ( $is_facilitator ) {
+	$facilitator_tabs = $ui->output_elements()->organization_facilitator_tabs( $id, $uID, $obj );
+}
 
 if ( $is_facilitator && 0 === $count  ) {
-	$tabs = $ui->output_elements()->organization_facilitator_tabs( $id, $uID, $obj );
+	$tabs = array_merge( $tabs, $facilitator_tabs );
 }
 else {
 	if ( $count > 0 || HT_DEV_MODE ) {
@@ -34,17 +39,13 @@ else {
 
 	if ( $count > 0 && ( $is_member || $org_class->open_access( $id, $obj ) ) ) {
 
-		$tabs[] = array (
-
-			array (
+		$tabs[] =array (
 				'label'   => ht_dms_add_icon( __( 'My Groups In Organization', 'ht_dms' ), 'group' ),
 				'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
-			),
-			array (
+		);
+		$tabs[] = array (
 				'label'   => ht_dms_add_icon( __( 'Public Groups In Organization', 'ht_dms' ), array( 'public', 'group' ) ),
 				'content' => ht_dms_paginated_view_container( 'public_groups', $paginated_view_args )
-			),
-
 		);
 
 		if ( HT_DEV_MODE ) {
@@ -55,7 +56,7 @@ else {
 		}
 
 		if ( $is_facilitator ) {
-			$tabs[] = $ui->output_elements()->organization_facilitator_tabs( $id, $uID, $obj );
+			$tabs = array_merge( $tabs, $facilitator_tabs );
 		}
 
 	}
