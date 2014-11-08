@@ -48,6 +48,7 @@ jQuery( function () {
      */
     app.notificationView = {
         request : function( nID ) {
+            params = {};
             params.nID = nID;
             params.nID = 'load_notification';
             app.request.make( params );
@@ -80,6 +81,7 @@ jQuery( function () {
     app.reloadConsensus = {
         container: '#consensus-view',
         request:  function(){
+            params = {};
             params.action = 'reload_consensus';
             params.dID = htDMS.id;
 
@@ -148,6 +150,7 @@ jQuery( function () {
     app.updateDecisionStatus = {
         container: '#decision-status',
         request: function() {
+            params = {};
             params.action = 'update_decision_status';
             params.dID = htDMS.id;
             app.request.make( params );
@@ -170,6 +173,7 @@ jQuery( function () {
         container: "#group-membership",
         gID : htDMS.id,
         request: function() {
+            params = {};
             params.action = 'reload_membership';
             params.gID = htDMS.id;
             app.request.make( params );
@@ -199,9 +203,10 @@ jQuery( function () {
             if ( viewed == 'Yes' ) {
                 mark = 0;
             }
-            app.params.nID = nID;
-            app.params.viewed = viewed;
-            app.params.action = 'mark_notification';
+            params = {};
+            params.nID = nID;
+            params.viewed = viewed;
+            params.action = 'mark_notification';
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb;
 
@@ -236,7 +241,6 @@ jQuery( function () {
                 page = 0;
             }
 
-
             params = {};
             params.view = view = container.replace( '#', '' );
             params.page = page;
@@ -245,8 +249,7 @@ jQuery( function () {
             params.view = $( container ).attr( "view" );
             params.limit = $( container ).attr( "limit" );
             params.action = 'paginate';
-            url = app.url( params );
-
+            var url = app.url( params );
 
             $.ajax({
                 type: 'GET',
@@ -300,9 +303,10 @@ jQuery( function () {
     app.getMembers = {
         request: function( id, type, container ) {
             this.container = container;
-            app.params.id = id;
-            app.params.tyoe = viewed;
-            app.params.action = 'mark_notification';
+            params = {};
+            params.id = id;
+            params.tyoe = viewed;
+            params.action = 'mark_notification';
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb( container );
         },
@@ -339,7 +343,6 @@ jQuery( function () {
      */
     app.url = function( params ) {
         rootURL = htDMSinternalAPIvars.url;
-
 
         nonce = htDMS.nonce;
         params[ 'nonce' ] = nonce;
