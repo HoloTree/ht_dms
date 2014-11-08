@@ -205,7 +205,7 @@ class HoloTree_DMS {
 
 
 				if ( $consensusMembers ) {
-					$htDMS['consensusMembers'] = $consensusMembers;
+					$htDMS['consensusMembers'] = json_encode( $consensusMembers );
 				}
 
 				$htDMS['consensusMemberDetails'] = ht_dms_sorted_consensus_details( $consensus );

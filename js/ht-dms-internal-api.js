@@ -79,7 +79,6 @@ jQuery( function () {
      * @type {{container: string, request: Function, cb: Function}}
      */
     app.reloadConsensus = {
-        container: '#consensus-view',
         request:  function(){
             params = {};
             params.action = 'reload_consensus';
@@ -91,7 +90,7 @@ jQuery( function () {
         cb: function() {
             if ( app.request.ready() ) {
                 response = app.httpRequest.responseText;
-                $( this.container ).html( '' );
+                $( '#consensus-view' ).html( '' );
                 app.consensusView( response );
                 app.updateDecisionStatus.request();
 
@@ -109,9 +108,13 @@ jQuery( function () {
      */
     app.consensusView = function( users ) {
         if ( undefined == users ) {
-            users =  JSON.parse( htDMS.consensusMemberDetails );
+            users =  htDMS.consensusMemberDetails;
         }
 
+        if ( 'object' !== typeof users ) {
+            users = JSON.parse( users );
+        }
+        
         var data = {
             header0: htDMS.consensusHeaders.header0,
             header1: htDMS.consensusHeaders.header1,
@@ -129,9 +132,10 @@ jQuery( function () {
             $('#consensus-view').append(html);
         }
 
+        //@todo move this to the click handler object
         $( '#consensus-views-chooser li a' ).click( function () {
             var cst = $( this).first().attr( 'cst' );
-           app.consensusViewUpdate( cst );
+            app.consensusViewUpdate( cst );
         });
     };
 
