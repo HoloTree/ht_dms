@@ -954,3 +954,17 @@ function ht_dms_caldera_import() {
 	echo \ht_dms\helper\caldera\import::import_forms();
 
 }
+
+/**
+ * Determine if we are using tasks or not.
+ *
+ * @return bool True if HT_DMS_TASK_MODE is defined & true
+ *
+ * @since 0.1.0
+ */
+function ht_dms_task_mode() {
+	if ( defined( 'HT_DMS_TASK_MODE' ) && HT_DMS_TASK_MODE ) {
+		return true;
+
+	}
+}

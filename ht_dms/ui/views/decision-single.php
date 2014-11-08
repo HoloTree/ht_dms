@@ -50,19 +50,19 @@ else {
 			array(
 				'label'		=> ht_dms_add_icon( __( 'Decision Documents', 'ht_dms' ), 'docs' ),
 				'content'	=> $ui->views()->docs( $obj, $id, 'decision' ),
-			),
-			/*
-			array(
+			)
+		);
+		if ( ht_dms_task_mode() ) {
+			$tabs[] = array(
 				'label'	 	=> ht_dms_add_icon( __( 'View Tasks', 'ht_dms' ), 'task' ),
 				//'content'	=> ht_dms_paginated_view_container( 'decisions_tasks', $paginated_view_args )
 				'content' 	=> $ui->views()->decisions_tasks( null, $id ),
-			),
-			array (
+			);
+			$tabs[] = array (
 				'label'   => ht_dms_add_icon( __( 'Add Task', 'ht_dms' ), array( 'new', 'task') ),
 				'content' => $ui->add_modify()->new_task(  null, null, $id ),
-			),
-			*/
-		);
+			);
+		}
 
 	//add consensus visualization as a tabs within a tab until 3rd UI element exists
 	//@see https://github.com/HoloTree/ht_dms/issues/70

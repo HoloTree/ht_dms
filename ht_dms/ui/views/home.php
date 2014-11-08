@@ -34,11 +34,14 @@ $tabs = array(
 	*/
 );
 
-if ( 1==9 && HT_DEV_MODE ) {
+if ( ht_dms_task_mode() ) {
 	$tabs[] = array(
-		'label'		=> ht_dms_add_icon( __( 'Assigned Tasks', 'ht_dms' ), 'task' ),
-		'content'	=> ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
+		'label'   => ht_dms_add_icon( __( 'Assigned Tasks', 'ht_dms' ), 'task' ),
+		'content' => ht_dms_paginated_view_container( 'assigned_tasks', $paginated_view_args )
 	);
+}
+
+if ( HT_DEV_MODE ) {
 	$tabs[] = array(
 		'label'		=> ht_dms_add_icon( __( 'New Organization', 'ht_dms' ), array( 'new', 'organization' ) ),
 		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
