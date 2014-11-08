@@ -29,7 +29,7 @@ class add implements \Filter_Hook_SubscriberInterface{
 			"description"       =>  __("Run Action on submission"),
 			"author"            =>  'David Cramer',
 			"author_url"        =>  'http://cramer.co.za',
-			"processor"         =>  'htrun_action_process',
+			"processor"         =>  array( $this, 'run_action_process' ),
 			"template"          =>  dirname( __FILE__ ) . "/run-action-config.php",
 		);
 
@@ -37,11 +37,12 @@ class add implements \Filter_Hook_SubscriberInterface{
 
 	}
 
-	function run_action_process($config, $form){
+	function run_action_process( $config, $form ){
 
 		$data = array();
 		foreach($form['fields'] as $field_id=>$field){
-			$data[$field['slug']] = Caldera_Forms::get_field_data($field_id, $form);
+			$cf = new \Caldera_Forms();
+			$data[$field['slug']] = $cf::get_field_data($field_id, $form);
 		}
 
 		do_action( $config['action'], $data, $form);
