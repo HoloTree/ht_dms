@@ -37,7 +37,7 @@ class membership {
 
 	function leave() {
 		$message = __( 'Click to leave this group.', 'ht_dms' );
-
+		$message = '<p>'.$message.'</p>';
 		return  $this->output_container(
 			ht_dms_caldera_loader( ht_dms_ui()->caldera_actions()->leave_group_form_id, $message ),
 			__FUNCTION__
@@ -47,7 +47,7 @@ class membership {
 
 	function pending() {
 		$message = __( 'Approve or reject pending members to this group.', 'ht_dms' );
-
+		$message = '<p>'.$message.'</p>';
 		return  $this->output_container(
 			ht_dms_caldera_loader( ht_dms_ui()->caldera_actions()->group_pending_form_id, $message ),
 			__FUNCTION__
@@ -93,7 +93,7 @@ class membership {
 
 	private function output_container( $content, $function, $type = 'group' ) {
 
-		$out = sprintf( '<div id="%1s-%2s">%3s</div>', $function, $type, $content );
+		$out = sprintf( '<div id="%1s-%2s" class="group-membership-action">%3s</div>', $function, $type, $content );
 
 		if ( is_string( $out ) ) {
 
