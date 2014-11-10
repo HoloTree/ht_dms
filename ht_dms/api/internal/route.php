@@ -86,6 +86,10 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return string
 	 */
 	private function respond( $response, $status_code ) {
+		if ( empty( $response ) ) {
+			$status_code = 204;
+		}
+
 		status_header( $status_code );
 		if ( is_array( $response ) ) {
 			wp_send_json( $response );
@@ -255,7 +259,7 @@ class route implements \Action_Hook_SubscriberInterface {
 		}
 
 		$handle = 'ht-dms-internal-api';
-		wp_enqueue_script( $handle, HT_DMS_ROOT_URL .'js/ht-dms-internal-api.js', array( 'jquery'), $version, true );
+		wp_enqueue_script( $handle, HT_DMS_ROOT_URL .'js/ht-dms-internal-api.js', array( 'jquery'), $version, false );
 		wp_localize_script( $handle, 'htDMSinternalAPIvars', $this->vars() );
 
 
@@ -270,7 +274,10 @@ class route implements \Action_Hook_SubscriberInterface {
 	 */
 	private function vars() {
 		return array(
-			'url' => esc_url( home_url( 'ht-dms-internal-api' ) )
+			'url' => esc_url( home_url( 'ht-dms-internal-api' ) ),
+			'id' => get_queried_object_id(),
+			'nonce' => wp_create_nonce( 'ht-dms' ),
+			'type' => ht_dms_prefix_remover( get_post_type() ),
 		);
 
 	}

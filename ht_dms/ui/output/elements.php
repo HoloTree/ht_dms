@@ -11,6 +11,8 @@
 
 namespace ht_dms\ui\output;
 
+use ht_dms\helper\json;
+
 class elements {
 	/**
 	 * Show comments and comment form.
@@ -25,33 +27,32 @@ class elements {
 	 *
 	 * @since 0.0.1
 	 */
-	function discussion( $id, $per_page = 10, $form = true ) {
-		$out = '<ol class="commentlist">';
+	function discussion( $id, $form = true ) {
+		$out = '<div id="discussion" data-id="'.esc_attr( $id ).'">';
+		$js = 'loadDiscussion( '.esc_attr( $id ).');';
 
-		//Gather comments for a specific page/post
-		$comments = get_comments(array(
-			'post_id'	=> $id,
-			'status' 	=> 'approve' //Change this to the type of comments to be displayed
-		));
+		//$out .= '<script type="text/javascript">'.esc_js( $js ).'</script>';
 
-		//Display the list of comments
-		$out .= wp_list_comments(
-			array(
-				'per_page' 			=> $per_page,
-				'reverse_top_level' => false,
-				'echo'				=> false,
-				),
-			$comments
-		);
-
-
-		$out .=  '</ol>';
+		$out .=  '</div>';
 		if ( $form !== false ) {
 			$text = __( 'Respond', 'holotree' );
 			$out .= $this->modal( $this->comment_form( $id ), 'discussion-modal', $text, 'large', true );
 		}
 
 		return $out;
+
+	}
+
+	public static function comment_json( $id, $comments  = null ) {
+		//Gather comments for a specific page/post
+		if ( is_null( $comments ) ) {
+			$comments = get_comments( array(
+				'post_id' => $id,
+				'status'  => 'approve'
+			) );
+		}
+
+		return json::prepare_comments( $comments );
 
 	}
 
@@ -105,6 +106,7 @@ class elements {
 		if ( $button !== false ) {
 			$class = 'button';
 		}
+		$class .= ' '.$modal_id;
 		$trigger = '<a href="#" data-reveal-id="'.$modal_id.'" class="'.$class.'" data-reveal>'.$trigger_text.'</a>';
 		$modal = '<div id="'.$modal_id.'" class="reveal-modal '.$size.'" data-reveal>';
 		$modal .= $content;

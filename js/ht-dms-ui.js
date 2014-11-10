@@ -352,5 +352,9 @@ jQuery(document).ready(function( $ ) {
 
     });
 
+    function loadDiscussion( id ) {
+        return htDMSinternalAPI.discussion( id );
+    }
+
 
 });

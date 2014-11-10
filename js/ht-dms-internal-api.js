@@ -1,18 +1,26 @@
 /**globals jQuery, htDMS, htDMSinternalAPIvars**/
-jQuery( function () {
-    htDMSinternalAPI.init( );
+jQuery( function ( ) {
+    htDMSinternalAPI.init( htDMS );
 } );
 
 (function ( $, app ) {
+    /**
+     * URL for internal API
+     */
+    app.APIurl = htDMSinternalAPIvars.url;
 
     /**
      * Bootstrap internal API client-side interactions
      *
      * @since 0.1.0
      */
-    app.init = function() {
+    app.init = function( dms ) {
+
+        app.htDMS = dms;
+        app.discussion();
         $( document ).ajaxComplete(function( event,request, settings ) {
             app.events.ajaxComplete();
+
         });
 
     };
@@ -82,7 +90,7 @@ jQuery( function () {
         request:  function(){
             params = {};
             params.action = 'reload_consensus';
-            params.dID = htDMS.id;
+            params.dID = app.htDMS.id;
 
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb;
@@ -108,17 +116,17 @@ jQuery( function () {
      */
     app.consensusView = function( users ) {
         if ( undefined == users ) {
-            users =  htDMS.consensusMemberDetails;
+            users =  app.htDMS.consensusMemberDetails;
         }
 
         if ( 'object' !== typeof users ) {
             users = JSON.parse( users );
         }
-        
+
         var data = {
-            header0: htDMS.consensusHeaders.header0,
-            header1: htDMS.consensusHeaders.header1,
-            header2: htDMS.consensusHeaders.header2,
+            header0: app.htDMS.consensusHeaders.header0,
+            header1: app.htDMS.consensusHeaders.header1,
+            header2: app.htDMS.consensusHeaders.header2,
             users0: users[0],
             users1: users[1],
             users2: users[2]
@@ -156,7 +164,7 @@ jQuery( function () {
         request: function() {
             params = {};
             params.action = 'update_decision_status';
-            params.dID = htDMS.id;
+            params.dID = app.htDMS.id;
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb;
         },
@@ -175,11 +183,10 @@ jQuery( function () {
 
     app.reloadMembership = {
         container: "#group-membership",
-        gID : htDMS.id,
         request: function() {
             params = {};
             params.action = 'reload_membership';
-            params.gID = htDMS.id;
+            params.gID = app.htDMS.id;
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb;
         },
@@ -222,6 +229,50 @@ jQuery( function () {
         }
     };
 
+    app.discussion = function() {
+        id = app.htDMS.id;
+        container = '#discussion';
+        if ( 'group' === htDMSinternalAPIvars.type || 'decision' === htDMSinternalAPIvars.type ) {
+
+            if ( undefined == id ) {
+                id = $( container ).attr( 'data-id' );
+            }
+
+            params = {};
+            params.action = 'comments';
+            params.id = id;
+            var url = app.constructURL( params );
+
+
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function ( response, code  ) {
+
+                    if ( 'success' !== code || undefined == response.json || '' == response.json ) {
+                        return;
+                    }
+
+                    templateID = '#comments-view-template';
+
+                    $( container ).append( response.template );
+                    var source = $( templateID ).html();
+                    var comments = JSON.parse( response.json );
+                    template = Handlebars.compile( source );
+                    rendered = '';
+                    console.log( comments );
+                    $.each(comments , function ( i, val ) {
+
+                        rendered += template( val );
+
+                    } );
+
+                    $( container ).append( rendered );
+                }
+            } );
+        }
+    };
+
 
     /**
      * Paginated view loader
@@ -253,7 +304,7 @@ jQuery( function () {
             params.view = $( container ).attr( "view" );
             params.limit = $( container ).attr( "limit" );
             params.action = 'paginate';
-            var url = app.url( params );
+            var url = app.constructURL( params );
 
             $.ajax({
                 type: 'GET',
@@ -345,15 +396,14 @@ jQuery( function () {
      *
      * @returns {string|*} The URL
      */
-    app.url = function( params ) {
-        rootURL = htDMSinternalAPIvars.url;
+    app.constructURL = function( params ) {
 
-        nonce = htDMS.nonce;
+        nonce = app.htDMS.nonce;
         params[ 'nonce' ] = nonce;
 
         params = $.param( params );
 
-        url = rootURL +  '?' + params;
+        url = app.APIurl  +  '?' + params;
 
         return url;
     };
@@ -396,7 +446,7 @@ jQuery( function () {
          * @returns {string|*} The URL
          */
         url: function( params ) {
-            return app.url( params );
+            return app.constructURL( params );
         },
         /**
          * Check if the response is ready & status code is 200.
@@ -422,5 +472,3 @@ jQuery( function () {
 
     };
 })( jQuery, window.htDMSinternalAPI || ( window.htDMSinternalAPI = {} ) );
-
-

@@ -355,7 +355,7 @@ function ht_dms_is( $content_type, $id = false ) {
 		}
 	}
 
-	if (  in_array( $content_type, array(  HT_DMS_ORGANIZATION_POD_NAME, HT_DMS_GROUP_POD_NAME, HT_DMS_DECISION_POD_NAME ) ) ) {
+	if (  in_array( $content_type, ht_dms_content_types() ) ) {
 
 		if ( $id ) {
 			$post = get_post( $id );

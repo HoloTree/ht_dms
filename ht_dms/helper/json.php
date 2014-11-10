@@ -128,4 +128,24 @@ class json {
 
 	}
 
+	static public function prepare_comments( $comments ) {
+		$json = array();
+		foreach( $comments as $index => $comment ) {
+			$user = pods_v( 'user_id', $comment );
+			$i = (string) $index;
+			$json[ $i ][ 'avatar' ] = get_avatar( $user );
+			$json[ $i ][ 'date' ] = '';
+			$date = strtotime( pods_v( 'comment_date_gmt', $comment ) );
+			if ( $date ) {
+				$json[ $i ]['date'] = date( 'D M j, Y', $date );
+			}
+			$json[ $i ][ 'content' ] = pods_v( 'comment_content', $comment );
+			$json[ $i ][ 'name' ] = get_userdata( $user )->display_name;
+		}
+
+
+		return json_encode( $json );
+
+	}
+
 } 
