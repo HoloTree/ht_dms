@@ -59,23 +59,28 @@ jQuery( function ( ) {
             params = {};
             params.nID = nID;
             params.nID = 'load_notification';
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
+            var url = app.constructURL( params );
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function( response ) {
+                    app.notificationView.cb( response );
+                }
+                   
+            });
         },
-        cb: function() {
-            if ( app.request.ready() ) {
-                response = app.httpRequest.responseText;
-                var container = '#notification-viewer';
-                var previews = $( container ).html();
-                $( container ).html('');
-                $( container ).hide().append( response ).fadeIn( 400 );
-                $( '#notification-single-close').show();
+        cb: function( response ) {
+            var container = '#notification-viewer';
+            var previews = $( container ).html();
+            $( container ).html('');
+            $( container ).hide().append( response ).fadeIn( 400 );
+            $( '#notification-single-close').show();
 
-                $( "#notification-single-close").click( function () {
-                    $( '#notification-viewer').fadeOut( 400 ).html( '' );
-                    $( container ).hide().append( previews ).fadeIn( 400 );
-                });
-            }
+            $( "#notification-single-close").click( function () {
+                $( '#notification-viewer').fadeOut( 400 ).html( '' );
+                $( container ).hide().append( previews ).fadeIn( 400 );
+            });
+
         }
     };
 
@@ -91,18 +96,19 @@ jQuery( function ( ) {
             params = {};
             params.action = 'reload_consensus';
             params.dID = app.htDMS.id;
-
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
+            var url = app.constructURL( params );
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function( response ) {
+                    app.reloadConsensus.cb( response );
+                }
+            });
         },
-        cb: function() {
-            if ( app.request.ready() ) {
-                response = app.httpRequest.responseText;
-                $( '#consensus-view' ).html( '' );
-                app.consensusView( response );
-                app.updateDecisionStatus.request();
-
-            }
+        cb: function( response ) {
+            $( '#consensus-view' ).html( '' );
+            app.consensusView( response );
+            app.updateDecisionStatus.request();
         }
 
     };
@@ -165,18 +171,19 @@ jQuery( function ( ) {
             params = {};
             params.action = 'update_decision_status';
             params.dID = app.htDMS.id;
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
+            var url = app.constructURL( params );
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function( response ) {
+                    app.updateDecisionStatus.cb( response );
+                }
+            });
         },
-        cb: function() {
-            if ( app.request.ready() ) {
-
-                response = app.httpRequest.responseText;
-                $( this.container ).fadeOut( 400 );
-                $( this.container ).html('');
-                $( this.container ).append( response ).fadeIn( 400 );
-            }
-
+        cb: function( response ) {
+            $( this.container ).fadeOut( 400 );
+            $( this.container ).html('');
+            $( this.container ).append( response ).fadeIn( 400 );
         }
 
     };
@@ -187,16 +194,19 @@ jQuery( function ( ) {
             params = {};
             params.action = 'reload_membership';
             params.gID = app.htDMS.id;
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
+            var url = app.constructURL( params );
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function( response ) {
+                    app.reloadMembership.cb( response );
+                }
+            });
         },
-        cb: function() {
-            if ( app.request.ready() ) {
-                response = app.httpRequest.responseText;
-                $( this.container ).fadeOut( 400 );
-                $( this.container ).html( '' );
-                $( this.container ).append( response ).fadeIn( 400 );
-            }
+        cb: function( response ) {
+            $( this.container ).fadeOut( 400 );
+            $( this.container ).html( '' );
+            $( this.container ).append( response ).fadeIn( 400 );
         }
 
     };
@@ -218,14 +228,18 @@ jQuery( function ( ) {
             params.nID = nID;
             params.viewed = viewed;
             params.action = 'mark_notification';
-            app.request.make( params );
-            app.httpRequest.onreadystatechange = this.cb;
+            var url = app.constructURL( params );
+            $.ajax( {
+                method: 'GET',
+                url: url,
+                success: function( response ) {
+                    app.markNotification.cb( response );
+                }
+            });
 
         },
-        cb: function() {
-            if ( app.request.ready() ) {
-                app.paginate.request( "#users_notifications", 1 );
-            }
+        cb: function( response ) {
+            app.paginate.request( "#users_notifications", 1 );
         }
     };
 
@@ -242,7 +256,6 @@ jQuery( function ( ) {
             params.action = 'comments';
             params.id = id;
             var url = app.constructURL( params );
-
 
             $.ajax( {
                 method: 'GET',
@@ -351,6 +364,7 @@ jQuery( function ( ) {
     /**
      * Get members of a group or organization
      *
+     *
      * @since 0.1.0
      *
      * @type {{request: Function, cb: Function}}
@@ -360,7 +374,7 @@ jQuery( function ( ) {
             this.container = container;
             params = {};
             params.id = id;
-            params.tyoe = viewed;
+            params.type = viewed;
             params.action = 'mark_notification';
             app.request.make( params );
             app.httpRequest.onreadystatechange = this.cb( container );
