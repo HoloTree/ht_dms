@@ -968,3 +968,23 @@ function ht_dms_task_mode() {
 
 	}
 }
+
+/**
+ * Process invite code validation.
+ *
+ * @since 0.1.0
+ *
+ * @uses 'wp_ajax_nopriv_ht_dms_validate_invite_code'
+ */
+add_action( 'wp_ajax_nopriv_ht_dms_validate_invite_code', 'ht_dms_validate_invite_code' );
+function ht_dms_validate_invite_code() {
+	if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
+		$code = pods_v_sanitized( 'code', 'post' );
+		$email = pods_v_sanitized( 'email', 'post'  );
+		if ( ! is_null( $code ) && ht_dms_invite_code( false, $email, false, $code ) ) {
+			wp_die( 1 );
+		}
+
+	}
+	wp_die( 0 );
+}

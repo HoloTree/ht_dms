@@ -150,17 +150,6 @@ class callbacks  {
 
 	}
 
-	function validate_invite_code() {
-		if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
-			$code = pods_v_sanitized( 'code', 'post' );
-			$email = pods_v_sanitized( 'email', 'post'  );
-			if ( ! is_null( $code ) && ht_dms_invite_code( false, $email, false, $code ) ) {
-				wp_die( 1 );
-			}
-
-		}
-		wp_die( 0 );
-	}
 
 	/**
 	 * Returns an array, which is used to build hooks for AJAX actions.
