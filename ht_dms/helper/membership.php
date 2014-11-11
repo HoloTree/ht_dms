@@ -346,7 +346,6 @@ class membership {
 		$accept_text = __( sprintf( 'Click here to accept the invitation to join %1s.', $organization_name ), 'holotree' );
 		$message[] = sprintf( '<a href="%1s">%2s</a>', esc_url( $accept_link ), $accept_text );
 
-        pods_error( $message );
 		return implode( $message );
 
 	}
