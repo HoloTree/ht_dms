@@ -334,10 +334,18 @@ if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
 	$ajaxed = true;
 }
 
-//put current user ID in a global.
-global $current_user;
-global $cuID;
-$cuID = get_current_user_id();
+/**
+ * Put current user ID in a global.
+ *
+ * @since 0.1.0
+ */
+add_action( 'init', function() {
+	global $current_user;
+	global $cuID;
+	$cuID = pods_v( 'ID', $current_user );
+
+} );
+
 ht_dms_common_class();
 
 /**
