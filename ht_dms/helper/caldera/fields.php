@@ -431,6 +431,7 @@ class fields extends forms implements \Hook_SubscriberInterface{
         else {
             $new_user = true;
             $name = $data[ 'first_name' ] . ' ' .$data[ 'last_name' ];
+	        ht_dms_invite_code( true, $email, $oID );
         }
 
 		$message = ht_dms_membership_class()->invite_message( $name, $oID, $organization_name, $email, $new_user );
