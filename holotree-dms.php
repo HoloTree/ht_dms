@@ -456,3 +456,26 @@ add_filter( 'pods_form_ui_field_hidden', function( $output, $name ) {
 	}, 10, 2 );
 
 add_filter( 'pods_deploy_deploy_in_one_package', '__return_true' );
+
+/**
+ * Redirect to preferences after registration
+ *
+ * @since 0.1.0
+ */
+add_filter( 'registration_redirect', function( $url ) {
+	return ht_dms_home() . '?dms_action=preferences';
+}, 99);
+
+
+/**
+ * Lockout admin to non admins
+ *
+ * @since 0.1.0
+ */
+add_action( 'admin_init', function( ) {
+	if ( ! HT_DEV_MODE ) {
+		if ( ! current_user_can( 'edit_options' ) ) {
+			pods_redirect( ht_dms_home() );
+		}
+	}
+}, 1 );
