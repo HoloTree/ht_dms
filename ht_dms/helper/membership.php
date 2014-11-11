@@ -319,7 +319,7 @@ class membership {
 	private function get_invited_members( $id, $obj = null, $group = null ) {
 		$obj = $this->null_obj( $id, $obj, $group );
 
-		return $invited_members = (array) unserialize( $obj->field( $this->invite_field ) );
+		return $invited_members = (array) maybe_unserialize( $obj->field( $this->invite_field ) );
 
 	}
 
