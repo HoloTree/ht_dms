@@ -75,7 +75,7 @@ class json {
 
 		);
 
-		$data = array ();
+		$data = $org_members = array ();
 		foreach ( $fields as $index => $field ) {
 			if ( $index == 'members' ) {
 				$members = false;
@@ -96,7 +96,7 @@ class json {
 
 				}
 
-				if ( is_array( $org_members ) ) {
+				if ( ! empty( $org_members ) && is_array( $org_members ) ) {
 					$data[ $index ] = $org_members;
 				}
 
