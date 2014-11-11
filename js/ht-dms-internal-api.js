@@ -324,12 +324,20 @@ jQuery( function ( ) {
                 url: url,
                 dataType: 'json',
                 success: function ( response ) {
+                    var outer_html_id = response.outer_html_id;
+                    var spinner = outer_html_id + "-spinner";
 
+                    var obj = JSON.parse( response.json );
+
+                    if ( undefined === obj || 0 == obj ) {
+                        $( spinner ).fadeOut();
+                        $( outer_html_id ).empty().append( '<p>No items found.</p>' );
+                        return;
+                    }
                     var htmlID = app.idCheck( response.html_id );
                     var templateID = app.idCheck( response.template_id );
                     var html = response.html;
-                    var outer_html_id = response.outer_html_id;
-                    var spinner = outer_html_id + "-spinner";
+
 
                     $( outer_html_id ).fadeOut( 800 ).hide();
                     $( outer_html_id ).append( html ).append( response.template );
@@ -338,7 +346,7 @@ jQuery( function ( ) {
 
                     var rendered = '';
 
-                    $.each( JSON.parse( response.json ), function ( i, val ) {
+                    $.each( obj , function ( i, val ) {
 
                         data = JSON.parse( val );
                         var source = $( templateID ).html();
