@@ -159,7 +159,7 @@ jQuery( function () {
                     } else {
                         login.message( loginData.codeNotGood, true );
                     }
-                    $( login.inviteCodeField ).attr( 'disabled', true);
+
             }
 
         );
