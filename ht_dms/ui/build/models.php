@@ -524,6 +524,9 @@ class models {
 
 			}
 
+			//store total and total found in cache
+			$this->store_total( $obj, $short_type );
+
 			if ( $return === 'simple_json' ) {
 				$data = false;
 				if ( $obj->total() > 0 ) {
@@ -607,6 +610,40 @@ class models {
 
 		return ht_dms_error( sprintf( 'The model you requested oculd not be returned as either %1s is an invalid value for $return or the return type you requested was unreachable', $return ) );
 
+	}
+
+	/**
+	 * Cache total and total_found for last query by type
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param \Pods $obj
+	 * @param string $short_type Type of query
+	 */
+	private function store_total( $obj, $short_type ) {
+		$total = (int) $obj->total();
+		$total_found = (int) $obj->total_found();
+		$key = "last_{$short_type}_total";
+		wp_cache_set( $key, $total );
+		$key .= '_found';
+		wp_cache_set( $key, $total_found );
+	}
+
+	/**
+	 * Get the total and total_found for last query by type.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $short_type Type of query
+	 *
+	 * @return array
+	 */
+	public static function get_total( $short_type ) {
+		$key = "last_{$short_type}_total";
+		$totals[ 'total' ] = wp_cache_get( $key );
+		$key .= '_found';
+		$totals[ 'total_found' ] = wp_cache_get( $key );
+		return $totals;
 	}
 	
 } 

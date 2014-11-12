@@ -315,7 +315,7 @@ jQuery( function ( ) {
             params.extraArg = extraArg;
             params.oID = oID;
             params.view = $( container ).attr( "view" );
-            params.limit = $( container ).attr( "limit" );
+            params.limit = view = $( container ).attr( "limit" );
             params.action = 'paginate';
             var url = app.constructURL( params );
 
@@ -338,6 +338,9 @@ jQuery( function ( ) {
                     var templateID = app.idCheck( response.template_id );
                     var html = response.html;
 
+                    var paginationID = outer_html_id;
+                    paginationID += '-pagination';
+                    $( paginationID ).remove();
 
                     $( outer_html_id ).fadeOut( 800 ).hide();
                     $( outer_html_id ).append( html ).append( response.template );

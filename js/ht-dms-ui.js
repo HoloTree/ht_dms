@@ -19,6 +19,12 @@ jQuery(document).ready(function( $ ) {
         };
     });
 
+    function ht_dms_paginate( container, page ) {
+        return htDMSinternalAPI.paginate.request( container, page );
+    }
+
+    window.ht_dms_paginate = ht_dms_paginate;
+
     /**
      * Put possible result of actions into variables
      */

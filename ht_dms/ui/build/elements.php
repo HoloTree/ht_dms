@@ -424,21 +424,40 @@ class elements {
 
 	}
 
-	function ajax_pagination_buttons( $obj, $view, $page  ) {
-		$total_pages = $obj->total_found() / $obj->total();
+	function ajax_pagination_buttons( $obj, $view, $page, $type = null  ) {
+		if ( is_object( $obj )&& is_pod( $obj ) ) {
+			$total = $obj->total();
+			$total_found = $obj->total_found();
+
+		}
+		elseif( ! is_null( $type ) && is_string( $obj ) && false != ( $decoded_json = json_decode( $obj )  ) ) {
+			$totals = models::get_total( $type );
+			$total = pods_v( 'total', $totals );
+			$total_found = pods_v( 'total_found', $totals );
+		}
+		else {
+			ht_dms_error();
+		}
+
+		if ( is_null( $page ) ) {
+			$page = 1;
+		}
+
+		$total_pages = (int) $total_found / (int) $total;
 		$total_pages = ceil( $total_pages );
+		$page = (int) $page;
 
 		$previous = false;
 		if ( $page > 1 ) {
 			$previous_page = $page-1;
 			$attr = "page=\"{$previous_page}\"";
-			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', $view, $attr, __( 'Previous', 'ht_dms' ) );
+			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', esc_attr( $view ),  $attr, __( 'Previous', 'ht_dms' ) );
 		}
 
 		$next_page = $page+1;
-		if ( $next_page < $total_pages ) {
+		if ( $next_page >= $total_pages ) {
 			$attr = "page=\"{$next_page}\"";
-			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', $view, $attr,  __( 'Next', 'ht_dms' ) );
+			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', esc_attr( $view ), $attr ,  __( 'Next', 'ht_dms' ) );
 		}
 		else {
 			$next = false;
@@ -446,7 +465,7 @@ class elements {
 
 		$buttons = array( $previous, $next );
 
-		$out = sprintf( '<div class="pagination %1s-pagination">%2s</div>', HT_DMS_PREFIX, implode( $buttons ) );
+		$out = sprintf( '<div class="pagination %1s-pagination" id="%2s-pagination">%3s</div>', HT_DMS_PREFIX, $view, implode( $buttons ) );
 
 		$out .= $this->pagination_inline_js( $previous, $view );
 
@@ -457,14 +476,16 @@ class elements {
 	private function pagination_inline_js( $previous, $view )  {
 		if ( $previous ) {
 			$script[] = "jQuery( '#previous-{$view}' ).click( function() {
-			 	paginate( '#{$view}', jQuery( '#previous-{$view}' ).attr( 'page' ) );
+			 	ht_dms_paginate( '#{$view}', jQuery( '#previous-{$view}' ).attr( 'page' ) );
 			 });";
 		}
 		$script[]  = "jQuery( '#next-{$view}' ).click( function() {
-				paginate( '#{$view}', jQuery( '#next-{$view}' ).attr( 'page' ) );
+				ht_dms_paginate( '#{$view}', jQuery( '#next-{$view}' ).attr( 'page' ) );
 			});";
 
-		$script = sprintf( '<script type="text/javascript">%2s</script>', implode( $script ) );
+		$script = implode( $script );
+		//$script = esc_js( $script );
+		$script = sprintf( '<script type="text/javascript">%1s</script>', $script  );
 
 		return $script;
 

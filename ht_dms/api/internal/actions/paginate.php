@@ -28,10 +28,12 @@ class paginate {
 		$limit = pods_v( 'limit', $params );
 		$page = pods_v( 'page', $params );
 		$extra_arg = pods_v( 'extra_arg', $params );
+		global $cuID;
 
 		$args = array(
 			'limit' => $limit,
 			'page' => $page,
+			'mine' => $cuID,
 		);
 
 		if ( in_array( $view, array( 'users_groups', 'public_groups' ) ) && ! is_null( $oID = pods_v( 'oID', $params ) ) ) {
@@ -48,6 +50,11 @@ class paginate {
 			return $out;
 
 		}
+
+	}
+
+	private static function store_last_view_args( $view, $args ) {
+
 	}
 
 	/**
@@ -72,35 +79,50 @@ class paginate {
 		$view_args = pods_v( 'args', $pagination_args_and_path  );
 		if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
 			$template_id = 'group-preview';
+			$type = 'group';
 		}
 		elseif ( $view == 'users_organizations') {
 			$template_id = 'organization-preview';
+			$type = 'organization';
 		}
 		else {
 			ht_dms_error();
 		}
+
+		$page = pods_v( 'page', $args, 1, true );
 
 		$output[ 'outer_html_id' ] = '#' . $view;
 		$output[ 'html_id' ] = $html_id = str_replace( '_', '-', $view ).'-container';
 
 		$output[ 'template_id' ] = $template_id;
 		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
-		$output[ 'json' ] = self::get_json( $view, $view_args );
-		$output[ 'html' ] = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
+
+		$view = self::get_view( $view, $view_args, $html_id, $type, $page );
+		$output[ 'json' ] = pods_v( 'json', $view );
+		$output[ 'html' ] = pods_v( 'html', $view );
 		return $output;
 	}
 
-	private static function get_json( $view, $view_args ) {
-		$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
+	private static function get_view( $view, $view_args, $html_id, $type, $page ) {
+		$obj = ht_dms_ui()->get_view( $view, $view_args );
 		if ( $obj ) {
-			return $obj;
+			$json =  $obj;
 		}
 		else {
-			return json_encode( array( 0 ) );
+			$json = json_encode( array( 0 ) );
 		}
 
-	}
 
+		$html = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
+		$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $page, $type );
+		$html = apply_filters( 'ht_dms_paginated_views_template_output', $html, $view );
+
+		return array(
+			'json' => $json,
+			'html' => $html,
+		);
+
+	}
 
 
 	/**
