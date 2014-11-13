@@ -455,7 +455,7 @@ class elements {
 		}
 
 		$next_page = $page+1;
-		if ( $next_page >= $total_pages ) {
+		if ( $next_page >= $total_pages && $total_pages != $page ) {
 			$attr = "page=\"{$next_page}\"";
 			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', esc_attr( $view ), $attr ,  __( 'Next', 'ht_dms' ) );
 		}
