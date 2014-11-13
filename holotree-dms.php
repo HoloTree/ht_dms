@@ -481,8 +481,10 @@ add_filter( 'registration_redirect', function( $url ) {
  * @since 0.1.0
  */
 add_action( 'admin_init', function( ) {
-	if ( ! HT_DEV_MODE ) {
-		if ( ! current_user_can( 'edit_options' ) ) {
+	global $current_user;
+	if ( ! HT_DEV_MODE || ! isset( $current_user->caps ) ) {
+		$caps =  $current_user->caps;
+		if ( is_null( pods_v( 'administrator', $caps )) ) {
 			pods_redirect( ht_dms_home() );
 		}
 	}
