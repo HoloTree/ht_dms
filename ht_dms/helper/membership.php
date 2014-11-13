@@ -330,13 +330,13 @@ class membership {
 			$accept_link = add_query_arg( 'ht_dms_invite_code', $code, wp_registration_url() );
 			$message[] =  __( sprintf( '%1s is a team decision making system that turns ideas in decisions and decisions into actions.', $link ), 'holotree' );
 			$message[] =  __( sprintf( 'You have been invited to work with %1s on HoloTree.', $organization_name ), 'holotree' );
-			$message[] = __( sprintf( 'Your invite code is %1s.', $code ), 'holotree' );
+			$message[] =  __( sprintf( 'Your invite code is %1s.', $code ), 'holotree' );
 
 		}
 		else{
 			$link = ht_dms_link( $oID, 'permalink', $organization_name );
 			$message[] = __( sprintf( 'You have been invited to join the organization %1s.', $link ), 'holotree' );
-			$accept_link = ht_dms_action_append( $link, 'accept-invite', $oID );
+			$accept_link = ht_dms_action_append( get_permalink( $oID ), 'accept-invite', $oID, false );
 			$args = array(
 				'user' => $new_user,
 				'type' => 'organization',

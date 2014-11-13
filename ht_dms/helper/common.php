@@ -94,12 +94,6 @@ class common  {
 			return;
 		}
 
-		$verify = ht_dms_verify_action_nonce();
-		if ( ! $verify ) {
-			ht_dms_error( __( 'Alert! Alert! Security Check Failed!', 'ht_dms' ) );
-		}
-
-
 		if ( $action == 'accept-invite' && ! is_null( $uID = pods_v_sanitized( 'user' ) ) && ! is_null( $type = ( pods_v_sanitized( 'type' ) ) ) ) {
 			$group = true;
 			if ( $type === 'organization' ) {
@@ -108,6 +102,11 @@ class common  {
 
 			ht_dms_membership_class()->accept_internal_invite( $id, $uID, null, $group );
 			pods_redirect( get_permalink( $id ) );
+		}
+
+		$verify = ht_dms_verify_action_nonce();
+		if ( ! $verify ) {
+			ht_dms_error( __( 'Alert! Alert! Security Check Failed!', 'ht_dms' ) );
 		}
 
 		//special handling for proposed changes

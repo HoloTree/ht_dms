@@ -716,14 +716,15 @@ function ht_dms_link( $id, $type = 'permalink', $text= 'view', $title= null, $bu
  * 		@type string value	The value of the variable.
  *   }
  * @param int               $id     ID of post.
+ * @param bool  $add_nonce Whether to add a nonce to the URL or not.
  *
  * @return 	string					URL
  *
  * @since 	0.0.1
  */
-function ht_dms_action_append( $url, $action, $id = false ) {
+function ht_dms_action_append( $url, $action, $id = false, $add_nonce = true ) {
 
-	return ht_dms_ui()->elements()->action_append( $url, $action, $id );
+	return ht_dms_ui()->elements()->action_append( $url, $action, $id, $add_nonce );
 }
 
 
