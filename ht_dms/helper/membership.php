@@ -323,6 +323,20 @@ class membership {
 
 	}
 
+	/**
+	 * Invite message
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $name
+	 * @param int $oID
+	 * @param string $organization_name
+	 * @param string $email
+	 * @param bool $new_user
+	 * @param bool|string $code
+	 *
+	 * @return string
+	 */
 	function invite_message( $name, $oID, $organization_name, $email, $new_user = true, $code = false ) {
 		$message[] = $name . '- ';
 		if ( $new_user ) {

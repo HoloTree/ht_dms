@@ -101,6 +101,11 @@ class register implements \Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Login/register JS
+	 *
+	 * @since 0.0.3
+	 */
 	function js() {
 		$version = HT_DMS_VERSION;
 		if ( HT_DEV_MODE ) {
