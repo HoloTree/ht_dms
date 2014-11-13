@@ -323,13 +323,14 @@ class membership {
 
 	}
 
-	function invite_message( $name, $oID, $organization_name, $email, $new_user = true ) {
-		$message[] = $name . '-';
+	function invite_message( $name, $oID, $organization_name, $email, $new_user = true, $code = false ) {
+		$message[] = $name . '- ';
 		if ( $new_user ) {
 			$link = sprintf( '<a href="%1s">HoloTree</a>', esc_url( ht_dms_home() ) );
-			$message[] =  __( sprintf( '%1s is a decision making system that turns ideas in decisions and decisions into actions.', $link ), 'holotree' ) .
-			              __( sprintf( 'You have been invited to work with %1s on HoloTree', $organization_name ), 'holotree' );
-			$accept_link = add_query_arg( 'ht_dms_invite_code', ht_dms_invite_code( true, $email, $oID ), wp_registration_url() );
+			$accept_link = add_query_arg( 'ht_dms_invite_code', $code, wp_registration_url() );
+			$message[] =  __( sprintf( '%1s is a team decision making system that turns ideas in decisions and decisions into actions.', $link ), 'holotree' );
+			$message[] =  __( sprintf( 'You have been invited to work with %1s on HoloTree.', $organization_name ), 'holotree' );
+			$message[] = __( sprintf( 'Your invite code is %1s.', $code ), 'holotree' );
 
 		}
 		else{
@@ -340,7 +341,7 @@ class membership {
 				'user' => $new_user,
 				'type' => 'organization',
 			);
-			$accept_link = add_query_arg( $args, get_permalink( $oID) );
+			$accept_link = add_query_arg( $args, $accept_link );
 		}
 
 		$accept_text = __( sprintf( 'Click here to accept the invitation to join %1s.', $organization_name ), 'holotree' );

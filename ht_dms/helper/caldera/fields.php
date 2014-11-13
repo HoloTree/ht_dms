@@ -424,7 +424,7 @@ class fields extends forms implements \Hook_SubscriberInterface{
 			$name = get_userdata( $uID );
 			if ( is_object( $name ) ) {
 				$name = $name->data->display_name;
-				ht_dms_membership_class()->invite_existing( $oID, $oID, null, false );
+				$code = ht_dms_membership_class()->invite_existing( $oID, $oID, null, false );
 			}
 
 		}
@@ -434,7 +434,7 @@ class fields extends forms implements \Hook_SubscriberInterface{
 	        ht_dms_invite_code( true, $email, $oID );
         }
 
-		$message = ht_dms_membership_class()->invite_message( $name, $oID, $organization_name, $email, $new_user );
+		$message = ht_dms_membership_class()->invite_message( $name, $oID, $organization_name, $email, $new_user, $code  );
 
 		if ( $uID ) {
 			$subject = sprintf( __( 'You have been invited to join the organization %1s', $organization_name ), 'holotree' );

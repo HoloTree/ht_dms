@@ -86,7 +86,7 @@ class register implements \Hook_SubscriberInterface {
 
 		// Registration
 		if ( strpos( $message, 'Register' ) !== false ) {
-			$message = '<p class="message register" id="invite-code-message">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the from below to register.', 'holotree' ) . '</p>';
+			$message = '<p class="message register" id="invite-code-message">' . __( 'Registration for HoloTree currently requires an invite code. If you have one, you can use the form below to register.', 'holotree' ) . '</p>';
             $login_text = __( 'Existing Users May Click Here To Login', 'holotree' );
 			$message .= '<p class="message register">' . ht_dms_login_link( true, $login_text ) . '</p>';
 
