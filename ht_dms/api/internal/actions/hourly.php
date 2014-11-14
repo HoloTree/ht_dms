@@ -27,6 +27,9 @@ class hourly {
 		if ( self::can_haz( pods_v( 'public_key', $params ) ) ) {
 			self::run();
 		}
+		else {
+			return 550;
+		}
 
 	}
 

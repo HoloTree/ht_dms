@@ -52,6 +52,7 @@ class route implements \Action_Hook_SubscriberInterface {
 
 		if ( ! empty( $action )  ) {
 			$status_code = $this->check_access( $action );
+			$denied = $response = __( 'Access denied.', 'ht-dms' );
 
 			if ( 200 == $status_code  ) {
 
@@ -64,7 +65,13 @@ class route implements \Action_Hook_SubscriberInterface {
 
 			}
 			else {
-				$response = __( 'Access denied.', 'ht-dms' );
+				$response = $denied;
+
+			}
+
+			if ( 550 == $response ) {
+				$status_code = $response;
+				$response = $denied;
 			}
 
 			$this->respond( $response, $status_code );
