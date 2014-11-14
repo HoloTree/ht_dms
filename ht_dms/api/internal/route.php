@@ -54,9 +54,11 @@ class route implements \Action_Hook_SubscriberInterface {
 			$status_code = $this->check_access( $action );
 
 			if ( 200 == $status_code  ) {
-				$cache_key = implode( $_GET, '=' );
-				if ( ! $response = pods_cache_get( $cache_key )  ) {
-					$params = $this->args( $action );
+
+
+				$params = $this->args( $action );
+				$cache_key = $this->cache_key( $params, $action );
+				if ( false == ( $response = pods_cache_get( $cache_key ) ) ) {
 					$response = $this->dispatch( $action, $params  );
 					pods_cache_set( $cache_key, $response );
 				}
@@ -124,6 +126,7 @@ class route implements \Action_Hook_SubscriberInterface {
 			if ( '' == $params[ $arg ] )  {
 				$params[ $arg ] = 0;
 			}
+
 		}
 
 		return $params;
@@ -243,6 +246,26 @@ class route implements \Action_Hook_SubscriberInterface {
 	private function action_allowed( $action ) {
 
 		return ( in_array( $action, $this->allowed_actions() ) );
+
+	}
+
+	/**
+	 * Construct cache key, or return false to prevent caching.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array $params
+	 * @param string $action
+	 *
+	 * @return bool|string
+	 */
+	private function cache_key( $params, $action ) {
+		if ( ! HT_DEV_MODE && is_array( $params ) && ! apply_filters( 'ht_dms_internal_api_skip_cache', false, $action, $params ) ) {
+			$cache_key = array_merge( $params, array( $action )  );
+			$cache_key = implode( $cache_key, '=' );
+
+			return $cache_key;
+		}
 
 	}
 
