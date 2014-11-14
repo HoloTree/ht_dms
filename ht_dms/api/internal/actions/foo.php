@@ -20,4 +20,5 @@ class foo {
 	public static function act( $params ) {
 		return $params;
 	}
+
 } 
