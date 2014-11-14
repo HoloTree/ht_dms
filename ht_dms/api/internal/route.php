@@ -184,10 +184,17 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return int Status code
 	 */
 	private function check_access( $action ) {
-		if ( ! HT_DEV_MODE ) {
-			if ( ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+		/**
+		 * Set which actions <em>do not</em> require a nonce check.
+		 *
+		 * @param array $actions_to_skip
+		 */
+		$skip_nonce_check = apply_filters( 'ht_dms_internal_api_skip_nonce_check', array( 'hourly' ) );
+		if ( ! in_array( $action, $skip_nonce_check  ) || ! HT_DEV_MODE ) {
+			if (  ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 				return 550;
 			}
+
 		}
 
 		if ( ! $this->action_allowed( $action ) ) {
