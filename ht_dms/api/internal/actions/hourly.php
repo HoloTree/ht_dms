@@ -13,7 +13,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\api\internal;
+namespace ht_dms\api\internal\actions;
 
 
 class hourly {
@@ -83,7 +83,7 @@ class hourly {
 	 * @return bool
 	 */
 	private static function can_haz( $public_key ) {
-		if( ! is_null( $public_key ) &&  self::check_public_key( $public_key ) && self::check_lock() ) {
+		if( ! is_null( $public_key ) && self::check_public_key( $public_key ) && self::check_lock() ) {
 			return true;
 
 		}
