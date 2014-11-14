@@ -55,12 +55,11 @@ class route implements \Action_Hook_SubscriberInterface {
 
 			if ( 200 == $status_code  ) {
 
-
 				$params = $this->args( $action );
 				$cache_key = $this->cache_key( $params, $action );
 				if ( false == ( $response = pods_cache_get( $cache_key ) ) ) {
 					$response = $this->dispatch( $action, $params  );
-					pods_cache_set( $cache_key, $response );
+					pods_cache_set( $cache_key, $response, '', 599 );
 				}
 
 			}
