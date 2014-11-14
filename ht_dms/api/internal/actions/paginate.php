@@ -32,8 +32,9 @@ class paginate {
 
 		$args = array(
 			'limit' => $limit,
-			'page' => $page,
-			'mine' => $cuID,
+			'page'  => $page,
+			'mine'  => $cuID,
+			'uID'   => $cuID,
 		);
 
 		if ( in_array( $view, array( 'users_groups', 'public_groups' ) ) && ! is_null( $oID = pods_v( 'oID', $params ) ) ) {
@@ -70,13 +71,18 @@ class paginate {
 
 	}
 
-	public static $templates_to_load = array();
-
+	/**
+	 * Build return data
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $view Which view to load
+	 * @param array $args
+	 *
+	 * @return array Data to return via the internal API.
+	 */
 	private static function output( $view, $args ) {
-		$args[ 'return' ] = 'Pods';
-		$pagination_args_and_path = self::view_args( $args );
-		$pagination_args_and_path = pods_v( $view, $pagination_args_and_path );
-		$view_args = pods_v( 'args', $pagination_args_and_path  );
+
 		if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
 			$template_id = 'group-preview';
 			$type = 'group';
@@ -97,14 +103,32 @@ class paginate {
 		$output[ 'template_id' ] = $template_id;
 		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
 
-		$view = self::get_view( $view, $view_args, $html_id, $type, $page );
+		$view = self::get_view( $view, $args, $html_id, $type, $page );
 		$output[ 'json' ] = pods_v( 'json', $view );
 		$output[ 'html' ] = pods_v( 'html', $view );
 		return $output;
 	}
 
-	private static function get_view( $view, $view_args, $html_id, $type, $page ) {
-		$obj = ht_dms_ui()->get_view( $view, $view_args );
+	/**
+	 * Get JSON data and HTML for the view
+	 *
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $view Name of view
+	 * @param array $args
+	 * @param string $html_id ID of HTML container
+	 * @param string $type (short) name/type of view.
+	 * @param int $page Optional. Current page for view. Defaults to 1.
+	 *
+	 * @return array containing 'json' and 'html' keys.
+	 */
+	private static function get_view( $view, $args, $html_id, $type, $page = 1 ) {
+		$args[ 'return' ] = 'simple_json';
+		if ( ! isset( $args[ 'page' ] ) ) {
+			$args[ 'page' ] = $page;
+		}
+		$obj = call_user_func( array( ht_dms_ui()->views(), $view ), $args );
 		if ( $obj ) {
 			$json =  $obj;
 		}
@@ -115,6 +139,7 @@ class paginate {
 
 		$html = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
 		$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $page, $type );
+
 		$html = apply_filters( 'ht_dms_paginated_views_template_output', $html, $view );
 
 		return array(
@@ -124,85 +149,10 @@ class paginate {
 
 	}
 
-
-	/**
-	 *  Loads the paginated view.
-	 *
-	 * @param string     $view View to load. Must be in whitelist created by ht_dms_paginated_views().
-	 * @param array     $args Arguments to pass to the view.
-	 * @param bool $return_obj Optional. Whether to return object (if true) or render templates (false, the default.)
-	 *
-	 * @return \ht_dms\ui\JSON|\ht_dms\ui\obj|\ht_dms\ui\Pods|null|string
-	 */
-	private  static function pagination_views( $view, $args, $return_obj = false ) {
-		$args[ 'return' ] = 'Pods';
-		$pagination_args_and_path = self::view_args( $args );
-		$pagination_args_and_path = pods_v( $view, $pagination_args_and_path );
-		$view_args = pods_v( 'args', $pagination_args_and_path  );
-
-		$obj = ht_dms_ui()->get_view( $view, $view_args, 'Pods' );
-
-		if ( in_array( $view, array( 'users_groups', 'public_groups', 'users_organizations' ) ) ) {
-			$html_id = str_replace( '_', '-', $view ).'-container';
-			if ( $obj ) {
-				if ( in_array( $view, array( 'public_groups', 'users_groups' ) ) ) {
-					$template_id = 'group-preview';
-					$js  = "groupPreview( {$obj}, '{$template_id}', '{$html_id}' );";
-					$out = ht_dms_ui()->view_loaders()->handlebars( $template_id, $html_id, $js );
-				} elseif( $view == 'users_organizations') {
-					$template_id = 'organization-preview';
-					$js = "organizationPreview( {$obj}, '{$template_id}', '{$html_id}' );";
-					$out = ht_dms_ui()->view_loaders()->handlebars( $template_id, $html_id, $js );
-				}
-			}
-			else {
-				$out = __( 'No items found.', 'ht_dms' );
-			}
-
-			return $out;
-
-		}
-		elseif ( $return_obj === true ) {
-
-			return $obj;
-
-		}
-		else {
-			if ( ! is_object( $obj )  ) {
-				ht_dms_error();
-			}
-			$template_file = trailingslashit( HT_DMS_VIEW_DIR ).'partials/';
-
-			$template_file .= pods_v( 'view', $pagination_args_and_path );
-
-			$obj->find( array( 'page' => $args[ 'page' ], 'limit' => $args[ 'limit' ] ) );
-
-
-			if ( $obj->total() > 1 ) {
-				$out = '';
-				if ( ! file_exists( $template_file ) ) {
-					return false;
-				}
-
-				$out .= ht_dms_ui()->view_loaders()->magic_template( $template_file, $obj, pods_v( 'page', $pagination_args_and_path, false, true ) );
-
-				if ( ! empty ( $out ) ) {
-					$out .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $args[ 'page' ] );
-					$out = apply_filters( 'ht_dms_paginated_views_template_output', $out, $view );
-
-					return $out;
-
-				}
-
-
-			}
-
-		}
-
-	}
-
 	/**
 	 * Returns an array of the allowed paginated views, foreach an array of arguments for calling their view method and the view partial file name.
+	 *
+	 * @todo method that grabs just the path from this and use that on L48 instead.
 	 *
 	 * @param null $args
 	 *
