@@ -489,3 +489,13 @@ add_action( 'admin_init', function( ) {
 		}
 	}
 }, 1 );
+
+
+add_action( 'login_head',
+	function() {
+		echo '<div id="extra-login">';
+		echo '<h1 id="login-extra-title">'. __( 'HoloTree', 'ht_dms' ) . '</h1>';
+		echo '<h3 id="login-tagline">'. __( 'Team Decision Making', 'ht_dms' ) . '</h3>';
+		echo '</div>';
+	}
+);
