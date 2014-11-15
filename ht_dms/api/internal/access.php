@@ -43,17 +43,27 @@ class access implements \Filter_Hook_SubscriberInterface {
 			$name = pods_v( 'name', $query_vars );
 		}
 
-		if (  self::$name == $name && ! empty( $action )  ) {
+		if ( self::$name == $name && ! empty( $action )  ) {
 			return true;
 		}
 
 	}
 
+	/**
+	 * Allows actions that do not require authentication to bypass login restrictions
+	 *
+	 * @uses 'restricted_site_access_is_restricted' filter
+	 *
+	 * @param $is_restricted
+	 *
+	 * @return bool
+	 */
 	public static function lift_login_restriction( $is_restricted ) {
 
-		if ( self::is_internal_api( null, null, true ) ) {
+		if ( self::is_internal_api( null, null, true ) && in_array( pods_v_sanitized( self::$action), self::non_auth_actions() ) ) {
 			$is_restricted = false;
 		}
+
 		return $is_restricted;
 
 	}
