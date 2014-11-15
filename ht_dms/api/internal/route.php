@@ -46,11 +46,13 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @since 0.1.0
 	 */
 	public static function do_api() {
+
 		global $wp_query;
 
 		$action = $wp_query->get( 'action' );
+		$access = access::is_internal_api( pods_v ( 'query_vars', $wp_query ), $action  );
 
-		if ( ! empty( $action )  ) {
+		if ( $access ) {
 			$status_code = self::check_access( $action );
 			$denied = $response = __( 'Access denied.', 'ht-dms' );
 
@@ -191,13 +193,10 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return int Status code
 	 */
 	private static function check_access( $action ) {
-		/**
-		 * Set which actions <em>do not</em> require a nonce check.
-		 *
-		 * @param array $actions_to_skip
-		 */
-		$skip_nonce_check = apply_filters( 'ht_dms_internal_api_skip_nonce_check', array( 'hourly' ) );
-		if ( ! in_array( $action, $skip_nonce_check  ) || ! HT_DEV_MODE ) {
+
+		$skip = utility::non_auth_actions();
+
+		if ( ! in_array( $action, $skip  ) || ! HT_DEV_MODE ) {
 			if (  ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
 				return 550;
 			}
@@ -216,21 +215,26 @@ class route implements \Action_Hook_SubscriberInterface {
 	/**
 	 * Actions to allow via internal API
 	 *
-	 * @access private
-	 *
 	 * @since 0.1.0
 	 *
 	 * @return array Allowed actions
 	 */
-	private static function allowed_actions() {
-		$dir =  trailingslashit( dirname( __FILE__ ) ) . 'actions';
-		$files = scandir( $dir  );
-		foreach ( $files as $file  ) {
-			$path = pathinfo( $file, PATHINFO_EXTENSION );
-			if ( 'php' == $path ) {
-				$file = str_replace( '.php', '', $file );
-				$actions[] = $file;
+	public static function allowed_actions() {
+		$key = __CLASS__ . __METHOD__;
+		if ( false == ( $actions = get_transient( $key ) ) ) {
+			$dir   = trailingslashit( dirname( __FILE__ ) ) . 'actions';
+			$files = scandir( $dir );
+			foreach ( $files as $file ) {
+				$path = pathinfo( $file, PATHINFO_EXTENSION );
+				if ( 'php' == $path ) {
+					$file      = str_replace( '.php', '', $file );
+					$actions[] = $file;
+				}
+
 			}
+
+			set_transient( $key, $actions, WEEK_IN_SECONDS );
+
 		}
 
 		/**

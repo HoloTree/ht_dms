@@ -34,6 +34,7 @@ class HT_DMS_WP_API_Registration {
 			new ht_dms\helper\caldera\processors\add(),
 			new ht_dms\api\internal\route(),
 			new ht_dms\api\internal\js(),
+			ht_dms\api\internal\access::init(),
 		);
 	}
 
