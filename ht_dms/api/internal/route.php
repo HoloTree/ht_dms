@@ -45,21 +45,21 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @since 0.1.0
 	 */
-	function do_api() {
+	public static function do_api() {
 		global $wp_query;
 
 		$action = $wp_query->get( 'action' );
 
 		if ( ! empty( $action )  ) {
-			$status_code = $this->check_access( $action );
+			$status_code = self::check_access( $action );
 			$denied = $response = __( 'Access denied.', 'ht-dms' );
 
 			if ( 200 == $status_code  ) {
 
-				$params = $this->args( $action );
-				$cache_key = $this->cache_key( $params, $action );
+				$params = self::args( $action );
+				$cache_key = self::cache_key( $params, $action );
 				if ( false == ( $response = pods_cache_get( $cache_key ) ) ) {
-					$response = $this->dispatch( $action, $params  );
+					$response = self::dispatch( $action, $params  );
 					pods_cache_set( $cache_key, $response, '', 599 );
 				}
 
@@ -74,7 +74,7 @@ class route implements \Action_Hook_SubscriberInterface {
 				$response = $denied;
 			}
 
-			$this->respond( $response, $status_code );
+			self::respond( $response, $status_code );
 
 		}
 
@@ -92,7 +92,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return string
 	 */
-	private function respond( $response, $status_code ) {
+	private static function respond( $response, $status_code ) {
 		if ( empty( $response ) ) {
 			$status_code = 204;
 		}
@@ -121,8 +121,8 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return array
 	 */
-	private function args( $action ) {
-		$class = $this->action_class( $action );
+	private static function args( $action ) {
+		$class = self::action_class( $action );
 
 		$desired_args = $class::args();
 		$params = array();
@@ -142,7 +142,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	/**
 	 * Get a static class object, by action.
 	 *
-	 * Does not check if class exists. Use only for those allowed by $this->action_allowed()
+	 * Does not check if class exists. Use only for those allowed by self::action_allowed()
 	 *
 	 * @access private
 	 *
@@ -154,7 +154,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return object The class object.
 	 */
-	private function action_class( $action ) {
+	private static function action_class( $action ) {
 
 		return $class = __NAMESPACE__ . '\\actions\\' . $action;
 
@@ -173,7 +173,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @return mixed The result of the action to return.
 	 */
 	private function dispatch( $action, $params = null ) {
-		$class = $this->action_class( $action );
+		$class = self::action_class( $action );
 
 		return $class::act( $params );
 
@@ -190,7 +190,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return int Status code
 	 */
-	private function check_access( $action ) {
+	private static function check_access( $action ) {
 		/**
 		 * Set which actions <em>do not</em> require a nonce check.
 		 *
@@ -204,7 +204,7 @@ class route implements \Action_Hook_SubscriberInterface {
 
 		}
 
-		if ( ! $this->action_allowed( $action ) ) {
+		if ( ! self::action_allowed( $action ) ) {
 			return 501;
 
 		}
@@ -222,7 +222,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return array Allowed actions
 	 */
-	private function allowed_actions() {
+	private static function allowed_actions() {
 		$dir =  trailingslashit( dirname( __FILE__ ) ) . 'actions';
 		$files = scandir( $dir  );
 		foreach ( $files as $file  ) {
@@ -256,9 +256,9 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return bool
 	 */
-	private function action_allowed( $action ) {
+	private static function action_allowed( $action ) {
 
-		return ( in_array( $action, $this->allowed_actions() ) );
+		return ( in_array( $action, self::allowed_actions() ) );
 
 	}
 
@@ -272,7 +272,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return bool|string
 	 */
-	private function cache_key( $params, $action ) {
+	private static function cache_key( $params, $action ) {
 		if ( ! HT_DEV_MODE && is_array( $params ) && ! apply_filters( 'ht_dms_internal_api_skip_cache', false, $action, $params ) ) {
 			$cache_key = array_merge( $params, array( $action )  );
 			$cache_key = implode( $cache_key, '=' );
