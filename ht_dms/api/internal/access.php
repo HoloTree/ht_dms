@@ -13,17 +13,49 @@ namespace ht_dms\api\internal;
 
 
 class access implements \Filter_Hook_SubscriberInterface {
-
+	/**
+	 * The internal API's name
+	 *
+	 * @since 0.1.0
+	 *
+	 * @var string
+	 */
 	public static $name = 'ht-dms-internal-api';
+
+	/**
+	 * The car we store the action name in
+	 *
+	 * @since 0.1.0
+	 *
+	 * @var string
+	 */
 	public static $action = 'action';
 
-	
+	/**
+	 * Set filters
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
 	public static function get_filters() {
 		return array(
 			'restricted_site_access_is_restricted' => 'lift_login_restriction'
 		);
 	}
 
+	/**
+	 * Check if current request can use internal API.
+	 *
+	 * Note: This intentional does not search for query_vars, so it can return false quicker in its primary use. Please do not "enhance" this to do that.
+	 *
+	 * @since 0.1.0
+	 * @param array|null $query_vars Query vars from current wp_query object. If is null, and $check_get is false, method will return false. If $check_get is true, is null, $_GET vars are used instead
+	 * @param null|string $action Optional. Current action. If null, it will be found.
+	 * @param bool $check_get Optional. If false, the default, $query_vars are searched.
+	 *
+	 * @return bool
+	 */
 	public static function is_internal_api( $query_vars, $action = null, $check_get = false ) {
 		if ( ! $check_get && is_null( $query_vars ) ) {
 			return false;
@@ -68,9 +100,21 @@ class access implements \Filter_Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Returns array of actions that do not require authentication
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
 	public static function non_auth_actions() {
+
 		/**
 		 * Set which actions <em>do not</em> require authentication.
+		 *
+		 * Note: must return an array. To set no actions pass an empty array.
+		 *
+		 * @since 0.1.0
 		 *
 		 * @param array $actions_to_skip
 		 */
@@ -108,6 +152,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		}
 
 		return self::$instance;
+		
 	}
 
 } 
