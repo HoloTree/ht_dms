@@ -365,6 +365,9 @@ jQuery( function ( ) {
                     $( outer_html_id ).attr( 'page', page );
                     $( outer_html_id ).fadeIn( 800 );
 
+                },
+                complete : function( xhr ) {
+                    tabHeight();
                 }
             });
         }

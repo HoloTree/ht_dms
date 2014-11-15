@@ -16,8 +16,11 @@ jQuery(document).ready(function( $ ) {
             var spinner = containerID + "-spinner.spinner";
             $( spinner ).show();
             htDMSinternalAPI.paginate.request( containerID , 1 );
+
         };
     });
+
+
 
     function ht_dms_paginate( container, page ) {
         return htDMSinternalAPI.paginate.request( container, page );
@@ -105,6 +108,8 @@ jQuery(document).ready(function( $ ) {
             htDMSinternalAPI.paginate.request( container, $( container ).attr( 'page' ), 1 );
 
         });
+
+        tabHeight();
 
     });
 
@@ -264,47 +269,49 @@ jQuery(document).ready(function( $ ) {
     tabHeight();
     window.addEventListener( 'resize', tabHeight );
 
-    $( document ).ajaxComplete(function() {
-        tabHeight();
-    });
-
 
     function tabHeight() {
         var width = $(document).width();
         var divs = '#tabs .content';
+
         if (width > 640) {
             var maxHeight = -1;
 
 
-            if (undefined != paginatedViews) {
+            if ( undefined != paginatedViews) {
                 $.each( paginatedViews, function (index, value) {
                     if ( $(value).length > 0 ) {
-                        maxHeight = maxHeight > $(value).height() ? maxHeight : $(value).height();
+                        maxHeight = maxHeight > $(value).outerHeight( true ) ? maxHeight : $( value ).outerHeight( true );
                     };
                 });
             }
 
-            $(divs).each(function () {
-                maxHeight = maxHeight > $(this).height() ? maxHeight : $(this).height();
+            $( divs ).each( function () {
+                maxHeight = maxHeight > $(this).height( true ) ? maxHeight : $( this ).height( true );
             });
 
 
-            if (maxHeight > 0) {
-                $(divs).each(function () {
-                    $(this).height(maxHeight);
+            if ( maxHeight > 0) {
+                $( divs ).each( function() {
+
+                    $( this ).height( maxHeight );
                 });
 
-                $('ul.tabs').height(maxHeight);
+                $( '#ht_dms-tabs' ).height( maxHeight );
             }
         }
         else {
 
-            $('ul.tabs').removeAttr( 'style' );
-            $(divs).each(function () {
+            $( '#ht_dms-tabs' ).removeAttr( 'style' );
+            $( divs ).each(function () {
                 $(this).removeAttr( 'style' );
             });
         }
+
+        console.log( 'mx ' + maxHeight);
     }
+
+    window.tabHeight = tabHeight;
 
     function idCheck( id ) {
         return htDMSinternalAPI.idCheck( id );
