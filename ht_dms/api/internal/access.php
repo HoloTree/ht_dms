@@ -82,6 +82,91 @@ class access implements \Filter_Hook_SubscriberInterface {
 	}
 
 	/**
+	 * Check if access is allowed and return the status code accordingly.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action to take
+	 *
+	 * @return int Status code
+	 */
+	public static function check_access( $action ) {
+
+		$skip = self::non_auth_actions();
+
+		if ( ! in_array( $action, $skip  ) || ! HT_DEV_MODE ) {
+			if (  ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+				return 550;
+			}
+
+		}
+
+		if ( ! self::action_allowed( $action ) ) {
+			return 501;
+
+		}
+
+		return 200;
+
+	}
+
+	/**
+	 * Actions to allow via internal API
+	 *
+	 * @since 0.1.0
+	 *
+	 * @access private
+	 *
+	 * @return array Allowed actions
+	 */
+	private static function allowed_actions() {
+		$key = __CLASS__ . __METHOD__;
+		if ( false == ( $actions = get_transient( $key ) ) ) {
+			$dir   = trailingslashit( dirname( __FILE__ ) ) . 'actions';
+			$files = scandir( $dir );
+			foreach ( $files as $file ) {
+				$path = pathinfo( $file, PATHINFO_EXTENSION );
+				if ( 'php' == $path ) {
+					$file      = str_replace( '.php', '', $file );
+					$actions[] = $file;
+				}
+
+			}
+
+			set_transient( $key, $actions, WEEK_IN_SECONDS );
+
+		}
+
+		/**
+		 * Filter allowable actions for internal API
+		 *
+		 * @since 0.1.0
+		 *
+		 * @param array $actions Actions to allow
+		 *
+		 * @return array
+		 */
+		return apply_filters( 'ht_dms_internal_api_allowed_actions', $actions );
+	}
+
+	/**
+	 * Check if an action is allowed.
+	 *
+	 * @access private
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $action Action name.
+	 *
+	 * @return bool
+	 */
+	private static function action_allowed( $action ) {
+
+		return ( in_array( $action, self::allowed_actions() ) );
+
+	}
+
+	/**
 	 * Allows actions that do not require authentication to bypass login restrictions
 	 *
 	 * @uses 'restricted_site_access_is_restricted' filter
@@ -152,7 +237,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		}
 
 		return self::$instance;
-		
+
 	}
 
 } 
