@@ -21,11 +21,7 @@ class loaders implements \Hook_SubscriberInterface {
 	 * @return array
 	 */
 	public static function get_actions() {
-
-		return array(
-			'ht_dms_paginated_views_template_output' => array( 'after_notification_preview', 10, 2 ),
-
-		);
+		return array();
 
 	}
 
@@ -488,43 +484,6 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 	}
 
-	/**
-	 * Adds additional markup for notifications view to allow AJAX-based UI.
-	 *
-	 * @uses ht_dms_models_template_output filter
-	 *
-	 * @param $view
-	 * @param $type
-	 *
-	 * @return string
-	 *
-	 * @#since 0.0.3
-	 */
-	function after_notification_preview( $out, $view ) {
-		if ( $view === 'users_notifications' ) {
-
-			$single_view = '<div id="notification-single-view"> </div>';
-
-			$header = sprintf(
-				'<div id="notifications-header"><h3 style="float:left">%0s</h3>
- 					<span id="notification-options" class="button" style="float:right">
- 						<a href="#" id="notification-all-view-toggle" state="%1s">%2s</a>
- 					</span></div>',
-
-				__( 'Notifications', 'ht_dms' ),
-				esc_attr( 1 ),
-				__( 'Show All Messages' , 'ht_dms' )
-
-			);
-
-
-			$out = sprintf( '<div id="notification-viewer">%0s %1s %2s</div>', $header,  $out, $single_view );
-
-		}
-
-		return $out;
-
-	}
 
 	function after_group( $out, $view, $id ) {
 		if ( in_array( $view, array( 'group', 'group_preview' ) ) ) {
