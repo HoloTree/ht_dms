@@ -533,6 +533,7 @@ class elements {
 			'accepted' => '<i class="fa fa-check"></i>',
 			'notification' => '<i class="fa fa-envelope-o"></i>',
             'user'  => '<i class="fa fa-user"></i>',
+			'consensus' => '<i class="fa fa-fire"></i>',
 
 		);
 
