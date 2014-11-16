@@ -148,11 +148,15 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 * @return bool
 	 */
 	private static function check_referer() {
-		$ref = pods_v_sanitized( 'HTTP_REFERER', $_SERVER );
+
+		$ref = wp_get_referer();
+		if ( strpos( $ref, '?') ) {
+			$ref = strtok( $ref, '?' );
+		}
 
 		if ( trailingslashit( home_url() ) === trailingslashit( $ref ) ) {
 			return true;
-			
+
 		}
 
 	}
