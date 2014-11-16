@@ -29,6 +29,7 @@ class mark_notification {
 		$value =  pods_v_sanitized( 'mark', $params );
 
 		if ( $nID && in_array( $value, array( 1, 0 ) ) ) {
+			$value = !$value;
 			$id = ht_dms_notification_class()->viewed( $nID, null, $value );
 
 			if ( $id == $nID ) {

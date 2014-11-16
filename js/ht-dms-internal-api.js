@@ -235,11 +235,13 @@ jQuery( function ( ) {
             if ( viewed == 'Yes' ) {
                 mark = 0;
             }
+
             params = {};
             params.nID = nID;
             params.viewed = viewed;
             params.action = 'mark_notification';
             var url = app.constructURL( params );
+
             $.ajax( {
                 method: 'GET',
                 url: url,
@@ -250,6 +252,7 @@ jQuery( function ( ) {
 
         },
         cb: function( response ) {
+
             app.paginate.request( "#users_notifications", 1 );
         }
     };
