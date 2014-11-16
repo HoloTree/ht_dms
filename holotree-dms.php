@@ -453,12 +453,19 @@ add_action( 'admin_init', function( ) {
 	}
 }, 1 );
 
-
+/**
+ * Add HoloTree login header
+ *
+ * @since 0.1.0
+ */
 add_action( 'login_head',
 	function() {
 		echo '<div id="extra-login">';
-		echo '<h1 id="login-extra-title">'. __( 'HoloTree', 'ht_dms' ) . '</h1>';
-		echo '<h3 id="login-tagline">'. __( 'Team Decision Making', 'ht_dms' ) . '</h3>';
-		echo '</div>';
+		echo '<div id="extra-login-inside">';
+		echo '<h1 id="login-extra-title">'. __( 'HoloTree', 'ht-dms' ) . '</h1>';
+		echo '<h3 id="login-tagline">'. __( 'Team Decision Making', 'ht-dms' ) . '</h3>';
+		$link = sprintf( '<a href="%1s" title="%2s">HoloTree.com</a>', esc_url( 'http://HoloTree.com'), esc_attr( 'Website for HoloTree' ) );
+		echo '<p>'.__( sprintf( 'Learn more about HoloTree at %1s', $link ), 'ht-dms' ).'</p>';
+		echo '</div></div>';
 	}
 );
