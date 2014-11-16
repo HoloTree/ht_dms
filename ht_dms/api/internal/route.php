@@ -193,7 +193,8 @@ class route implements \Action_Hook_SubscriberInterface {
 	 */
 	private static function cache_key( $params, $action ) {
 		if ( ! HT_DEV_MODE && is_array( $params ) && ! apply_filters( 'ht_dms_internal_api_skip_cache', false, $action, $params ) ) {
-			$cache_key = array_merge( $params, array( $action )  );
+			global $cuID;
+			$cache_key = array_merge( $params, array( $action, $cuID  )  );
 			$cache_key = implode( $cache_key, '=' );
 
 			return $cache_key;
