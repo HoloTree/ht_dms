@@ -104,12 +104,15 @@ class access implements \Filter_Hook_SubscriberInterface {
 
 		$skip = self::non_auth_actions();
 
-		if ( ! in_array( $action, $skip  ) || ! HT_DEV_MODE ) {
-			$nonce = pods_v_sanitized( 'nonce' );
-			if (  ! self::check_nonce_and_referer( $nonce) ) {
-				return 550;
-			}
+		if ( ! HT_DEV_MODE ) {
+			if ( ! in_array( $action, $skip ) ) {
+				$nonce = pods_v_sanitized( 'nonce' );
 
+
+				if ( ! self::check_nonce_and_referer( $nonce ) ) {
+					return 550;
+				}
+			}
 		}
 
 		if ( ! self::action_allowed( $action ) ) {

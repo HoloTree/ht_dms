@@ -60,8 +60,9 @@ class route implements \Action_Hook_SubscriberInterface {
 
 				$params = self::args( $action );
 				$cache_key = self::cache_key( $params, $action );
-				if ( false == ( $response = pods_cache_get( $cache_key ) ) ) {
+				if ( HT_DEV_MODE || false == ( $response = pods_cache_get( $cache_key ) ) ) {
 					$response = self::dispatch( $action, $params  );
+
 					if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
 						$status_code = '404';
 						$response = js::messages( 'noItems' );
