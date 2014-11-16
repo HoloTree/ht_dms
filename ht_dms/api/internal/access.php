@@ -108,7 +108,6 @@ class access implements \Filter_Hook_SubscriberInterface {
 			if ( ! in_array( $action, $skip ) ) {
 				$nonce = pods_v_sanitized( 'nonce' );
 
-
 				if ( ! self::check_nonce_and_referer( $nonce ) ) {
 					return 550;
 				}
@@ -153,14 +152,20 @@ class access implements \Filter_Hook_SubscriberInterface {
 	private static function check_referer() {
 
 		$ref = wp_get_referer();
-		if ( strpos( $ref, '?') ) {
-			$ref = strtok( $ref, '?' );
-		}
+		$ref = self::find_origin( $ref );
+		$proper_origin = self::find_origin( home_url( ) );
 
-		if ( trailingslashit( home_url() ) === trailingslashit( $ref ) ) {
+		if ( $proper_origin === $ref ) {
 			return true;
 
 		}
+
+	}
+
+	private static function find_origin( $url ) {
+		$parsed = parse_url( $url );
+
+		return pods_v_sanitized( 'host', $parsed );
 
 	}
 
