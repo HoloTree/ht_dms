@@ -106,6 +106,7 @@ class paginate {
 		$view = self::get_view( $view, $args, $html_id, $type, $page );
 		$output[ 'json' ] = pods_v( 'json', $view );
 		$output[ 'html' ] = pods_v( 'html', $view );
+
 		return $output;
 	}
 
@@ -138,7 +139,9 @@ class paginate {
 
 
 		$html = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
-		$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $page, $type );
+		if ( $obj ) {
+			$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $page, $type );
+		}
 
 		$html = apply_filters( 'ht_dms_paginated_views_template_output', $html, $view );
 

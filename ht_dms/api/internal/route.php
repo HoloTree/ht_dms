@@ -62,7 +62,15 @@ class route implements \Action_Hook_SubscriberInterface {
 				$cache_key = self::cache_key( $params, $action );
 				if ( false == ( $response = pods_cache_get( $cache_key ) ) ) {
 					$response = self::dispatch( $action, $params  );
-					pods_cache_set( $cache_key, $response, '', 599 );
+					if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
+						$status_code = '404';
+						$response = js::messages( 'noItems' );
+						pods_cache_clear( $cache_key );
+					}
+					else {
+						pods_cache_set( $cache_key, $response, '', 599 );
+					}
+
 				}
 
 			}
@@ -70,6 +78,8 @@ class route implements \Action_Hook_SubscriberInterface {
 				$response = $denied;
 
 			}
+
+
 
 			if ( 550 == $response || $response == $denied ) {
 				$status_code = $response;
