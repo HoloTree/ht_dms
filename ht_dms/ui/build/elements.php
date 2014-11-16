@@ -503,6 +503,7 @@ class elements {
 	 * @since 0.0.3
 	 */
 	function icon( $icon, $extra_class = false, $all = false  ) {
+
 		$icons = array(
 			'organization' => '<i class="fa fa-university"></i>',
 			'group'	=> '<i class="fa fa-users"></i>',
@@ -532,7 +533,10 @@ class elements {
 			'accepted' => '<i class="fa fa-check"></i>',
 			'notification' => '<i class="fa fa-envelope-o"></i>',
             'user'  => '<i class="fa fa-user"></i>',
+
 		);
+
+		$icons[ 'passed' ] = $icons[ 'accepted' ];
 
 		/**
 		 * Change one or more of the icons
