@@ -569,8 +569,10 @@ class views {
 	 * Returns the instance.
 	 *
 	 * @since  0.0.1
+	 *
 	 * @access public
-	 * @return object
+	 *
+	 * @return views|object
 	 */
 	public static function init() {
 		if ( !self::$instance )
@@ -583,9 +585,9 @@ class views {
 	/**
 	 * Get instance of UI class
 	 *
-	 * @return 	\holotree\ui
-	 *
 	 * @since 	0.0.1
+	 *
+	 * @return \ht_dms\ui\ui
 	 */
 	function ui(){
 		$ui = ht_dms_ui();
