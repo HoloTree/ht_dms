@@ -172,7 +172,7 @@ class json {
 				$data[ $field ] = $obj->field( $field );
 			}
 			else {
-				$data[ $field ] = $obj->display( $field );
+				$data[ $field ] = balanceTags( $obj->display( $field ), true );
 			}
 
 		}

@@ -48,6 +48,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 	$out = '<div id="' .esc_attr( $view ) . '" '.$attributes . ' >' . esc_html( $content ) . '</div>';
 	if ( $view == 'users_notifications' ) {
 		$out = ht_dms\ui\build\notification\elements::notification_view_header() . $out;
+		$out .= ht_dms_ui()->view_loaders()->handlebars_template( 'notification' );
 	}
 	
 	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );

@@ -81,15 +81,24 @@ jQuery( function ( ) {
             });
         },
         cb: function( response ) {
-            var container = '#notification-viewer';
-            var previews = $( container ).html();
+
+            data = response.json;
+            if ( 'object' != typeof data ) {
+                data = JSON.parse( data );
+            }
+
+            var container = response.outer_html_id;
+            var source = $( '#notification-single' ).html();
+            var template = Handlebars.compile( source );
+            rendered = template( data );
+
             $( container ).html('');
-            $( container ).hide().append( response ).fadeIn( 400 );
+            $( container ).hide().append( rendered ).fadeIn( 400 );
             $( '#notification-single-close').show();
 
             $( "#notification-single-close").click( function () {
-                $( '#notification-viewer').fadeOut( 400 ).html( '' );
-                $( container ).hide().append( previews ).fadeIn( 400 );
+                $( container ).fadeOut( 400 ).html( '' ).show();
+                app.paginate.request( '#users_notifications', 1 );
             });
 
         }
@@ -260,9 +269,8 @@ jQuery( function ( ) {
         },
         mark: function mark( nID ) {
             select = "[nID="+nID+"]";
-            alert( select );
             var els = $( select );
-            console.log( els );
+
         }
     };
 
@@ -355,7 +363,7 @@ jQuery( function ( ) {
                 nonce: htDMSinternalAPI.nonce,
                 success: function ( response ) {
                     var outer_html_id = response.outer_html_id;
-                    console.log( outer_html_id );
+
                     var spinner = outer_html_id + "-spinner";
 
                     var obj = JSON.parse( response.json );
@@ -377,7 +385,6 @@ jQuery( function ( ) {
                     $( outer_html_id ).fadeOut( 800 ).hide();
                     $( outer_html_id ).append( html ).append( response.template );
                     $( spinner ).show().delay( 400 );
-
 
                     var rendered = '';
 
@@ -401,6 +408,14 @@ jQuery( function ( ) {
                     $( spinner ).hide();
                     $( outer_html_id ).attr( 'page', page );
                     $( outer_html_id ).fadeIn( 800 );
+                    $( outer_html_id ).parent().show();
+
+
+                    if ( document.contains( document.getElementById('users-notifications-container' )  ) ) {
+
+                        $( '#users-notifications-container' ).show();
+                    }
+
 
                 },
                 complete : function( xhr ) {

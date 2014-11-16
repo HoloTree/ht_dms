@@ -120,7 +120,7 @@ jQuery(document).ready(function( $ ) {
             container = '#users_notifications';
             state = $( allViewToggle ).attr( 'state' );
             state  ^= true;
-          
+
             if ( state ) {
                 text = htDMSinternalAPIvars.messages.showAll;
             }
