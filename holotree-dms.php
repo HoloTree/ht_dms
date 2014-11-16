@@ -140,6 +140,8 @@ class HoloTree_DMS {
 			}
 
 			wp_enqueue_style( 'pods-form' );
+			wp_enqueue_script( 'pods' );
+			wp_enqueue_script( 'pods-attach' );
 
 			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery' ), $version, true );
 
@@ -323,17 +325,6 @@ require_once( trailingslashit( HT_DMS_ROOT_DIR ) . 'wp-plugin-api-manager/regist
 $api_registration = new \HT_DMS_WP_API_Registration();
 $api_registration->boot();
 
-global $ajaxed;
-if ( ! isset( $ajaxed ) ||  false === $ajaxed ) {
-	$ajax = ht_dms_ui()->ajax_callbacks();
-	$actions = $ajax->callbacks();
-	foreach ( $actions as $callback ) {
-		$action = 'wp_ajax_ht_dms_' . $callback;
-		add_action( $action, array ( $ajax, $callback ) );
-	}
-	$ajaxed = true;
-}
-
 /**
  * Put current user ID in a global.
  *
@@ -347,7 +338,6 @@ add_action( 'init', function() {
 } );
 
 ht_dms_common_class();
-
 /**
  * Action that runs right after Holotree DMS system is initialized.
  *
