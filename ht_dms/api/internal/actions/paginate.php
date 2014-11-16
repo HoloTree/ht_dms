@@ -138,12 +138,9 @@ class paginate {
 	 * @return array containing 'json' and 'html' keys.
 	 */
 	private static function get_view( $view, $args, $html_id, $type, $page = 1 ) {
-		if ( $view == 'users_notifications' ) {
-			$args['return'] = 'simple_json';
-		}
-		else {
-			$args['return'] = 'json';
-		}
+
+		$args['return'] = 'simple_json';
+
 
 		if ( ! isset( $args[ 'page' ] ) ) {
 			$args[ 'page' ] = $page;
