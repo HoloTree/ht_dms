@@ -119,13 +119,8 @@ jQuery(document).ready(function( $ ) {
         $( allViewToggle ).click( function() {
             container = '#users_notifications';
             state = $( allViewToggle ).attr( 'state' );
-            if ( undefined != state ) {
-                state = ! state;
-            }
-            else {
-                state = 1;
-            }
-
+            state  ^= true;
+          
             if ( state ) {
                 text = htDMSinternalAPIvars.messages.showAll;
             }
