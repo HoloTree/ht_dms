@@ -22,6 +22,7 @@ class js implements \Action_Hook_SubscriberInterface {
 	 * @return array
 	 */
 	public static function get_actions() {
+
 		return array(
 			'wp_enqueue_scripts' => 'script',
 		);
@@ -33,7 +34,7 @@ class js implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @since 0.1.0
 	 */
-	function script()  {
+	public static function script()  {
 		$version = HT_DMS_VERSION;
 		if ( HT_DEV_MODE ) {
 			$version = rand();
@@ -41,7 +42,7 @@ class js implements \Action_Hook_SubscriberInterface {
 
 		$handle = 'ht-dms-internal-api';
 		wp_enqueue_script( $handle, HT_DMS_ROOT_URL .'js/ht-dms-internal-api.js', array( 'jquery'), $version, false );
-		wp_localize_script( $handle, 'htDMSinternalAPIvars', $this->vars() );
+		wp_localize_script( $handle, 'htDMSinternalAPIvars', self::vars() );
 
 
 	}
@@ -53,11 +54,11 @@ class js implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return array
 	 */
-	private function vars() {
+	private static function vars() {
 		return array(
 			'url' => esc_url( home_url( 'ht-dms-internal-api' ) ),
 			'id' => get_queried_object_id(),
-			'nonce' => wp_create_nonce( 'ht-dms' ),
+			'nonce' => wp_create_nonce( access::$nonce_action ),
 			'type' => ht_dms_prefix_remover( get_post_type() ),
 			'messages' => self::messages(),
 		);
@@ -76,6 +77,33 @@ class js implements \Action_Hook_SubscriberInterface {
 		}
 
 		return $messages;
+
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+	/**
+	 * Returns an instance of this class.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 *
+	 * @return js|object
+	 */
+	public static function init() {
+
+		if ( ! self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
 
 	}
 

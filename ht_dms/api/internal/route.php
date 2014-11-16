@@ -184,7 +184,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return mixed The result of the action to return.
 	 */
-	private function dispatch( $action, $params = null ) {
+	private static function dispatch( $action, $params = null ) {
 		$class = self::action_class( $action );
 
 		return $class::act( $params );
@@ -209,6 +209,33 @@ class route implements \Action_Hook_SubscriberInterface {
 
 			return $cache_key;
 		}
+
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.1.0
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+	/**
+	 * Returns an instance of this class.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 *
+	 * @return route|object
+	 */
+	public static function init() {
+
+		if ( ! self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
 
 	}
 

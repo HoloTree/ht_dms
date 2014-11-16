@@ -32,6 +32,16 @@ class access implements \Filter_Hook_SubscriberInterface {
 	public static $action = 'action';
 
 	/**
+	 * Name of the action for the internal API nonce
+	 *
+	 * @since 0.1.0
+	 *
+	 * @var string
+	 */
+	public static $nonce_action = 'ht-dms-internal-nonce-action';
+
+
+	/**
 	 * Set filters
 	 *
 	 * @since 0.1.0
@@ -95,7 +105,8 @@ class access implements \Filter_Hook_SubscriberInterface {
 		$skip = self::non_auth_actions();
 
 		if ( ! in_array( $action, $skip  ) || ! HT_DEV_MODE ) {
-			if (  ! check_ajax_referer( 'ht-dms', 'nonce' ) ) {
+			$nonce = pods_v_sanitized( 'nonce' );
+			if (  ! self::check_nonce_and_referer( $nonce) ) {
 				return 550;
 			}
 
@@ -107,6 +118,42 @@ class access implements \Filter_Hook_SubscriberInterface {
 		}
 
 		return 200;
+
+	}
+
+	/**
+	 * Check and nonce and the referer for requests
+	 *
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $nonce Nonce value.
+	 *
+	 * @return bool
+	 */
+	private static function check_nonce_and_referer( $nonce ) {
+
+		if ( self::check_referer() ) {
+			return wp_verify_nonce( $nonce, self::$nonce_action );
+
+		}
+
+	}
+
+	/**
+	 * Check that request origin is same origin.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return bool
+	 */
+	private static function check_referer() {
+		$ref = pods_v_sanitized( 'HTTP_REFERER', $_SERVER );
+
+		if ( trailingslashit( home_url() ) === trailingslashit( $ref ) ) {
+			return true;
+			
+		}
 
 	}
 
@@ -147,6 +194,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		 * @return array
 		 */
 		return apply_filters( 'ht_dms_internal_api_allowed_actions', $actions );
+
 	}
 
 	/**
@@ -205,7 +253,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		 */
 		$actions_to_skip = apply_filters( 'ht_dms_internal_api_skip_authentication', array( 'hourly' ) );
 
-		if ( is_array( $actions_to_skip ) ) {
+		if ( ! is_array( $actions_to_skip ) ) {
 			$actions_to_skip = array();
 		}
 

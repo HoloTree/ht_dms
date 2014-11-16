@@ -471,7 +471,7 @@ abstract class dms extends object {
 	}
 
 	private function form( $obj, $form_fields, $new, $id, $obj, $oID, $uID, $type, $gID ) {
-
+		wp_enqueue_script( 'pods-form' );
 
 		/**
 		 * Override form fields for add/edit  form

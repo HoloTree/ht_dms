@@ -282,7 +282,7 @@ jQuery( function ( ) {
                     var comments = JSON.parse( response.json );
                     template = Handlebars.compile( source );
                     rendered = '';
-                    console.log( comments );
+
                     $.each(comments , function ( i, val ) {
 
                         rendered += template( val );
@@ -333,6 +333,7 @@ jQuery( function ( ) {
                 url: url,
                 dataType: 'json',
                 view: params.view,
+                nonce: htDMSinternalAPI.nonce,
                 success: function ( response ) {
                     var outer_html_id = response.outer_html_id;
                     var spinner = outer_html_id + "-spinner";
@@ -377,7 +378,9 @@ jQuery( function ( ) {
 
                 },
                 complete : function( xhr ) {
+
                     if ( 200 == xhr.status ) {
+
                         tabHeight();
                     }
                     else {
@@ -446,7 +449,7 @@ jQuery( function ( ) {
      */
     app.constructURL = function( params ) {
 
-        nonce = app.htDMS.nonce;
+        nonce = htDMSinternalAPIvars.nonce;
         params[ 'nonce' ] = nonce;
 
         params = $.param( params );
