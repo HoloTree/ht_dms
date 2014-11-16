@@ -25,7 +25,7 @@ class load_notification {
 		$nID = pods_v_sanitized( 'nID', $params  );
 		if ( $nID ) {
 
-			$output[ 'json' ] =  ht_dms_ui()->views()->notification( null, $nID, 'simple_json' );
+			$output[ 'json' ] =  self::json( $nID );
 			$output[ 'outer_html_id' ] = '#users-notifications-container';
 			$output[ 'html_id' ] = '#notification-'.$nID;
 			$output[ 'template_id' ] = '#notificaiton';
@@ -47,6 +47,12 @@ class load_notification {
 
 		return array( 'nID' );
 
+	}
+
+	private static function json( $nID ) {
+
+		$out = \ht_dms\helper\json::notification( $nID );
+		return json_encode( $out );
 	}
 
 } 

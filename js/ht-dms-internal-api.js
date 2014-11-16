@@ -45,7 +45,9 @@ jQuery( function ( ) {
         ajaxComplete: function() {
           $( "[notification]" ).click( function( event ) {
               event.preventDefault();
+
               nID = $(this).attr( 'notification' );
+
               app.notificationView.request( nID );
           });
         },
@@ -86,7 +88,7 @@ jQuery( function ( ) {
             if ( 'object' != typeof data ) {
                 data = JSON.parse( data );
             }
-
+alert( response.outer_html_id );
             var container = response.outer_html_id;
             var source = $( '#notification-single' ).html();
             var template = Handlebars.compile( source );

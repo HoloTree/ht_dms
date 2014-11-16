@@ -548,11 +548,6 @@ class models {
 
 
 				if ( is_array( $data ) ) {
-					if ( 1 == count( $data ) ) {
-						reset( $data );
-						$first = key( $data );
-						$data = pods_v( $first, $data );
-					}
 
 					$data = json_encode( $data );
 				}

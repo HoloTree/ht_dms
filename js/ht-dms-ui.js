@@ -394,7 +394,7 @@ jQuery(document).ready(function( $ ) {
     }
 
     Handlebars.registerHelper( '55char', function(str) {
-        if (str.length > 55 ) {
+        if ( undefined != str && str.length > 55 ) {
             return str.substring( 0, 55 ) + '...';
         }
 
