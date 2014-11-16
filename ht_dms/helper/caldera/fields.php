@@ -445,6 +445,7 @@ class fields extends forms implements \Hook_SubscriberInterface{
 
 		$subject = sprintf( __( 'You have been invited to join %1s on HoloTree.', $organization_name ), 'holotree' );
 
+
 		return wp_mail( $email, $subject, $message );
 
 	}

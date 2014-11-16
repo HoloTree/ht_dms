@@ -92,7 +92,9 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 			'to_id' => $to,
 		);
 
-		return $this->object()->save( $data );
+		$obj = $this->pod();
+
+		return $obj->save( $data );
 
 	}
 
@@ -356,7 +358,7 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 	 *
 	 * @param 	null|array 	$params	Optional. Pods::find() params or notification ID
 	 *
-	 * @return 	bool|Pods			Pods object.
+	 * @return 	bool|\Pods			Pods object.
 	 *
 	 * @access private
 	 *
