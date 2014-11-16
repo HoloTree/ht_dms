@@ -308,7 +308,6 @@ jQuery(document).ready(function( $ ) {
             });
         }
 
-        console.log( 'mx ' + maxHeight);
     }
 
     window.tabHeight = tabHeight;

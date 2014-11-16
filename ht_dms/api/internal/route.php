@@ -71,7 +71,7 @@ class route implements \Action_Hook_SubscriberInterface {
 
 			}
 
-			if ( 550 == $response ) {
+			if ( 550 == $response || $response == $denied ) {
 				$status_code = $response;
 				$response = $denied;
 			}

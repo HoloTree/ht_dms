@@ -59,6 +59,9 @@ class js implements \Action_Hook_SubscriberInterface {
 			'id' => get_queried_object_id(),
 			'nonce' => wp_create_nonce( 'ht-dms' ),
 			'type' => ht_dms_prefix_remover( get_post_type() ),
+			'messages' => array(
+				'noItems' => __( 'No items found.', 'holotree' ),
+			)
 		);
 
 	}

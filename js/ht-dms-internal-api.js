@@ -10,6 +10,13 @@ jQuery( function ( ) {
     app.APIurl = htDMSinternalAPIvars.url;
 
     /**
+     * Messages object
+     *
+     * @since 0.1.0
+     */
+    app.messages = htDMSinternalAPIvars.messages;
+
+    /**
      * Bootstrap internal API client-side interactions
      *
      * @since 0.1.0
@@ -22,6 +29,8 @@ jQuery( function ( ) {
             app.events.ajaxComplete();
 
         });
+
+
 
     };
 
@@ -323,6 +332,7 @@ jQuery( function ( ) {
                 type: 'GET',
                 url: url,
                 dataType: 'json',
+                view: params.view,
                 success: function ( response ) {
                     var outer_html_id = response.outer_html_id;
                     var spinner = outer_html_id + "-spinner";
@@ -367,8 +377,18 @@ jQuery( function ( ) {
 
                 },
                 complete : function( xhr ) {
-                    tabHeight();
+                    if ( 200 == xhr.status ) {
+                        tabHeight();
+                    }
+                    else {
+                        spinnerID = '#' + this.view + '-spinner';
+                        containerID = '#' + this.view;
+
+                        app.noItems( containerID, spinnerID );
+
+                    }
                 }
+
             });
         }
 
@@ -434,6 +454,20 @@ jQuery( function ( ) {
         url = app.APIurl  +  '?' + params;
 
         return url;
+    };
+
+    /**
+     * Handle no items returned (or 404) by hiding spinner and outputing a message
+     *
+     * @param containerID The ID of the container to add the message to.
+     * @param spinnerID Optional. The ID of the spinner to hide.
+     */
+    app.noItems = function( containerID, spinnerID ) {
+        if ( undefined != spinnerID ) {
+            $( spinnerID ).hide();
+        }
+
+        $( containerID ).html( '<p>' + app.messages.noItems + '</p>' );
     };
 
     /**
