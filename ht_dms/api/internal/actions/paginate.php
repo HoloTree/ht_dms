@@ -91,6 +91,10 @@ class paginate {
 			$template_id = 'organization-preview';
 			$type = 'organization';
 		}
+		elseif( $view == 'users_notifications' ) {
+			$template_id = 'notification-preview';
+			$type = 'notification';
+		}
 		else {
 			ht_dms_error();
 		}
@@ -125,10 +129,17 @@ class paginate {
 	 * @return array containing 'json' and 'html' keys.
 	 */
 	private static function get_view( $view, $args, $html_id, $type, $page = 1 ) {
-		$args[ 'return' ] = 'simple_json';
+		if ( $view == 'users_notifications' ) {
+			$args['return'] = 'simple_json';
+		}
+		else {
+			$args['return'] = 'json';
+		}
+
 		if ( ! isset( $args[ 'page' ] ) ) {
 			$args[ 'page' ] = $page;
 		}
+
 		$obj = call_user_func( array( ht_dms_ui()->views(), $view ), $args );
 		if ( $obj ) {
 			$json =  $obj;

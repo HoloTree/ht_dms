@@ -43,9 +43,10 @@ jQuery( function ( ) {
      */
     app.events = {
         ajaxComplete: function() {
-          $( "[notification]" ).click( function() {
+          $( "[notification]" ).click( function( event ) {
+              event.preventDefault();
               nID = $(this).attr( 'notification' );
-              app.notificationView( nID );
+              app.notificationView.request( nID );
           });
         },
         click : function() {
@@ -67,12 +68,13 @@ jQuery( function ( ) {
         request : function( nID ) {
             params = {};
             params.nID = nID;
-            params.nID = 'load_notification';
+            params.action = 'load_notification';
             var url = app.constructURL( params );
             $.ajax( {
                 method: 'GET',
                 url: url,
                 success: function( response ) {
+
                     app.notificationView.cb( response );
                 }
                    
@@ -336,6 +338,7 @@ jQuery( function ( ) {
                 nonce: htDMSinternalAPI.nonce,
                 success: function ( response ) {
                     var outer_html_id = response.outer_html_id;
+                    console.log( outer_html_id );
                     var spinner = outer_html_id + "-spinner";
 
                     var obj = JSON.parse( response.json );
@@ -345,6 +348,7 @@ jQuery( function ( ) {
                         $( outer_html_id ).empty().append( '<p>No items found.</p>' );
                         return;
                     }
+
                     var htmlID = app.idCheck( response.html_id );
                     var templateID = app.idCheck( response.template_id );
                     var html = response.html;
@@ -362,14 +366,19 @@ jQuery( function ( ) {
 
                     $.each( obj , function ( i, val ) {
 
-                        data = JSON.parse( val );
+                        if ( 'object' != typeof val ) {
+                            data = JSON.parse( val );
+                        }
+                        else {
+                            data = val;
+                        }
+
                         var source = $( templateID ).html();
                         template = Handlebars.compile( source );
                         rendered += template( data );
                         delete template;
                         delete source;
                     } );
-
 
                     $( htmlID ).html( rendered );
                     $( spinner ).hide();

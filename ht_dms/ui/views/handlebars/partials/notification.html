@@ -1,0 +1,18 @@
+<div class="notification">
+	<a href="#" id="notification-single-close" class="ht-dms-close button" style="display:none;float:right;" title="Close" nid="{{id}}">
+		Close
+	</a>
+	<h5 class="notification-subject"  <span class="message-subject">{{{subject}}}</span></h5>
+	<div class="notification-message">{@message}</div>
+</div>
+<script id="notification" type="text/x-handlebars-template">
+    <div class="notification notification-preview">
+        <a href="#" class="notification-mark button" style="float:right;" title="Mark Read" nid="{{id}}" viewed="{{viewed}}"></a>
+        <h3>
+            <a href="#" class="notification-link button" notification="{{id}}" title="View Notification" id="notification-link">
+                <span class="message-subject">{{{subject}}}</span>
+                <span class="message-preview">{{{55char message}}}</span>
+            </a></h3>
+
+    </div>
+</script>

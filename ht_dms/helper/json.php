@@ -148,4 +148,37 @@ class json {
 
 	}
 
+	/**
+	 * Output for notifications
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $id Notification Id
+	 * @param \Pods|object|null $obj Optional. Pods object o use
+	 *
+	 * @return array
+	 */
+	public static function notification( $id, $obj = null ) {
+		$obj = ht_dms_notification_class()->null_obj( $obj, $id );
+		$data[ 'id' ] = $id;
+		$fields = array(
+			'subject',
+			'message',
+			'viewed'
+ 		);
+
+		foreach( $fields as $field ) {
+			if ( 'viewed' == $field  ) {
+				$data[ $field ] = $obj->field( $field );
+			}
+			else {
+				$data[ $field ] = $obj->display( $field );
+			}
+
+		}
+
+		return $data;
+
+	}
+
 } 

@@ -8,7 +8,14 @@ jQuery(document).ready(function( $ ) {
      *
      * @since 0.0.2
      */
-    var paginatedViews = [ '#users_groups', '#public_groups', '#users_organizations', '#assigned_tasks', '#decisions_tasks', "#users_notifications" ];
+    var paginatedViews = [
+        '#users_groups',
+        '#public_groups',
+        '#users_organizations',
+        //'#assigned_tasks',
+        //'#decisions_tasks',
+        "#users_notifications"
+    ];
 
     //loop through paginatedViews running each one, if we have that div already.
     $.each( paginatedViews, function( index, containerID ){
@@ -79,12 +86,12 @@ jQuery(document).ready(function( $ ) {
 
 
             nRead = $( el ).attr( 'viewed' );
-            if ( nRead == 'Yes' ) {
+            if ( 1 == nRead  ) {
                 $( el ).html( 'Mark Not Viewed' );
 
             }
 
-            if ( nRead == 'No' ) {
+            if ( 0 == nRead ) {
                 $( el ).html( 'Mark Viewed' );
             }
 
@@ -367,6 +374,14 @@ jQuery(document).ready(function( $ ) {
     function loadDiscussion( id ) {
         return htDMSinternalAPI.discussion( id );
     }
+
+    Handlebars.registerHelper( '55char', function(str) {
+        if (str.length > 55 ) {
+            return str.substring( 0, 55 ) + '...';
+        }
+
+        return str;
+    });
 
 
 });
