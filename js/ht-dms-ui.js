@@ -22,7 +22,12 @@ jQuery(document).ready(function( $ ) {
         if ( $( containerID ).length ) {
             var spinner = containerID + "-spinner.spinner";
             $( spinner ).show();
-            htDMSinternalAPI.paginate.request( containerID , 1 );
+            extraArg = 0;
+            if ( "#users_notifications" === containerID ) {
+                extraArg = 1;
+            }
+
+            htDMSinternalAPI.paginate.request( containerID, 1, extraArg );
 
         };
     });
@@ -110,9 +115,27 @@ jQuery(document).ready(function( $ ) {
 
         });
 
-        $( '#unviewed-only' ).click( function() {
+        var allViewToggle = $( "#notification-all-view-toggle" );
+        $( allViewToggle ).click( function() {
             container = '#users_notifications';
-            htDMSinternalAPI.paginate.request( container, $( container ).attr( 'page' ), 1 );
+            state = $( allViewToggle ).attr( 'state' );
+            if ( undefined != state ) {
+                state = ! state;
+            }
+            else {
+                state = 1;
+            }
+
+            if ( state ) {
+                text = htDMSinternalAPIvars.messages.showAll;
+            }
+            else {
+                text = htDMSinternalAPIvars.messages.showNew;
+            }
+
+            $( allViewToggle ).html( text );
+            $( allViewToggle ).attr( 'state', state );
+            htDMSinternalAPI.paginate.request( container, $( container ).attr( 'page' ), state );
 
         });
 

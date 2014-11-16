@@ -25,8 +25,8 @@ class paginate {
 	 */
 	public static function act( $params ) {
 		$view = pods_v( 'view', $params );
-		$limit = pods_v( 'limit', $params );
-		$page = pods_v( 'page', $params );
+		$limit = (int) pods_v( 'limit', $params );
+		$page = (int) pods_v( 'page', $params );
 		$extra_arg = pods_v( 'extra_arg', $params );
 		global $cuID;
 
@@ -42,6 +42,15 @@ class paginate {
 		}
 
 		if ( $view == 'users_notifications' ) {
+			if ( isset( $params[ 'extraArg' ] ) &&
+			     ( "false" === $params[ 'extraArg' ] || false == $params[ 'extraArg' ] )
+			) {
+				$extra_arg = false;
+			}
+			elseif ( is_null( $extra_arg ) ) {
+				$extra_arg = true;
+			}
+
 			$args[ 'un_viewed_only' ] = $extra_arg;
 		}
 
@@ -67,7 +76,7 @@ class paginate {
 	 */
 	public static function args() {
 
-		return array( 'view', 'limit', 'page', 'extraArg', 'oID' );
+		return  array( 'view', 'limit', 'page', 'extraArg', 'oID' );
 
 	}
 

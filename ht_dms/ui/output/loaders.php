@@ -506,10 +506,14 @@ class loaders implements \Hook_SubscriberInterface {
 			$single_view = '<div id="notification-single-view"> </div>';
 
 			$header = sprintf(
-				'<div id="notifications-header"><h3 style="float:left">%1s</h3> <span id="notification-options" class="button" style="float:right"><a href="#" id="unviewed-only">%2s</a></span></div>',
+				'<div id="notifications-header"><h3 style="float:left">%0s</h3>
+ 					<span id="notification-options" class="button" style="float:right">
+ 						<a href="#" id="notification-all-view-toggle" state="%1s">%2s</a>
+ 					</span></div>',
 
 				__( 'Notifications', 'ht_dms' ),
-				__( 'Show New Notifications Only' , 'ht_dms' )
+				esc_attr( 1 ),
+				__( 'Show All Messages' , 'ht_dms' )
 
 			);
 

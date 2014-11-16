@@ -67,7 +67,9 @@ class js implements \Action_Hook_SubscriberInterface {
 
 	public static function messages( $message = null ) {
 		$messages = array(
-			'noItems' => __( 'No items found.', 'holotree' ),
+			'noItems' => __( 'No items found.', 'ht-dms' ),
+			'showNew' => __( 'Show New Messages Only', 'ht-dms' ),
+			'showAll' => __( 'Show All Messages', 'ht-dms' ),
 		);
 
 		$messages = apply_filters( 'ht_dms_intenral_api_messages', $messages );

@@ -300,6 +300,10 @@ class models {
 
 		}
 
+		if ( $limit ) {
+			$params['limit'] = $limit;
+		}
+
 		$params = $this->cache_args( $params );
 
 		return $this->output( $return, HT_DMS_NOTIFICATION_POD_NAME, $params, $preview, $obj );

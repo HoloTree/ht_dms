@@ -240,6 +240,8 @@ jQuery( function ( ) {
             params.nID = nID;
             params.viewed = viewed;
             params.action = 'mark_notification';
+            this.mark( nID );
+
             var url = app.constructURL( params );
 
             $.ajax( {
@@ -254,6 +256,13 @@ jQuery( function ( ) {
         cb: function( response ) {
 
             app.paginate.request( "#users_notifications", 1 );
+
+        },
+        mark: function mark( nID ) {
+            select = "[nID="+nID+"]";
+            alert( select );
+            var els = $( select );
+            console.log( els );
         }
     };
 
@@ -308,7 +317,7 @@ jQuery( function ( ) {
      */
     app.paginate = {
         container:false,
-        request: function( container, page, extraArg ) {
+        request: function( container, page, extraArg, unViewedOnly ) {
             app.paginate.container = container;
 
             var oID = 0;
@@ -319,6 +328,7 @@ jQuery( function ( ) {
             if ( undefined == extraArg ) {
                 extraArg = 0;
             }
+
             if ( undefined == page ) {
                 page = 0;
             }
@@ -331,6 +341,10 @@ jQuery( function ( ) {
             params.view = $( container ).attr( "view" );
             params.limit = view = $( container ).attr( "limit" );
             params.action = 'paginate';
+            if ( undefined != unViewedOnly && true == unViewedOnly ) {
+                params.unviewedonly = unViewedOnly
+            }
+
             var url = app.constructURL( params );
 
             $.ajax({
@@ -484,6 +498,7 @@ jQuery( function ( ) {
 
         $( containerID ).html( '<p>' + app.messages.noItems + '</p>' );
     };
+
 
     /**
      * Initialize XMLHttpRequest object
