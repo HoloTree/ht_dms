@@ -401,5 +401,20 @@ jQuery(document).ready(function( $ ) {
         return str;
     });
 
+    /**
+     * Callback after membership form is submitted.
+     *
+     * Wrapper for htDMSinternalAPI.reloadMembership.request
+     *
+     * @since 0.1.0
+     * 
+     * @returns {*}
+     */
+    function reloadMembership() {
+        return htDMSinternalAPI.reloadMembership.request();
+    }
+
+    window.ht_dms_reloadMembership = reloadMembership;
+
 
 });
