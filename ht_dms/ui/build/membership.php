@@ -18,10 +18,10 @@ class membership {
 		$obj = ht_dms_group( $gID, $obj );
 		$access = ht_dms_group_class()->open_access( $gID, $obj );
 		if ( $access == 0 ) {
-			$access_label = __( 'Membership to this group does not require approval.', 'ht_dms' );
+			$access_label = __( 'Membership to this group requires approval.', 'ht_dms' );
 		}
 		else {
-			$access_label = __( 'Membership to this group requires approval.', 'ht_dms' );
+			$access_label = __( 'Membership to this group does not require approval.', 'ht_dms' );
 		}
 
 		return  $this->output_container(
