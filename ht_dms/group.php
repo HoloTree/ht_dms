@@ -565,19 +565,18 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 * Will return false if no decsions exist.
 	 *
 	 * @param int $gID Group ID
-	 * @param bool $return_obj Optional. If false, the default array of IDs is returned.
+	 * @param bool $ids_only Optional. If true, only IDs of items are returned. If false, the default, the rows for each match item are retruned.
+	 * @param bool $active_only Optional. If true, the default, only active items will be returned.
 	 *
-	 * @return array|bool|mixed|null|\pods|void
+	 * @return array|null
 	 */
-	function all_decisions( $gID, $return_obj = false, $active_only = true ) {
+	function all_decisions( $gID, $ids_only = false, $active_only = true ) {
 		if ( ! ht_dms_is_group( $gID ) ) {
 			return;
 		}
 
 		$params = array( 'where' => "group.ID = \"{$gID}\"" );
-		if ( $active_only ) {
-			$params[ 'where' ] .= ' '.ht_dms_decision_class()->active_status_params();
-		}
+
 		$obj = ht_dms_decision_class()->object( true, $params );
 
 		if ( ! is_object( $obj ) ||  $obj->total() == 0 ) {
@@ -585,12 +584,24 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 		}
 
-		if ( $return_obj ) {
-			return $obj;
+		$active_statuses = ht_dms_decision_class()->active_statuses();
+		$return = array();
 
+		if ( ! empty( $obj->rows ) && is_array( $obj->rows ) ) {
+			foreach( $obj->rows as $row ) {
+				$status = pods_v( 'decision_status', $row );
+				if ( in_array( $status, $active_statuses ) ) {
+					$return[ pods_v( 'ID', $row ) ] = $row;
+				}
+			}
 		}
 
-		return wp_list_pluck( $obj->rows, 'ID' );
+
+		if ( $ids_only && ! empty( $return ) ) {
+			return wp_list_pluck( $return, 'ID' );
+		}
+
+		return $return;
 
 	}
 

@@ -34,14 +34,16 @@ class update implements \Action_Hook_SubscriberInterface{
 	 *
 	 * @uses 'ht_dms_add_member_to_group' action
 	 *
-	 * @param $gID
 	 * @param $uID
+	 * @param $gID
+	 *
 	 */
-	static function add_to_consensus( $gID, $uID ) {
-		$decisions = ht_dms_group_class()->all_decisions( $gID );
+	static function add_to_consensus( $uID, $gID ) {
+		$decisions = ht_dms_group_class()->all_decisions( $gID, true );
 		if ( is_array( $decisions ) ) {
 			foreach ( $decisions as $decision ) {
-				self::add_to_consensus( $uID, ht_dms_consensus( $decision ) );
+				$consensus = self::add_member( $uID, ht_dms_consensus( $decision ) );
+				self::save( $consensus, $decision  );
 			}
 
 		}
