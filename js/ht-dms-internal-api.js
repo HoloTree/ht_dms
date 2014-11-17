@@ -386,7 +386,7 @@ alert( response.outer_html_id );
 
                     $( outer_html_id ).fadeOut( 800 ).hide();
                     $( outer_html_id ).append( html ).append( response.template );
-                    $( spinner ).show().delay( 400 );
+                    $( spinner ).show();
 
                     var rendered = '';
 
