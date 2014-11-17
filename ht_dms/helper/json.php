@@ -50,7 +50,7 @@ class json {
 
 			} else {
 
-				$data[ $index ] = $obj->display( $field );
+				$data[ $index ] = balanceTags( $obj->display( $field ) );
 			}
 		}
 
@@ -102,7 +102,7 @@ class json {
 
 			} else {
 
-				$data[ $index ] = $obj->display( $field );
+				$data[ $index ] = balanceTags( $obj->display( $field ) );
 
 			}
 		}
@@ -139,7 +139,7 @@ class json {
 			if ( $date ) {
 				$json[ $i ]['date'] = date( 'D M j, Y', $date );
 			}
-			$json[ $i ][ 'content' ] = pods_v( 'comment_content', $comment );
+			$json[ $i ][ 'content' ] = balanceTags( pods_v( 'comment_content', $comment ) );
 			$json[ $i ][ 'name' ] = get_userdata( $user )->display_name;
 		}
 
