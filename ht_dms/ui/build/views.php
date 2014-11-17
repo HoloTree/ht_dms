@@ -307,14 +307,18 @@ class views {
 	 *
 	 * @since   0.0.2
 	 */
-	function decision( $obj = null, $id, $return = 'template'  ) {
+	function decision( $obj = null, $id = null, $return = 'template'  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'id'		=> $id,
-			'preview' 	=> false,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array(
+				'obj'     => $obj,
+				'id'      => $id,
+				'preview' => false,
+				'return'  => $return,
+			);
+		} else {
+			$args = $obj;
+		}
 
 		return $this->models()->decision( $args );
 
