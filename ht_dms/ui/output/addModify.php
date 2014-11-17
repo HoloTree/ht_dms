@@ -60,7 +60,7 @@ class addModify {
 		
 		$dms_decision = ht_dms_decision_class();
 		$form = $dms_decision->propose_modify( $id, $obj, $uID );
-		$out = '<div class="modify-decision" id="modify-'.$id.'">';
+		$out = '<div class="modify-decision" id="modify-'.esc_attr( $id ).'">';
 		$out .= $form;
 		$out .= '</div><!--.modify-decision-->';
 
