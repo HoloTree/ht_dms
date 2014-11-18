@@ -214,6 +214,31 @@ class route implements \Action_Hook_SubscriberInterface {
 	}
 
 	/**
+	 * Send Headers
+	 *
+	 *
+	 * @todo implement
+	 *
+	 * @see https://github.com/HoloTree/ht_dms/issues/117
+	 * @see https://github.com/HoloTree/ht_dms/issues/130
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $status_code
+	 * @param int $expires
+	 */
+	private function headers( $status_code, $expires = 119 ) {
+
+		status_header( $status_code );
+		if ( 200 == $status_code ) {
+			header( 'Pragma: public' );
+			header( 'Cache-Control: maxage=' . $expires );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + $expires ) . ' GMT' );
+		}
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.1.0
