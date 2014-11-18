@@ -444,11 +444,13 @@ add_filter( 'registration_redirect', function( $url ) {
  * @since 0.1.0
  */
 add_action( 'admin_init', function( ) {
-	global $current_user;
-	if ( ! HT_DEV_MODE || ! isset( $current_user->caps ) ) {
-		$caps =  $current_user->caps;
-		if ( is_null( pods_v( 'administrator', $caps )) ) {
-			pods_redirect( ht_dms_home() );
+	if ( 'ht_dms_validate_invite_code' !== pods_v_sanitized( 'action', 'post' )  ){
+		global $current_user;
+		if ( ! HT_DEV_MODE || ! isset( $current_user->caps ) ) {
+			$caps = $current_user->caps;
+			if ( is_null( pods_v( 'administrator', $caps ) ) ) {
+				pods_redirect( ht_dms_home() );
+			}
 		}
 	}
 }, 1 );
