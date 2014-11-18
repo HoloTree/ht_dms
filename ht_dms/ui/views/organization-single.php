@@ -24,6 +24,7 @@ $count = $org_class->group_count( $id, $obj );
 $is_member = $org_class->is_member( $id, $uID, $obj );
 $is_facilitator = $org_class->is_facilitator( $id, $uID );
 $facilitator_tabs = array();
+$paginated_view_args = array();
 
 if ( $is_facilitator ) {
 	$facilitator_tabs = $ui->output_elements()->organization_facilitator_tabs( $id, $uID, $obj );

@@ -18,14 +18,13 @@ $paginated_view_args = ht_dms_default_paginated_view_arguments();
 
 $tabs = array(
 	array(
-		'label'		=> ht_dms_add_icon( __( 'My Groups', 'ht_dms' ), 'group' ),
-		'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
-	),
-	array(
 		'label'		=> ht_dms_add_icon( __( 'My Organizations', 'ht_dms' ), 'organization' ),
 		'content' 	=> ht_dms_paginated_view_container( 'users_organizations', $paginated_view_args )
 	),
-
+	array(
+		'label'		=> ht_dms_add_icon( __( 'My Groups', 'ht_dms' ), 'group' ),
+		'content' 	=> ht_dms_paginated_view_container( 'users_groups', $paginated_view_args )
+	),
 	/*
 	array (
 		'label'		=> ht_dms_add_icon( __( 'All Public Groups', 'ht_dms' ), array( 'public', 'group' ) ),
