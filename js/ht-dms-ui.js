@@ -134,7 +134,7 @@ jQuery(document).ready(function( $ ) {
 
         });
 
-        tabHeight();
+       tabHeight();
 
     });
 
@@ -296,6 +296,7 @@ jQuery(document).ready(function( $ ) {
 
 
     function tabHeight() {
+        /*
         var width = $(document).width();
         var divs = '#tabs .content';
 
@@ -332,7 +333,7 @@ jQuery(document).ready(function( $ ) {
                 $(this).removeAttr( 'style' );
             });
         }
-
+        */
     }
 
     window.tabHeight = tabHeight;
