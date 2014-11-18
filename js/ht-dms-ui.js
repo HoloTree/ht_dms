@@ -87,6 +87,7 @@ jQuery(document).ready(function( $ ) {
     });
 
     $( document ).ajaxComplete(function( event, xhr, settings ) {
+        tabDisplayFix();
         $('.notification-mark' ).each(function(i, el) {
 
 
@@ -417,5 +418,30 @@ jQuery(document).ready(function( $ ) {
 
     window.ht_dms_reloadMembership = reloadMembership;
 
+
+    /**
+     * Stupid Hack To Fix 2nd Tab Having display:block
+     *
+     * @see https://github.com/HoloTree/ht_dms/issues/129
+     */
+    function tabDisplayFix() {
+        var panels = $( ".tabs-content" ).children();
+        $.each( panels, function( i, div ) {
+            badStyle = 'display: block;';
+            el = document.getElementById( div.id);
+            if ( el.hasAttribute( 'style' ) )  {
+                elStyle = el.getAttribute( 'style' );
+                if ( elStyle.indexOf( badStyle ) > -1 ) {
+                    console.log( el );
+                    newStyle = elStyle.replace( badStyle, '');
+                    el.removeAttribute("style");
+                    el.setAttribute( 'style', newStyle );
+
+                }
+            }
+        });
+    }
+
+    tabDisplayFix();
 
 });
