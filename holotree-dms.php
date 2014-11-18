@@ -434,7 +434,7 @@ add_filter( 'pods_deploy_deploy_in_one_package', '__return_true' );
  * @since 0.1.0
  */
 add_filter( 'registration_redirect', function( $url ) {
-	return ht_dms_home() . '?dms_action=preferences';
+	return ht_dms_home();
 }, 99);
 
 
