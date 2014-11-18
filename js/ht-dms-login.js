@@ -126,7 +126,7 @@ jQuery( function () {
     login.enterInviteCode = function() {
 
         if ( '' != login.urlInviteCode ) {
-            $( login.inviteCodeField ).val( login.urlInviteCode ).prop( 'disabled', true );
+            
             if ( '' == $( login.emailField ).val() ) {
                 login.message( loginData.needEmail, true );
             }
