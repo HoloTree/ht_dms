@@ -977,6 +977,7 @@ function ht_dms_task_mode() {
  *
  * @uses 'wp_ajax_nopriv_ht_dms_validate_invite_code'
  */
+add_action( 'wp_ajax_ht_dms_validate_invite_code', 'ht_dms_validate_invite_code' );
 add_action( 'wp_ajax_nopriv_ht_dms_validate_invite_code', 'ht_dms_validate_invite_code' );
 function ht_dms_validate_invite_code() {
 	if ( check_ajax_referer( 'ht-dms-login', 'nonce' ) ) {
@@ -989,3 +990,4 @@ function ht_dms_validate_invite_code() {
 	}
 	wp_die( 0 );
 }
+
