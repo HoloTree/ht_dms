@@ -126,7 +126,7 @@ jQuery( function () {
     login.enterInviteCode = function() {
 
         if ( '' != login.urlInviteCode ) {
-            
+
             if ( '' == $( login.emailField ).val() ) {
                 login.message( loginData.needEmail, true );
             }
@@ -219,3 +219,4 @@ jQuery( function () {
     };
 
 })( jQuery, window.HTDMSLogin || ( window.HTDMSLogin = {} ) );
+

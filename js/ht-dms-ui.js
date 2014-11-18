@@ -416,7 +416,17 @@ jQuery(document).ready(function( $ ) {
         return htDMSinternalAPI.reloadMembership.request();
     }
 
-    window.ht_dms_reloadMembership = reloadMembership;
+    /**
+     * AJAX Callback that runs after decision action form is processed.
+     *
+     * @since 0.1.0
+     */
+    function postDecisionAction() {
+        $( '#dms-action-result' ).hide();
+        reloadMembership();
+    }
+
+    window.ht_dms_post_decision_action = postDecisionAction;
 
 
     /**
