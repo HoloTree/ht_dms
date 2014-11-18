@@ -302,7 +302,7 @@ class loaders implements \Hook_SubscriberInterface {
 
 		$out .= sprintf( '<div id="holotree-dms-title-section">%1s</div>', $this->main_title( $id, $task ) );
 
-		$out .= sprintf( '<div id="holotree-dms-content" data-equalizer >%1s</div>', $content );
+		$out .= sprintf( '<div id="holotree-dms-content"  >%1s</div>', $content );
 
 		/**
 		 * Third UI element is bypassed for now
