@@ -48,7 +48,11 @@ class register implements \Hook_SubscriberInterface {
 
 	function add_to_organization( $user_id ) {
 		if (  ! is_null( $code = pods_v_sanitized( 'invitation_code', 'post' ) ) ) {
-			if ( $oID = ht_dms_integer( $this->verify_code( $code, pods_v_sanitized( 'user_email', 'post' ) ) ) ) {
+			$email = pods_v_sanitized( 'user_email', 'post' );
+			$email = strtolower( $email );
+			$oID = ht_dms_invite_code( false, $email, false, $code );
+			$oID = ht_dms_integer( $oID );
+			if ( $oID ) {
 
 				ht_dms_organization_class()->add_member( $oID, $user_id );
 
@@ -58,7 +62,7 @@ class register implements \Hook_SubscriberInterface {
 
 	function pre_save_verify( $errors, $sanitized_user_login, $user_email ) {
 
-		if ( false ===$this->verify_code( $user_email, pods_v_sanitized( 'invitation_code', 'post' ) ) ) {
+		if ( false === $this->verify_code( $user_email, pods_v_sanitized( 'invitation_code', 'post' ) ) ) {
 			$errors->add( 'ht_dms_bad_code', __( '<strong>ERROR</strong>: Your invite code is not valid.','holotree') );
 		}
 

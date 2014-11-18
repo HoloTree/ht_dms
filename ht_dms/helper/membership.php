@@ -82,9 +82,8 @@ class membership {
 
 		$uID = $this->null_user( $uID );
 		if ( get_user_by( 'id', $uID ) !== false ) {
-			$members = $this->all_members( $id, $obj, $group  );
-			$members[] = $uID;
-			$id = $this->update( $id, 'members', $members );
+			$uID = (string) $uID;
+			$obj->add_to( 'members', $uID );
 
 			$type = $this->type( $group );
 			do_action( "ht_dms_add_member_to_{$type}", $uID, $id );

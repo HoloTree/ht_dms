@@ -41,6 +41,7 @@ class codes {
 
 	public static function verify_code( $email, $code ) {
 		if ( is_email( $email ) && $code  ) {
+			$email = strtolower( $email );
 			$exploder = explode( self::$prehash, $code  );
 			if ( is_array( $exploder  ) && isset( $exploder[1] ) && ht_dms_integer( $exploder[0] ) ) {
 				$oID = $exploder [0];
@@ -63,6 +64,9 @@ class codes {
 
 	private static function generate_public($oID, $email  ) {
 		if ( ht_dms_integer( $oID ) && is_email( $email ) ) {
+
+			//@todo redundant?
+			$email = strtolower( $email );
 			return md5( $oID . $email );
 		}
 
