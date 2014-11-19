@@ -44,12 +44,13 @@ class consensus  {
 	 * @param 	int 		$dID 		ID of decision.
 	 * @param 	null|obj	$obj		Optional. Decision single object.
 	 * @param	bool		$dont_set	Optional. If true, consensus array will be returned <em>unserialized</em> instead of saving it to DB. Default is false
+	 * @param   bool    $return_consensus Optional. If true, the consensus array is returned. If false, the default, the decision ID is returned.
 	 *
-	 * @return 	int						ID of decision
+	 * @return 	int|array						ID of decision or the consensus array.
 	 *
 	 * @since 	0.0.1
 	 */
-	function create( $dID, $obj = null, $dont_set = false ) {
+	function create( $dID, $obj = null, $dont_set = false, $return_consensus = false ) {
 		if ( ! $dID || ! ht_dms_is_decision( $dID ) ) {
 			return;
 		}
@@ -83,7 +84,14 @@ class consensus  {
 				else {
 					$id = $obj->save( 'consensus', serialize( $consensus ) );
 					$id = $obj->save( 'decision_status', 'new' );
-					return $id;
+					if ( $return_consensus ) {
+						return $consensus;
+
+					}
+					else {
+						return $id;
+
+					}
 
 				}
 			}
@@ -185,10 +193,6 @@ class consensus  {
 	}
 
 
-
-
-
-
 	/**
 	 * What the status of a decision should be, based on the consensus array.
 	 *
@@ -282,7 +286,11 @@ class consensus  {
 		}
 
 		if ( ! is_array( $consensus ) ) {
-			$consensus = $this->create( $dID );
+			$consensus = $this->create( $dID, false, true );
+		}
+
+		if ( is_wp_error( $consensus ) ) {
+			return false;
 		}
 
 		reset( $consensus );
@@ -340,15 +348,11 @@ class consensus  {
 
 				}
 
-
-
-
 				return $consensus_status;
 
 			}
+
 		}
-
-
 
 	}
 

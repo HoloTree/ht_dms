@@ -368,7 +368,7 @@ class elements {
 			}
 		}
 
-		if ( $g->is_public( $gID, $obj ) || $g->is_member( $gID, $obj ) || $g->is_facilitator( $gID, $obj ) ) {
+		if ( $g->is_public( $gID, $obj ) || $g->is_member( $gID, $uID, $obj ) || $g->is_facilitator( $gID, $uID, $obj ) ) {
 			$out[] = $membership->view( $gID );
 		}
 
