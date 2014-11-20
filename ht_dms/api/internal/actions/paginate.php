@@ -38,7 +38,7 @@ class paginate {
 		);
 
 		if ( in_array( $view, array( 'users_groups', 'public_groups' ) ) && ! is_null( $oID = pods_v( 'oID', $params ) ) ) {
-			$args[ 'oID' ] = $oID;
+			$args[ 'oID' ] = $args[ 'in']  = $oID;
 		}
 
 		if ( $view == 'users_notifications' ) {
