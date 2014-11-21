@@ -442,7 +442,6 @@ jQuery(document).ready(function( $ ) {
             if ( el.hasAttribute( 'style' ) )  {
                 elStyle = el.getAttribute( 'style' );
                 if ( elStyle.indexOf( badStyle ) > -1 ) {
-                    console.log( el );
                     newStyle = elStyle.replace( badStyle, '');
                     el.removeAttribute("style");
                     el.setAttribute( 'style', newStyle );
