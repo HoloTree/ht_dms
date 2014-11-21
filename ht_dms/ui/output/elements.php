@@ -285,7 +285,7 @@ class elements {
 	function breadcrumbs() {
 		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
 
-		$logo = "https://raw.githubusercontent.com/HoloTree/gus-ui-mods/master/assets/img/ht-logo-tree-only-white-50.png?token=AB5uRyYnjl9QHAbPLkG9KQh2rF2CtpvWks5Ubo5iwA%3D%3D";
+		$logo = 'http://holotree.net/ht/plugins/gus_ui_mods/assets/img/ht-logo-tree-only-white-50.png';
 
 		if ( $logo  ) {
 			$logo = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', esc_url( $logo ) );
