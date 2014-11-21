@@ -40,11 +40,4 @@ if ( ht_dms_task_mode() ) {
 	);
 }
 
-if ( HT_DEV_MODE ) {
-	$tabs[] = array(
-		'label'		=> ht_dms_add_icon( __( 'New Organization', 'ht_dms' ), array( 'new', 'organization' ) ),
-		'content'	=> $ui->add_modify()->new_organization( null, $uID ),
-	);
-}
-
 return $ui->elements()->output_container( $tabs );

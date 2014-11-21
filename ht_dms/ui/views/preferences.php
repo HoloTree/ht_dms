@@ -18,7 +18,7 @@ $view_id = pods_v( 'dms_id' );
 
 $tabs = array(
 	array(
-		'label'		=> ht_dms_add_icon( __( 'Profile', 'ht_dms' ), 'profile' ),
+		'label'		=> ht_dms_add_icon( __( 'Profile', 'ht-dms' ), 'profile' ),
 		'content' 	=> $ui->views()->preferences( $uID, false, false ),
 	),
 	array(
@@ -29,6 +29,11 @@ $tabs = array(
 		'label'		=> ht_dms_add_icon( __( 'Notification Settings', 'ht_dms' ), 'profile' ),
 		'content' 	=> $ui->views()->preferences( $uID, true, true ),
 	),
+);
+
+$tabs[] = array(
+	'label'		=> ht_dms_add_icon( __( 'New Organization', 'ht_dms' ), array( 'new', 'organization' ) ),
+	'content'	=> $ui->add_modify()->new_organization( null, $uID ),
 );
 
 if ( ! is_null( $view_id ) && (int) $view_id !== (int) $uID ) {
