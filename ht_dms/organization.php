@@ -487,4 +487,27 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 
 	}
 
+	/**
+	 * Get organization's owner.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $id ID of organization.
+	 * @param null|obj|\Pods $obj Optional. Pods object for the
+	 *
+	 * @return bool|int The user ID of the owner or false if not set.
+	 */
+	function owner( $id, $obj = null ) {
+		$obj = $this->null_obj( $obj, $id );
+
+		$owner = $obj->field( 'owner.ID' );
+
+		if ( $owner ) {
+			$owner = (int) $owner;
+		}
+
+		return $owner;
+
+	}
+
 } 
