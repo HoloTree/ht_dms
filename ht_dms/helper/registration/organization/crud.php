@@ -32,12 +32,18 @@ class crud {
 	 *
 	 * @return bool True if code created.
 	 */
-	public static function create( $uID ) {
+	public static function create( $uID, $return_code = false ) {
 		$email = user::email_form_id( $uID );
 		$code = hash::do_hash( $email, $uID );
 
 		if ( is_string( $code ) ) {
-			return self::update( $code );
+			$update = self::update( $code );
+			if ( $return_code ) {
+				return $code;
+			}
+
+			return $update;
+
 		}
 
 	}

@@ -144,7 +144,7 @@ class addModify {
 			return  array( 'fields' => $form_fields, 'fields_only' => true );
 		});
 
-		$form =  ht_dms_organization_class()->edit( null, $uID, null );
+		$form =  ht_dms_organization_class()->edit( null, $uID );
 		$invite = 'invite';
 		$invite_label = __( 'Invite Code', 'ht-dms' );
 		$form .= \PodsForm::label( $invite, $invite_label );

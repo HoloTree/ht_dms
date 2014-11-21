@@ -155,7 +155,15 @@ abstract class dms extends object {
 		$fields = (array) $this->fields_to_loop( $obj, false );
 
 		foreach ( $fields as $k => $v ) {
-			$form_fields[ $k ] = array( 'label' => $v[ 'label' ] );
+			if ( is_array( $v ) ) {
+				$label =  pods_v( 'label', $v, '' );
+			}
+			else {
+				$label = $v;
+			}
+
+			$form_fields[ $k ] = array( 'label' => $label );
+
 		}
 
 		if ( $new ) {
@@ -321,6 +329,7 @@ abstract class dms extends object {
 		$fields = wp_list_pluck( $fields_array, 'name' );
 
 		return $fields;
+
 	}
 
 	/**

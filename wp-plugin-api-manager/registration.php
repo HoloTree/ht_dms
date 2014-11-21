@@ -35,6 +35,7 @@ class HT_DMS_WP_API_Registration {
 			ht_dms\api\internal\route::init(),
 			ht_dms\api\internal\js::init(),
 			ht_dms\api\internal\access::init(),
+			new ht_dms\helper\registration\organization\check(),
 		);
 	}
 

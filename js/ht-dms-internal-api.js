@@ -88,7 +88,7 @@ jQuery( function ( ) {
                             url: url,
                             method: 'GET',
                             success: function ( response ) {
-                                console.log( response );
+                                alert( 'successseses!' );
                             },
                             error: function ( response ) {
                                 alert( 'fail' );
@@ -109,9 +109,16 @@ jQuery( function ( ) {
                         values[ field.name ] = field.value;
                     });
 
+                    values[ 'post_status' ] = 'publish';
+
+                    url = 'http://gus.dev/wp-json/pods/ht_dms_organization';
+
                     values = JSON.stringify( values );
                     $.ajax({
                         method: 'POST',
+                        beforeSend : function( xhr ) {
+                            xhr.setRequestHeader( 'X-WP-Nonce', WP_API_Settings.nonce );
+                        },
                         contentType: 'application/json',
                         url: url,
                         data: values,

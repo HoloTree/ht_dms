@@ -183,7 +183,7 @@ class route implements \Action_Hook_SubscriberInterface {
  	 *
 	 * @return mixed
 	 */
-	private static function get_post_param( $arg )  {
+	public static function get_post_param( $arg )  {
 		if ( ! self::$post_data) {
 			global $HTTP_RAW_POST_DATA;
 			self::$post_data = pods_sanitize( json_decode( $HTTP_RAW_POST_DATA ) );

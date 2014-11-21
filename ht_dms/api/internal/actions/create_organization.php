@@ -23,6 +23,8 @@ class create_organization {
 	 * @return bool
 	 */
 	public static function act( $params ) {
+		//disabled for now, using pods-json-api instead.
+		return false;
 		if ( false != ( $invite_code = pods_v( 'invite', $params ) ) ) {
 			$verify = new \ht_dms\helper\registration\organization\verify( $invite_code, false );
 			if( $verify->check() ) {

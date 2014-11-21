@@ -31,9 +31,11 @@ class verify {
 	 *
 	 * @param string $code Code to check.
 	 */
-	function __construct( $code, $delete = true ) {
+	function __construct( $code = null, $delete = true ) {
+
 		$this->code = $code;
 		$this->delete = $delete;
+
 	}
 
 	/**
@@ -65,7 +67,8 @@ class verify {
 		if ( false != ( $code = crud::read( $code ) ) ) {
 			global $cuID;
 			$email = user::email_form_id( $cuID );
-			if ( hash::do_hash( $email, $cuID ) === $code ) {
+			$expected = hash::do_hash( $email, $cuID );
+			if ( $expected === $code ) {
 				return true;
 
 			}
