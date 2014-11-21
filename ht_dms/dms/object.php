@@ -135,7 +135,7 @@ abstract class object {
 	/**
 	 * Checks that a supplied Pods object is valid and if not rebuilds it.
 	 *
-	 * @param 	obj|null 		$obj			Optional. Object to check.
+	 * @param 	obj|null|\Pods 	$obj			Optional. Object to check.
 	 * @param 	null|array|int 	$params_or_id	Optional. Either the item ID, or pods::find() params
 	 *
 	 * @return bool|mixed|null|\Pods|void
@@ -169,7 +169,7 @@ abstract class object {
 	/**
 	 * Validates a Pods object to ensure it is the correct one to use.
 	 *
-	 * @param obj 		$obj	Object to check.
+	 * @param obj|\Pods		$obj	Object to check.
 	 * @param int|null	$id
 	 *
 	 * @return bool
