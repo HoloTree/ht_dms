@@ -10,6 +10,18 @@ jQuery( function ( ) {
     app.APIurl = htDMSinternalAPIvars.url;
 
     /**
+     * ID of new organization form
+     *
+     * @since 0.1.0
+     */
+    app.newOrgForm = '#new-organization';
+    app.newOrgFormSubmit = '#create-org-submit';
+
+    app.inviteCodeField = '#pods-form-ui-invite';
+
+
+
+    /**
      * Messages object
      *
      * @since 0.1.0
@@ -29,6 +41,16 @@ jQuery( function ( ) {
             app.events.ajaxComplete();
 
         });
+        $(  app.inviteCodeField ).change(function( event ) {
+            app.events.organizationForm.code( event );
+
+        });
+        $( app.newOrgForm ).submit( function( event ) {
+            event.preventDefault();
+            app.events.organizationForm.process();
+        });
+
+
 
 
 
@@ -51,10 +73,53 @@ jQuery( function ( ) {
               app.notificationView.request( nID );
           });
         },
-        click : function() {
-            //@todo
-        }
+        organizationForm : {
+                code : function ( event ) {
+                    params = {};
+                    params.invite = $( app.inviteCodeField ).val();
 
+                    if ( '' != params.invite ) {
+                        params.action = 'new_organization_code';
+
+                        url = app.constructURL( params );
+
+
+                        $.ajax( {
+                            url: url,
+                            method: 'GET',
+                            success: function ( response ) {
+                                console.log( response );
+                            },
+                            error: function ( response ) {
+                                alert( 'fail' );
+                                console.log( response );
+
+                            }
+                        } );
+                    }
+                },
+                process: function() {
+
+                    params = {};
+                    params.action = 'create_organization';
+
+                    url = app.constructURL( params );
+                    var values = {};
+                    $.each( $( app.newOrgForm ).serializeArray(), function(i, field) {
+                        values[ field.name ] = field.value;
+                    });
+
+                    values = JSON.stringify( values );
+                    $.ajax({
+                        method: 'POST',
+                        contentType: 'application/json',
+                        url: url,
+                        data: values,
+                        dataType: 'json',
+                        processData: false
+                    })
+                }
+            }
 
     };
 

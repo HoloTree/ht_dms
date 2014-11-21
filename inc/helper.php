@@ -853,12 +853,12 @@ function ht_dms_lost_password_link( $button = true ) {
 function ht_dms_invite_code( $generate = true, $email, $oID = false, $code = false  ) {
 	if ( $generate && ! is_array( $generate )  ) {
 
-		return ht_dms\helper\user\registration\codes::create_invite_code( $oID, $email );
+		return ht_dms\helper\registration\user\codes::create_invite_code( $oID, $email );
 
 	}
 	else{
 
-		return ht_dms\helper\user\registration\codes::verify_code( $email, $code );
+		return ht_dms\helper\registration\user\codes::verify_code( $email, $code );
 
 	}
 

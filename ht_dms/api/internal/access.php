@@ -67,6 +67,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 * @return bool
 	 */
 	public static function is_internal_api( $query_vars, $action = null, $check_get = false ) {
+
 		if ( ! $check_get && is_null( $query_vars ) ) {
 			return false;
 		}

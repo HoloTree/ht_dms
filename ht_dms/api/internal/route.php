@@ -139,9 +139,19 @@ class route implements \Action_Hook_SubscriberInterface {
 
 		$desired_args = $class::args();
 		$params = array();
+		$method = 'get';
+
+		if ( method_exists( $class, 'method' ) ) {
+			$method = $class::method();
+		}
+
 
 		foreach( $desired_args as $arg ) {
-			$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
+			if ( $method === 'get' ) {
+				$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
+			} else {
+				$params[ $arg ] = self::get_post_param( $arg );
+			}
 			if ( '' == $params[ $arg ] )  {
 				$params[ $arg ] = 0;
 			}
@@ -149,6 +159,40 @@ class route implements \Action_Hook_SubscriberInterface {
 		}
 
 		return $params;
+
+	}
+
+	/**
+	 * Stores the decoded post data
+	 *
+	 * @since 0.1.0
+	 * @access private
+	 * @var array
+	 */
+	private static $post_data;
+
+	/**
+	 * Get an argument from a POST request.
+	 *
+	 * NOTE: This method intentionally only works when POST data is JSON.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @access private
+	 * @param string $arg Argument to retrieve
+ 	 *
+	 * @return mixed
+	 */
+	private static function get_post_param( $arg )  {
+		if ( ! self::$post_data) {
+			global $HTTP_RAW_POST_DATA;
+			self::$post_data = pods_sanitize( json_decode( $HTTP_RAW_POST_DATA ) );
+		}
+
+		if ( ! is_null( $value = pods_v_sanitized( $arg, self::$post_data ) ) ) {
+			return $value;
+
+		}
 
 	}
 

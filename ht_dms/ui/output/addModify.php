@@ -1,13 +1,5 @@
 <?php
-/**
- * @TODO What this does.
- *
- * @package   @TODO
- * @author    Josh Pollock <Josh@JoshPress.net>
- * @license   GPL-2.0+
- * @link      
- * @copyright 2014 Josh Pollock
- */
+/**organization*/
 
 namespace ht_dms\ui\output;
 
@@ -131,7 +123,7 @@ class addModify {
 	 *
 	 * @since 	0.0.1
 	 */
-	function new_organization( $uID = null, $obj = null ) {
+	function new_organization( $uID = null ) {
 		/**
 		 * Filter to swap out new organization form.
 		 *
@@ -139,7 +131,7 @@ class addModify {
 		 *
 		 * @since 0.0.3
 		 */
-		$alt_org_edit_form = apply_filters( 'ht_dms_new_organization_form', null, $uID, $obj );
+		$alt_org_edit_form = apply_filters( 'ht_dms_new_organization_form', null, $uID, null );
 
 		if ( is_string( $alt_org_edit_form ) ) {
 
@@ -147,8 +139,26 @@ class addModify {
 
 		}
 
-		return ht_dms_organization_class()->edit( null, $uID, $obj );
+		$type = HT_DMS_ORGANIZATION_POD_NAME;
+		add_filter( "ht_dms_{$type}_edit_form_fields", function( $form_fields  ) {
+			return  array( 'fields' => $form_fields, 'fields_only' => true );
+		});
 
+		$form =  ht_dms_organization_class()->edit( null, $uID, null );
+		$invite = 'invite';
+		$invite_label = __( 'Invite Code', 'ht-dms' );
+		$form .= \PodsForm::label( $invite, $invite_label );
+		$form .= \PodsForm::field( $invite, '' );
+		$form .= $this->new_organization_submit( $uID );
+		$form = sprintf( '<form action="%0s" method="POST" class="pods-form pods-form-front" id="new-organization" >%1s</form>', home_url(), $form );
+
+		return $form;
+
+	}
+
+	private function new_organization_submit( $uID ) {
+		$text = __( 'Create', 'ht-dms' );
+		return \PodsForm::submit_button( $text, 'primary large', 'create-org-submit', true, array( 'user' => $uID ) );
 	}
 
 	/**

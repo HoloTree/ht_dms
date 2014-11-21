@@ -318,11 +318,7 @@ abstract class dms extends object {
 		$obj = $this->null_object( $obj );
 		$fields_array = $obj->fields();
 
-		$fields = array();
-
-		foreach ( $fields_array as $key => $value ) {
-			$fields[ $key ] = $value;
-		}
+		$fields = wp_list_pluck( $fields_array, 'name' );
 
 		return $fields;
 	}
@@ -521,13 +517,12 @@ abstract class dms extends object {
 
 			$label = sprintf( '%1s %s', $label, $this->display_names( $type ) );
 
-
 			$form .= $obj->form( $form_fields, $label, $link );
 		}
 		else {
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
-			
+
 			$form .= $obj->form( $form_fields, 'Propose Change', $link );
 		}
 
@@ -678,12 +673,9 @@ abstract class dms extends object {
 			$obj = $this->object();
 			$fields = $this->field_names( $obj );
 			$save_data = array();
-			foreach( $fields as $field ) {
-				if ( isset( $data[ 'field' ] ) ) {
-					$value = $this->sanitize_save( $field, $data[ 'field' ] );
-					if ( $value  ) {
-						$save_data['field'] = $value;
-					}
+			foreach( $data as $field => $value ) {
+				if( in_array( $field, $fields) ) {
+					$save_data[ $field ] = $value;
 				}
 			}
 
