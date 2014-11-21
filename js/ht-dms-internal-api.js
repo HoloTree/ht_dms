@@ -83,18 +83,21 @@ jQuery( function ( ) {
 
                         url = app.constructURL( params );
 
-
                         $.ajax( {
                             url: url,
                             method: 'GET',
-                            success: function ( response ) {
-                                alert( 'successseses!' );
+                            success: function () {
+                                $( '#invite-code-message' ).html( app.messages.inviteCodeSuccess ).removeClass( 'error, in-progress' ).addClass( 'success' );
                             },
-                            error: function ( response ) {
-                                alert( 'fail' );
-                                console.log( response );
+                            error: function () {
 
+                                $( '#invite-code-message' ).html( app.messages.inviteCodeFail ).removeClass( 'success, in-progress' ).addClass( 'error' );
+
+                            },
+                            beforeSend: function() {
+                                $( '#invite-code-message' ).html( app.messages.inviteCodeChecking ).removeClass( 'error, success' ).addClass( 'in-progress' );
                             }
+
                         } );
                     }
                 },
@@ -126,6 +129,7 @@ jQuery( function ( ) {
                         processData: false
                     })
                 }
+            
             }
 
     };

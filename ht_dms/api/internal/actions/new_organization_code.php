@@ -31,6 +31,9 @@ class new_organization_code {
 			}
 
 		}
+		else{
+			return 550;
+		}
 
 	}
 

@@ -70,6 +70,9 @@ class js implements \Action_Hook_SubscriberInterface {
 			'noItems' => __( 'No items found.', 'ht-dms' ),
 			'showNew' => __( 'Show New Messages Only', 'ht-dms' ),
 			'showAll' => __( 'Show All Messages', 'ht-dms' ),
+			'inviteCodeFail' => __( 'Your invite code is not valid.', 'ht-dms' ),
+			'inviteCodeSuccess' => __( 'Your invite code is valid.', 'ht-dms' ),
+			'inviteCodeChecking' => __( 'Checking code now', 'ht-dms' ),
 		);
 
 		$messages = apply_filters( 'ht_dms_intenral_api_messages', $messages );

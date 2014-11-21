@@ -145,10 +145,7 @@ class addModify {
 		});
 
 		$form =  ht_dms_organization_class()->edit( null, $uID );
-		$invite = 'invite';
-		$invite_label = __( 'Invite Code', 'ht-dms' );
-		$form .= \PodsForm::label( $invite, $invite_label );
-		$form .= \PodsForm::field( $invite, '' );
+		$form .= $this->invite_code_fields();
 		$form .= $this->new_organization_submit( $uID );
 		$form = sprintf( '<form action="%0s" method="POST" class="pods-form pods-form-front" id="new-organization" >%1s</form>', home_url(), $form );
 
@@ -156,9 +153,43 @@ class addModify {
 
 	}
 
+	/**
+	 * Fields for the adding invite code
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return string
+	 */
+	private function invite_code_fields() {
+		$invite = 'invite';
+		$invite_label = __( 'Invite Code', 'ht-dms' );
+		$field = sprintf( '<div class="pods-field-label">%1s</div>', \PodsForm::label( $invite, $invite_label ) );
+		$field .= sprintf( '<div class="pods-field-input">%1s</div>', \PodsForm::field( $invite, '' ) );
+		$message = __( 'Creating a new organization requires an invite code. Please enter it below:', 'ht-dms' );
+		$message_container = sprintf( '<p id="invite-code-message">%1s</p>', $message );
+		return sprintf( '%0s<ul class="pods-form-fields">%1s</ul>',
+			$message_container,
+			sprintf( '<li class="pods-field">%1s</li>', $field )
+		);
+	}
+
+	/**
+	 * Create submit button for create org field
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $uID Current user ID
+	 *
+	 * @return string
+	 */
 	private function new_organization_submit( $uID ) {
 		$text = __( 'Create', 'ht-dms' );
-		return \PodsForm::submit_button( $text, 'primary large', 'create-org-submit', true, array( 'user' => $uID ) );
+		return sprintf( '<p class="new-org-submit" style="float:right;margin:%0s;">%1s</p>',
+			'1%',
+			\PodsForm::submit_button( $text, 'primary large', 'create-org-submit', false, array( 'user' => $uID )
+			)
+		);
+
 	}
 
 	/**
