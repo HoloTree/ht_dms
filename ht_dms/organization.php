@@ -411,7 +411,7 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	function form_fields( $fields, $new, $id, $obj, $oID, $uID ) {
 		if ( $new ) {
 			global $cuID;
-			$fields[ 'members' ][ 'type' ][ 'default' ] = $cuID;
+			$fields[ 'members' ][ 'default' ] = $cuID;
 		}
 
 		$fields[ 'members' ][ 'type' ] = 'hidden';
