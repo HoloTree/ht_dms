@@ -1000,3 +1000,22 @@ function ht_dms_validate_invite_code() {
 	wp_die( 0 );
 }
 
+/**
+ * Get or create organization invite codes
+ *
+ * @since 0.1.0
+ *
+ * @param bool $create Optional. Whether to create or read codes. Default it true.
+ * @param int $uID User ID to create for.
+ *
+ * @return array|string If creating returns new code, if reading returns array of codes.
+ */
+function ht_dms_organization_invite_code( $create = true, $uID ) {
+	if ( $create ) {
+		return ht_dms\helper\registration\organization\crud::create( $uID, true );
+	}
+	else {
+		return ht_dms\helper\registration\organization\crud::read( );
+	}
+
+}
