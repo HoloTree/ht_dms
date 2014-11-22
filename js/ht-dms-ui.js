@@ -455,10 +455,19 @@ jQuery(document).ready(function( $ ) {
             classAttr += ' button';
         }
 
-        return new Handlebars.SafeString( '<a id="' + idAttr + '" ref="' + url + '" class="' + classAttr + '" ' + type + '="' + postID + '" internal-link="true" title="View ' + ucwords( type ) + '">' + name + '</a>' );
-        
+        icons = htDMS.icons;
+        console.log( icons );
+        icon = icons[type];
+
+        return new Handlebars.SafeString( '<a id="' + idAttr + '" href="' + url + '" class="' + classAttr + '" ' + type + '="' + postID + '" internal-link="true" title="View ' + ucwords( type ) + '">' + icon + name + '</a>' );
+
     }
 
+    /**
+     * Make first letter of each word capitalized, just like the php function of the same name.
+     *
+     * @since 0.2.0
+     */
     function ucwords(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }

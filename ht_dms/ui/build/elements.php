@@ -494,11 +494,11 @@ class elements {
 	/**
 	 * Get markup for an icon
 	 *
-	 * @param string 	$icon	Icon to get. Ignored if $all == true
+	 * @param string|array 	$icon	Icon to get. Ignored if $all == true. Can also be an array of a group of specific icons to get.
 	 * @param string $extra_class Optional. Additional class to add to icon.
 	 * @param bool 		$all  	Optional. If true returns array of all icons.
 	 *
-	 * @return string|array
+	 * @return string|array The markup for the icon, or an array of all or some icons.
 	 *
 	 * @since 0.0.3
 	 */
@@ -558,14 +558,28 @@ class elements {
 			$false_return = '[]';
 		}
 
-		$icon = pods_v( $icon, $icons, $false_return, true );
+		if ( is_string( $icon ) ) {
+			$icon = pods_v( $icon, $icons, $false_return, true );
 
-		if ( $extra_class && $icon !== $false_return  ) {
-			$replace = sprintf( '%1s %2s ', 'class="',  $extra_class );
-			$icon = str_replace( 'class="', $replace, $icon );
+			if ( $extra_class && $icon !== $false_return ) {
+				$replace = sprintf( '%1s %2s ', 'class="', $extra_class );
+				$icon    = str_replace( 'class="', $replace, $icon );
+			}
+
+			return $icon;
+
 		}
 
-		return $icon;
+		if ( is_array( $icon ) ) {
+			foreach( $icon as $i ) {
+				$return_array[ $i ] = pods_v( $i, $icons );
+			}
+
+			return $return_array;
+
+		}
+
+		return $false_return;
 
 	}
 

@@ -198,6 +198,17 @@ class HoloTree_DMS {
 			'proposeModifyURL' => 0
 		);
 
+		$icons = ht_dms_ui()->build_elements()->icon(
+			array(
+				'group',
+				'decision',
+				'organization',
+				'notification'
+			)
+		);
+
+		$htDMS[ 'icons' ] = $icons;
+
 		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision( get_queried_object_id()  ) ) {
 			$consensus = ht_dms_consensus_class()->sort_consensus( get_queried_object_id(), true );
 			if ( $consensus ) {
