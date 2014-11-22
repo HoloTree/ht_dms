@@ -306,7 +306,7 @@ abstract class dms extends object {
 		$fields = apply_filters( "{$this->get_type()}_select_fields", null );
 
 		if ( $all || is_null( $fields ) ) {
-			$fields = $this->field_names( $obj );
+			$fields = $this->field_names( $obj, true );
 
 		}
 
@@ -319,14 +319,19 @@ abstract class dms extends object {
 	 * @since 0.3.0
 	 *
 	 * @param null $obj
+	 * @param bool $full_array Optional. If false, the default, array of names is returned, if true the full fields array is returned.
 	 *
 	 * @return array
 	 */
-	function field_names( $obj = null ) {
+	function field_names( $obj = null, $full_array = false ) {
 		$obj = $this->null_object( $obj );
-		$fields_array = $obj->fields();
+		$fields = $obj->fields();
 
-		$fields = wp_list_pluck( $fields_array, 'name' );
+		if ( $full_array ) {
+			return $fields;
+		}
+
+		$fields = wp_list_pluck( $fields, 'name' );
 
 		return $fields;
 
