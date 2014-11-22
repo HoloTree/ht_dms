@@ -16,8 +16,8 @@ class json {
 	static public function group( $id, $obj = null ) {
 		$obj    = ht_dms_group_class()->null_obj( $obj, $id );
 		$fields = array (
-			'organizationID'    => 'organization.ID',
-			'organizationName'  => 'organization.post_title',
+			'organization_ID'    => 'organization.ID',
+			'organization_name'  => 'organization.post_title',
 			'members'           => 'members',
 			'description'       => 'group_description',
 			'name'          => 'post_title'
@@ -54,7 +54,7 @@ class json {
 			}
 		}
 
-		$data[ 'organizationLink' ] = get_permalink( $data[ 'organizationID' ] );
+		$data[ 'organization_link' ] = get_permalink( $data[ 'organization_ID' ] );
 		$data[ 'link' ] = get_permalink( $id );
 		$data[ 'ID' ] =  $id;
 

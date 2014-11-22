@@ -404,6 +404,67 @@ jQuery(document).ready(function( $ ) {
     });
 
     /**
+     * Handlebars helper for organization links.
+     *
+     * @since 0.2.0
+     */
+    Handlebars.registerHelper( 'organizationLink', function( url, id, name, button ) {
+        return link( url,  id,  name, 'organization', button );
+    });
+
+    /**
+     * Handlebars helper for group links.
+     *
+     * @since 0.2.0
+     */
+    Handlebars.registerHelper( 'groupLink', function( url, id, name, button ) {
+        return link( url,  id,  name, 'group', button );
+
+    });
+
+    /**
+     * Handlebars helper for decision links.
+     *
+     * @since 0.2.0
+     */
+    Handlebars.registerHelper( 'decisionLink', function( url, id, name, button ) {
+        return link( url,  id,  name, 'decision', button );
+    });
+
+    /**
+     * Create links inside Handlebars helpers.
+     *
+     * @since 0.2.0
+     *
+     * @param url URL to link to.
+     * @param postID ID of post to link to.
+     * @param name Name of post to link to.
+     * @param type Post type of post to link to.
+     * @param button Whether to use as a button or not.
+     * @returns {string}
+     */
+    function link( url, postID, name, type, button ) {
+        if ( undefined == button ) {
+            button = false;
+        }
+
+        idAttr = type + '-' + 'link-' + postID;
+        classAttr =  'ht-dms-link ht-dms-link-internal ' + type + '-link';
+
+        if ( button ) {
+            classAttr += ' button';
+        }
+
+        return new Handlebars.SafeString( '<a id="' + idAttr + '" ref="' + url + '" class="' + classAttr + '" ' + type + '="' + postID + '" internal-link="true" title="View ' + ucwords( type ) + '">' + name + '</a>' );
+        
+    }
+
+    function ucwords(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+
+    /**
      * Callback after membership form is submitted.
      *
      * Wrapper for htDMSinternalAPI.reloadMembership.request

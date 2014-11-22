@@ -1,0 +1,16 @@
+<script id="decision-preview" type="text/x-handlebars-template">
+    <div class="decision decision-preview" id="decision-{{ID}}">
+        <h3>
+            <a href="{{link}}" class="decision-link button" decision="{{ID}}" title="View Decision" id="decision-link">{{name}}</a>
+        </h3>
+        <div class="details">
+            <p class="description">{@decision_description}</p>
+            <ul>
+                <li>Group: {{group}}</li>
+                <li>Status: <span id="decision-status">{@decision_status}</span></li>
+                <li>Manager: {@manager}</li>
+                <li>Proposed By: {@proposed_by}</li>
+            </ul>
+        </div>
+    </div>
+</script>

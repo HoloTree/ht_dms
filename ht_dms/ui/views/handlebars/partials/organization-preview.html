@@ -1,13 +1,15 @@
 <script id="organization-preview" type="text/x-handlebars-template">
     <div class="organization organization-preview">
-        <h3><a href="{{{link}}}" class="organization-link button" organization="{{id}}" title="View organization" id="organization-link">{{name}}</a></h3>
+        <h3>
+            {{{organizationLink link ID name true}}}
+        </h3>
         <p class="description">Description: {{{description}}}</p>
         <ul id="organization-members-{{ID}}" class="small-block-grid-10 large-block-grid-20">
             {{#each members}}
-            <li id="user-{{ID}}" class="user mini-mode">
-                <span class="avatar">{{{avatar}}}</span>
-
-                {{/each}}
+                <li id="user-{{ID}}" class="user mini-mode">
+                    <span class="avatar">{{{avatar}}}</span>
+                </li>
+            {{/each}}
         </ul>
     </div>
 
