@@ -114,23 +114,54 @@ jQuery( function ( ) {
 
                     values[ 'post_status' ] = 'publish';
 
-                    url = 'http://gus.dev/wp-json/pods/ht_dms_organization';
+                    url = WP_API_Settings.root + '/pods/ht_dms_organization';
 
                     values = JSON.stringify( values );
                     $.ajax({
                         method: 'POST',
                         beforeSend : function( xhr ) {
                             xhr.setRequestHeader( 'X-WP-Nonce', WP_API_Settings.nonce );
+                            $( '#new-org-spinner' ).show();
                         },
                         contentType: 'application/json',
                         url: url,
                         data: values,
                         dataType: 'json',
-                        processData: false
+                        processData: false,
+                        success: function( response ) {
+                            $( '#new-org-spinner' ).hide();
+                            $( '#new-org-message' ).empty().append( app.messages.success ).show();
+                            location.href = response.guid;
+                        },
+                        error: function( response ) {
+                            $( '#new-org-spinner' ).hide();
+
+                            if ( 0 === response.responseText.indexOf( '<e>') ) {
+                                message = response.responseText;
+                            }
+
+                            else{
+                                message = JSON.parse( response.responseText );
+                                console.log( message );
+                                if ( 'string' != typeof message ) {
+                                    message = message[ 0 ];
+                                    message = message.message;
+                                }
+
+                                if ( 'Sorry, you do not have access to this endpoint.' == message ) {
+                                    message = app.messages.inviteCodeFail;
+                                }
+
+                            }
+
+                            $( '#new-org-message' ).empty().append( message ).show();
+
+                        }
                     })
                 }
-            
+
             }
+
 
     };
 

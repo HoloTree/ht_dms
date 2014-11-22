@@ -61,6 +61,7 @@ class js implements \Action_Hook_SubscriberInterface {
 			'nonce' => wp_create_nonce( access::$nonce_action ),
 			'type' => ht_dms_prefix_remover( get_post_type() ),
 			'messages' => self::messages(),
+
 		);
 
 	}
@@ -73,6 +74,7 @@ class js implements \Action_Hook_SubscriberInterface {
 			'inviteCodeFail' => __( 'Your invite code is not valid.', 'ht-dms' ),
 			'inviteCodeSuccess' => __( 'Your invite code is valid.', 'ht-dms' ),
 			'inviteCodeChecking' => __( 'Checking code now', 'ht-dms' ),
+			'success' => __( 'Success', 'ht-dms' ),
 		);
 
 		$messages = apply_filters( 'ht_dms_intenral_api_messages', $messages );

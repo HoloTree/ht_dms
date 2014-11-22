@@ -26,14 +26,14 @@ class new_organization_code {
 	public static function act( $params ) {
 		if ( false != ( $invite_code = pods_v( 'invite', $params ) ) ) {
 			$verify = new \ht_dms\helper\registration\organization\verify( $invite_code, false );
-			if( $verify->check() ) {
-				return true;
+			if( false !== $verify->check() ) {
+				return 200;
 			}
 
 		}
-		else{
-			return 550;
-		}
+
+		return 550;
+
 
 	}
 
@@ -49,10 +49,6 @@ class new_organization_code {
 			'invite'
 		);
 
-	}
-
-	public static function method() {
-		return 'POST';
 	}
 
 } 

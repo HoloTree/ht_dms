@@ -160,10 +160,19 @@ function ht_dms_url( $id, $type = false ) {
  *
  * @since 0.0.2
  */
-function ht_dms_spinner() {
+function ht_dms_spinner( $hide = false, $id ='' ) {
+	$style = 'padding-top:12px;';
+	if ( $hide ) {
+		$style .= 'display:none';
+	}
+
+	if ( $id ) {
+		$id = 'id='.esc_attr( $id );
+	}
+
 
 	$spinner = ht_dms_ui()->build_elements()->icon( 'spinner', 'fa-2x fa-spin'  );
-	$spinner = sprintf( '<div class="spinner" style="padding-top:12px;">%1s</div>', $spinner );
+	$spinner = sprintf( '<div %1s class="spinner" style="%2s">%3s</div>', $id, $style, $spinner );
 	return $spinner;
 
 }

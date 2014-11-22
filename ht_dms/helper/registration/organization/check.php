@@ -26,7 +26,7 @@ class check implements \Filter_Hook_SubscriberInterface  {
 				$verify = new verify( $code );
 				if ( $verify->check() ) {
 					add_filter( 'pods_json_api_access_pods_add_item', '__return_true' );
-
+					crud::delete( $code );
 					return null;
 				}
 
@@ -34,8 +34,18 @@ class check implements \Filter_Hook_SubscriberInterface  {
 
 		}
 
-		return new \WP_Error( 'ht-dms-invite-code-fail', __( 'Invite code for organization not validated.', 'ht-dms') );
+		add_filter( 'pods_json_api_access_pods_add_item', '__return_false' );
+		return $this->error();
 
+	}
+
+	private function error() {
+		$message = __( 'Invite code for organization not validated.', 'ht-dms' );
+		$response = json_ensure_response( json_encode( array( 'message' => $message ) ) );
+		$response->set_status( 500 );
+		$response->header( 'Location', json_url( '/pods/' . HT_DMS_ORGANIZATION_POD_NAME ) );
+
+		return $response;
 	}
 
 

@@ -64,7 +64,7 @@ class crud {
 				return $code;
 			}
 			else {
-				return;
+				return false;
 			}
 
 		}

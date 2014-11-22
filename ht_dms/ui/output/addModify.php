@@ -184,7 +184,10 @@ class addModify {
 	 */
 	private function new_organization_submit( $uID ) {
 		$text = __( 'Create', 'ht-dms' );
-		return sprintf( '<p class="new-org-submit" style="float:right;margin:%0s;">%1s</p>',
+		return sprintf( '%0s<p class="new-org-submit" style="float:right;margin:%0s;">%1s</p>',
+			sprintf( '<p id="new-org-message" style="display:none;"></p> %1s',
+				ht_dms_spinner( true, 'new-org-spinner' )
+			),
 			'1%',
 			\PodsForm::submit_button( $text, 'primary large', 'create-org-submit', false, array( 'user' => $uID )
 			)
