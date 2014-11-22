@@ -142,6 +142,7 @@ class HoloTree_DMS {
 			wp_enqueue_style( 'pods-form' );
 			wp_enqueue_script( 'pods' );
 			wp_enqueue_script( 'pods-attach' );
+			wp_enqueue_script( 'plupload' );
 
 			wp_enqueue_script( 'ht-dms-ui', plugins_url( 'js/ht-dms-ui.js', __FILE__ ), array ( 'jquery' ), $version, true );
 
