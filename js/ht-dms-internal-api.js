@@ -455,7 +455,7 @@ alert( response.outer_html_id );
             params.page = page;
             params.extraArg = extraArg;
             params.oID = oID;
-            params.view = $( container ).attr( "view" );
+
             params.limit = view = $( container ).attr( "limit" );
             params.action = 'paginate';
             if ( undefined != unViewedOnly && true == unViewedOnly ) {
