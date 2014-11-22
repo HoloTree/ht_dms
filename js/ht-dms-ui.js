@@ -12,9 +12,7 @@ jQuery(document).ready(function( $ ) {
         '#users_groups',
         '#public_groups',
         '#users_organizations',
-        //'#assigned_tasks',
-        //'#decisions_tasks',
-        "#users_notifications"
+        '#users_notifications',
     ];
 
     //loop through paginatedViews running each one, if we have that div already.

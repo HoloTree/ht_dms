@@ -31,6 +31,10 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 
 	);
 
+	if ( $view == 'decision' ) {
+		$attrs[ 'status' ] = $args[ 'status' ];
+	}
+
 	if ( $view === 'users_notifications' ) {
 		$attrs[ 'unViewedOnly' ] = 1;
 	}

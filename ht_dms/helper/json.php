@@ -181,4 +181,53 @@ class json {
 
 	}
 
+	public static function decision( $id, $obj = null ) {
+		$obj = ht_dms_decision_class()->null_object( $obj, $id );
+		$data[ 'id' ] = $data[ 'ID' ] = $id;
+
+		$fields = array(
+			'name' => 'post_title',
+			'decision_description' => 'decision_description',
+			'decision_status' => 'decision_status',
+			'group_ID' => 'group.ID',
+			'group_name' => 'group.post_title',
+		);
+
+		foreach ( $fields as $index => $field ) {
+			$data[ $index ] = $obj->display( $field );
+		}
+
+		$data[ 'group_link' ] = get_permalink( $data[ 'group_ID' ] );
+
+		foreach ( array( 'manager', 'proposed_by' ) as $field ) {
+			$lookup = $field.'.ID';
+			$value = $obj->field( $lookup );
+			if ( ht_dms_integer( $value ) ) {
+				$name = get_userdata( $value )->data->display_name;
+				$value = array(
+					'name' => $name,
+					'id' => $value,
+				);
+			}
+			else {
+				$value = array(
+					'name' => 0,
+					'id' => 0,
+				);
+			}
+
+			$data[ 'field' ] = $value;
+
+		}
+
+		return json_encode( $data );
+
+	}
+
+	private static function user( $id ) {
+		$user = get_userdata( $id )->data->display_name;
+
+
+	}
+
 } 
