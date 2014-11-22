@@ -271,9 +271,8 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 	function join( $id, $uID = null, $obj = null ) {
 		$uID = $this->null_user( $uID );
 		if ( get_user_by( 'id', $uID ) !== false ) {
-			if ( is_null( $obj ) ) {
-				$obj = $this->single_organization_object( $id );
-			}
+			$obj = $this->null_object( $obj, $id );
+
 			$access = $obj->field( 'open_access' );
 			if ( $access == 1 ) {
 				$id = $this->add_member( $id, $uID );
