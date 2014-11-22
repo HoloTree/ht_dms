@@ -251,7 +251,7 @@ class views {
 	/**
 	 * Get single organization view.
 	 *
-	 * @param   Pods|null 	$obj 		Optional. A Pods object.
+	 * @param   \Pods|null|array 	$obj 		Optional. A Pods object or an array of arguments to override all other arguments with.
 	 * @param 	int       	$id         ID of organization to get
 	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
 	 *
@@ -261,12 +261,17 @@ class views {
 	 */
 	function organization( $obj = null, $id, $return = 'template'  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'id'		=> $id,
-			'preview' 	=> false,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array(
+				'obj'     => $obj,
+				'id'      => $id,
+				'preview' => false,
+				'return'  => $return,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->organization( $args );
 		
@@ -275,22 +280,27 @@ class views {
 	/**
 	 * Get single group view.
 	 *
-	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   \Pods|null|array 	$obj 		Optional. A Pods object or an array of arguments to override all other arguments with.
 	 * @param   int  		$id
 	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
 	 *
-	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 * @return string|JSON|\Pods          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
 	function group( $obj = null, $id, $return = 'template'  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'id'		=> $id,
-			'preview' 	=> false,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array(
+				'obj'     => $obj,
+				'id'      => $id,
+				'preview' => false,
+				'return'  => $return,
+			);
+		}
+		else {
+			$args = $obj;
+		}
 
 		return $this->models()->group( $args );
 
@@ -299,11 +309,11 @@ class views {
 	/**
 	 * Get single decision view.
 	 *
-	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   \Pods|null|array 	$obj 		Optional. A Pods object or an array of arguments to override all other arguments with.
 	 * @param   int  		$id
 	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
 	 *
-	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 * @return string|JSON|\Pods          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
@@ -327,22 +337,27 @@ class views {
 	/**
 	 * Get task decision view.
 	 *
-	 * @param   Pods|null $obj Optional. A Pods object.
+	 * @param   \Pods|null|array 	$obj 		Optional. A Pods object or an array of arguments to override all other arguments with.
 	 * @param   int  		$id
 	 * @param 	null|string $return		Optional. What to return. If used, overrides $args[ 'return'] Options: template|Pods|JSON|urlstring
 	 *
-	 * @return string|JSON          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
+	 * @return string|JSON|\Pods          Either HTML for the view, or a Pods object, or a JSON object of the posts, or a URL string to get those posts via REST API.
 	 *
 	 * @since   0.0.2
 	 */
 	function task( $obj = null, $id, $return = 'template'  ) {
 
-		$args = array(
-			'obj' 		=> $obj,
-			'id'		=> $id,
-			'preview' 	=> false,
-			'return'	=> $return,
-		);
+		if ( ! is_array( $obj ) ) {
+			$args = array(
+				'obj'     => $obj,
+				'id'      => $id,
+				'preview' => false,
+				'return'  => $return,
+			);
+		}
+		else{
+			$args = $obj;
+		}
 
 		return $this->models()->task( $args );
 
