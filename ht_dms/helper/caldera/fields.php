@@ -348,11 +348,9 @@ class fields extends forms implements \Hook_SubscriberInterface{
 				$pending = ht_dms_group( $gID )->field( 'pending_members.ID' );
 				if ( is_array( $pending ) ) {
 					foreach( $pending as $user ) {
-						$label = $user;
-						$user_data = get_userdata( $user );
-						if ( is_object( $user_data ) ) {
-							$label = $user_data->display_name;
-						}
+
+						$label = ht_dms_display_name( $user );
+
 						$option[] = array(
 							'value' => $user,
 							'label' => $label,

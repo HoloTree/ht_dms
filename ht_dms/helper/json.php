@@ -140,7 +140,7 @@ class json {
 				$json[ $i ]['date'] = date( 'D M j, Y', $date );
 			}
 			$json[ $i ][ 'content' ] = balanceTags( pods_v( 'comment_content', $comment ) );
-			$json[ $i ][ 'name' ] = get_userdata( $user )->display_name;
+			$json[ $i ][ 'name' ] = ht_dms_display_name( $user );
 		}
 
 

@@ -63,7 +63,6 @@ class membership {
 		if ( is_array( $members ) ) {
 			$fallback = ht_dms_fallback_avatar();
 			foreach( $members as $member ) {
-				$member_data =  get_userdata( $member );
 				$view = sprintf(
 						'<div id="group-member-details" class="row">
 							<div class="large-3 small-12 columns">
@@ -75,7 +74,7 @@ class membership {
 						</div>
 					',
 					get_avatar( $member, '128', $fallback  ),
-					$member_data->data->display_name
+					ht_dms_display_name( $member )
 				);
 
 				$out[] = sprintf( '<li class="group-member-view">%1s</li>', $view );

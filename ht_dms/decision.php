@@ -1077,10 +1077,9 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		if ( is_array( $users ) ) {
 			$fallback = ht_dms_fallback_avatar();
 			foreach ( $users as $id => $consensus ) {
-				$data = get_userdata( $id );
 
 				$decision_members[ $id ] = array (
-					'name'      => $data->data->display_name,
+					'name'      => ht_dms_display_name( $id ),
 					'avatar'    => get_avatar( $id, 96, $fallback ),
 					'consensus' => $consensus[ 'value' ],
 				);

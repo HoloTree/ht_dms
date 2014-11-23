@@ -1025,14 +1025,12 @@ function ht_dms_organization_invite_code( $create = true, $uID ) {
  *
  * @since 0.2.0
  *
- * @param int|\WP_User $id Id of user or WP_User object
+ * @param int $id Id of user.
  *
  * @return string
  */
 function ht_dms_display_name( $id ) {
 	$user = get_userdata( $id );
-	$first = $user->first_name;
-	$last = $user->last_name;
 
 	if ( is_object( $user ) ) {
 		$display_name = $user->data->display_name;

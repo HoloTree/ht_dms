@@ -615,17 +615,15 @@ class elements {
 	 */
 	function member_details( $uID = null, $avatar_size = 96 ) {
 		$uID = ht_dms_null_user( $uID );
-		$data = get_userdata( $uID );
 
-		if ( $data ) {
-			$details[] = array (
-				'name'   => $data->data->display_name,
-				'avatar' => get_avatar( $uID, $avatar_size, ht_dms_fallback_avatar() )
-			);
+		$details[] = array (
+			'name'   => ht_dms_display_name( $uID ),
+			'avatar' => get_avatar( $uID, $avatar_size, ht_dms_fallback_avatar() )
+		);
 
-			return apply_filters( 'ht_dms_member_details', $details, $uID, $details );
+		return apply_filters( 'ht_dms_member_details', $details, $uID, $details );
 
-		}
+
 
 	}
 
