@@ -52,7 +52,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 	}
 
 	$spinner = ht_dms_spinner();
-	$out = '<div id="' .esc_attr( $view ) . '" '.$attributes . ' >' . esc_html( $content ) . '</div>';
+	$out = '<div id="' .esc_attr( $view ) . '" '.$attributes . ' >' . html_entity_decode( $content ) . '</div>';
 	if ( $view == 'users_notifications' ) {
 		$out = ht_dms\ui\build\notification\elements::notification_view_header() . $out;
 		$out .= ht_dms_ui()->view_loaders()->handlebars_template( 'notification' );
