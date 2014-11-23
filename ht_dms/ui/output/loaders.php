@@ -235,9 +235,7 @@ class loaders implements \Hook_SubscriberInterface {
 		if ( ! $post_type  ) {
 			$post_type = get_post_type();
 		}
-		if ( HT_DEV_MODE ) {
-			echo $post_type;
-		}
+		
 
 		if ( is_home() || is_front_page() ) {
 			$context = 'home';
