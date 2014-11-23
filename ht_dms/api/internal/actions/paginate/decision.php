@@ -88,10 +88,12 @@ class decision {
 		$data = array();
 		if ( is_object( $obj ) && $obj->total > 0 ) {
 			while ( $obj->fetch()  ){
-				$data[ $obj->id() ] = json::decision( $obj->id(), $obj );
+				$id = $obj->id();
+				$data[ ] = json::decision( $id, $obj );
 			}
 
 		}
+
 
 		return $data;
 

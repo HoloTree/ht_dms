@@ -1111,7 +1111,8 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			'where'     => 'd.decision_type <> "accepted_change"  AND d.decision_status = "'. strtolower( $status ) .'" ',
 			'expires'   => 359,
 			'page'      => $page,
-			'limit'     => $limit
+			'limit'     => $limit,
+			'orderby'   => 't.post_modified_gmt DESC'
 		);
 
 		if ( ht_dms_integer( $gID ) ) {
