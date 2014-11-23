@@ -540,9 +540,23 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Container for loading handlebars rendered views into.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param string $id Id attribute
+	 * @param string $class Optional. Class attribute.
+	 * @param string $container_type Optional. type of container. Default is 'div'
+	 *
+	 * @return string
+	 */
 	function handlebars_container(  $id, $class='', $container_type = 'div' ) {
+		if( $class ) {
+			$class = 'class="'.esc_attr( $class).'"';
+		}
 
-		return "<{$container_type} id=\"{$id}\" class=\"{$class}\"></{$container_type}>";
+		return "<{$container_type} id=\"".esc_attr( $id ). "\" {$class} ></{$container_type}>";
 
 	}
 
