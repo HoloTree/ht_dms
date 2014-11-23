@@ -216,7 +216,7 @@ class json {
 				);
 			}
 
-			$data[ 'field' ] = $value;
+			$data[ $field ] = $value;
 
 		}
 
