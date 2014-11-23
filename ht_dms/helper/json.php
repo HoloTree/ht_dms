@@ -184,6 +184,7 @@ class json {
 	public static function decision( $id, $obj = null ) {
 		$obj = ht_dms_decision_class()->null_object( $obj, $id );
 		$data[ 'id' ] = $data[ 'ID' ] = $id;
+		$data[ 'link' ] = get_permalink( $id );
 
 		$fields = array(
 			'name' => 'post_title',
