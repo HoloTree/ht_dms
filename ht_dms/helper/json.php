@@ -203,7 +203,7 @@ class json {
 			$lookup = $field.'.ID';
 			$value = $obj->field( $lookup );
 			if ( ht_dms_integer( $value ) ) {
-				$name = get_userdata( $value )->data->display_name;
+				$name = ht_dms_display_name( $value );
 				$value = array(
 					'name' => $name,
 					'id' => $value,
@@ -224,10 +224,6 @@ class json {
 
 	}
 
-	private static function user( $id ) {
-		$user = get_userdata( $id )->data->display_name;
 
-
-	}
 
 } 

@@ -1019,3 +1019,56 @@ function ht_dms_organization_invite_code( $create = true, $uID ) {
 	}
 
 }
+
+/**
+ * Ensures that display name is displayed as first and last.
+ *
+ * @since 0.2.0
+ *
+ * @param int|\WP_User $id Id of user or WP_User object
+ *
+ * @return string
+ */
+function ht_dms_display_name( $id ) {
+	$user = get_userdata( $id );
+	$first = $user->first_name;
+	$last = $user->last_name;
+
+	if ( is_object( $user ) ) {
+		$display_name = $user->data->display_name;
+		if ( is_email( $display_name ) ) {
+			$first = $user->first_name;
+			$last = $user->last_name;
+			if ( $first || $last ) {
+				$display_name = $first . ' ' . $last;
+			}
+		}
+
+		return $display_name;
+
+	}
+
+}
+
+/**
+ * Ensure display name is correct on update save
+ *
+ * @since 0.2.0
+ *
+ * @uses 'pre_user_display_name' filter
+ */
+add_filter( 'pre_user_display_name',
+	function( $display_name ) {
+		if ( is_email( $display_name ) ) {
+			$user = WP_User::get_data_by( 'email', $display_name );
+			if ( is_object( $user ) ) {
+				$better_name = ht_dms_display_name( $user->ID );
+				if ( $better_name && is_string( $better_name ) )  {
+					$display_name = $better_name;
+				}
+			}
+		}
+
+		return $display_name;
+	}
+, 99 );
