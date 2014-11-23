@@ -58,15 +58,19 @@ class elements {
 	 * @return string
 	 */
 	private function decisions_by_status_tab_content( $status, $gID ) {
+		$status = strtolower( $status );
 		$args = array(
-			'limit' => 5,
-			'status' => $status,
-			'gID'  => $gID,
-			'page'  => 1
+			'limit'     => 5,
+			'status'    => $status,
+			'gID'       => $gID,
+			'page'      => 1
 
 		);
 
-		return ht_dms_paginated_view_container( 'decision', $args  );
+		$html_id = "decision-{$status}-container";
+		$content = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
+
+		return ht_dms_paginated_view_container( 'decision', $args, $content  );
 
 	}
 

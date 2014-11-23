@@ -502,7 +502,9 @@ alert( response.outer_html_id );
                         $( outer_html_id ).append( response.template );
                     }
 
-                    $( outer_html_id ).append( html );
+                    if ( null == document.getElementById( app.stripID( htmlID ) ) ) {
+                        $( outer_html_id ).append( html );
+                    }
 
                     $( spinner ).show();
 
