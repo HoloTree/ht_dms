@@ -1091,13 +1091,28 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	}
 
-	function decisions_by_status( $status, $gID = false, $return_type = false, $obj = null ) {
+	/**
+	 * Get decisions by status.
+	 *
+	 * @since unknown
+	 *
+	 * @param $status
+	 * @param bool $gID
+	 * @param bool $return_type
+	 * @param null|string $obj
+	 * @param int $page
+	 * @param int $limit
+	 *
+	 * @return array|bool|mixed|null|\Pods|void
+	 */
+	function decisions_by_status( $status, $gID = false, $return_type = false, $obj = null, $page = 1, $limit = -1 ) {
 		$obj = $this->null_object( $obj );
 
 		$params = array (
-			'where' => 'd.decision_type <> "accepted_change"  AND d.decision_status = "'. strtolower( $status ) .'" ',
-			'limit'	=> -1,
-			'expires' => HOUR_IN_SECONDS,
+			'where'     => 'd.decision_type <> "accepted_change"  AND d.decision_status = "'. strtolower( $status ) .'" ',
+			'expires'   => 359,
+			'page'      => $page,
+			'limit'     => $limit
 		);
 
 		if ( ht_dms_integer( $gID ) ) {

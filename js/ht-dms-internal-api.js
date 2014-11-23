@@ -50,10 +50,6 @@ jQuery( function ( ) {
             app.events.organizationForm.process();
         });
 
-
-
-
-
     };
 
     /**
@@ -450,7 +446,16 @@ alert( response.outer_html_id );
                 page = 0;
             }
 
+
+            el = document.getElementById( app.stripID( container ) );
+
             params = {};
+
+            if ( 1 == container.indexOf( 'decision' ) ) {
+                params.status = el.getAttribute( 'status' );
+                params.gid = el.getAttribute( 'gid' );
+            }
+
             params.view = view = container.replace( '#', '' );
             params.page = page;
             params.extraArg = extraArg;
@@ -458,6 +463,7 @@ alert( response.outer_html_id );
 
             params.limit = view = $( container ).attr( "limit" );
             params.action = 'paginate';
+
             if ( undefined != unViewedOnly && true == unViewedOnly ) {
                 params.unviewedonly = unViewedOnly
             }
@@ -492,7 +498,12 @@ alert( response.outer_html_id );
                     $( paginationID ).remove();
 
                     $( outer_html_id ).fadeOut( 800 ).hide();
-                    $( outer_html_id ).append( html ).append( response.template );
+                    if ( null == document.getElementById( app.stripID( templateID ) ) ) {
+                        $( outer_html_id ).append( response.template );
+                    }
+
+                    $( outer_html_id ).append( html );
+
                     $( spinner ).show();
 
                     var rendered = '';
@@ -509,18 +520,20 @@ alert( response.outer_html_id );
                         var source = $( templateID ).html();
                         template = Handlebars.compile( source );
                         rendered += template( data );
+
                         delete template;
                         delete source;
                     } );
 
-                    $( htmlID ).html( rendered );
+
+                    $( htmlID ).html( rendered ).show();
                     $( spinner ).hide();
                     $( outer_html_id ).attr( 'page', page );
                     $( outer_html_id ).fadeIn( 800 );
                     $( outer_html_id ).parent().show();
 
 
-                    if ( document.contains( document.getElementById('users-notifications-container' )  ) ) {
+                    if ( document.contains( document.getElementById( 'users-notifications-container' )  ) ) {
 
                         $( '#users-notifications-container' ).show();
                     }
@@ -587,7 +600,25 @@ alert( response.outer_html_id );
         }
 
         return id;
+
     };
+
+    /**
+     * Remove the # form a string
+     *
+     * @param string
+     * @returns {*}
+     */
+    app.stripID = function( string ) {
+
+        if ( 0 == string.indexOf( '#' )  ) {
+            string = string.replace( '#', '' );
+        }
+
+        return string;
+
+    };
+
     /**
      * Construct a nonced URL for the request
      *

@@ -12,6 +12,8 @@
 namespace ht_dms\api\internal\actions;
 
 
+use ht_dms\api\internal\actions\paginate\decision;
+
 class paginate {
 
 	/**
@@ -24,6 +26,12 @@ class paginate {
 	 * @return \ht_dms\ui\JSON|\ht_dms\ui\obj|\ht_dms\ui\Pods|null|string
 	 */
 	public static function act( $params ) {
+
+		if ( is_string( pods_v( 'status', $params ) ) ) {
+			return decision::output( $params );
+
+		}
+
 		$view = pods_v( 'view', $params );
 		$limit = (int) pods_v( 'limit', $params );
 		$page = (int) pods_v( 'page', $params );
@@ -76,7 +84,7 @@ class paginate {
 	 */
 	public static function args() {
 
-		return  array( 'view', 'limit', 'page', 'extraArg', 'oID' );
+		return  array( 'view', 'limit', 'page', 'extraArg', 'oID', 'status', 'gid' );
 
 	}
 
@@ -146,7 +154,12 @@ class paginate {
 			$args[ 'page' ] = $page;
 		}
 
-		$obj = call_user_func( array( ht_dms_ui()->views(), $view ), $args );
+		if ( 'decision' == $view && isset( $args[ 'status' ] ) && isset( $args[ 'gID' ] ) ) {
+			$obj = ht_dms_decision_class()->decisions_by_status(  $args[ 'status' ], $args[ 'gID' ], 'obj');
+
+		} else {
+			$obj = call_user_func( array( ht_dms_ui()->views(), $view ), $args );
+		}
 		if ( $obj ) {
 			$json =  $obj;
 		}

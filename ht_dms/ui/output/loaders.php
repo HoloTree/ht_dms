@@ -235,7 +235,7 @@ class loaders implements \Hook_SubscriberInterface {
 		if ( ! $post_type  ) {
 			$post_type = get_post_type();
 		}
-		
+
 
 		if ( is_home() || is_front_page() ) {
 			$context = 'home';
@@ -522,6 +522,8 @@ class loaders implements \Hook_SubscriberInterface {
 	}
 
 	function handlebars_template( $file, $partial = true ) {
+
+
 		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
 		if ( $partial ) {
 			$template .= 'partials/';

@@ -40,6 +40,7 @@ class ui {
 	function views() {
 
 		return new build\views();
+
 	}
 
 	/**

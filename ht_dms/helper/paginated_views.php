@@ -26,13 +26,15 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 
 	$attrs = array(
 		'view' => $view,
-		'page' => $args[ 'page' ],
-		'limit' => $args[ 'limit' ],
+		'page' => pods_v( 'page', $args, 1 ),
+		'limit' => pods_v( 'limit', $args, 5 ),
 
 	);
 
 	if ( $view == 'decision' ) {
 		$attrs[ 'status' ] = $args[ 'status' ];
+		$view = 'decision-'.strtolower( $args[ 'status' ] );
+		$attrs[ 'gid' ] = $args[ 'gID' ];
 	}
 
 	if ( $view === 'users_notifications' ) {
@@ -40,11 +42,12 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 	}
 
 	if ( isset( $args[ 'oID' ] ) ) {
-		$attrs[ 'oID' ] = $args[ 'oID' ];
+		$attrs[ 'oid' ] = $args[ 'oID' ];
 	}
 
 	$attributes = '';
 	foreach( $attrs as $attr => $value  ) {
+		$value = strtolower( $value );
 		$attributes .= $attr.'="'.esc_attr( $value ) .'" ';
 	}
 
@@ -56,7 +59,6 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 	}
 	
 	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );
-
 
 	return $out;
 

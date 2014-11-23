@@ -143,6 +143,7 @@ class elements {
 
 
 	function tabs( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
+
 		if ( ! $tab_prefix ) {
 			$tab_prefix = 'tab_';
 		}

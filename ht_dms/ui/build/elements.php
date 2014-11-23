@@ -16,82 +16,57 @@ class elements {
 
 	/**
 	 * Creates tabs for decisions by status
+	 *
 	 * @param 	array|null	$statuses
 	 * @param 	int			$gID
-	 * @param 	obj|null 	$dObj		Optional. A full decision object.
 	 *
 	 * @return	array					Tabs array to pass to the tab maker.
 	 */
 	function decisions_by_status_tabs( $statuses = null, $gID, $dObj= null  ) {
-		if ( is_null( $dObj ) || !is_object( $dObj ) ) {
-			$dObj = ht_dms_decision_class()->object();
-		}
-		if ( is_null( $statuses ) || ! is_array( $statuses ) ) {
+		if ( is_null( $statuses )  ) {
 			$statuses = array ( 'New', 'Blocked', 'Passed' );
 		}
 
-		$ui = $this->ui();
+		if ( is_string( $statuses ) ) {
+			$statuses = array( $statuses );
+		}
 
-		$dObj = ht_dms_decision_class()->object();
-		foreach ( $statuses as $status  ) {
-			$s_obj = ht_dms_decision_class()->decisions_by_status( $status, $gID, 'obj', $dObj );
+		$tabs = array();
+		if ( is_array( $statuses ) && ! empty( $statuses ) ) {
+			foreach ( $statuses as $status ) {
+				$content = $this->decisions_by_status_tab_content( $status, $gID  );
 
-			if ( is_object( $s_obj ) ) {
-				$dObj = $s_obj;
-				unset( $s_obj );
-				$total = $dObj->total();
-				if ( HT_DEV_MODE ) {
-					echo $status . ':' . $total . ' ';
-				}
-
-				if ( $dObj->total() > 0 ) {
-
-					$view_loaders         = ht_dms_ui()->view_loaders();
-					$view                 = ht_dms_ui()->models()->path( 'decision', true );
-					$d_s                  = $view_loaders->magic_template( $view, $dObj );
-					$decisions[ $status ] = $d_s;
-
-
-				} //endif have pods
-				$dObj->reset();
+				$tabs[] = array (
+					'label'   => ht_dms_add_icon( $status . __( ' Decisions', 'ht_dms' ), strtolower( $status ) ),
+					'content' => $content,
+				);
 			}
-
-
 		}
 
-		$tabs = array( );
+		return $tabs;
 
-		if ( isset( $decisions ) && is_array( $decisions ) ) {
-			$content = '';
-			foreach ( $statuses as $status  ) {
+	}
 
-				if ( isset( $decisions[ $status ] ) ) {
-					$content = '';
-					$content .= '<div id="' . $status . '-decisions-list" class="decisions-list">';
-					$heading = $status . ' Decisions';
-					$content .= '<h3>' . $heading . '</h3>';
-					$content .= $decisions[ $status ];
-					$content .= '</div>';
+	/**
+	 * Get tab content for a decision by status.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param string $status
+	 * @param int $gID
+	 *
+	 * @return string
+	 */
+	private function decisions_by_status_tab_content( $status, $gID ) {
+		$args = array(
+			'limit' => 5,
+			'status' => $status,
+			'gID'  => $gID,
+			'page'  => 1
 
+		);
 
-					$tabs[ ] = array (
-						'label'   => ht_dms_add_icon( $status . __( ' Decisions', 'ht_dms' ), strtolower( $status ) ),
-						'content' => $content,
-					);
-
-					unset( $content );
-				}
-
-				}
-
-
-		}
-
-		if ( isset( $tabs ) && is_array( $tabs ) ) {
-
-			return $tabs;
-
-		}
+		return ht_dms_paginated_view_container( 'decision', $args  );
 
 	}
 

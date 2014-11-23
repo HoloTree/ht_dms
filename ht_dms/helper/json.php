@@ -220,7 +220,7 @@ class json {
 
 		}
 
-		return json_encode( $data );
+		return $data;
 
 	}
 

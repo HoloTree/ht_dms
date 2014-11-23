@@ -13,6 +13,9 @@ jQuery(document).ready(function( $ ) {
         '#public_groups',
         '#users_organizations',
         '#users_notifications',
+        '#decision-blocked',
+        '#decision-new',
+        '#decision-passed'
     ];
 
     //loop through paginatedViews running each one, if we have that div already.
@@ -454,7 +457,7 @@ jQuery(document).ready(function( $ ) {
         }
 
         icons = htDMS.icons;
-        console.log( icons );
+
         icon = icons[type];
 
         return new Handlebars.SafeString( '<a id="' + idAttr + '" href="' + url + '" class="' + classAttr + '" ' + type + '="' + postID + '" internal-link="true" title="View ' + ucwords( type ) + '">' + icon + name + '</a>' );
