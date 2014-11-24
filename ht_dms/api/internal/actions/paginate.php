@@ -127,6 +127,8 @@ class paginate {
 		$view = self::get_view( $view, $args, $html_id, $type, $page );
 		$output[ 'json' ] = pods_v( 'json', $view );
 		$output[ 'html' ] = pods_v( 'html', $view );
+		$output[ 'total' ] = pods_v( 'total', $view );
+		$output[ 'total_found' ] = pods_v( 'total_found', $view );
 
 		return $output;
 	}
@@ -148,7 +150,7 @@ class paginate {
 	private static function get_view( $view, $args, $html_id, $type, $page = 1 ) {
 
 		$args['return'] = 'simple_json';
-
+		$total = $total_found = 0;
 
 		if ( ! isset( $args[ 'page' ] ) ) {
 			$args[ 'page' ] = $page;
@@ -167,17 +169,29 @@ class paginate {
 			$json = json_encode( array( 0 ) );
 		}
 
+		$totals      = \ht_dms\ui\build\models::get_total( $type );
+		$total       = pods_v( 'total', $totals );
+		$total_found = pods_v( 'total_found', $totals );
+		if ( 0 == $total_found ) {
+			$total_found = $total;
+		}
 
 		$html = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
 		if ( $obj ) {
-			$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( $obj, $view, $page, $type );
+			$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $view, $page, $type );
 		}
 
 		$html = apply_filters( 'ht_dms_paginated_views_template_output', $html, $view );
 
+
+
+
+
 		return array(
 			'json' => $json,
 			'html' => $html,
+			'total' => $total,
+			'total_found' => $total_found,
 		);
 
 	}

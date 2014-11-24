@@ -191,7 +191,7 @@ jQuery( function ( ) {
             if ( 'object' != typeof data ) {
                 data = JSON.parse( data );
             }
-alert( response.outer_html_id );
+
             var container = response.outer_html_id;
             var source = $( '#notification-single' ).html();
             var template = Handlebars.compile( source );
@@ -478,10 +478,17 @@ alert( response.outer_html_id );
                 nonce: htDMSinternalAPI.nonce,
                 success: function ( response ) {
                     var outer_html_id = response.outer_html_id;
+                    page = $( outer_html_id ).attr( 'page' );
 
                     var spinner = outer_html_id + "-spinner";
 
-                    var obj = JSON.parse( response.json );
+                    if ( 'object' != typeof response.json ) {
+
+                        var obj = JSON.parse( response.json );
+                    }
+                    else {
+                        var obj = response.json;
+                    }
 
                     if ( undefined === obj || 0 == obj ) {
                         $( spinner ).fadeOut();
@@ -495,7 +502,42 @@ alert( response.outer_html_id );
 
                     var paginationID = outer_html_id;
                     paginationID += '-pagination';
-                    $( paginationID ).remove();
+
+                    var paginationContainer = document.getElementById( app.stripID( paginationID ) );
+                    var next =  paginationID + ' .pagination-next';
+                    var previous = paginationID + ' .pagination-previous';
+                    if ( null !== paginationContainer ) {
+
+                        if ( undefined != response.total && undefined != response.total_found ) {
+                            var total = response.total;
+                            var totalFound = response.total_found;
+
+                            var nextPage = page + 1;
+                            var totalPages = totalFound/total;
+
+                            totalPages = Math.ceil(totalPages);
+
+
+                            if ( nextPage > totalPages ) {
+                                $( next ).hide();
+                            }
+                            else {
+                                $( next ).show();
+                            }
+
+                        }
+
+                    }
+
+                    var previousPage = page - 1;
+
+                    if ( previousPage > 0  ) {
+                        $( previous ).attr( 'page', previousPage );
+                        $( previous ).show();
+                    }
+                    else {
+                        $( previous ).hide();
+                    }
 
                     $( outer_html_id ).fadeOut( 800 ).hide();
                     if ( null == document.getElementById( app.stripID( templateID ) ) ) {
@@ -545,8 +587,7 @@ alert( response.outer_html_id );
                 complete : function( xhr ) {
 
                     if ( 200 == xhr.status ) {
-
-                        tabHeight();
+                        
                     }
                     else {
                         spinnerID = '#' + this.view + '-spinner';

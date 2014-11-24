@@ -650,6 +650,7 @@ class models {
 		$key .= '_found';
 		$totals[ 'total_found' ] = wp_cache_get( $key );
 		return $totals;
+
 	}
 	
 } 

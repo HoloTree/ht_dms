@@ -70,7 +70,11 @@ class elements {
 		$html_id = "decision-{$status}-container";
 		$content = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
 
-		return ht_dms_paginated_view_container( 'decision', $args, $content  );
+		$content = ht_dms_paginated_view_container( 'decision', $args, $content  );
+		$pagination_id = "decision-{$status}";
+		$content .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $pagination_id, 1, 'decision' );
+
+		return $content;
 
 	}
 
@@ -404,37 +408,44 @@ class elements {
 	}
 
 	function ajax_pagination_buttons( $obj, $view, $page, $type = null  ) {
-		if ( is_object( $obj )&& is_pod( $obj ) ) {
-			$total = $obj->total();
-			$total_found = $obj->total_found();
-
-		}
-		elseif( ! is_null( $type ) && is_string( $obj ) && false != ( $decoded_json = json_decode( $obj )  ) ) {
-			$totals = models::get_total( $type );
-			$total = pods_v( 'total', $totals );
-			$total_found = pods_v( 'total_found', $totals );
+		if ( 'force' == $obj ) {
+			$total_pages = $total = false;
+			$force = true;
 		}
 		else {
-			ht_dms_error();
+			if ( is_object( $obj ) && is_pod( $obj ) ) {
+				$total       = $obj->total();
+				$total_found = $obj->total_found();
+
+			} elseif ( ! is_null( $type ) && is_string( $obj ) && false != ( $decoded_json = json_decode( $obj ) ) ) {
+
+				$totals      = \ht_dms\ui\build\models::get_total( $type );
+				$total       = pods_v( 'total', $totals );
+				$total_found = pods_v( 'total_found', $totals );
+			} else {
+				ht_dms_error();
+			}
+
+			$force = false;
+			$total_pages = (int) $total_found / (int) $total;
+			$total_pages = ceil( $total_pages );
 		}
 
 		if ( is_null( $page ) ) {
 			$page = 1;
 		}
 
-		$total_pages = (int) $total_found / (int) $total;
-		$total_pages = ceil( $total_pages );
 		$page = (int) $page;
 
 		$previous = false;
-		if ( $page > 1 ) {
+		if ( $force || $page > 1 ) {
 			$previous_page = $page-1;
 			$attr = "page=\"{$previous_page}\"";
 			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', esc_attr( $view ),  $attr, __( 'Previous', 'ht_dms' ) );
 		}
 
 		$next_page = $page+1;
-		if ( $next_page >= $total_pages && $total_pages != $page ) {
+		if ( $force || ( $next_page >= $total_pages && $total_pages != $page  ) ) {
 			$attr = "page=\"{$next_page}\"";
 			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', esc_attr( $view ), $attr ,  __( 'Next', 'ht_dms' ) );
 		}
