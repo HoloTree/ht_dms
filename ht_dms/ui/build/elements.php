@@ -71,8 +71,8 @@ class elements {
 		$content = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
 
 		$content = ht_dms_paginated_view_container( 'decision', $args, $content  );
-		$pagination_id = "decision-{$status}";
-		$content .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $pagination_id, 1, 'decision' );
+		$pagination_id = $controls = "decision-{$status}";
+		$content .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $pagination_id, 1, 'decision', $controls );
 
 		return $content;
 
@@ -407,7 +407,20 @@ class elements {
 
 	}
 
-	function ajax_pagination_buttons( $obj, $view, $page, $type = null  ) {
+	/**
+	 * Buttons for the paginated views
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param string|/Pods $obj
+	 * @param string $view
+	 * @param int $page
+	 * @param null $type
+	 * @param string $controls Which (outer container ID ) this controls.
+	 *
+	 * @return string
+	 */
+	function ajax_pagination_buttons( $obj, $view, $page, $type = null, $controls  ) {
 		if ( 'force' == $obj ) {
 			$total_pages = $total = false;
 			$force = true;
@@ -441,13 +454,13 @@ class elements {
 		if ( $force || $page > 1 ) {
 			$previous_page = $page-1;
 			$attr = "page=\"{$previous_page}\"";
-			$previous = sprintf( '<a href="#" id="previous-%0s" class="pagination-previous button" %2s>%3s</a>', esc_attr( $view ),  $attr, __( 'Previous', 'ht_dms' ) );
+			$previous = sprintf( '<a href="#" id="previous-%0s" style="display:none;" class="pagination-previous button" %2s>%3s</a>', esc_attr( $view ),  $attr, __( 'Previous', 'ht_dms' ) );
 		}
 
 		$next_page = $page+1;
 		if ( $force || ( $next_page >= $total_pages && $total_pages != $page  ) ) {
 			$attr = "page=\"{$next_page}\"";
-			$next = sprintf( '<a href="#" id="next-%0s" class="pagination-next button" %2s>%3s</a>', esc_attr( $view ), $attr ,  __( 'Next', 'ht_dms' ) );
+			$next = sprintf( '<a href="#" id="next-%0s" style="display:none;" class="pagination-next button" %2s>%3s</a>', esc_attr( $view ), $attr ,  __( 'Next', 'ht_dms' ) );
 		}
 		else {
 			$next = false;
@@ -455,7 +468,7 @@ class elements {
 
 		$buttons = array( $previous, $next );
 
-		$out = sprintf( '<div class="pagination %1s-pagination" id="%2s-pagination">%3s</div>', HT_DMS_PREFIX, $view, implode( $buttons ) );
+		$out = sprintf( '<div class="pagination %1s-pagination" id="%2s-pagination" controls="%3s">%4s</div>', HT_DMS_PREFIX, $view, $controls, implode( $buttons ) );
 
 		$out .= $this->pagination_inline_js( $previous, $view );
 

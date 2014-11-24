@@ -177,15 +177,11 @@ class paginate {
 		}
 
 		$html = ht_dms_ui()->view_loaders()->handlebars_container( $html_id );
-		if ( $obj ) {
-			$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $view, $page, $type );
-		}
+
+		$controls = '#' . $view;
+		$html .= ht_dms_ui()->build_elements()->ajax_pagination_buttons( 'force', $view, $page, $type, $controls );
 
 		$html = apply_filters( 'ht_dms_paginated_views_template_output', $html, $view );
-
-
-
-
 
 		return array(
 			'json' => $json,

@@ -461,7 +461,7 @@ jQuery( function ( ) {
             params.extraArg = extraArg;
             params.oID = oID;
 
-            params.limit = view = $( container ).attr( "limit" );
+            params.limit = $( container ).attr( "limit" );
             params.action = 'paginate';
 
             if ( undefined != unViewedOnly && true == unViewedOnly ) {
@@ -502,44 +502,9 @@ jQuery( function ( ) {
 
                     var paginationID = outer_html_id;
                     paginationID += '-pagination';
+                    $( paginationID ).hide();
 
-                    var paginationContainer = document.getElementById( app.stripID( paginationID ) );
-                    var next =  paginationID + ' .pagination-next';
-                    var previous = paginationID + ' .pagination-previous';
-                    if ( null !== paginationContainer ) {
-
-                        if ( undefined != response.total && undefined != response.total_found ) {
-                            var total = response.total;
-                            var totalFound = response.total_found;
-
-                            var nextPage = page + 1;
-                            var totalPages = totalFound/total;
-
-                            totalPages = Math.ceil(totalPages);
-
-
-                            if ( nextPage > totalPages ) {
-                                $( next ).hide();
-                            }
-                            else {
-                                $( next ).show();
-                            }
-
-                        }
-
-                    }
-
-                    var previousPage = page - 1;
-
-                    if ( previousPage > 0  ) {
-                        $( previous ).attr( 'page', previousPage );
-                        $( previous ).show();
-                    }
-                    else {
-                        $( previous ).hide();
-                    }
-
-                    $( outer_html_id ).fadeOut( 800 ).hide();
+                    $( outer_html_id ).fadeOut( 800 ).hide().attr( 'page', page );
                     if ( null == document.getElementById( app.stripID( templateID ) ) ) {
                         $( outer_html_id ).append( response.template );
                     }
@@ -569,9 +534,9 @@ jQuery( function ( ) {
                         delete source;
                     } );
 
-
-                    $( htmlID ).html( rendered ).show();
                     $( spinner ).hide();
+                    $( htmlID ).html( rendered ).show();
+                    app.paginate.paginationButtons( page, paginationID, response.total, response.total_found, outer_html_id );
                     $( outer_html_id ).attr( 'page', page );
                     $( outer_html_id ).fadeIn( 800 );
                     $( outer_html_id ).parent().show();
@@ -587,7 +552,7 @@ jQuery( function ( ) {
                 complete : function( xhr ) {
 
                     if ( 200 == xhr.status ) {
-                        
+
                     }
                     else {
                         spinnerID = '#' + this.view + '-spinner';
@@ -599,6 +564,52 @@ jQuery( function ( ) {
                 }
 
             });
+        },
+        paginationButtons : function( page, paginationID, total, totalFound, outerID ) {
+            var paginationContainer = document.getElementById( app.stripID( paginationID ) );
+            var next =  'next-' + app.stripID( outerID );
+            var previous = 'previous-' + app.stripID( outerID );
+
+            previous  = document.getElementById( previous );
+            next = document.getElementById( next );
+
+            var nextPage =  parseInt( page ) +  1;
+            if ( null !== paginationContainer ) {
+                var totalPages = totalFound/total;
+                totalPages = Math.ceil(totalPages);
+
+                if ( nextPage < totalPages ) {
+                    next.style.display = 'inline-block';
+                }
+                else {
+                    next.style.display = 'none';
+                }
+
+            }
+
+            var previousPage = parseInt( page ) - 1;
+
+            if ( previousPage > 0  ) {
+                previous.setAttribute( 'page', previousPage );
+                previous.style.display = 'inline-block';
+            }
+            else {
+                previous.style.display = 'none';
+            }
+
+            $( paginationID ).show();
+
+            next.addEventListener( 'click',
+                function(){
+                    $( outerID ).attr( 'page', nextPage );
+                }, false
+            );
+            previous.addEventListener( 'click',
+                function(){
+                    $( outerID ).attr( 'page', previousPage );
+                }, false
+            );
+
         }
 
 
@@ -693,8 +704,8 @@ jQuery( function ( ) {
         if ( undefined != spinnerID ) {
             $( spinnerID ).hide();
         }
-
-        $( containerID ).html( '<p>' + app.messages.noItems + '</p>' );
+        $( containerID + '-pagination' ).hide();
+        $( containerID ).html( '<p class="pagination-no-items-found">' + app.messages.noItems + '</p>' );
     };
 
 
