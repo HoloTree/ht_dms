@@ -93,8 +93,7 @@ class decision {
 			}
 
 		}
-
-
+		
 		return $data;
 
 	}
