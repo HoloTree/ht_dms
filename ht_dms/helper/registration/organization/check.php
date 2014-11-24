@@ -44,6 +44,7 @@ class check implements \Filter_Hook_SubscriberInterface  {
 				$verify = new verify( $code );
 				if ( $verify->check() ) {
 					add_filter( 'pods_json_api_access_pods_add_item', '__return_true' );
+					add_filter( 'pods_json_api_access_pods', '__return_true' );
 					crud::delete( $code );
 					return null;
 				}
