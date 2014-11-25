@@ -110,7 +110,7 @@ class route implements \Action_Hook_SubscriberInterface {
 			$status_code = 204;
 		}
 
-		status_header( $status_code );
+		self::headers( $status_code );
 		if ( is_array( $response ) ) {
 			wp_send_json( $response );
 		}
@@ -271,16 +271,17 @@ class route implements \Action_Hook_SubscriberInterface {
 	 * @param int $status_code
 	 * @param int $expires
 	 */
-	private function headers( $status_code, $expires = 119 ) {
+	private static function headers( $status_code, $expires = 59 ) {
 
 		status_header( $status_code );
 		if ( 200 == $status_code ) {
-			header( 'Pragma: public' );
+			header( 'Pragma: private' );
 			header( 'Cache-Control: maxage=' . $expires );
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s', time() + $expires ) . ' GMT' );
 		}
 
 	}
+
 
 	/**
 	 * Holds the instance of this class.
