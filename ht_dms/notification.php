@@ -85,6 +85,12 @@ class notification extends \ht_dms\dms\dms implements \Hook_SubscriberInterface 
 	 * @since 0.0.3
 	 */
 	function new_notification( $to, $subject, $message ) {
+		if ( ! is_string( $message ) || ! is_string( $subject ) ) {
+			return false;
+		}
+		$message = balanceTags( $message );
+		$subject = balanceTags( $subject );
+		
 		$data = array(
 			'to' => $to,
 			'subject' => $subject,
