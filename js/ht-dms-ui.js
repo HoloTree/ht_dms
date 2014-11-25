@@ -136,7 +136,7 @@ jQuery(document).ready(function( $ ) {
 
         });
 
-       tabHeight();
+
 
     });
 
@@ -292,53 +292,6 @@ jQuery(document).ready(function( $ ) {
 
     //init foundation
     $( document ).foundation();
-
-    tabHeight();
-    window.addEventListener( 'resize', tabHeight );
-
-
-    function tabHeight() {
-        /*
-        var width = $(document).width();
-        var divs = '#tabs .content';
-
-        if (width > 640) {
-            var maxHeight = -1;
-
-
-            if ( undefined != paginatedViews) {
-                $.each( paginatedViews, function (index, value) {
-                    if ( $(value).length > 0 ) {
-                        maxHeight = maxHeight > $(value).outerHeight( true ) ? maxHeight : $( value ).outerHeight( true );
-                    };
-                });
-            }
-
-            $( divs ).each( function () {
-                maxHeight = maxHeight > $(this).height( true ) ? maxHeight : $( this ).height( true );
-            });
-
-
-            if ( maxHeight > 0) {
-                $( divs ).each( function() {
-
-                    $( this ).height( maxHeight );
-                });
-
-                $( '#ht_dms-tabs' ).height( maxHeight );
-            }
-        }
-        else {
-
-            $( '#ht_dms-tabs' ).removeAttr( 'style' );
-            $( divs ).each(function () {
-                $(this).removeAttr( 'style' );
-            });
-        }
-        */
-    }
-
-    window.tabHeight = tabHeight;
 
     function idCheck( id ) {
         return htDMSinternalAPI.idCheck( id );
