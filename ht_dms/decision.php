@@ -889,19 +889,40 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		}
 	}
 
+	/**
+	 * Check if a decision is a proposed change or not.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int $id
+	 * @param null|\Pods $obj
+	 *
+	 * @return bool
+	 */
 	function is_proposed_change( $id, $obj = null ) {
 		$type = $this->type( $id, $obj );
 		if ( $type === 'change' ) {
-
 			return true;
+
 		}
 
 	}
 
+	/**
+	 * Get the decision type
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param int $id
+	 * @param null|\Pods $obj
+	 *
+	 * @return string
+	 */
 	function type( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
 		$type = $obj->field( 'decision_type' );
+
 		return $type;
 
 	}
