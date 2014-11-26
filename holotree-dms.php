@@ -428,15 +428,18 @@ add_filter( 'nonce_life', function () {
  *
  * @since 0.1.0
  *
- * @see https://github.com/HoloTree/ht_dms/issues/86
+ * @see https://github.com/HoloTree/ht_dms/issues/86 #86
  */
-add_filter( 'pods_form_ui_field_hidden', function( $output, $name ) {
-		if ( $name === 'pods_field_decision_type' ) {
-			$output = str_replace( 'original', 'change', $output );
+add_filter( 'pods_form_ui_field_hidden', function( $output, $name, $value, $options ) {
+		global $dms_modify_form;
+		if ( isset( $dms_modify_form ) && $dms_modify_form ) {
+			if ( $name === 'pods_field_decision_type' ) {
+				$output = str_replace( 'original', 'change', $output );
+			}
 		}
 
 	return $output;
-	}, 10, 2 );
+	}, 10, 4 );
 
 add_filter( 'pods_deploy_deploy_in_one_package', '__return_true' );
 

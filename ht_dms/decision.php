@@ -241,7 +241,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 				),
 				'decision_description' => array(),
 				'decision_type'   => array (
-					'default' => $defaults[ 'decision_type' ],
+					'default' =>  'original',
 					'type' 		=> 'hidden'
 				),
 				'decision_status' => array (
@@ -901,7 +901,9 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	function type( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
-		return $obj->field( 'decision_type' );
+		$type = $obj->field( 'decision_type' );
+		return $type;
+
 	}
 
 	/**

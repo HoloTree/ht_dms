@@ -516,7 +516,11 @@ abstract class dms extends object {
 
 		$ui = ht_dms_ui();
 
+		//set a global for checking if we're on a modify form or not #86
+		global $dms_modify_form;
+
 		if ( $new !== 'modify' ) {
+			$dms_modify_form = false;
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'new', 'X_ID_X' );
 			if ( $new ) {
 				$label = __( 'Create', 'ht_dms' );
@@ -534,6 +538,7 @@ abstract class dms extends object {
 			$form .= $obj->form( $form_fields, $label, $link );
 		}
 		else {
+			$dms_modify_form = true;
 			$link = $ui->output_elements()->action_append( ht_dms_home(), 'change-proposed', pods_v( 'dms_id', 'get', false, true ) );
 			$link = $link.'&pmid=X_ID_X';
 
