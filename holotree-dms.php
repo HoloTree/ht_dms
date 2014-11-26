@@ -434,7 +434,7 @@ add_filter( 'pods_form_ui_field_hidden', function( $output, $name, $value, $opti
 		global $dms_modify_form;
 		if ( isset( $dms_modify_form ) && $dms_modify_form ) {
 			if ( $name === 'pods_field_decision_type' ) {
-				$output = str_replace( 'original', 'change', $output );
+				$output = str_replace( array( 'original', 'modified', 'change', 'accepted_change', 'modified' ), 'change', $output );
 			}
 		}
 
