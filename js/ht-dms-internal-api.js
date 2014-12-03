@@ -254,6 +254,12 @@ jQuery( function ( ) {
             users = JSON.parse( users );
         }
 
+        for ( i = 0; i < 3; i++ ) {
+            if ( 'object' != typeof users[i] ) {
+                users[i] = {};
+            }
+        }
+
         var data = {
             header0: app.htDMS.consensusHeaders.header0,
             header1: app.htDMS.consensusHeaders.header1,

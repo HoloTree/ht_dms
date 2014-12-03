@@ -1,5 +1,4 @@
 <script id="consensus-view-template" type="text/x-handlebars-template">
-    <style>p.avatar img{display: inline-block;}</style>
     <ul class="small-block-grid-3" id="consensus-views-chooser">
         <li><a href="#" cst="ct0">{{{header0}}}</a></li>
         <li><a href="#" cst="ct1">{{{header1}}}</a></li>
@@ -7,43 +6,13 @@
     </ul>
     <div id="consensus-views-by-status">
         <ul class="small-block-grid-4  large-block-grid-8" id="ct0">
-            {{#each users0}}
-            <li>
-                <p class="avatar text-center">
-                    {{{avatar}}}
-                </p>
-                <p class="name text-center">
-                    {{name}}
-                </p>
-            </li>
-            {{/each}}
+            {{{userPreviewLoop users0 true false}}}
         </ul>
         <ul class="small-block-grid-4  large-block-grid-8" id="ct1" style="display:none;">
-            {{#each users1}}
-            <li>
-                <p class="avatar text-center">
-                    {{{avatar}}}
-                </p>
-                <p class="name text-center">
-                    {{name}}
-                </p>
-            </li>
-            {{/each}}
+            {{{userPreviewLoop users1 true false}}}
         </ul>
         <ul class="small-block-grid-4  large-block-grid-8 hide" id="ct2" style="display:none;">
-            {{#each users2}}
-            <li>
-                <p class="avatar text-center">
-                    {{{avatar}}}
-                </p>
-                <p class="name text-center">
-                    {{name}}
-                </p>
-            </li>
-            {{/each}}
+            {{{userPreviewLoop users2 true false}}}
         </ul>
     </div>
-
-
-
 </script>

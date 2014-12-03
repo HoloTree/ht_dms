@@ -309,9 +309,7 @@ jQuery(document).ready(function( $ ) {
      * @since 0.0.3
      */
     $( document).ready( function()  {
-        if (typeof htDMS.consensusMembers != 0) {
-            htDMSinternalAPI.consensusView();
-        }
+        htDMSinternalAPI.consensusView();
     });
 
 
@@ -356,6 +354,42 @@ jQuery(document).ready(function( $ ) {
 
         return str;
     });
+
+    /**
+     * Handlebars helper for Use Previews
+     *
+     * @since 0.2.0
+     */
+    Handlebars.registerHelper( 'userPreviewLoop',
+        function( users, showName, miniMode ) {
+            var str  = '';
+
+
+            $.each( users, function( i, user ) {
+
+                str += '<li id="user-' +
+                    user.ID +
+                    '" class="user user-view';
+                if ( true === miniMode ) {
+                    str += ' mini-mode';
+                }
+                str += '">' +
+                '<span class="avatar">' +
+                user.avatar +
+                '</span>';
+                if ( true ===   showName ) {
+                    str += '<p class="name text-center">' +
+                    user.name  +'</p>';
+                }
+                str += '</li>';
+
+
+            });
+
+
+            return new Handlebars.SafeString( str );
+        }
+    );
 
     /**
      * Handlebars helper for organization links.

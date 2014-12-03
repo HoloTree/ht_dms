@@ -334,7 +334,8 @@ class consensus  {
 
 						foreach( $user_ids as $uID ) {
 							$user = $build_elements->member_details( $uID );
-							$details[ $status ][] = array( 'name' => pods_v( 'name', $user[0] ), 'avatar' => pods_v( 'avatar', $user[0] ) );
+							$details[ $status ][] = $user[0];
+								//array( 'name' => pods_v( 'name', $user[0] ), 'avatar' => pods_v( 'avatar', $user[0] ) );
 						}
 
 					}

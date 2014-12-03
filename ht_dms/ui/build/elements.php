@@ -641,6 +641,7 @@ class elements {
 		$uID = ht_dms_null_user( $uID );
 
 		$details[] = array (
+			'ID' => $uID,
 			'name'   => ht_dms_display_name( $uID ),
 			'avatar' => get_avatar( $uID, $avatar_size, ht_dms_fallback_avatar() )
 		);

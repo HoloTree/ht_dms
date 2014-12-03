@@ -9,11 +9,7 @@
                 {{{organizationLink organization_link organization_ID organization_name false}}}
             </p>
             <ul id="group-members-{{ID}}" class="small-block-grid-10 large-block-grid-20">
-                {{#each members}}
-                <li id="user-{{ID}}" class="user mini-mode">
-                 <span class="avatar">{{{avatar}}}</span>
-
-                {{/each}}
+                {{{userPreviewLoop members false true}}}
             </ul>
         </div>
     </div>
