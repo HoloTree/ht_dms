@@ -12,6 +12,7 @@
 namespace ht_dms\ui\output;
 
 use ht_dms\helper\json;
+use ht_dms\ui\build\elements\consensus;
 
 class elements {
 	/**
@@ -103,6 +104,7 @@ class elements {
 	 * @since	0.0.1
 	 */
 	function modal( $content, $modal_id, $trigger_text, $size= 'large', $button = true ) {
+		$class = '';
 		if ( $button !== false ) {
 			$class = 'button';
 		}
@@ -838,15 +840,13 @@ class elements {
 	/**
 	 * Visual display of the current status of a consensus
 	 *
+	 * @todo deprecate or rm
+	 *
 	 * @since 0.0.3
 	 */
-	function view_consensus(  ) {
+	function view_consensus( ) {
 
-		$out = $this->ui()->view_loaders()->handlebars( 'consensus_view', false, false );
-
-		$out .= '<div id="consensus-view" class="consensus-view"></div>';
-
-		return $out;
+		return consensus::view();
 
 	}
 

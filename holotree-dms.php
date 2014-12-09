@@ -209,23 +209,24 @@ class HoloTree_DMS {
 
 		$htDMS[ 'icons' ] = $icons;
 
-		if ( ht_dms_integer( get_queried_object_id() ) && ht_dms_is_decision( get_queried_object_id()  ) ) {
-			$consensus = ht_dms_consensus_class()->sort_consensus( get_queried_object_id(), true );
-			if ( $consensus ) {
-				$consensusMembers = $consensus;
-				unset( $consensusMembers['headers'] );
-				unset( $consensusMembers['details'] );
-				$htDMS['consensusHeaders'] = pods_v( 'headers', $consensus, array() );
+		$id = get_queried_object_id();
+		if ( ht_dms_integer( $id ) && ht_dms_is_decision( $id ) ) {
+			$consensus_data = ht_dms\ui\build\elements\consensus::consensus_data( $id );
+			if ( $consensus_data ) {
 
+
+				$htDMS[ 'consensusHeaders' ] = pods_v( 'consensusHeaders', $consensus_data, array() );
+
+				$consensusMembers = pods_v( 'consensusMembers', $consensus_data );
 
 				if ( $consensusMembers ) {
 					$htDMS['consensusMembers'] = json_encode( $consensusMembers );
 				}
 
-				$htDMS['consensusMemberDetails'] = ht_dms_sorted_consensus_details( $consensus );
+				$htDMS[ 'consensusMemberDetails' ] = ht_dms_sorted_consensus_details( $consensus_data );
 			}
 
-			$htDMS[ 'proposeModifyURL' ] = ht_dms_action_append( ht_dms_home(), 'propose-change', get_queried_object_id() );
+			$htDMS[ 'proposeModifyURL' ] = ht_dms_action_append( ht_dms_home(), 'propose-change', $id );
 
 		}
 

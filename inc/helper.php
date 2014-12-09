@@ -933,6 +933,11 @@ endif;
  * @return array
  */
 function ht_dms_sorted_consensus_details( $sorted_consensus ) {
+	if ( ! isset( $sorted_consensus[ 'details'] )) {
+		if ( isset( $sorted_consensus[ 'consensusMemberDetails'] ) ) {
+			$sorted_consensus[ 'details'] = $sorted_consensus[ 'consensusMemberDetails'];
+		}
+	}
 
 	return pods_v( 'details', $sorted_consensus, array() );
 
