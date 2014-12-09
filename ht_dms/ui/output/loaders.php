@@ -499,14 +499,19 @@ class loaders implements \Hook_SubscriberInterface {
 
 	function handlebars( $file, $id = false, $js = false, $class='', $container_type = 'div', $partial = true ) {
 		$out = array();
-		$template = $this->handlebars_template( $file, $partial );
+
 
 		if ( $template ) {
 			$out[] = $template;
 		}
 
 		if ( is_string( $id ) ) {
-			$out[ ] =$this->handlebars_container( $id, $class, $container_type );
+			$out[] =$this->handlebars_container( $id, $class, $container_type );
+			holotree_enqueue_handlebar( $id,  $this->handlebars_template_file_location( $file, true ) );
+
+		}
+		else {
+			$out[] = $template = $this->handlebars_template( $file, $partial );
 		}
 
 		if ( is_string( $js ) ) {
@@ -521,23 +526,48 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Return a Handlebars template.
+
+	 * @since 0.0.3
+	 * @param string $file File name
+	 * @param bool $partial Optional. If is partial. Default is true.
+	 *
+	 * @return bool|string
+	 */
 	function handlebars_template( $file, $partial = true ) {
+		$template = $this->handlebars_template_file_location( $file, $partial );
+		if ( is_string( $template ) ) {
+			$template = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
+
+			return $template;
+		}
 
 
+	}
+
+	/**
+	 * Return full file path for a Handlebars template
+	 *
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param string $file File name
+	 * @param bool $partial Optional. If is partial. Default is true.
+	 *
+	 * @return bool|string
+	 */
+	function handlebars_template_file_location( $file, $partial = true ) {
 		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
 		if ( $partial ) {
 			$template .= 'partials/';
 		}
 		$template .= $file . '.html';
 		if ( file_exists( $template ) ) {
-
-
-
-			$template = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
-
 			return $template;
-		}
 
+		}
+		
 	}
 
 	/**

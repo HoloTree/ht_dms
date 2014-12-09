@@ -46,6 +46,8 @@ class decision {
 
 		$output[ 'template_id' ] = '#decision-preview';
 		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( 'decision-preview' );
+		$file = str_replace( '#', '', $output[ 'template_id' ] );
+		holotree_enqueue_handlebar( $file, ht_dms_ui()->view_loaders()->handlebars_template_file_location( $file, true ) );
 
 		$total = (int) $obj->total();
 		$total_found = (int) $obj->total_found();
