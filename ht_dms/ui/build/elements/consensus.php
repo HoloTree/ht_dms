@@ -34,7 +34,7 @@ class consensus {
 		}
 		$out = ht_dms_ui()->view_loaders()->handlebars( 'consensus_view', false, false );
 
-		$out .= '<div id="consensus-view" class="consensus-view"></div>';
+		$out .= "<div id=\"consensus-view-{$dID}\" class=\"consensus-view\" did=\"{$dID}\"></div>";
 
 		return $out;
 
