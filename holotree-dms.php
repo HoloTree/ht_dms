@@ -486,3 +486,28 @@ add_action( 'login_head',
 		echo '</div></div>';
 	}
 );
+
+/**
+ * Include vendor dir
+ *
+ * @since 0.3.0
+ */
+add_action( 'plugins_loaded',
+	function() {
+		$autoloader = dirname( __FILE__ ) .'/vendor/autoload.php';
+		if ( file_exists( $autoloader ) ) {
+			include_once ( $autoloader );
+		}
+
+	}
+);
+
+/**
+ * Load comments & consensus view template.
+ */
+add_action( 'plugins_loaded', function() {
+
+	foreach ( array( 'comments', 'consensus_view' ) as $template  ) {
+		holotree_enqueue_handlebar( $template, ht_dms_ui()->view_loaders()->handlebars_template_file_location( $template, true ) );
+	}
+});

@@ -501,10 +501,6 @@ class loaders implements \Hook_SubscriberInterface {
 		$out = array();
 
 
-		if ( $template ) {
-			$out[] = $template;
-		}
-
 		if ( is_string( $id ) ) {
 			$out[] =$this->handlebars_container( $id, $class, $container_type );
 			holotree_enqueue_handlebar( $id,  $this->handlebars_template_file_location( $file, true ) );
@@ -567,7 +563,7 @@ class loaders implements \Hook_SubscriberInterface {
 			return $template;
 
 		}
-		
+
 	}
 
 	/**

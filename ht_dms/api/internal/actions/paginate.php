@@ -124,7 +124,6 @@ class paginate {
 		$output[ 'template_id' ] = $template_id;
 		//@todo don't send template unnecessarily here.
 		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
-		holotree_enqueue_handlebar( $template_id,  ht_dms_ui()->view_loaders()->handlebars_template_file_location( $template_id, true ) );
 
 		$view = self::get_view( $view, $args, $html_id, $type, $page );
 		$output[ 'json' ] = pods_v( 'json', $view );

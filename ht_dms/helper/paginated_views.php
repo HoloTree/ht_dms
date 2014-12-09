@@ -23,7 +23,7 @@
  * @since 0.0.2
  */
 function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
-
+	$handle  = false;
 	$attrs = array(
 		'view' => $view,
 		'page' => pods_v( 'page', $args, 1 ),
@@ -35,10 +35,20 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 		$attrs[ 'status' ] = $args[ 'status' ];
 		$view = 'decision-'.strtolower( $args[ 'status' ] );
 		$attrs[ 'gid' ] = $args[ 'gID' ];
+		$handle = 'decision-preview';
+	}
+
+	if ( strpos($view, 'group' ) > 0 ) {
+		$handle = 'group-preview';
+	}
+
+	if ( strpos( $view, 'organization') ) {
+		$handle = 'organization-preview';
 	}
 
 	if ( $view === 'users_notifications' ) {
 		$attrs[ 'unViewedOnly' ] = 1;
+
 	}
 
 	if ( isset( $args[ 'oID' ] ) ) {
@@ -57,7 +67,9 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 		$out = ht_dms\ui\build\notification\elements::notification_view_header() . $out;
 		$out .= ht_dms_ui()->view_loaders()->handlebars_template( 'notification' );
 	}
-	
+
+	holotree_enqueue_handlebar( $handle, ht_dms_ui()->view_loaders( )->handlebars_template_file_location( $handle ) );
+
 	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );
 
 	return $out;
