@@ -12,6 +12,16 @@
 namespace ht_dms\api\internal\actions;
 
 
+use ht_dms\ui\build\elements\consensus;
+
 class consensus_details {
 
+	public static function act( $params ) {
+		return consensus::consensus_data( $params[ 'did' ] );
+	}
+
+	public static function args() {
+		return array( 'did' );
+
+	}
 } 
