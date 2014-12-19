@@ -19,7 +19,7 @@ if ( !defined ( 'HT_DMS_UI_DIR' ) && defined( 'HT_DMS_DIR' ) ) {
 }
 
 if ( !defined( 'HT_DMS_VIEW_DIR' ) && defined( 'HT_DMS_DIR' ) ) {
-	define( 'HT_DMS_VIEW_DIR', trailingslashit( HT_DMS_UI_DIR ) . 'views' );
+	define( 'HT_DMS_VIEW_DIR', trailingslashit( HT_DMS_UI_DIR ) . 'templates' );
 }
 
 if ( !defined( 'HT_DMS_DECISION_POD_NAME' ) ) {
