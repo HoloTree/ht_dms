@@ -47,7 +47,7 @@ class membership {
 	 * @param	bool		$group.	Optional. If acting on group or organization. Set to the default (true) for group, false for organization.
 	 * @param bool $ids_only Optional. If true., the default, only IDs are returned. If false, full field data returned foreach.
 	 *
-	 * @return 	array					IDs of user IDs.
+	 * @return 	array					IDs of users or user objects if ! $ids_only
 	 *
 	 * @since 	0.0.1
 	 */
@@ -394,6 +394,53 @@ class membership {
 		return $facilitators;
 
 	}
+
+	/**
+	 * Get the total # of users in a group/organization
+	 *
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param  int    $id Group or organization ID.
+	 * @param null|object|\Pods $obj Pods object.
+	 * @param bool $group Optional. If true group, if false organization..
+	 *
+	 * @return int The total members in group or organization. Will return 0 if none.
+	 */
+	function total_members( $id, $obj = null, $group = true ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+		$members =  $this->all_members( $id, $obj, $group, true );
+		if ( is_array( $members) && ! empty( $members ) ) {
+			return count( $members );
+		}
+
+		return 0;
+
+	}
+
+	/**
+	 * Get the total # of users in a group/organization
+	 *
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param  int    $id Group or organization ID.
+	 * @param null|object|\Pods $obj Pods object.
+	 * @param bool $group Optional. If true group, if false organization.
+	 *
+	 * @return bool True if group or organization has members. False if not.
+	 */
+	function has_members( $id, $obj = null, $group = true ) {
+		$obj = $this->null_obj( $id, $obj, $group );
+		$members = $this->total_members( $id, $obj, $group );
+		if ( 0 !== $members ) {
+			return true;
+
+		}
+
+	}
+
+
 
 	/**
 	 * Convert the $group bool param to the type, as a string.
