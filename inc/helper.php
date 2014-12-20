@@ -1075,3 +1075,15 @@ add_filter( 'pre_user_display_name',
 		return $display_name;
 	}
 , 99 );
+
+
+/**
+ * Link to preferences
+ *
+ * @todo deep linking!
+ *
+ * @since 0.3.0
+ */
+function ht_dms_pref_link() {
+	return ht_dms_action_append( ht_dms_home(), 'preferences', false, true );
+}
