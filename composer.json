@@ -14,10 +14,10 @@
     ],
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=5.4",
-        "composer/installers": "v1.0.6",
+        "php"                           : ">=5.6",
+        "composer/installers"           : "v1.0.6",
         "holotree/ht_enqueue_handlebars": "dev-master",
-        "holotree/modal"                                        : "dev-master"
+        "holotree/modal"                : "dev-master"
     },
     "extra" : {
         "installer-name" : "ht_dms"
