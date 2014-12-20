@@ -89,8 +89,6 @@ class elements {
 	/**
 	 * Create a Foundation Reveal modal.
 	 *
-	 * @TODO Come up with a way to output modal content in footer.
-	 *
 	 * @param 	string		$content		Content of the modal itself.
 	 * @param 	string      $modal_id		ID for modal.
 	 * @param 	string      $trigger_text	Text for link that triggers modal.
@@ -110,11 +108,10 @@ class elements {
 		}
 		$class .= ' '.$modal_id;
 		$trigger = '<a href="#" data-reveal-id="'.$modal_id.'" class="'.$class.'" data-reveal>'.$trigger_text.'</a>';
-		$modal = '<div id="'.$modal_id.'" class="reveal-modal '.$size.'" data-reveal>';
-		$modal .= $content;
-		$modal .= '</div>';
 
-		return $trigger.$modal;
+		new \holotree\modal\foundation( $modal_id, $modal_id, $content, $size );
+
+		return $trigger;
 	}
 
 	/**
