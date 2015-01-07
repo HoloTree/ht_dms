@@ -57,6 +57,10 @@ class route implements \Action_Hook_SubscriberInterface {
 		$access = access::is_internal_api( pods_v ( 'query_vars', $wp_query ), $action  );
 
 		if ( $access ) {
+			if ( ! defined( 'HT_DMS_DOING_INTERNAL_API' ) ) {
+				define( 'HT_DMS_DOING_INTERNAL_API', true );
+			}
+			
 			$status_code = access::check_access( $action );
 			$denied = $response = __( 'Access denied.', 'ht-dms' );
 
