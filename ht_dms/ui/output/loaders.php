@@ -593,7 +593,7 @@ class loaders implements \Hook_SubscriberInterface {
 		}
 
 		if ( false == ( $js = pods_cache_get( $key )  ) ) {
-			$members = ht_dms_group_class()->all_members( $id );
+			$members = \ht_dms\groups\members::all_members( $id );
 
 			if ( is_array( $members ) ) {
 				$members = implode( $members, ',' );

@@ -1186,8 +1186,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			$gID = $this->get_group( $id, $obj );
 		}
 
-		$g = ht_dms_group_class();
-		$members = $g->all_members( $gID, null, $ids_only );
+		$members = \ht_dms\groups\members::all_members( $gID, null, $ids_only );
 
 		return $members;
 

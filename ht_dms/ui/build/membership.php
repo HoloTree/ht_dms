@@ -57,7 +57,7 @@ class membership {
 
 	function view( $gID, $obj = null ) {
 		$obj = ht_dms_group( $gID, $obj );
-		$members = ht_dms_group_class()->all_members(  $gID, $obj );
+		$members = \ht_dms\groups\members::all_members( $gID, $obj );
 
 		$out = false;
 		if ( is_array( $members ) ) {

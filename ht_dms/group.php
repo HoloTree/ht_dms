@@ -92,80 +92,6 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	}
 
-	/**
-	 * Get all members of a group.
-	 *
-	 * @param   int 	 	$id 		ID of group.
-	 * @param	obj|null	$obj
-	 *
-	 * @return 	array 					IDs for all members of group.
-	 *
-	 * @since 	0.0.1
-	 */
-	function all_members( $id, $obj = null, $ids_only = true ) {
-		$user_ids = ht_dms_membership_class()->all_members( $id, $obj, true, $ids_only );
-
-		return $user_ids;
-
-	}
-
-	/**
-	 * Add a member to a group.
-	 *
-	 * @TODO Allow for an array of members to be added?
-	 *
-	 * @param	int			$id		ID of group to add member to.
-	 * @param 	int|null 	$uID	Optional. ID of user to add. Default is current user.
-	 * @param	obj|null	$obj
-	 *
-	 * @return 	int					ID of group member was added to.
-	 *
-	 * @since 	0.0.1
-	 */
-	function add_member ( $id, $uID = null, $obj = null ) {
-		$id = ht_dms_membership_class()->add_member( $id, $uID, $obj, true );
-
-		return $id;
-
-	}
-
-	/**
-	 * Remove a member from a group.
-	 *
-	 * @TODO Allow for an array of members to be added?
-	 *
-	 * @param	int			$id		ID of group to remove member from.
-	 * @param 	int|null 	$uID	Optional. ID of user to add. Default is current user.
-	 * @param	obj|null
-	 *
-	 * @return 	int		 			ID of group member was removed from.
-	 *
-	 * @since 	0.0.1
-	 */
-	function remove_member( $id, $uID = null, $obj = null ) {
-
-		$id = ht_dms_membership_class()->remove_member( $id, $uID, $obj, true );
-
-		return $id;
-
-	}
-
-	/**
-	 * Check if a user is a member of a group.
-	 *
-	 * @param int     	$id		ID of group to check for member in.
-	 * @param int|null 	$uID	Optional. User ID. Defaults to current user.
-	 * @param obj|null	$obj	Optional. Single group object for group to check.
-	 *
-	 * @return bool				True if user is a member, false if not.
-	 *
-	 * @since 0.0.1
-	 */
-	function is_member( $id, $uID = null, $obj = null ) {
-
-		return ht_dms_membership_class()->is_member( $id, $uID, $obj, true );
-
-	}
 
 	/**
 	 * Check if a user is a facilitator of a group
@@ -207,103 +133,6 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		$user_ids = $obj->field( 'facilitators.ID' );
 
 		return $user_ids;
-
-	}
-
-
-
-	/**
-	 * Either add member to group, or add to pending members, depending on group access.
-	 *
-	 * @param 	int     	$id		ID of group to join.
-	 * @param 	int|null	$uID	Optional. ID of user to add. Default is current user.
-	 * @param 	pods object	$obj	Optional. Provide a Pods object instead of getting one.
-	 * @return 	int			$id		ID of group member is joining.
-	 *
-	 * @since	0.0.1
-	 */
-	function join( $id, $uID = null, $obj = null ) {
-		$uID = $this->null_user( $uID );
-		if ( get_user_by( 'id', $uID ) !== false ) {
-			$obj = $this->null_object( $obj, $id );
-			$access = $obj->field( 'open_access' );
-			if ( $access == 1 ) {
-				$id = $this->add_member( $id, $uID );
-				$id = $access;
-				return $id;
-			}
-			else {
-				$pending = $obj->field( 'pending_members.ID' );
-				$pending[] = $uID;
-				$id = $obj->save( 'pending_members', $pending );
-				return $id;
-			}
-
-		}
-
-	}
-
-	/**
-	 * List pending members for a group.
-	 *
-	 * @param   int 	$id			ID of group.
-	 *
-	 * @return 	array	$pending	IDs of pending members.
-	 *
-	 * @since 	0.0.1
-	 */
-	function get_pending( $id, $obj = null ) {
-		$obj = $this->null_object( $obj, $id );
-		$pending = $obj->field( 'pending_members.ID' );
-
-		return $pending;
-
-	}
-
-	function is_pending( $uID = null, $id, $obj = null ) {
-		$uID = $this->null_user( $uID );
-		$obj = $this->null_object( $obj, $id );
-
-		if ( is_array( $this->get_pending( $id, $obj ) ) ) {
-			return in_array( $uID, $this->get_pending( $id, $obj ) );
-		}
-
-	}
-
-	/**
-	 * Approve or reject one or all pending members for a group.
-	 *
-	 * @param 	int     	$id			ID of group to add members to.
-	 * @param 	int|null	$uID		Optional. ID of user to add/ reject. Default is current user. Not used if $all = true
-	 * @param 	bool		$approve	Optional. If true user(s) are added, if false, rejected. Default is true.
-	 *
-	 * @return 	int|array	$id		 	ID of group pending member(s) were approved to join.
-	 *
-	 * @since 	0.0.1
-	 */
-	function pending( $id, $uID = null, $approve = true ) {
-		$uID = $this->null_user( $uID );
-		$obj = $this->null_object( null, $id  );
-
-		if ( $approve ) {
-			$this->add_member( $id, $uID, $obj  );
-
-		}
-
-		$pending = $obj->field( 'pending_members' );
-
-		$pending =  wp_list_pluck( $pending, 'ID' );
-		$pending = array_flip( $pending  );
-		unset( $pending[ $uID ] );
-		$pending = array_flip( $pending );
-
-		if ( ! empty( $pending ) ) {
-			$obj->save( 'pending_members', $pending );
-		}
-		else{
-			$obj->save( 'pending_members', array() );
-		}
-
 
 	}
 
@@ -599,6 +428,7 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 		if ( $ids_only && ! empty( $return ) ) {
 			return wp_list_pluck( $return, 'ID' );
+
 		}
 
 		return $return;

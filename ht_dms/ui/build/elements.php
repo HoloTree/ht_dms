@@ -330,12 +330,13 @@ class elements {
 		$g = ht_dms_group_class();
 		$out = false;
 		$membership = $this->ui()->membership();
-		if ( $g->is_member( $gID, $uID, $obj ) ) {
+
+		if ( \ht_dms\groups\members::is_member( $gID, $uID, $obj ) ) {
 			$out[] = $membership->leave();
 
 		}
 		else {
-			if ( $g->is_pending( $uID, $gID, $obj ) ) {
+			if ( \ht_dms\groups\members::is_pending( $uID, $gID, $obj ) ) {
 				$out[] = __( 'Your Membership in this group is pending approval', 'ht_dms' );
 			}
 			else {
@@ -346,7 +347,7 @@ class elements {
 
 
 		if ( $g->is_facilitator( $gID, $uID, $obj ) ) {
-			if ( is_array(  $g->get_pending( $gID, $obj ) ) ) {
+			if ( is_array(  \ht_dms\groups\members::get_pending( $gID, $obj ) ) ) {
 				$out[ ] = $membership->pending();
 			}
 		}

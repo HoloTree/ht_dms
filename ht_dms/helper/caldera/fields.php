@@ -252,10 +252,11 @@ class fields extends forms implements \Hook_SubscriberInterface{
 		$id = pods_v( 'gid', $data, false, true );
 		if ( $id ) {
 			if ( array_key_exists( 'join_group', $data ) ) {
-				ht_dms_group_class()->join( $id, get_current_user_id() );
+				\ht_dms\groups\members::join( $id, get_current_user_id() );
 			}
 			elseif ( array_key_exists( 'leave_group', $data )  ) {
-				ht_dms_group_class()->remove_member( $id, get_current_user_id() );
+				\ht_dms\groups\members::remove_member( $id, get_current_user_id() );
+
 			}
 
 		}

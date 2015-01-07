@@ -74,14 +74,14 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
      * @param $oID
      */
 	function new_decision( $dID, $data, $gID, $oID ) {
-		$g = ht_dms_group_class();
+
 		$d = ht_dms_decision_class();
 		$gObj = ht_dms_group( $gID );
 		$group_name = $g->title( $gID, $gObj );
 		$decision_name = $d->title( $dID );
 		$decision_link = ht_dms_link( $dID );
 
-		$members = $g->all_members( $gID, $gObj );
+		$members = \ht_dms\groups\members::all_members( $gID, $gObj );
 
 		$subject = __( sprintf( 'New decision %1s created in the %1s group.', $decision_name, $group_name ), 'ht_dms' );
 
@@ -274,7 +274,7 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
 
 		if ( $obj->total() > 0 ) {
 			$pending[ $obj->id() ] = array(
-				'pending_members' => $g->get_pending( $obj->ID(), $obj ),
+				'pending_members' => \ht_dms\groups\members::get_pending( $obj->ID(), $obj ),
 				'name' => $obj->display( 'post_title' ),
 			);
 		}
