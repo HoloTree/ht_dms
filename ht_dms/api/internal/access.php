@@ -287,6 +287,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		$site_url = parse_url( site_url() );
 		if ( pods_v( 'host', $ref, 42 ) === pods_v( 'host', $site_url, 7 ) ) {
 			return true;
+
 		}
 
 	}

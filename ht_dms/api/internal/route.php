@@ -47,55 +47,52 @@ class route implements \Action_Hook_SubscriberInterface {
 	 */
 	public static function do_api() {
 
-		if ( ! strpos( $_SERVER[ 'REQUEST_URI'], 'ht-dms-internal-api' || ! access::verify_referer() ) ) {
-			return;
-		}
+		if (  strpos( $_SERVER[ 'REQUEST_URI'], 'ht-dms-internal-api' ) && true == access::verify_referer() )  {
 
-		global $wp_query;
+			global $wp_query;
 
-		$action = $wp_query->get( 'action' );
-		$access = access::is_internal_api( pods_v ( 'query_vars', $wp_query ), $action  );
+			$action = $wp_query->get( 'action' );
+			$access = access::is_internal_api( pods_v( 'query_vars', $wp_query ), $action );
 
-		if ( $access ) {
-			if ( ! defined( 'HT_DMS_DOING_INTERNAL_API' ) ) {
-				define( 'HT_DMS_DOING_INTERNAL_API', true );
-			}
-			
-			$status_code = access::check_access( $action );
-			$denied = $response = __( 'Access denied.', 'ht-dms' );
+			if ( $access ) {
+				if ( ! defined( 'HT_DMS_DOING_INTERNAL_API' ) ) {
+					define( 'HT_DMS_DOING_INTERNAL_API', true );
+				}
 
-			if ( 200 == $status_code  ) {
+				$status_code = access::check_access( $action );
+				$denied      = $response = __( 'Access denied.', 'ht-dms' );
 
-				$params = self::args( $action );
-				$cache_key = self::cache_key( $params, $action );
-				if ( HT_DEV_MODE || false == ( $response = pods_cache_get( $cache_key ) ) ) {
-					$response = self::dispatch( $action, $params  );
+				if ( 200 == $status_code ) {
 
-					if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
-						$status_code = '404';
-						$response = js::messages( 'noItems' );
-						pods_cache_clear( $cache_key );
+					$params    = self::args( $action );
+					$cache_key = self::cache_key( $params, $action );
+					if ( HT_DEV_MODE || false == ( $response = pods_cache_get( $cache_key ) ) ) {
+						$response = self::dispatch( $action, $params );
+
+						if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
+							$status_code = '404';
+							$response    = js::messages( 'noItems' );
+							pods_cache_clear( $cache_key );
+						} else {
+							pods_cache_set( $cache_key, $response, '', 599 );
+						}
+
 					}
-					else {
-						pods_cache_set( $cache_key, $response, '', 599 );
-					}
+
+				} else {
+					$response = $denied;
 
 				}
 
-			}
-			else {
-				$response = $denied;
+
+				if ( 550 == $response || $response == $denied ) {
+					$status_code = $response;
+					$response    = $denied;
+				}
+
+				self::respond( $response, $status_code );
 
 			}
-
-
-
-			if ( 550 == $response || $response == $denied ) {
-				$status_code = $response;
-				$response = $denied;
-			}
-
-			self::respond( $response, $status_code );
 
 		}
 
