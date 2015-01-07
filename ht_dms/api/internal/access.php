@@ -275,6 +275,23 @@ class access implements \Filter_Hook_SubscriberInterface {
 	}
 
 	/**
+	 * Ensure a request originates internally
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return bool
+	 */
+	public static function verify_referer() {
+		$ref =  parse_url( $_SERVER[ 'HTTP_REFERER' ] );
+
+		$site_url = parse_url( site_url() );
+		if ( pods_v( 'host', $ref, 42 ) === pods_v( 'host', $site_url, 7 ) ) {
+			return true;
+		}
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.1.0

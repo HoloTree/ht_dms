@@ -47,6 +47,10 @@ class route implements \Action_Hook_SubscriberInterface {
 	 */
 	public static function do_api() {
 
+		if ( ! strpos( $_SERVER[ 'REQUEST_URI'], 'ht-dms-internal-api' || ! access::verify_referer() ) ) {
+			return;
+		}
+
 		global $wp_query;
 
 		$action = $wp_query->get( 'action' );
