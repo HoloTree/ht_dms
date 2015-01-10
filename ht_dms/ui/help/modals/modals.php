@@ -41,6 +41,7 @@ interface modals {
 	 * @return string
 	 */
 	public static function modal();
+
 	/**
 	 * Hook the modal to wp_footer
 	 *

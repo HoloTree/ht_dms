@@ -88,5 +88,7 @@ class consensus {
 
 			return $data;
 		}
+
 	}
+
 } 

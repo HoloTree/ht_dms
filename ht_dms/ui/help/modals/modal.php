@@ -18,7 +18,7 @@ class modal {
 
 
 	public static function make( $action, $atts, $text = false ) {
-		
+
 		if ( ! isset( $atts[ 'data-autoload' ]) ) {
 			$atts['data-autoload'] = true;
 		}
