@@ -12,6 +12,7 @@
 namespace ht_dms\ui\build\elements;
 
 
+use ht_dms\ui\help\modals\modal;
 use ht_dms\ui\output\elements;
 
 class consensus {
@@ -54,9 +55,13 @@ class consensus {
 			return;
 		}
 
-		$modal_id = 'consensus-modal-'.$dID;
-		$trigger_text = 'View Consensus';
-		return elements::modal( self::view(), $modal_id, $trigger_text );
+		$text = __( 'View Consensus', 'ht-dms' );
+
+		$atts[ 'did' ] = $dID;
+
+		$trigger = modal::make( 'consensus_details', $atts, $text );
+
+		return $trigger;
 
 	}
 

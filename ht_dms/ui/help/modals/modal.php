@@ -1,8 +1,8 @@
 <?php
 /**
- * Interface for modals
+ * @TODO What this does.
  *
- * @package   @ht_dms
+ * @package   @TODO
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -12,23 +12,19 @@
 namespace ht_dms\ui\help\modals;
 
 
-interface modal {
+use ht_dms\api\internal\access;
 
-	/**
-	 * Conditional for the modal
-	 *
-	 * @since 0.3.0
-	 *
-	 * @return string
-	 */
-	function content();
+class modal {
 
-	/**
-	 * Conditional logic for using modal
-	 *
-	 * @since 0.3.0
-	 *
-	 * @return bool
-	 */
-	function conditional();
-} 
+	public static function make( $action, $atts, $text = false ) {
+		if ( ! isset( $atts[ 'data-autoload' ]) ) {
+			$atts['data-autoload'] = true;
+		}
+
+		$api = access::get_url( $action );
+
+		return \calderawp\baldrick_wp_front_end\modal::make( $action, $atts, $text, $api );
+
+	}
+
+}

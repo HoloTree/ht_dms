@@ -293,6 +293,25 @@ class access implements \Filter_Hook_SubscriberInterface {
 	}
 
 	/**
+	 * Get the url for internal API
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string|bool $action Optional. If set, action GET var will be appened
+	 *
+	 * @return string|void
+	 */
+	public static function get_url( $action = false ) {
+		$url = home_url( 'ht-dms-internal-api' );
+		if ( $action ) {
+			$url = add_query_arg( 'action', $action, $url );
+		}
+
+		return $url;
+
+	}
+
+	/**
 	 * Holds the instance of this class.
 	 *
 	 * @since  0.1.0
