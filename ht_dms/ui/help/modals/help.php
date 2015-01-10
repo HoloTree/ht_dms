@@ -21,7 +21,7 @@ abstract class help {
 	 *
 	 * @return string
 	 */
-	public function modal() {
+	public static function modal() {
 		return modal::make( 'no_org_modal', array() );
 	}
 
