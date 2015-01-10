@@ -34,6 +34,8 @@ class help implements \Action_Hook_SubscriberInterface {
 	 * @since 0.3.0
 	 */
 	static function make_it_so() {
-		new modals\no_org();
-	}
-} 
+		if ( modals\no_org::conditional() ) {
+			modals\no_org::hook();
+		}
+ 	}
+}

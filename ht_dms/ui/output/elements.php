@@ -283,6 +283,8 @@ class elements {
 	}
 
 	function breadcrumbs() {
+		$out = '';
+
 		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
 
 		$logo = 'http://holotree.net/ht/plugins/gus_ui_mods/assets/img/ht-logo-tree-only-white-50.png';
@@ -300,7 +302,7 @@ class elements {
 		$script = \ht_dms\helper\json::encode_to_script( $bread_names, 'breadNamesJSON' );
 
 		$home_link = ht_dms_home();
-		$home_link = sprintf( '<div class="in" id="site-logo-home-link"><a href="%0s" title="HoloTree Home">%1s</a></div>', $home_link, $logo );
+		$home_link = sprintf( '<div class="breadcrumb-part" id="site-logo-home-link"><a href="%0s" title="HoloTree Home">%1s</a></div>', $home_link, $logo );
 
 		if (  ! ht_dms_is( 'home' ) || ht_dms_is_notification() ) {
 			$titles = $oID = $gID = $dID = $tID = false;
@@ -324,7 +326,7 @@ class elements {
 		}
 		else{
 			$out = $script;
-			$out .= sprintf( '<div id="breadcrumbs" class="bread">%1s</div>', $home_link );
+			$out .= sprintf( '<div id="breadcrumbs" class="breadcrumb-part">%1s</div>', $home_link );
 			return $out;
 		}
 
@@ -357,14 +359,14 @@ class elements {
 					$font_class = 'orgName';
 				}
 
-				$titles[] = sprintf( '<div class="in"><a href="%1s"><span class="%2s"><font id="%3s" class="%4s">%5s</font></a></span></div>', $link, $span_class, $font_id, $font_class, $name );
-
+				$titles[] = sprintf( '<div class="breadcrumb-part"><a href="%1s">%2s</a></div>'
+, $link, $name );
 			}
 
 		}
 
-		$out = $script;
-		$out .= sprintf( '<div id="breadcrumbs" class="bread">%1s</div>', implode( $titles ) );
+
+		$out .= sprintf( '<div id="breadcrumbs">%1s</div>', implode( $titles ) );
 
 		return $out;
 

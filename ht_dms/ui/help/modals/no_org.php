@@ -12,9 +12,8 @@
 namespace ht_dms\ui\help\modals;
 
 
-class no_org extends modals implements modal {
+class no_org extends help implements modals {
 
-	public $trigger_id = 'no-org-message';
 	/**
 	 * The modal content.
 	 *
@@ -22,13 +21,15 @@ class no_org extends modals implements modal {
 	 *
 	 * @return bool
 	 */
-	public function content() {
+	public static function content() {
 		$content[] = __( 'Looks like you are not a member of any organizations.', 'ht_dms' );
 		$text = __( 'your preferences', 'ht_dms' );
 		$link = sprintf( '<a href="%1s">%2s</a>', ht_dms_pref_link(), $text );
 		$content[] = __( sprintf( 'Everything in HoloTree happens in organizations. You can create one in %1s,', $link ), 'ht_dms' );
 
-		return	"<p>".implode('</span>,<span>', $content )."</p>";
+		$content ="<p>".implode('</span>,<span>', $content )."</p>";
+
+		return $content;
 
 	}
 
@@ -39,7 +40,7 @@ class no_org extends modals implements modal {
 	 *
 	 * @return bool
 	 */
-	public function conditional() {
+	public static function conditional() {
 		if ( ht_dms_is( 'home' )   ) {
 			$users_orgs_object = ht_dms_ui()->views()->users_organizations( null, null, 5, 'Pods'  );
 			if ( is_object( $users_orgs_object ) && 1 > $users_orgs_object ) {
@@ -48,6 +49,36 @@ class no_org extends modals implements modal {
 			}
 
 		}
+
+	}
+
+	public static $action = 'no_org_modal';
+
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.3.0
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+	/**
+	 * Returns an instance of this class.
+	 *
+	 * @since  0.3.0
+	 * @access public
+	 *
+	 */
+	public static function init() {
+
+		if ( ! self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+
 	}
 
 } 

@@ -12,9 +12,10 @@
 namespace ht_dms\ui\help\modals;
 
 
-class org_no_members extends modals implements modal {
+class org_no_members extends help implements modals {
 
-	public $trigger_id = 'no-org-message';
+	public static $action = 'org_no_members_modal';
+
 	/**
 	 * The modal content.
 	 *
@@ -22,7 +23,7 @@ class org_no_members extends modals implements modal {
 	 *
 	 * @return bool
 	 */
-	public function content() {
+	public static function content() {
 		$content[] = __( 'Looks like your organization has no members.', 'ht_dms' );
 		$content[] = __( 'Use the "invite members" to invite new members to your organization. If they are not HoloTree users already they will receive an invitation to join.' , 'ht_dms' );
 
@@ -37,13 +38,39 @@ class org_no_members extends modals implements modal {
 	 *
 	 * @return bool
 	 */
-	public function conditional() {
+	public static function conditional() {
 		global $post;
 		if ( ht_dms_is_organization() && is_object( $post ) && false == ht_dms_membership_class()->total_members( $post->ID ) ) {
 			return true;
 
 		}
 		
+	}
+
+	/**
+	 * Holds the instance of this class.
+	 *
+	 * @since  0.3.0
+	 * @access private
+	 * @var    object
+	 */
+	private static $instance;
+
+	/**
+	 * Returns an instance of this class.
+	 *
+	 * @since  0.3.0
+	 * @access public
+	 *
+	 */
+	public static function init() {
+
+		if ( ! self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+
 	}
 
 } 
