@@ -102,17 +102,19 @@ class elements {
 	 *
 	 * @since	0.0.1
 	 */
-	function modal( $content, $modal_id, $trigger_text, $size= 'large', $button = true ) {
+	public function modal( $content, $modal_id, $trigger_text, $size= 'large', $button = true ) {
 		$class = '';
 		if ( $button !== false ) {
 			$class = 'button';
 		}
 		$class .= ' '.$modal_id;
 		$trigger = '<a href="#" data-reveal-id="'.$modal_id.'" class="'.$class.'" data-reveal>'.$trigger_text.'</a>';
+		$modal = '<div id="'.$modal_id.'" class="reveal-modal '.$size.'" data-reveal>';
+		$modal .= $content;
+		$modal .= '</div>';
 
-		new modal( )
+		return $trigger.$modal;
 
-		return $trigger;
 	}
 
 	/**
