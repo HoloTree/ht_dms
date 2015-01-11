@@ -12,6 +12,8 @@
 namespace ht_dms\ui\help\modals;
 
 
+use ht_dms\ui\build\baldrick\modal;
+
 abstract class help {
 
 	/**

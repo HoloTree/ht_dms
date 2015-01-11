@@ -9,7 +9,7 @@
  * @copyright 2014 Josh Pollock
  */
 
-namespace ht_dms\ui\help\modals;
+namespace ht_dms\ui\build\baldrick;
 
 
 use ht_dms\api\internal\access;

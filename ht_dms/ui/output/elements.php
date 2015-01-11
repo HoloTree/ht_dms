@@ -12,6 +12,7 @@
 namespace ht_dms\ui\output;
 
 use ht_dms\helper\json;
+use ht_dms\ui\build\baldrick\modal;
 use ht_dms\ui\build\elements\consensus;
 
 class elements {
@@ -109,7 +110,7 @@ class elements {
 		$class .= ' '.$modal_id;
 		$trigger = '<a href="#" data-reveal-id="'.$modal_id.'" class="'.$class.'" data-reveal>'.$trigger_text.'</a>';
 
-		new \holotree\modal\foundation( $modal_id, $modal_id, $content, $size );
+		new modal( )
 
 		return $trigger;
 	}

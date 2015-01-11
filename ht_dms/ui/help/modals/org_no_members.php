@@ -12,6 +12,8 @@
 namespace ht_dms\ui\help\modals;
 
 
+use ht_dms\ui\build\baldrick\modals;
+
 class org_no_members extends help implements modals {
 
 	public static $action = 'org_no_members_modal';

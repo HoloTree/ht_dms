@@ -37,5 +37,9 @@ class help implements \Action_Hook_SubscriberInterface {
 		if ( modals\no_org::conditional() ) {
 			modals\no_org::hook();
 		}
+
+		if ( modals\org_no_members::conditional() ) {
+			modals\org_no_members::hook();
+		}
  	}
 }
