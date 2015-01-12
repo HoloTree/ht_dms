@@ -241,12 +241,12 @@ class common  {
 				if ( !is_null( $gID ) ) {
 					$pod_name = HT_DMS_GROUP_POD_NAME;
 					$item = $gID;
-					$class = HoloTree_DMS_Group::init();
+					$class = ht_dms_group_class()::init();
 				}
 				elseif ( !is_null( $dID ) ) {
 					$pod_name = HT_DMS_DECISION_POD_NAME;
 					$item = $dID;
-					$class = HoloTree_DMS_Decision::init();
+					$class = ht_dms_decision_class()::init();
 				}
 				else {
 					//??
