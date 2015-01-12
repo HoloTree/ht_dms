@@ -43,7 +43,6 @@ class no_org extends help implements modals, help_modal {
 	 * @return bool
 	 */
 	public static function conditional() {
-		return true;
 		if ( ht_dms_is( 'home' )   ) {
 			$users_orgs_object = ht_dms_ui()->views()->users_organizations( null, null, 5, 'Pods'  );
 			if ( is_object( $users_orgs_object ) && 1 > $users_orgs_object ) {

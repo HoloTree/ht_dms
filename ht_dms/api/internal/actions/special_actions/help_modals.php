@@ -97,5 +97,5 @@ class help_modals {
 		return $class;
 
 	}
-	
+
 }
