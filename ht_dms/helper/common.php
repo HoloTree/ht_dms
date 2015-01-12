@@ -241,12 +241,12 @@ class common  {
 				if ( !is_null( $gID ) ) {
 					$pod_name = HT_DMS_GROUP_POD_NAME;
 					$item = $gID;
-					$class = ht_dms_group_class()::init();
+					$class = ht_dms_group_class();
 				}
 				elseif ( !is_null( $dID ) ) {
 					$pod_name = HT_DMS_DECISION_POD_NAME;
 					$item = $dID;
-					$class = ht_dms_decision_class()::init();
+					$class = ht_dms_decision_class();
 				}
 				else {
 					//??
