@@ -29,7 +29,7 @@ class no_org extends help implements modals, help_modal {
 		$link = sprintf( '<a href="%1s">%2s</a>', ht_dms_pref_link(), $text );
 		$content[] = __( sprintf( 'Everything in HoloTree happens in organizations. You can create one in %1s,', $link ), 'ht_dms' );
 
-		$content ="<p>".implode('</p>,<p>', $content )."</p>";
+		$content ="<p>".implode('</p><p>', $content )."</p>";
 
 		return $content;
 
