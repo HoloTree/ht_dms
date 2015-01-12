@@ -38,6 +38,7 @@ class HT_DMS_WP_API_Registration {
 			new ht_dms\helper\registration\organization\check(),
 			new ht_dms\ui\help\help(),
 			\ht_dms\ui\help\help::init(),
+			\ht_dms\helper\permalinks::init()
 		);
 	}
 

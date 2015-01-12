@@ -1086,4 +1086,24 @@ add_filter( 'pre_user_display_name',
  */
 function ht_dms_pref_link() {
 	return ht_dms_action_append( ht_dms_home(), 'preferences', false, true );
+
 }
+
+/**
+ * Check if a content type is a ht-dms content type
+ *
+ * @since 0.3.0
+ *
+ * @param string $type Type to check
+ *
+ * @return bool
+ */
+function ht_dms_is_dms_type( $type ) {
+	$types = ht_dms_content_types();
+	if ( in_array( $type, $types ) ) {
+		return true;
+
+	}
+
+}
+

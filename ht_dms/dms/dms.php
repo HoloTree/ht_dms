@@ -568,7 +568,10 @@ abstract class dms extends object {
 	function get_organization( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
-		return (int) $obj->display( 'organization.ID' );
+		$org = $obj->display( 'organization' );
+
+		return $org;
+
 	}
 
 	/**
@@ -584,7 +587,7 @@ abstract class dms extends object {
 	function get_group( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
-		$gID =  (int) $obj->display( 'group.ID' );
+		$gID =  $obj->display( 'group' );
 
 		return $gID;
 
