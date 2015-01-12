@@ -1,4 +1,4 @@
-<div class="task task-single">
+<div class="task task-single ht-dms-partial">
     <h5>{{task}}{@name}</h5>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>

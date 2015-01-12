@@ -1,4 +1,4 @@
-<div class="notification">
+<div class="notification ht-dms-partial">
 	<a href="#" id="notification-single-close" class="ht-dms-close button" style="display:none;float:right;" title="Close" nid="{@id,esc_attr}">
 		Close
 	</a>

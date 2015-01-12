@@ -1,4 +1,4 @@
-<div class="group">
+<div class="group ht-dms-partial">
 	<h3><a href="{@permalink,esc_url}" class="group-link button" group="{@id,esc_attr}" title="View group" id="group-link">{{group}}{@post_title}</a></h3>
 	<div class="details">
 		<p class="description">{@group_description}</p>

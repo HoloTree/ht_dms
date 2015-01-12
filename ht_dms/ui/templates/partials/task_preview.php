@@ -1,4 +1,4 @@
-<div class="task task-preview">
+<div class="task task-preview ht-dms-partial">
 	<h3><a href="{@permalink,esc_url}" class="task-link button" task="{@id,esc_atr}" title="View task" id="task-link">{{task}}{{@name}}</a></h3>
     <ul>
         <li>Responsible Member: {@assigned_user.display_name}</li>

@@ -1,4 +1,4 @@
-<div class="organization organization-single">
+<div class="organization organization-single ht-dms-partial">
 	<h3>{{organization}}{@post_title}</h3>
 	<p class=""description">Description: {@description}</p>
 	[if groups]
