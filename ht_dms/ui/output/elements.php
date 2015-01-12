@@ -846,9 +846,9 @@ class elements {
 	 *
 	 * @since 0.0.3
 	 */
-	function view_consensus( ) {
+	function view_consensus( $dID ) {
 
-		return consensus::view();
+		return consensus::view( $dID );
 
 	}
 

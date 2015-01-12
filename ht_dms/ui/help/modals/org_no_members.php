@@ -16,7 +16,6 @@ use ht_dms\ui\build\baldrick\modals;
 
 class org_no_members extends help implements modals {
 
-	public static $action = 'org_no_members_modal';
 
 	/**
 	 * The modal content.
@@ -29,7 +28,7 @@ class org_no_members extends help implements modals {
 		$content[] = __( 'Looks like your organization has no members.', 'ht_dms' );
 		$content[] = __( 'Use the "invite members" to invite new members to your organization. If they are not HoloTree users already they will receive an invitation to join.' , 'ht_dms' );
 
-		return	"<p>".implode('</span>,<span>', $content )."</p>";
+		return	"<p>".implode('</p>,<p>', $content )."</p>";
 
 	}
 

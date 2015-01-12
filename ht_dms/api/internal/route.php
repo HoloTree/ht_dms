@@ -11,6 +11,9 @@
 
 namespace ht_dms\api\internal;
 
+use ht_dms\api\internal\actions\special_actions\help_modals;
+use ht_dms\ui\help\help;
+
 class route implements \Action_Hook_SubscriberInterface {
 
 	/**
@@ -59,29 +62,42 @@ class route implements \Action_Hook_SubscriberInterface {
 					define( 'HT_DMS_DOING_INTERNAL_API', true );
 				}
 
-				$status_code = access::check_access( $action );
-				$denied      = $response = __( 'Access denied.', 'ht-dms' );
+				$denied = $response = __( 'Access denied.', 'ht-dms' );
 
-				if ( 200 == $status_code ) {
-
-					$params    = self::args( $action );
-					$cache_key = self::cache_key( $params, $action );
-					if ( HT_DEV_MODE || false == ( $response = pods_cache_get( $cache_key ) ) ) {
-						$response = self::dispatch( $action, $params );
-
-						if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
-							$status_code = '404';
-							$response    = js::messages( 'noItems' );
-							pods_cache_clear( $cache_key );
-						} else {
-							pods_cache_set( $cache_key, $response, '', 599 );
-						}
-
+				//handle help modal routing seperately
+				if ( help_modals::is_help_modal( $action ) ) {
+					$response = help_modals::route( $action );
+					if ( is_string( $response ) ) {
+						$status_code = 200;
+					}else{
+						$status_code = 404;
+						$response = $denied;
 					}
 
-				} else {
-					$response = $denied;
+				}else{
+					$status_code = access::check_access( $action );
 
+					if ( 200 == $status_code ) {
+
+						$params    = self::args( $action );
+						$cache_key = self::cache_key( $params, $action );
+						if ( HT_DEV_MODE || false == ( $response = pods_cache_get( $cache_key ) ) ) {
+							$response = self::dispatch( $action, $params );
+
+							if ( ! is_null( $json = pods_v( 'json', $response ) ) && $json === json_encode( array( 0 ) ) ) {
+								$status_code = '404';
+								$response    = js::messages( 'noItems' );
+								pods_cache_clear( $cache_key );
+							} else {
+								pods_cache_set( $cache_key, $response, '', 599 );
+							}
+
+						}
+
+					} else {
+						$response = $denied;
+
+					}
 				}
 
 
@@ -89,6 +105,7 @@ class route implements \Action_Hook_SubscriberInterface {
 					$status_code = $response;
 					$response    = $denied;
 				}
+
 
 				self::respond( $response, $status_code );
 
@@ -146,24 +163,29 @@ class route implements \Action_Hook_SubscriberInterface {
 		$params = array();
 		$method = 'get';
 
-		if ( method_exists( $class, 'method' ) ) {
-			$method = $class::method();
-		}
-
-
-		foreach( $desired_args as $arg ) {
-			if ( $method === 'get' ) {
-				$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
-			} else {
-				$params[ $arg ] = self::get_post_param( $arg );
-			}
-			if ( '' == $params[ $arg ] )  {
-				$params[ $arg ] = 0;
+		if ( class_exists( $class ) ) {
+			if ( method_exists( $class, 'method' ) ) {
+				$method = $class::method();
 			}
 
-		}
 
-		return $params;
+			foreach ( $desired_args as $arg ) {
+				if ( $method === 'get' ) {
+					$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
+				} else {
+					$params[ $arg ] = self::get_post_param( $arg );
+				}
+				if ( '' == $params[ $arg ] ) {
+					$params[ $arg ] = 0;
+				}
+
+			}
+
+			return $params;
+
+		}else{
+			ht_dms_error();
+		}
 
 	}
 

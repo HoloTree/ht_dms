@@ -88,6 +88,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 
 		if ( self::$name == $name && ! empty( $action )  ) {
 			return true;
+
 		}
 
 	}
@@ -264,7 +265,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		 *
 		 * @param array $actions_to_skip
 		 */
-		$actions_to_skip = apply_filters( 'ht_dms_internal_api_skip_authentication', array( 'hourly' ) );
+		$actions_to_skip = apply_filters( 'ht_dms_internal_api_skip_authentication', array( 'hourly', 'org_no_members', 'no_org' ) );
 
 		if ( ! is_array( $actions_to_skip ) ) {
 			$actions_to_skip = array();

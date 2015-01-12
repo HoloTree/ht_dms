@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Interface for classes that create a Baldrick modal
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -14,7 +14,6 @@ namespace ht_dms\ui\build\baldrick;
 
 interface modals {
 
-
 	/**
 	 * The modal content.
 	 *
@@ -23,15 +22,6 @@ interface modals {
 	 * @return bool
 	 */
 	public static function content();
-
-	/**
-	 * Set condition by which this will be added.
-	 *
-	 * @since 0.3.0
-	 *
-	 * @return bool
-	 */
-	public static function conditional();
 
 	/**
 	 * Create modal markup

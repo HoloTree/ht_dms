@@ -17,6 +17,17 @@ use ht_dms\ui\build\baldrick\modal;
 abstract class help {
 
 	/**
+	 * Will hold the name of the inheriting class.
+	 *
+	 * DO NOT USE, as it could be empty. Use self::get_class_name() instead.
+	 *
+	 * #@since 0.3.0
+	 *
+	 * @var
+	 */
+	public static $class_name;
+
+	/**
 	 * Create modal markup
 	 *
 	 * @since 0.3.0
@@ -24,7 +35,8 @@ abstract class help {
 	 * @return string
 	 */
 	public static function modal() {
-		return modal::make( 'no_org_modal', array() );
+		$modal =  modal::make( self::get_class_name(), array() );
+		echo $modal;
 	}
 
 	/**
@@ -33,7 +45,33 @@ abstract class help {
 	 * @since 0.3.0
 	 */
 	public static function hook() {
-		add_action( 'wp_footer', array( self::init(), 'modal' ) );
+		$class = self::get_class_name( false );
+
+		add_action( 'wp_footer', array( $class::init(), 'modal' ) );
+	}
+
+	/**
+	 * Get the class' name
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return array|string
+	 */
+	public static function get_class_name( $without_namespace = true ) {
+		if ( ! $without_namespace || ! is_string( self::$class_name ) ) {
+			$class_name = get_called_class();
+			if ( $without_namespace ) {
+				$class_name = explode( '\\', $class_name );
+				end( $class_name );
+				$last  = key( $class_name );
+				$class_name = $class_name[ $last ];
+			}
+		}else{
+			$class_name = self::$class_name;
+		}
+
+		return $class_name;
+
 	}
 
 }

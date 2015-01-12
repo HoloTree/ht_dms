@@ -14,7 +14,7 @@ namespace ht_dms\ui\help\modals;
 
 use ht_dms\ui\build\baldrick\modals;
 
-class no_org extends help implements modals {
+class no_org extends help implements modals, help_modal {
 
 	/**
 	 * The modal content.
@@ -29,7 +29,7 @@ class no_org extends help implements modals {
 		$link = sprintf( '<a href="%1s">%2s</a>', ht_dms_pref_link(), $text );
 		$content[] = __( sprintf( 'Everything in HoloTree happens in organizations. You can create one in %1s,', $link ), 'ht_dms' );
 
-		$content ="<p>".implode('</span>,<span>', $content )."</p>";
+		$content ="<p>".implode('</p>,<p>', $content )."</p>";
 
 		return $content;
 
@@ -43,6 +43,7 @@ class no_org extends help implements modals {
 	 * @return bool
 	 */
 	public static function conditional() {
+		return true;
 		if ( ht_dms_is( 'home' )   ) {
 			$users_orgs_object = ht_dms_ui()->views()->users_organizations( null, null, 5, 'Pods'  );
 			if ( is_object( $users_orgs_object ) && 1 > $users_orgs_object ) {
@@ -53,9 +54,6 @@ class no_org extends help implements modals {
 		}
 
 	}
-
-	public static $action = 'no_org_modal';
-
 
 	/**
 	 * Holds the instance of this class.
