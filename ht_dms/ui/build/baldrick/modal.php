@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Create a Baldrick Modal
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -16,7 +16,17 @@ use ht_dms\api\internal\access;
 
 class modal {
 
-
+	/**
+	 * Create a Baldrick Modal
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $action
+	 * @param $atts
+	 * @param bool $text
+	 *
+	 * @return string
+	 */
 	public static function make( $action, $atts, $text = false ) {
 
 		if ( ! isset( $atts[ 'data-autoload' ]) ) {
