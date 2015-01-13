@@ -1,5 +1,6 @@
 <script id="decision-preview" type="text/x-handlebars-template">
     <div class="decision decision-preview paginated-view paginated-view-preview ht-dms-partial" id="decision-{{ID}}">
+        <div class="consensus-view consensus-view-in-preview" did="{{ID}}" style="display:none;"></div>
         <h3>
             {{{decisionLink link ID name true}}}
         </h3>
@@ -12,5 +13,7 @@
                 <li>Proposed By: {{proposed_by.name}}</li>
             </ul>
         </div>
+        {{{wp_baldrick_modal "consensus_details" "click" "button"  "data-did" ID "View Consensus" "bldrk_consensus_details_cb"}}}
+
     </div>
 </script>

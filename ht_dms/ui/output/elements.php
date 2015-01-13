@@ -11,9 +11,10 @@
 
 namespace ht_dms\ui\output;
 
+use ht_dms\api\internal\access;
 use ht_dms\helper\json;
 use ht_dms\ui\build\baldrick\modal;
-use ht_dms\ui\build\elements\consensus;
+use ht_dms\ui\build\elements\consensus_ui;
 
 class elements {
 	/**
@@ -114,6 +115,44 @@ class elements {
 		$modal .= '</div>';
 
 		return $trigger.$modal;
+
+	}
+
+	/**
+	 * Make an AJAX modal using reveal or Baldrick
+	 *
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $type
+	 * @param $action
+	 * @param string $trigger_text
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public function ajax_modal( $type = 'baldrick', $action, $trigger_text = '', $args = array() ) {
+		if ( 'baldrick' == $type ) {
+			return modal::make( $action, $args, $trigger_text );
+
+		}
+
+		$url = access::get_url( $action );
+
+		if ( isset( $args[ 'url_params' ] ) ) {
+			foreach( $args[ 'url_params' ] as $arg => $value ) {
+				if ( $arg && $value ) {
+					$url = add_query_arg( urlencode( $arg ), urlencode( $value ), $url );
+				}
+
+			}
+
+		}
+
+		$default_id = 'ht-dms-ajax-modal'.rand();
+		$id = pods_v( 'id', $arg, $default_id );
+
+		return sprintf( '<a data-reveal-ajax="%1s" id="%2s" data-reveal-ajax="true">%3s</a>', $url, $id, $trigger_text );
 
 	}
 
@@ -840,7 +879,7 @@ class elements {
 	}
 
 	/**
-	 * Visual display of the current status of a consensus
+	 * Visual display of the current status of a consensus_ui
 	 *
 	 * @todo deprecate or rm
 	 *
@@ -848,7 +887,7 @@ class elements {
 	 */
 	function view_consensus( $dID ) {
 
-		return consensus::view( $dID );
+		return consensus_ui::view( $dID );
 
 	}
 
@@ -860,7 +899,7 @@ class elements {
 	 * @return string
 	 */
 	function third_element( $type, $id ) {
-		if ( $type == 'consensus' ) {
+		if ( $type == 'consensus_ui' ) {
 			ht_dms_consensus($id);
 			$content = $this->view_consensus( $id );
 		}

@@ -211,7 +211,7 @@ class HoloTree_DMS {
 
 		$id = get_queried_object_id();
 		if ( ht_dms_integer( $id ) && ht_dms_is_decision( $id ) ) {
-			$consensus_data = ht_dms\ui\build\elements\consensus::consensus_data( $id );
+			$consensus_data = ht_dms\ui\build\elements\consensus_ui::consensus_data( $id );
 			if ( $consensus_data ) {
 
 
@@ -395,7 +395,7 @@ add_action( 'login_head',
 
 
 /**
- * Load comments & consensus view template.
+ * Load comments & consensus_ui view template.
  */
 add_action( 'plugins_loaded', function() {
 

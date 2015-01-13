@@ -416,4 +416,46 @@ jQuery(document).ready(function( $ ) {
 
     tabDisplayFix();
 
+    /**
+     * Reinitialized Baldrick on ajaxComplete
+     *
+     * @since 0.3.0
+     */
+    $( document ).ajaxComplete(function( event, xhr, settings ) {
+        $( '.'+baldrick_wp_front_end.className ).baldrick({
+            request     : baldrick_wp_front_end.ajaxURL,
+            method      : baldrick_wp_front_end.transportMethod
+        });
+    });
+
+
+    /**
+     * Callback used to open the consensus preview
+     *
+     * @since 0.3.0
+     *
+     * @param response AJAX response form consensus_details endpoint of intenral API
+     */
+    function bldrk_consensus_details_cb( response ) {
+
+        var dID= response.data.did;
+        var details = response.data.details;
+        var headers = response.data.headers;
+
+        var html = htDMSinternalAPI.consensusView( details, dID, headers );
+        var selector = ".consensus-view[did='"+dID+"']";
+        $( selector ).html( html ).slideDown();
+
+        //this is copypasta, but it works, didn't without
+        $( '#consensus-views-chooser li a' ).click( function () {
+            var cst = $( this ).first().attr( 'cst' );
+            $( '#consensus-views-by-status' ).children().fadeOut();
+            var container = '#' + cst;
+            $( container ).fadeIn();
+        } );
+
+    }
+
+    window.bldrk_consensus_details_cb = bldrk_consensus_details_cb;
+
 });

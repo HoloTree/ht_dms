@@ -265,7 +265,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 		 *
 		 * @param array $actions_to_skip
 		 */
-		$actions_to_skip = apply_filters( 'ht_dms_internal_api_skip_authentication', array( 'hourly', 'org_no_members', 'no_org' ) );
+		$actions_to_skip = apply_filters( 'ht_dms_internal_api_skip_authentication', array( 'hourly', 'org_no_members', 'no_org', 'consensus_details' ) );
 
 		if ( ! is_array( $actions_to_skip ) ) {
 			$actions_to_skip = array();

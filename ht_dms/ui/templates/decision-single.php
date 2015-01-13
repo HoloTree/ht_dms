@@ -64,14 +64,14 @@ else {
 			);
 		}
 
-	//add consensus visualization as a tabs within a tab until 3rd UI element exists
+	//add consensus_ui visualization as a tabs within a tab until 3rd UI element exists
 	//@see https://github.com/HoloTree/ht_dms/issues/70
 
 		$consensus_status = $ui->output_elements()->view_consensus( $id );
 
 		$tabs[] =
 			array (
-				'label'   => ht_dms_add_icon( __( 'View Consensus', 'ht_dms' ), 'consensus' ),
+				'label'   => ht_dms_add_icon( __( 'View Consensus', 'ht_dms' ), 'consensus_ui' ),
 				'content' => $consensus_status,
 
 

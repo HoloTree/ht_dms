@@ -156,7 +156,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 			'manager',
 			'proposed_by',
 			'group',
-			'consensus',
+			'consensus_ui',
 			'projects',
 			'change_to'
 		);
@@ -333,11 +333,11 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 
 	/**
-	 * Change a decision's consensus
+	 * Change a decision's consensus_ui
 	 *
 	 * Fires the 'ht_dms_consensus_changed' and 'ht_dms_consensus_changed_{$id}' actions.
 	 *
-	 * @param 	int			$id		ID of decision to change the consensus of.
+	 * @param 	int			$id		ID of decision to change the consensus_ui of.
 	 * @param 	string		$value	New value
 	 * @param 	null|int	$uID	Optional. User to change value for, defaults to current user ID.
 	 * @params	obj|null	$obj	Optional. Single decision Pods object.
@@ -603,7 +603,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 		$unsets = array (
 			'id',
 			'ID',
-			'consensus',
+			'consensus_ui',
 			'post_date',
 			'post_date_gmt',
 			'guid',
@@ -932,7 +932,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 *
 	 * @param 	int			$id		ID of decision to check.
 	 * @param	obj|null	$obj	Optional. Single decision status.
-	 * @param	bool		$check	Optional. Whether to check if status is correct, by evaluating consensus array, if true, or to just check this field value, if false, the default.
+	 * @param	bool		$check	Optional. Whether to check if status is correct, by evaluating consensus_ui array, if true, or to just check this field value, if false, the default.
 	 *
 	 * @return 	string		$status	The status.
 	 *
@@ -1087,7 +1087,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	}
 
 	/**
-	 * Gets current consensus status by user
+	 * Gets current consensus_ui status by user
 	 *
 	 * @param int $id Decision ID
 	 *
@@ -1104,7 +1104,7 @@ class decision extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 				$decision_members[ $id ] = array (
 					'name'      => ht_dms_display_name( $id ),
 					'avatar'    => get_avatar( $id, 96, $fallback ),
-					'consensus' => $consensus[ 'value' ],
+					'consensus_ui' => $consensus[ 'value' ],
 				);
 			}
 

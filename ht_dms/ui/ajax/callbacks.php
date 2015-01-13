@@ -14,7 +14,7 @@ namespace ht_dms\ui\ajax;
 
 class callbacks  {
 	/**
-	 * Reload consensus on ht_dms_reload_consensus AJAX action
+	 * Reload consensus_ui on ht_dms_reload_consensus AJAX action
 	 *
 	 * @uses 'wp_ajax_ht_dms_reload_consensus' action
 	 *

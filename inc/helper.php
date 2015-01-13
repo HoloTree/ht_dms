@@ -178,7 +178,7 @@ function ht_dms_spinner( $hide = false, $id ='' ) {
 }
 
 /**
- * Translates a user's value in the consensus value to a word in the current language.
+ * Translates a user's value in the consensus_ui value to a word in the current language.
  *
  * @param int  $value Status code 0|1|2 to translate.
  * @param bool $with icons. Whether to return with an icon or not.
@@ -205,7 +205,7 @@ function ht_dms_consensus_status_readable( $value, $with_icons = false, $ing = f
 	}
 
 	/**
-	 * Change what we call each consensus value
+	 * Change what we call each consensus_ui value
 	 *
 	 * Note filter will not be used unless its response is in a valid form.
 	 *
@@ -923,7 +923,7 @@ if ( ! function_exists( 'get_avatar' ) ) :
 endif;
 
 /**
- * Get the members details from a sorted consensus
+ * Get the members details from a sorted consensus_ui
  *
  *
  * @since 0.1.0

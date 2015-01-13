@@ -210,7 +210,7 @@ jQuery( function ( ) {
     };
 
     /**
-     * Reload consensus views
+     * Reload consensus_ui views
      *
      * Called from the window scoped reloadConsensus() function
      *
@@ -231,7 +231,7 @@ jQuery( function ( ) {
             });
         },
         cb: function( response ) {
-            $( '#consensus-view' ).html( '' );
+            $( '#consensus_ui-view' ).html( '' );
             app.consensusView( response );
             app.updateDecisionStatus.request();
         }
@@ -239,24 +239,30 @@ jQuery( function ( ) {
     };
 
     /**
-     * Render consensus view
+     * Render consensus_ui view
      *
      * @since 0.1.0
      *
      * @param user
      */
-    app.consensusView = function( users ) {
+    app.consensusView = function( users, dID, headers ) {
 
         if ( undefined == users ) {
             users =  app.htDMS.consensusMemberDetails;
         }
 
+
         if ( 0 != users ) {
+
+            if ( undefined === dID ) {
+                var dID = 0;
+            }
 
 
             if ( 'object' !== typeof users ) {
                 users = JSON.parse( users );
             }
+
 
             for ( i = 0; i < 3; i++ ) {
                 if ( 'object' != typeof users[ i ] ) {
@@ -265,20 +271,59 @@ jQuery( function ( ) {
             }
 
             var data = {
-                header0: app.htDMS.consensusHeaders.header0,
-                header1: app.htDMS.consensusHeaders.header1,
-                header2: app.htDMS.consensusHeaders.header2,
                 users0: users[ 0 ],
                 users1: users[ 1 ],
-                users2: users[ 2 ]
+                users2: users[ 2 ],
+                headers: []
             };
+            console.log(app.htDMS.consensusHeaders );
+
+
+            if (  undefined === app.htDMS.consensusHeaders ) {
+                if ( 'undefined' != headers && 'object' != typeof  headers ) {
+                    headers = JSON.parse( headers );
+                }
+
+
+            }
+
+
+            for ( i = 0; i < 3; i++ ) {
+                if ( undefined != app.htDMS.consensusHeaders[ i ] ) {
+                    data.headers[ i ] = app.htDMS.consensusHeaders[ i ];
+                } else {
+                    if ( undefined != headers[ i ] ) {
+                        data.headers[ i ] = headers[ i ];
+                    } else {
+                        data.headers[ i ] = '';
+                    }
+                }
+
+            }
+
+            //note this hack is bad, and I feel bad.
+            //it works, though, so that's something.
+            data.header0 = data.headers[0];
+            data.header1 = data.headers[1];
+            data.header2 = data.headers[2];
+            if ( 0 == data.headers[0] && 'string' == typeof headers[0] ) {
+                data.header0 = headers[0];
+                data.headers[0] = headers[0];
+            }
 
 
             var source = $( '#consensus-view-template' ).html();
             if ( typeof source === 'string' ) {
                 var template = Handlebars.compile( source );
                 var html = template( data );
-                $( '#consensus-view' ).append( html );
+
+
+                if ( 0 == dID ) {
+                    $( '#consensus_ui-view' ).append( html );
+                } else {
+                    return html;
+
+                }
             }
 
             //@todo move this to the click handler object

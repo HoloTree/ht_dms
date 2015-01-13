@@ -316,7 +316,7 @@ class loaders implements \Hook_SubscriberInterface {
 				if ( $post_type !== ht_dms_prefix_remover( HT_DMS_DECISION_POD_NAME ) ) {
 					$type = ht_dms_prefix_remover( $post_type );
 				} else {
-					$type = 'consensus';
+					$type = 'consensus_ui';
 				}
 
 			}

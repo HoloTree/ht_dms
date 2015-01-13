@@ -1,6 +1,6 @@
 <?php
 /**
- * Reload consensus AJAX callback
+ * Reload consensus_ui AJAX callback
  *
  * @package   @TODO
  * @author    Josh Pollock <Josh@JoshPress.net>

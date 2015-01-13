@@ -159,7 +159,7 @@ class common  {
 
 
 	/**
-	 * After a new decision or group is created set its status to publish and if is a decision create consensus. On any save ensure decision has a consensus.
+	 * After a new decision or group is created set its status to publish and if is a decision create consensus_ui. On any save ensure decision has a consensus_ui.
 	 *
 	 * @param $pieces
 	 *
@@ -200,7 +200,7 @@ class common  {
 	}
 
 	/**
-	 * Add consensus to decision if it does not exist
+	 * Add consensus_ui to decision if it does not exist
 	 *
 	 * @param	$dID ID of decision.
 	 *

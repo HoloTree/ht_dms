@@ -143,7 +143,14 @@ class route implements \Action_Hook_SubscriberInterface {
 
 	}
 
-
+	/**
+	 * Flag to check if current action uses its POST data as JSON or not.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @var bool
+	 */
+	private static $post_data_is_json;
 
 	/**
 	 * Get required args for the action
@@ -168,12 +175,29 @@ class route implements \Action_Hook_SubscriberInterface {
 				$method = $class::method();
 			}
 
+			$json = true;
+			if ( 'POST' === $method ) {
+				if ( ! isset( self::$post_data_is_json ) ) {
+					if ( isset( $class::$data_json ) && false === $class::$data_json ) {
+						$json = false;
+					}
+
+					self::$post_data_is_json = $json;
+				} else {
+					$json = self::$post_data_is_json;
+				}
+			}
+
 
 			foreach ( $desired_args as $arg ) {
 				if ( $method === 'get' ) {
 					$params[ $arg ] = pods_v_sanitized( $arg, 'get', 0, true );
 				} else {
-					$params[ $arg ] = self::get_post_param( $arg );
+					if ( ! $json ) {
+						$params[ $arg ] = pods_v_sanitized( $arg, 'post', 0 );
+					} else {
+						$params[ $arg ] = self::get_post_param( $arg );
+					}
 				}
 				if ( '' == $params[ $arg ] ) {
 					$params[ $arg ] = 0;

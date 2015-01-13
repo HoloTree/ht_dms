@@ -63,7 +63,7 @@ class update implements \Action_Hook_SubscriberInterface{
 	static function save( $value, $dID ) {
 		if ( is_array( $value ) ) {
 			$d = ht_dms_decision_class();
-			$id = $d->update( $dID, 'consensus', $value );
+			$id = $d->update( $dID, 'consensus_ui', $value );
 			$status = ht_dms_consensus_class()->status( $value );
 			$d->update( $dID, 'decision_status', $status );
 			do_action( 'ht_dms_consensus_changed', $dID, $status );
@@ -77,7 +77,7 @@ class update implements \Action_Hook_SubscriberInterface{
 	}
 
 	/**
-	 * Add a member to a consensus
+	 * Add a member to a consensus_ui
 	 *
 	 * @since 0.1.0
 	 *

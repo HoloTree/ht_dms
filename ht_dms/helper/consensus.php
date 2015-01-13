@@ -10,7 +10,7 @@
  */
 
 /**
- * In consensus arrays:
+ * In consensus_ui arrays:
  *
  * 0 represents no opinion expressed
  * 1 represents acceptance
@@ -18,35 +18,40 @@
  */
 namespace ht_dms\helper;
 
+use ht_dms\ui\build\elements\consensus_ui;
+
 class consensus  {
 
 	/**
-	 * Get a consensus or create one if it does not exist.
+	 * Get a consensus_ui or create one if it does not exist.
 	 *
 	 * @param 	int 	$dID ID of decision to get/ create for.
 	 *
-	 * @return 	array		The consensus array.
+	 * @return 	array		The consensus_ui array.
 	 *
 	 * @since 	0.0.1
 	 */
-	function consensus( $dID ) {
-		if ( $this->get( $dID ) === false || !is_array( $this->get( $dID ) ) ) {
+	public function consensus( $dID ) {
+		$consensus = $this->get( $dID );
+		if ( $consensus === false || ! is_array( $consensus ) || empty( $consensus) ) {
 			$this->create( $dID );
+			$consensus = $this->consensus( $dID );
+
 		}
 
-		return $this->get( $dID );
+		return $consensus;
 
 	}
 
 	/**
-	 * Create a new consensus
+	 * Create a new consensus_ui
 	 *
 	 * @param 	int 		$dID 		ID of decision.
 	 * @param 	null|obj	$obj		Optional. Decision single object.
-	 * @param	bool		$dont_set	Optional. If true, consensus array will be returned <em>unserialized</em> instead of saving it to DB. Default is false
-	 * @param   bool    $return_consensus Optional. If true, the consensus array is returned. If false, the default, the decision ID is returned.
+	 * @param	bool		$dont_set	Optional. If true, consensus_ui array will be returned <em>unserialized</em> instead of saving it to DB. Default is false
+	 * @param   bool    $return_consensus Optional. If true, the consensus_ui array is returned. If false, the default, the decision ID is returned.
 	 *
-	 * @return 	int|array						ID of decision or the consensus array.
+	 * @return 	int|array						ID of decision or the consensus_ui array.
 	 *
 	 * @since 	0.0.1
 	 */
@@ -82,7 +87,7 @@ class consensus  {
 
 				}
 				else {
-					$id = $obj->save( 'consensus', serialize( $consensus ) );
+					$id = $obj->save( 'consensus_ui', serialize( $consensus ) );
 					$id = $obj->save( 'decision_status', 'new' );
 					if ( $return_consensus ) {
 						return $consensus;
@@ -103,26 +108,20 @@ class consensus  {
 	}
 
 	/**
-	 * Get current consensus array for a decision.
+	 * Get current consensus_ui array for a decision.
 	 *
 	 * @param int $dID Decision ID
 	 *
-	 * @return array $consensus	Consensus Array
+	 * @return array $consensus_ui	Consensus Array
 	 *
 	 * @since 0.0.1
 	 */
 	function get( $dID, $obj = null, $unserialized = true ) {
-		$key = "consensus_dID_{$dID}";
-		//if ( ! DOING_AJAX || false === ( $consensus = wp_cache_get( $key ) )  ) {
-		if ( true ) {
-			$obj       = ht_dms_decision( $dID, $obj );
-			$consensus = $obj->field( 'consensus' );
-			if ( $unserialized ) {
-				return unserialize( $consensus );
 
-			}
-
-			//wp_cache_set( $key, $consensus, '', 7235 );
+		$obj       = ht_dms_decision( $dID, $obj );
+		$consensus = $obj->field( 'consensus' );
+		if ( $unserialized ) {
+			$consensus = maybe_unserialize( $consensus );
 
 		}
 
@@ -131,7 +130,7 @@ class consensus  {
 	}
 
 	/**
-	 * Modifies a consensus array.
+	 * Modifies a consensus_ui array.
 	 *
 	 * Note: Does not save array or anyway modify DB.
 	 *
@@ -139,7 +138,7 @@ class consensus  {
 	 * @param int		$new_value	Value to set.
 	 * @param null|int	$uID		Optional. User ID. Defaults to current user ID.
 	 *
-	 * @return array	The modified consensus array.
+	 * @return array	The modified consensus_ui array.
 	 *
 	 * @since 0.0.1
 	 */
@@ -170,13 +169,13 @@ class consensus  {
 
 
 	/**
-	 * Update the consensus.
+	 * Update the consensus_ui.
 	 *
 	 * @param int		$dID 		ID of decision.
-	 * @param int|array	$value		Value to change in array or a whole consensus array to write.
+	 * @param int|array	$value		Value to change in array or a whole consensus_ui array to write.
 	 * @param null		$uID		Optional. User to change value for. Defaults to current user ID.
 	 *
-	 * @return int 	$id			ID id decision whose consensus was updated.
+	 * @return int 	$id			ID id decision whose consensus_ui was updated.
 	 *
 	 * @TODO Should this really return $id?
 	 *
@@ -194,11 +193,11 @@ class consensus  {
 
 
 	/**
-	 * What the status of a decision should be, based on the consensus array.
+	 * What the status of a decision should be, based on the consensus_ui array.
 	 *
-	 * Note: May not be the actual status saved in the decision_status field. This is a check of the consensus array itself, not that field.
+	 * Note: May not be the actual status saved in the decision_status field. This is a check of the consensus_ui array itself, not that field.
 	 *
-	 * @param array	$consensus A consensus array
+	 * @param array	$consensus A consensus_ui array
 	 *
 	 * @return string
 	 *
@@ -230,7 +229,7 @@ class consensus  {
 	}
 
 	/**
-	 * Calculates what would be the result of a user taking any action on a consensus
+	 * Calculates what would be the result of a user taking any action on a consensus_ui
 	 *
 	 * @param int $dID Decision ID to make change on.
 	 * @param int $uID User ID of user to test based on.
@@ -266,11 +265,11 @@ class consensus  {
 	}
 
 	/**
-	 * Sort a consensus by status
+	 * Sort a consensus_ui by status
 	 *
-	 * @param int|array $dID Either a decision ID or a consensus array.
+	 * @param int|array $dID Either a decision ID or a consensus_ui array.
 	 *
-	 * @return array sorted consensus [status_code] => array( $uIDs)
+	 * @return array sorted consensus_ui [status_code] => array( $uIDs)
 	 *
 	 * @since 0.0.3
 	 */
@@ -278,6 +277,7 @@ class consensus  {
 		if ( ! $dID || ! ht_dms_is_decision( $dID ) ) {
 			return false;
 		}
+
 		if ( ! is_array( $dID ) ) {
 			$consensus = $this->consensus( $dID );
 		}
@@ -327,15 +327,13 @@ class consensus  {
 				$consensus_status = array();
 				if ( is_array( $statuses ) ) {
 					foreach ( $statuses as $status => $user_ids ) {
-
-
 						$consensus_status[ $status ] = $user_ids;
 						$count[ $status ] = count( $user_ids );
 
 						foreach( $user_ids as $uID ) {
 							$user = $build_elements->member_details( $uID );
 							$details[ $status ][] = $user[0];
-								//array( 'name' => pods_v( 'name', $user[0] ), 'avatar' => pods_v( 'avatar', $user[0] ) );
+
 						}
 
 					}
@@ -345,7 +343,8 @@ class consensus  {
 				$consensus_status[ 'details' ] = json_encode( $details );
 
 				for ( $i=0; $i<=2; $i++ ) {
-					$consensus_status[ 'headers' ][ "header{$i}" ] = $build_elements->consensus_tab_header( $i, pods_v( $i, $count, '' ) );
+
+					$consensus_status[ 'headers' ] = consensus_ui::consensus_headers( $count );
 
 				}
 
@@ -359,7 +358,7 @@ class consensus  {
 
 	function reset( $dID ) {
 		$obj  = ht_dms_decision( $dID );
-		$consensus = $obj->save( 'consensus', '' );
+		$consensus = $obj->save( 'consensus_ui', '' );
 		$this->consensus( $dID );
 		$obj->save( array( 'decision_status', 'new' ) );
 	}

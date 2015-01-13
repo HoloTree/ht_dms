@@ -120,11 +120,11 @@ function ht_dms_consensus_class() {
 }
 
 /**
- * Get a consensus or create one if it does not exist.
+ * Get a consensus_ui or create one if it does not exist.
  *
  * @param 	int 	$dID ID of decision to get/ create for.
  *
- * @return 	array		The consensus array.
+ * @return 	array		The consensus_ui array.
  *
  * @since 	0.0.1
  */

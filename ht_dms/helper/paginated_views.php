@@ -36,6 +36,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 		$view = 'decision-'.strtolower( $args[ 'status' ] );
 		$attrs[ 'gid' ] = $args[ 'gID' ];
 		$handle = 'decision-preview';
+
 	}
 
 	if ( strpos($view, 'group' ) > 0 ) {
@@ -71,6 +72,7 @@ function ht_dms_paginated_view_container( $view, $args, $content = '' ) {
 	holotree_enqueue_handlebar( $handle, ht_dms_ui()->view_loaders( )->handlebars_template_file_location( $handle ) );
 
 	$out .= sprintf( '<div id="%1s-spinner" class="pagination-spinner spinner">%2s</div>', $view, $spinner );
+
 
 	return $out;
 

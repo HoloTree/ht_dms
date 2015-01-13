@@ -368,7 +368,7 @@ abstract class dms extends object {
 	 */
 	public function update( $id, $field, $value, $obj = null, $add = false ) {
 		$obj = $this->null_object( $obj, $id );
-		if ( $field === 'consensus' ) {
+		if ( $field === 'consensus_ui' ) {
 			$value = serialize( $value );
 		}
 
@@ -414,7 +414,7 @@ abstract class dms extends object {
 		unset( $old[ 'reason_for_change' ] );
 		unset( $old[ 'change_to' ] );
 		unset( $old[ 'proposed_by' ] );
-		unset( $old[ 'consensus' ] );
+		unset( $old[ 'consensus_ui' ] );
 		unset( $old[ 'proposed_changes' ] );
 		unset( $old[ 'tasks' ] );
 		unset( $old[ 'group' ] );
