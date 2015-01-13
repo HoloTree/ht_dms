@@ -444,7 +444,12 @@ jQuery(document).ready(function( $ ) {
 
         var html = htDMSinternalAPI.consensusView( details, dID, headers );
         var selector = ".consensus-view[did='"+dID+"']";
+        var button_selector = '.consensus-view-button';
+        var close_button_selector = '#' + 'decision-' + dID + ' .close';
         $( selector ).html( html ).slideDown();
+        $( button_selector ).css( 'display', 'none' );
+        $( close_button_selector ).css( 'display', 'block');
+
 
         //this is copypasta, but it works, didn't without
         $( '#consensus-views-chooser li a' ).click( function () {
@@ -453,6 +458,15 @@ jQuery(document).ready(function( $ ) {
             var container = '#' + cst;
             $( container ).fadeIn();
         } );
+
+        $( close_button_selector ).on( 'click', function( event ) {
+            $( selector ).slideUp();
+            $( button_selector ).css( 'display', 'inline' );
+            $( close_button_selector ).css( 'display', 'none');
+        });
+
+
+
 
     }
 

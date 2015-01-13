@@ -1,9 +1,15 @@
 <script id="decision-preview" type="text/x-handlebars-template">
     <div class="decision decision-preview paginated-view paginated-view-preview ht-dms-partial" id="decision-{{ID}}">
-        <div class="consensus-view consensus-view-in-preview" did="{{ID}}" style="display:none;"></div>
-        <h3>
-            {{{decisionLink link ID name true}}}
-        </h3>
+        <div class="consensus-view consensus-view-in-preview" did="{{ID}}" style="display:none;" >
+        </div>
+        <a class="button close" style="display:none">Close Consensus View</a>
+        <header>
+            <h3>
+                {{{decisionLink link ID name true}}}
+            </h3>
+             {{{wp_baldrick_modal "consensus_details" "click" "button consensus-view-button"  "data-did" ID "View Consensus" "bldrk_consensus_details_cb"}}}
+        </header>
+        <div class="clear"></div>
         <div class="details">
             <p class="description">{{{decision_description}}}</p>
             <ul>
@@ -13,7 +19,8 @@
                 <li>Proposed By: {{proposed_by.name}}</li>
             </ul>
         </div>
-        {{{wp_baldrick_modal "consensus_details" "click" "button"  "data-did" ID "View Consensus" "bldrk_consensus_details_cb"}}}
+
+
 
     </div>
 </script>

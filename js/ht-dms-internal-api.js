@@ -276,8 +276,6 @@ jQuery( function ( ) {
                 users2: users[ 2 ],
                 headers: []
             };
-            console.log(app.htDMS.consensusHeaders );
-
 
             if (  undefined === app.htDMS.consensusHeaders ) {
                 if ( 'undefined' != headers && 'object' != typeof  headers ) {
@@ -286,7 +284,6 @@ jQuery( function ( ) {
 
 
             }
-
 
             for ( i = 0; i < 3; i++ ) {
                 if ( undefined != app.htDMS.consensusHeaders[ i ] ) {
