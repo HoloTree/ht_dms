@@ -246,42 +246,47 @@ jQuery( function ( ) {
      * @param user
      */
     app.consensusView = function( users ) {
+
         if ( undefined == users ) {
             users =  app.htDMS.consensusMemberDetails;
         }
 
-        if ( 'object' !== typeof users ) {
-            users = JSON.parse( users );
-        }
+        if ( 0 != users ) {
 
-        for ( i = 0; i < 3; i++ ) {
-            if ( 'object' != typeof users[i] ) {
-                users[i] = {};
+
+            if ( 'object' !== typeof users ) {
+                users = JSON.parse( users );
             }
+
+            for ( i = 0; i < 3; i++ ) {
+                if ( 'object' != typeof users[ i ] ) {
+                    users[ i ] = {};
+                }
+            }
+
+            var data = {
+                header0: app.htDMS.consensusHeaders.header0,
+                header1: app.htDMS.consensusHeaders.header1,
+                header2: app.htDMS.consensusHeaders.header2,
+                users0: users[ 0 ],
+                users1: users[ 1 ],
+                users2: users[ 2 ]
+            };
+
+
+            var source = $( '#consensus-view-template' ).html();
+            if ( typeof source === 'string' ) {
+                var template = Handlebars.compile( source );
+                var html = template( data );
+                $( '#consensus-view' ).append( html );
+            }
+
+            //@todo move this to the click handler object
+            $( '#consensus-views-chooser li a' ).click( function () {
+                var cst = $( this ).first().attr( 'cst' );
+                app.consensusViewUpdate( cst );
+            } );
         }
-
-        var data = {
-            header0: app.htDMS.consensusHeaders.header0,
-            header1: app.htDMS.consensusHeaders.header1,
-            header2: app.htDMS.consensusHeaders.header2,
-            users0: users[0],
-            users1: users[1],
-            users2: users[2]
-        };
-
-
-        var source   = $( '#consensus-view-template' ).html();
-        if ( typeof source === 'string' ) {
-            var template = Handlebars.compile(source);
-            var html = template(data);
-            $('#consensus-view').append(html);
-        }
-
-        //@todo move this to the click handler object
-        $( '#consensus-views-chooser li a' ).click( function () {
-            var cst = $( this).first().attr( 'cst' );
-            app.consensusViewUpdate( cst );
-        });
     };
 
     app.consensusViewUpdate = function( id ) {
@@ -535,7 +540,6 @@ jQuery( function ( ) {
                         var source = $( templateID ).html();
                         template = Handlebars.compile( source );
                         rendered += template( data );
-
                         delete template;
                         delete source;
                     } );

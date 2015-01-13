@@ -25,7 +25,7 @@ class consensus {
 	 *
 	 * @return string
 	 */
-	public static function view( $dID = null  ) {
+	public static function view( $dID = null, $handlebars = true  ) {
 		if ( is_null( $dID ) ) {
 			$dID = (int) get_queried_object_id();
 		}
@@ -33,9 +33,14 @@ class consensus {
 		if ( ! ht_dms_is_decision( $dID ) ) {
 			return;
 		}
-		$out = ht_dms_ui()->view_loaders()->handlebars( 'consensus_view', false, false );
 
-		$out .= "<div id=\"consensus-view-{$dID}\" class=\"consensus-view\" did=\"{$dID}\"></div>";
+		if ( $handlebars ) {
+			$out = ht_dms_ui()->view_loaders()->handlebars( 'consensus_view', false, false );
+
+			$out .= "<div id=\"consensus-view\" class=\"consensus-view\" did=\"{$dID}\"></div>";
+		}else{
+			$out = 'fuick!';
+		}
 
 		return $out;
 
