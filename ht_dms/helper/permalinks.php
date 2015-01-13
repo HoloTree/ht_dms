@@ -41,7 +41,7 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 	 * @return string
 	 */
 	public static function set( $url, $post) {
-		if ( ht_dms_is_dms_type( $post->post_type )  ) {
+		if ( $url && ht_dms_is_dms_type( $post->post_type )  ) {
 			if ( false == ( $url = self::try_cache( $url ) ) ) {
 				$fail       = false;
 				$parsed_url = parse_url( $url );
@@ -53,10 +53,10 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 						$new_path[] = $post->post_title;
 
 					} elseif ( ht_dms_is_group( $post->ID ) ) {
-						$new_path = self::group( $post, $new_path );
+						$new_path[] = self::group( $post, $new_path );
 
 					} elseif ( ht_dms_is_decision( $post->ID ) ) {
-						$new_path = self::decision( $post, $new_path );
+						$new_path[] = self::decision( $post, $new_path );
 
 					} else {
 						$fail = true;
@@ -76,8 +76,10 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 				}
 
 				if ( ! $fail ) {
-					$parsed_url['path']   = implode( '/', $new_path );
-					$parsed_url['scheme'] = $parsed_url['scheme'] . ':/';
+					$parsed_url[ 'path' ]   = implode( '/', $new_path );
+					if ( isset( $parsed_url[ 'scheme' ] ) ) {
+						$parsed_url[ 'scheme' ] = $parsed_url['scheme'] . ':/';
+					}
 
 					$url = implode( '/', $parsed_url );
 
@@ -139,7 +141,7 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 		$key = self::cache_key( $url );
 		pods_view_set( $key, self::$cache_mode );
 	}
-	
+
 	/**
 	 * Set up path array for groups.
 	 *
