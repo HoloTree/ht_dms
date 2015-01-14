@@ -366,8 +366,7 @@ class elements {
 
 		}
 		else{
-			$out = $script;
-			$out .= sprintf( '<div id="breadcrumbs" class="breadcrumb-part">%1s</div>', $home_link );
+			$out = sprintf( '<div id="breadcrumbs" class="breadcrumb-part">%1s</div>', $home_link );
 			return $out;
 		}
 
