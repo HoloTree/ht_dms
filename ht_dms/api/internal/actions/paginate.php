@@ -123,7 +123,10 @@ class paginate {
 
 		$output[ 'template_id' ] = $template_id;
 		//@todo don't send template unnecessarily here.
-		$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
+		//$output[ 'template' ] = ht_dms_ui()->view_loaders()->handlebars_template( $template_id );
+
+		$file = str_replace( '#', '', $output[ 'template_id' ] );
+		holotree_enqueue_handlebar( $file, ht_dms_ui()->view_loaders()->handlebars_template_file_location( $file, true ) );
 
 		$view = self::get_view( $view, $args, $html_id, $type, $page );
 		$output[ 'json' ] = pods_v( 'json', $view );

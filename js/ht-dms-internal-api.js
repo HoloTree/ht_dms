@@ -456,10 +456,9 @@ jQuery( function ( ) {
                     }
 
                     templateID = '#comments-view-template';
-
-                    $( container ).append( response.template );
                     var source = $( templateID ).html();
                     var comments = JSON.parse( response.json );
+
                     template = Handlebars.compile( source );
                     rendered = '';
 
@@ -558,9 +557,6 @@ jQuery( function ( ) {
                     $( paginationID ).hide();
 
                     $( outer_html_id ).fadeOut( 800 ).hide().attr( 'page', page );
-                    if ( null == document.getElementById( app.stripID( templateID ) ) ) {
-                        $( outer_html_id ).append( response.template );
-                    }
 
                     if ( null == document.getElementById( app.stripID( htmlID ) ) ) {
                         $( outer_html_id ).append( html );
