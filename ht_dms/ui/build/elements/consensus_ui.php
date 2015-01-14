@@ -145,15 +145,17 @@ class consensus_ui {
 
 	}
 
-	public static function consensus_headers( $count = false, $dID = false ) {
-		if ( ! is_array( $count ) || empty( $count ) ) {
-			if ( $dID && ht_dms_is_decision( $dID ) ) {
+	/**
+	 * Create consensus headers
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param array $count Counts by status of users with said status/
+	 *
+	 * @return string
+	 */
+	public static function consensus_headers( $count ) {
 
-			}else{
-				ht_dms_error();
-			}
-
-		}
 
 		for ( $i=0; $i<=2; $i++ ) {
 
@@ -163,32 +165,6 @@ class consensus_ui {
 
 		return $headers;
 
-	}
-
-	public static function consensus_header_counts( $statuses ) {
-		$counts = array();
-		for ( $i = 0; $i <= 2; $i ++ ) {
-			if ( isset( $statuses[ $i ] ) ) {
-				$counts = self::consensus_count_by_status( $statuses, $counts, $i );
-			}
-			else {
-				$counts[ $i ] = 0;
-				$statuses[ $i ] = array ();
-			}
-
-		}
-
-		return $counts;
-
-	}
-
-
-	public static function consensus_count_by_status(  $statuses, $counts, $i ) {
-		if ( isset( $statuses[ $i ] ) ) {
-			$counts[ $i ] = count( $statuses[ $i ] );
-		}
-
-		return $counts;
 	}
 
 
