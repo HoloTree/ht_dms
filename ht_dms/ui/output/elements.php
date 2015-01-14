@@ -324,7 +324,14 @@ class elements {
 
 	}
 
-	function breadcrumbs() {
+	/**
+	 * Create breadcrumbs markup
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return string
+	 */
+	public function breadcrumbs() {
 		$out = '';
 
 		$name = apply_filters( 'ht_dms_name', 'ht_dms' );
@@ -334,14 +341,6 @@ class elements {
 		if ( $logo  ) {
 			$logo = sprintf( '<img src="%1s" alt="Home" height="50" width="50" />', esc_url( $logo ) );
 		}
-
-		$bread_names = array(
-			'organization' => '',
-			'group'=> '',
-			'decision' => '',
-		);
-
-		$script = \ht_dms\helper\json::encode_to_script( $bread_names, 'breadNamesJSON' );
 
 		$home_link = ht_dms_home();
 		$home_link = sprintf( '<div class="breadcrumb-part" id="site-logo-home-link"><a href="%0s" title="HoloTree Home">%1s</a></div>', $home_link, $logo );
@@ -372,6 +371,8 @@ class elements {
 			return $out;
 		}
 
+		$build_elements = ht_dms_ui()->build_elements();
+
 
 		$titles = array( $home_link);
 		foreach ( array(
@@ -383,30 +384,14 @@ class elements {
 				$name = get_the_title( $id );
 				$link = get_the_permalink( $id );
 
-				$bread_names[ ht_dms_prefix_remover( $type ) ] = $name;
+				$type = ht_dms_prefix_remover( $type );
+				$bread_names[ $type ] = $name;
+				$icon = $build_elements->icon( $type );
 
-				if ( $type == HT_DMS_ORGANIZATION_POD_NAME ) {
-					$span_class= 'org fa fa-university';
-					$font_id = 'breadNames';
-					$font_class = 'orgName';
-				}
-				elseif ( $type == HT_DMS_GROUP_POD_NAME ) {
-					$span_class= 'gru fa fa-group';
-					$font_id = 'breadGroup';
-					$font_class = 'orgName';
-				}
-				elseif( $type === HT_DMS_DECISION_POD_NAME ) {
-					$span_class= 'dec fa fa-check';
-					$font_id = 'breadDecid';
-					$font_class = 'orgName';
-				}
-
-				$titles[] = sprintf( '<div class="breadcrumb-part"><a href="%1s">%2s</a></div>'
-, $link, $name );
+				$titles[] = sprintf( '<div class="breadcrumb-part %2s"><a href="%3s">%4s<span class="title show-for-large-up">%5s</span></a></div>', $type, $link, $icon, $name );
 			}
 
 		}
-
 
 		$out .= sprintf( '<div id="breadcrumbs">%1s</div>', implode( $titles ) );
 

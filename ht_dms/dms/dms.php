@@ -568,7 +568,7 @@ abstract class dms extends object {
 	function get_organization( $id, $obj = null ) {
 		$obj = $this->null_object( $obj, $id );
 
-		$org = $obj->display( 'organization' );
+		$org = $obj->display( 'organization.ID' );
 
 		return $org;
 
