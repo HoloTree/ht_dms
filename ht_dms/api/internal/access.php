@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Verify that a request to an internal API action is valid.
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -116,7 +116,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 			}
 		}
 
-		if ( ! $skip || ! self::action_allowed( $action )  || ! self::check_interface( $action )) {
+		if ( ! $skip || ! self::action_allowed( $action ) ) {
 			return 501;
 
 		}
@@ -224,7 +224,12 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 */
 	private static function action_allowed( $action ) {
 
-		return ( in_array( $action, self::allowed_actions() ) );
+		if ( in_array( $action, self::allowed_actions() ) ) {
+			$class = route::action_class( $action );
+			if ( self::check_interface( $action ) &&  self::check_parent_class( $action ) ) {
+				return true;
+			}
+		}
 
 	}
 
@@ -241,10 +246,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 * @return bool
 	 */
 	protected static function check_interface( $action ) {
-
-		$namespace = __NAMESPACE__ . '\\actions\\';
-
-		$class = $namespace . $action;
+		$class = route::action_class( $action );
 
 		if ( ! class_exists( $class ) ) {
 			return;
@@ -254,6 +256,16 @@ class access implements \Filter_Hook_SubscriberInterface {
 
 		if ( in_array( 'ht_dms\api\internal\actions\action_interface', $interfaces ) ) {
 			return true;
+		}
+
+	}
+
+	protected static function check_parent_class( $action ) {
+		$class = route::action_class( $action );
+
+		if ( is_subclass_of( $class, 'ht_dms\api\internal\actions\action' ) ) {
+			return true;
+
 		}
 
 	}

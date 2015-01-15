@@ -252,8 +252,6 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * Does not check if class exists. Use only for those allowed by self::action_allowed()
 	 *
-	 * @access private
-	 *
 	 * @since 0.1.0
 	 *
 	 * @param string $action Action name.
@@ -262,7 +260,7 @@ class route implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return object The class object.
 	 */
-	private static function action_class( $action ) {
+	public static function action_class( $action ) {
 
 		return $class = __NAMESPACE__ . '\\actions\\' . $action;
 
