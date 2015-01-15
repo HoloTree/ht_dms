@@ -953,10 +953,15 @@ function ht_dms_sorted_consensus_details( $sorted_consensus ) {
  * @return bool
  */
 function ht_dms_verify_action_nonce( $method = 'get' ) {
+	if ( ! in_array( $method, array( 'post', 'get' ) ) ) {
+		ht_dms_error();
+	}
+
 	$nonce = pods_v_sanitized( ht_dms_ui()->output_elements()->action_nonce_name, $method  );
-	$verify = wp_verify_nonce( $nonce, ht_dms_ui()->output_elements()->action_nonce_action );
+	$verify = ht_dms_ui()->output_elements()->check_action_nonce( $nonce );
 
 	return $verify;
+
 }
 
 /**

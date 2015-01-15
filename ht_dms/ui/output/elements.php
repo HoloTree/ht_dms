@@ -30,11 +30,9 @@ class elements {
 	 *
 	 * @since 0.0.1
 	 */
-	function discussion( $id, $form = true ) {
+	public function discussion( $id, $form = true ) {
 		$out = '<div id="discussion" data-id="'.esc_attr( $id ).'">';
-		$js = 'loadDiscussion( '.esc_attr( $id ).');';
 
-		//$out .= '<script type="text/javascript">'.esc_js( $js ).'</script>';
 
 		$out .=  '</div>';
 		if ( $form !== false ) {
@@ -46,6 +44,16 @@ class elements {
 
 	}
 
+	/**
+	 * Return JSON for comments
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param int $id Decision or group ID
+	 * @param null|array $comments Optional. Pre supplied comments data. If null, the default, all comments for current id are returned.
+	 *
+	 * @return mixed|string|void
+	 */
 	public static function comment_json( $id, $comments  = null ) {
 		//Gather comments for a specific page/post
 		if ( is_null( $comments ) ) {
@@ -68,7 +76,7 @@ class elements {
 	 *
 	 * @since 0.0.1
 	 */
-	function comment_form( $id ) {
+	public function comment_form( $id ) {
 		$link = ht_dms_url( $id, 'post-type' );
 		$link = add_query_arg( 'add-comment', true, $link );
 		$link = add_query_arg( 'dms_id', $id, $link );
@@ -166,24 +174,40 @@ class elements {
 	 *     @type string $label 		Label for tab.
 	 *     @type string $content 	Content of tab.
 	 * }
-	 * @param bool|string    Optional. ID for outermost container.
+	 * @param string|bool $tab_prefix Optional. Prefix for tab IDs. Default is "tab_"
+	 * @param string $class Optional Class for outermost container.
+	 * @param string|bool $id    Optional. ID for outermost container.
 	 *
 	 * @return 	string
 	 *
 	 * @since 	0.0.1
 	 */
-	function tab_maker( $tabs, $tab_prefix = 'tab_', $class = '', $id = false ) {
-		if ( ! $tab_prefix ) {
-			$tab_prefix = 'tab_';
-		}
+	public function tab_maker( $tabs, $tab_prefix = 'tab_', $class = '', $id = false ) {
 
 		return $this->tabs( $tabs, $tab_prefix, $class, false, $id );
 
 
 	}
 
-
-	function tabs( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
+	/**
+	 * Create the actual tabs
+	 *
+	 * @access protected
+	 *
+	 *
+	 * @param	array	 $tabs {
+	 *     For each tab, label and content. First tab will be active by default.
+	 *
+	 *     @type string $label 		Label for tab.
+	 *     @type string $content 	Content of tab.
+	 * }
+	 * @param string|bool $tab_prefix Optional. Prefix for tab IDs. Default is "tab_"
+	 * @param bool $class Optional. If true, tabs will be vertical. If false, the default, they will be horizontal.
+	 * @param string|bool $id    Optional. ID for outermost container.
+	 *
+	 * @return string
+	 */
+	protected function tabs( $tabs, $tab_prefix = 'tab_', $class = '', $vertical = false, $id = false ) {
 
 		if ( ! $tab_prefix ) {
 			$tab_prefix = 'tab_';
@@ -214,8 +238,6 @@ class elements {
 			$vertical = '';
 		}
 
-
-
 		$out = sprintf( '<ul class="%1s" id="ht_dms-tabs" data-tab >', $class );
 		if ( isset( $tabs[0]) ) {
 			$out .= '<li class="tab-title active"><a href="#' . $tab_prefix . '1">' . $tabs[0]['label'] . '</a></li>';
@@ -230,8 +252,6 @@ class elements {
 		}
 		$out .= apply_filters( 'ht_dms_after_foundation_tab_choice', '' );
 		$out .= '</ul>';
-
-
 
 		$i = 1;
 
@@ -261,8 +281,21 @@ class elements {
 	}
 
 
-
-	function accordion( $panels, $prefix= 'panel', $class = '', $id ) {
+	/**
+	 * Create an accordion
+	 *
+	 * @param	array	 $panels {
+	 *     For each tab, label and content. First tab will be active by default.
+	 *
+	 *     @type string $label 		Label for tab.
+	 *     @type string $content 	Content of tab.
+	 * }
+	 * @param string $prefix Optional prefix for panel.
+	 * @param string $class Optional. Class for accordion.
+	 *
+	 * @return string
+	 */
+	protected function accordion( $panels, $prefix = 'panel_', $class = '' ) {
 
 			$out = '<dl class="accordion ' . $class . '" data-accordion>';
 			$i = 0;
@@ -287,7 +320,6 @@ class elements {
 
 			return $out;
 
-
 	}
 
 	/**
@@ -297,18 +329,9 @@ class elements {
 	 *
 	 * @since	0.0.1
 	 */
-	function current_page_url() {
-		$pageURL = 'http';
-		if( isset($_SERVER["HTTPS"]) ) {
-			if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
-		}
-		$pageURL .= "://";
-		if ($_SERVER["SERVER_PORT"] != "80") {
-			$pageURL .= $_SERVER["SERVER_ADDR"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-		} else {
-			$pageURL .= $_SERVER["SERVER_ADDR"].$_SERVER["REQUEST_URI"];
-		}
-		return $pageURL;
+	public function current_page_url() {
+		return pods_current_url();
+
 	}
 
 
@@ -319,7 +342,7 @@ class elements {
 	 *
 	 * @since 	0.0.1
 	 */
-	function ui(){
+	public function ui(){
 		$ui = ht_dms_ui();
 
 		return $ui;
@@ -553,7 +576,17 @@ class elements {
 
 	}
 
-	function check_action_nonce( $url ) {
+	/**
+	 * Verify the action nonce
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $nonce The nonce value to check.
+	 *
+	 * @return bool
+	 */
+	public function check_action_nonce( $nonce ) {
+		return wp_verify_nonce( $nonce, $this->action_nonce_action );
 
 	}
 
@@ -573,7 +606,7 @@ class elements {
 	 *
 	 * @return null|string
 	 */
-	function link( $id, $type = 'permalink', $text = 'view', $title = null, $button = false, $classes = false, $link_id = false, $append = false  ) {
+	public function link( $id, $type = 'permalink', $text = 'view', $title = null, $button = false, $classes = false, $link_id = false, $append = false  ) {
 		if ( is_object( $type ) ) {
 			$type = 'post';
 		}
@@ -669,7 +702,7 @@ class elements {
 	 *
 	 * @since	0.0.1
 	 */
-	function alert( $text, $type = null, $closeable = false, $rounded = false ) {
+	public function alert( $text, $type = null, $closeable = false, $rounded = false ) {
 		$alert = '<div data-alert class="alert-box ';
 		if ( is_null( $type ) ) {
 			$alert .= 'alert';
@@ -748,7 +781,7 @@ class elements {
 	 *
 	 * @since 0.0.1
 	 */
-	function output_container( $content, $prefix = null, $class = '', $id = false ) {
+	public function output_container( $content, $prefix = null, $class = '', $id = false ) {
 		foreach( $content as $i => $c ) {
 
 			if ( ! isset( $c[ 'content' ] ) || ! is_string( $c[ 'content' ] ) ) {
@@ -778,7 +811,7 @@ class elements {
 	 *
 	 * @return array|bool|string
 	 */
-	function hamburger( $menu_items ) {
+	public function hamburger( $menu_items ) {
 
 		if ( is_array( $menu_items ) ) {
 			foreach( $menu_items as $link => $text ) {
@@ -816,7 +849,7 @@ class elements {
 	 *
 	 * @return string
 	 */
-	function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false, $mini_mode = false ) {
+	public function members_details_view( $users, $desktop_wide = 8, $mobile_wide = false, $mini_mode = false ) {
 		$members = false;
 		if ( is_array( $users ) ) {
 			foreach( $users as $key => $user ) {
@@ -871,7 +904,7 @@ class elements {
 	 *
 	 * @since 0.0.3
 	 */
-	function view_consensus( $dID ) {
+	public function view_consensus( $dID ) {
 
 		return consensus_ui::view( $dID );
 
@@ -884,7 +917,7 @@ class elements {
 	 *
 	 * @return string
 	 */
-	function third_element( $type, $id ) {
+	public function third_element( $type, $id ) {
 		if ( $type == 'consensus_ui' ) {
 			ht_dms_consensus($id);
 			$content = $this->view_consensus( $id );
@@ -911,7 +944,7 @@ class elements {
 	 *
 	 * @return array
 	 */
-	function organization_facilitator_tabs( $oID, $uID, $oObj ) {
+	public function organization_facilitator_tabs( $oID, $uID, $oObj ) {
 		$ui = ht_dms_ui();
 		$tabs[] = array (
 			'label'   => ht_dms_add_icon( __( 'New Group In Organization', 'ht_dms' ), array( 'new', 'group') ),
