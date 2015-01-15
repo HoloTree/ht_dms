@@ -113,10 +113,12 @@ class access implements \Filter_Hook_SubscriberInterface {
 				if ( ! self::check_nonce_and_referer( $nonce ) ) {
 					return 550;
 				}
+
 			}
+
 		}
 
-		if ( ! $skip || ! self::action_allowed( $action ) ) {
+		if ( ! self::action_allowed( $action ) ) {
 			return 501;
 
 		}
@@ -229,7 +231,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 				return true;
 
 			}
-			
+
 		}
 
 	}
@@ -272,9 +274,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 *
 	 * @return bool
 	 */
-	protected static function check_parent_class( $action ) {
-		$class = route::action_class( $action );
-
+	protected static function check_parent_class( $class ) {
 		if ( is_subclass_of( $class, 'ht_dms\api\internal\actions\action' ) ) {
 			return true;
 
