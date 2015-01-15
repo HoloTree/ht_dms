@@ -223,12 +223,13 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 * @return bool
 	 */
 	private static function action_allowed( $action ) {
-
 		if ( in_array( $action, self::allowed_actions() ) ) {
 			$class = route::action_class( $action );
-			if ( self::check_interface( $action ) &&  self::check_parent_class( $action ) ) {
+			if ( self::check_interface( $class ) &&  self::check_parent_class( $class ) ) {
 				return true;
+
 			}
+			
 		}
 
 	}
@@ -241,12 +242,11 @@ class access implements \Filter_Hook_SubscriberInterface {
 	 *
 	 * @access protected
 	 *
-	 * @param string $action The action, class name really, to check.
+	 * @param string $class Class to checl
 	 *
 	 * @return bool
 	 */
-	protected static function check_interface( $action ) {
-		$class = route::action_class( $action );
+	protected static function check_interface( $class ) {
 
 		if ( ! class_exists( $class ) ) {
 			return;
@@ -260,6 +260,18 @@ class access implements \Filter_Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Check if a class extends the \ht_dms\api\internal\actions\action class
+	 *
+	 *
+	 * @since 0.3.0
+	 *
+	 * @access protected
+	 *
+	 * @param string $class Class to check
+	 *
+	 * @return bool
+	 */
 	protected static function check_parent_class( $action ) {
 		$class = route::action_class( $action );
 
