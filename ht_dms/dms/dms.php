@@ -559,16 +559,21 @@ abstract class dms extends object {
 	 * Get the organization this decision/group/task belongs to.
 	 *
 	 * @param 	int   			$id		ID of decision.
-	 * @param 	null|obj|Pods  	$obj	Optional. Pods object.
+	 * @param 	null|\Pods  	$obj	Optional. Pods object.
+	 * @param   bool            $return_ids Optional. If true, the default, than the item ID is returned, if false the name is returned.
 	 *
 	 * @return  int|null                Either the organization ID, or null if none is set.
 	 *
 	 * @since	0.0.1
 	 */
-	function get_organization( $id, $obj = null ) {
+	function get_organization( $id, $obj = null, $return_ids = true ) {
 		$obj = $this->null_object( $obj, $id );
 
-		$org = $obj->display( 'organization.ID' );
+		if ( $return_ids ) {
+			$org = $obj->display( 'organization.ID' );
+		} else {
+			$org = $obj->display( 'organization.post_title' );
+		}
 
 		return $org;
 
@@ -578,18 +583,23 @@ abstract class dms extends object {
 	 * Get the group this decision/task belongs to.
 	 *
 	 * @param 	int   			$id		ID of decision.
-	 * @param 	null|obj|Pods  	$obj	Optional. Decision Pods object.
+	 * @param 	null|\Pods  	$obj	Optional. Decision Pods object.
+	 * @param   bool            $return_ids Optional. If true, the default, than the item ID is returned, if false the name is returned.
 	 *
 	 * @return  int|null                Either the group ID, or null if none is set.
 	 *
 	 * @since	0.0.1
 	 */
-	function get_group( $id, $obj = null ) {
+	function get_group( $id, $obj = null, $return_ids = true ) {
 		$obj = $this->null_object( $obj, $id );
 
-		$gID =  $obj->display( 'group' );
+		if ( $return_ids  ) {
+			$group = $obj->display( 'group.ID' );
+		}else{
+			$group = $obj->display( 'group.post_title' );
+		}
 
-		return $gID;
+		return $group;
 
 	}
 
@@ -738,6 +748,89 @@ abstract class dms extends object {
 		}
 
 		return $member_options;
+
+	}
+
+	/**
+	 * Find by slug and return matching ids and row or the full object
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $slug Slug to search for.
+	 * @param bool $return_obj Optional. Default is false, if true, the object, if there are results is returned.
+	 *
+	 * @return \Pods|array|null If match(s) are found, and $return_obj the Pods object is returned. If ! $return_obj than foreach match return is an array of id => row()
+	 */
+	public function find_by_slug( $slug, $return_obj = false ) {
+		$params[ 'where' ] = 't.post_name ="'.$slug.'"';
+		$obj = $this->null_object( null, $params );
+		$matches = array();
+		if ( is_object( $obj ) && 0 < $obj->total() ) {
+			if ( $return_obj ) {
+				return $obj;
+			}
+
+			while( $obj->fetch() ) {
+				$matches[ $obj->id() ] = $obj->row();
+
+			}
+
+		}
+
+		return $matches;
+
+	}
+
+	/**
+	 * Find parents for a decision or group.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param \Pods $obj Pods object to search with. Must be a fetch to a single row.
+	 * @param bool $return_ids Optional. If true, the default, than IDs are returned for parents. If false, names are returned.
+	 *
+	 * @return array Containing names or ids of parents.
+	 */
+	public function find_parents( $obj, $return_ids = true ) {
+		$values = array();
+		$row = $obj->row();
+		$type = pods_v( 'post_type', $row );
+		if ( HT_DMS_DECISION_POD_NAME === $type ) {
+			$values[ 'group' ] = $this->get_group( $obj->id(), $obj, $return_ids );
+		}else{
+			$values[ 'group' ] = 0;
+		}
+
+		$values[ 'organization' ] = $this->get_organization( $obj->id(), $obj, $return_ids );
+
+		return $values;
+
+	}
+
+	/**
+	 * Find a decision or group's parents by the post slug
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $slug Post slug to query by.
+	 * @param bool $return_ids Optional. If true, the default, than IDs are returned for parents. If false, names are returned.
+	 *
+	 * @return array Containing names or ids of parents.
+	 */
+	public function find_parents_by_slug( $slug,  $return_ids = true ) {
+		$obj = $this->find_by_slug( $slug, true );
+		$matches = array();
+		if ( is_object( $obj ) && 0 < $obj->total() ) {
+
+			while( $obj->fetch() ) {
+				$matches[ $obj->id() ] = $this->find_parents( $obj, $return_ids );
+
+			}
+
+		}
+
+		return $matches;
+
 	}
 
 }
