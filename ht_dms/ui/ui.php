@@ -36,58 +36,62 @@ class ui {
 	}
 
 
-
-	function views() {
-
+	/**
+	 * Return an instance of the views class
+	 *
+	 * @since 0.x.x
+	 *
+	 * @return \ht_dms\ui\build\views
+	 */
+	public function views() {
 		return new build\views();
 
 	}
 
+
 	/**
-	 * Ajax callbacks class
-	 *
-	 * @return \ht_dms\ui\ajax\callbacks
+	 * Return caldera class instances
 	 *
 	 * @since 0.0.3
-	 */
-	function ajax_callbacks() {
-
-
-		return new ajax\callbacks();
-
-	}
-
-	/**
+	 *
 	 * @param bool $fields
 	 *
 	 * @return \ht_dms\helper\caldera\fields|\ht_dms\helper\caldera\filters
 	 */
-	function caldera_actions( $fields = true ) {
-
+	public function caldera_actions( $fields = true ) {
 		if ( $fields  ) {
 			return $this->caldera_fields_class();
+
 		}
 		else {
 			return $this->caldera_filters_class();
+
 		}
 
 	}
 
 	/**
+	 * Return Caldera fields class.
+	 *
+	 * @since 0.0.3
+	 *
 	 * @return \ht_dms\helper\caldera\fields
 	 */
-	function caldera_fields_class() {
-
+	public function caldera_fields_class() {
 		return new \ht_dms\helper\caldera\fields();
 
 	}
 
 	/**
+	 * Return Caldera filters class.
+	 *
+	 * @since 0.0.3
+	 *
 	 * @return \ht_dms\helper\caldera\filters
 	 */
-	function caldera_filters_class() {
-
+	public function caldera_filters_class() {
 		return new \ht_dms\helper\caldera\filters();
+
 	}
 
 	/**
@@ -103,7 +107,7 @@ class ui {
 	 *
 	 * @since 0.0.1
 	 */
-	function get_view( $view, $args, $return = null ) {
+	public function get_view( $view, $args, $return = null ) {
 		$views = $this->views();
 		if ( ! is_null( $return ) ) {
 			end( $args );
@@ -115,6 +119,13 @@ class ui {
 
 	}
 
+	/**
+	 * Return instance of the Models class
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \ht_dms\ui\build\models|object
+	 */
 	function models() {
 
 		return build\models::init();
@@ -122,6 +133,10 @@ class ui {
 	}
 
 	/**
+	 * Return instance of the build elements class
+	 *
+	 * @since 0.0.1
+	 *
 	 * @return \ht_dms\ui\build\elements
 	 */
 	function build_elements() {
@@ -130,28 +145,41 @@ class ui {
 
 	}
 
-	function login() {
 
-		return new build\login();
-	}
-
-	function tags() {
-
-		return new build\tags();
-
-	}
-
+	/**
+	 * Return instance of the add/modify class
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \ht_dms\ui\output\addModify
+	 */
 	function add_modify() {
 
 		return new output\addModify();
 	}
 
+	/**
+	 * Return an instance of the output elements class
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return \ht_dms\ui\output\elements
+	 */
 	function output_elements() {
 		
 		return new output\elements;
 
 	}
 
+	/**
+	 * Return build or output elements class instances
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param bool $output Optional. If true, the default, return output class, else build class.
+	 *
+	 * @return \ht_dms\ui\build\elements|\ht_dms\ui\output\elements
+	 */
 	function elements( $output = true ) {
 		if ( $output ) {
 			return $this->output_elements();
@@ -161,9 +189,12 @@ class ui {
 
 	}
 
+	/**
+	 * Return the view loaders class
+	 *
+	 * @return \ht_dms\ui\output\loaders
+	 */
 	function view_loaders() {
-
-
 		return new output\loaders();
 
 	}
@@ -178,7 +209,6 @@ class ui {
 	 * @since 0.0.3
 	 */
 	function activity( $type, $id ) {
-
 		return new build\activity( $type, $id );
 
 	}
@@ -195,9 +225,5 @@ class ui {
 		return new build\membership();
 
 	}
-
-
-
-
 
 }

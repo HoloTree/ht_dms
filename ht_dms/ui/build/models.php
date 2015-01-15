@@ -381,7 +381,7 @@ class models {
 	/**
 	 * Get instance of UI class
 	 *
-	 * @return 	\holotree\ui
+	 * @return 	\ht_dms\ui
 	 *
 	 * @since 	0.0.1
 	 */
@@ -407,7 +407,7 @@ class models {
 	 *
 	 * @since  0.0.1
 	 * @access public
-	 * @return object
+	 * @return \ht_dms\ui\build\models
 	 */
 	public static function init() {
 		if ( !self::$instance )
