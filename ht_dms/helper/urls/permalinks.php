@@ -9,7 +9,7 @@
  * @copyright 2015 Josh Pollock
  */
 
-namespace ht_dms\helper;
+namespace ht_dms\helper\urls;
 
 
 class permalinks implements \Action_Hook_SubscriberInterface {
@@ -25,8 +25,77 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 	 */
 	static public function get_actions() {
 		return array(
-			'post_type_link' => array( 'set', 15, 2 )
+			'post_type_link' => array( 'post_type_link', 15, 2 ),
+			'pre_get_posts' => 'set_qvars',
 		);
+
+	}
+
+	static public function set_qvars( $query ) {
+		global $wp_rewrite;
+		if( $query->is_main_query() ){
+
+			if ( empty( $query->query ) || ( isset( $query->query ) && isset( $query->query->name ) && $query->query->name = 'ht-dms-internal-api' ) ) {
+
+				return;
+			}
+
+			if ( isset( $query->query ) && 'ht-dms' === $query->query[ 'name'] ) {
+				$slug = $query->query[ 'page' ];
+
+				$slug = str_replace( '/', '', $slug );
+				$query->set( 'ht_dms_organization_name', $slug );
+				$post_type = HT_DMS_ORGANIZATION_POD_NAME;
+				$query->set( 'post_type', $post_type );
+				$query->set( $post_type, $slug );
+				$query->set( 'name', $slug );
+				$query->set( 'page', '' );
+
+				return;
+			}
+			else{
+				return;
+			}
+
+			$post_type = $query->query['post_type'];
+			if ( HT_DMS_DECISION_POD_NAME === $post_type ) {
+				$class = ht_dms_decision_class();
+				$name = pods_v( 'name', $query->query );
+				if ( $name ) {
+					$query->set( 'ht_dms_decision_name', $name );
+				}
+			} elseif( HT_DMS_GROUP_POD_NAME === $post_type ) {
+				$class = ht_dms_group_class();
+			} elseif( HT_DMS_ORGANIZATION_POD_NAME == $post_type ) {
+				$name = pods_v( 'name', $query->query );
+				if ( $name ) {
+					$query->set( 'ht_dms_organization_name', $name );
+				}
+
+				return;
+
+			}
+			else{
+				return;
+			}
+
+			$slug = pods_v( 'name', $query->query );
+			if ( $slug ) {
+				$matches = $class->find_parents_by_slug( $slug, false );
+				if ( is_array( $matches ) && ! empty( $matches ) ) {
+					$parents = current( $matches );
+					if( ! is_null( $parents )  ) {
+						$query->set( 'ht_dms_group_name', pods_v( 'group', $parents ) );
+						$query->set( 'ht_dms_organization_name', pods_v( 'organization', $parents ) );
+					}
+
+				}
+
+			}
+
+		}
+
+		$x = 1;
 
 	}
 
@@ -40,9 +109,10 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 	 *
 	 * @return string
 	 */
-	public static function set( $url, $post) {
+	public static function post_type_link( $url, $post) {
 		if ( $url && ht_dms_is_dms_type( $post->post_type )  ) {
-			if ( false == ( $url = self::try_cache( $url ) ) ) {
+			if ( false == ( $out_url = self::try_cache( $url ) ) ) {
+
 				$fail       = false;
 				$parsed_url = parse_url( $url );
 				$path       = pods_v( 'path', $parsed_url );
@@ -50,13 +120,15 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 				$new_path   = array( 'ht-dms' );
 				if ( is_array( $path ) & ! empty( $path ) ) {
 					if ( ht_dms_is_organization( $post->ID ) ) {
-						$new_path[] = $post->post_title;
+						$new_path[] = $post->post_name;
 
 					} elseif ( ht_dms_is_group( $post->ID ) ) {
 						$new_path[] = self::group( $post, $new_path );
+						$new_path[] = $post->post_name;
 
 					} elseif ( ht_dms_is_decision( $post->ID ) ) {
 						$new_path[] = self::decision( $post, $new_path );
+						$new_path[] = $post->post_name;
 
 					} else {
 						$fail = true;
@@ -76,17 +148,36 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 				}
 
 				if ( ! $fail ) {
-					$parsed_url[ 'path' ]   = implode( '/', $new_path );
+					if ( ! isset( $parsed_url[ 'scheme' ] ) ) {
+						if ( is_ssl() ) {
+							$parsed_url[ 'scheme' ] = 'https';
+						}else{
+							$parsed_url[ 'scheme' ] = 'http';
+						}
+
+					}
+
 					if ( isset( $parsed_url[ 'scheme' ] ) ) {
 						$parsed_url[ 'scheme' ] = $parsed_url['scheme'] . ':/';
 					}
 
-					$url = implode( '/', $parsed_url );
+					if ( ! isset( $parsed_url[ 'host' ] ) ) {
+						$parsed_url[ 'host' ] = trailingslashit( home_url() );
+					}
 
-					self::cache_set( $url );
+					$parsed_url[ 'path' ]   = implode( '/', $new_path );
+
+					$out_url = implode( '/', $parsed_url );
+
+
 
 				}
 
+			}
+
+			if ( $out_url ) {
+				self::cache_set( $out_url );
+				$url = $out_url;
 			}
 
 		}
@@ -107,6 +198,7 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 	 * @return bool|string
 	 */
 	protected static function try_cache( $url ) {
+		return false;
 		$key = self::cache_key( $url );
 		return pods_view_get( $key, self::$cache_mode );
 
@@ -155,10 +247,9 @@ class permalinks implements \Action_Hook_SubscriberInterface {
 	 * @return array Array for constructing path.
 	 */
 	protected static function group( $post, $new_path ) {
-		$g          = ht_dms_group_class();
-		$org_id     = $g->get_organization( $post->ID );
+		$g = ht_dms_group_class();
+		$org_id = $g->get_organization( $post->ID );
 		$new_path[] = get_the_title( $org_id );
-		$new_path[] = $post->post_title;
 
 		return $new_path;
 

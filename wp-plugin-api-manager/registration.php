@@ -38,10 +38,12 @@ class HT_DMS_WP_API_Registration {
 			new ht_dms\helper\registration\organization\check(),
 			new ht_dms\ui\help\help(),
 			\ht_dms\ui\help\help::init(),
-			ht_dms\ui\build\baldrick\settings::init()
+			ht_dms\ui\build\baldrick\settings::init(),
 
+			//permalinks/rewrites -- a work in progress
 			//https://github.com/HoloTree/ht_dms/issues/99
-			//\ht_dms\helper\permalinks::init()
+			//\ht_dms\helper\urls\add::init(),
+			//\ht_dms\helper\urls\permalinks::init()
 		);
 	}
 
