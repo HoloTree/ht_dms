@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Load templates and partials, and output the UI
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -11,19 +11,8 @@
 
 namespace ht_dms\ui\output;
 
-class loaders implements \Hook_SubscriberInterface {
+class loaders implements \Filter_Hook_SubscriberInterface {
 
-	/**
-	 * Set actions
-	 *
-	 * @since 0.0.3
-	 *
-	 * @return array
-	 */
-	public static function get_actions() {
-		return array();
-
-	}
 
 	/**
 	 * Set filters
@@ -33,11 +22,10 @@ class loaders implements \Hook_SubscriberInterface {
 	 * @return array
 	 */
 	public  static function get_filters() {
-
 		return array(
 			'app_starter_content_part_view' => 'view_loaders',
 			'app_starter_alt_main_view' => 'task_view',
-			//'ht_dms_after_magic_template' => array( 'after_group', 10, 3 ),
+
 		);
 
 	}
@@ -45,11 +33,13 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Loads the HoloTree DMS Content
 	 *
+	 * @since 0.0.1
+	 *
 	 * @param $view
 	 *
 	 * @return bool|mixed|null|string|void
 	 */
-	function view_loaders( $view ) {
+	public function view_loaders( $view ) {
 		$post_type = get_post_type();
 		if ( defined( 'HT_NEW_VIEW' ) && HT_NEW_VIEW  ) {
 			return $this->new_view();
@@ -76,14 +66,12 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Load special views
 	 *
-	 *
+	 * @since 0.0.3
 	 * @param 	string $action Action ($_GET[ 'dms_action' ]) to trigger view.
 	 *
 	 * @return string			The action
-	 *
-	 * @since 0.0.3
 	 */
-	function special_view_loader( $action ) {
+	public function special_view_loader( $action ) {
 		$special_views = $this->special_views();
 
 		if ( isset( $special_views[ $action ] ) ) {
@@ -103,11 +91,11 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Allowed special views
 	 *
-	 * @return array
-	 *
 	 * @since 0.0.3
+	 *
+	 * @return array
 	 */
-	function special_views() {
+	public function special_views() {
 
 		$special_views = array(
 			'notifications' => 'notifications',
@@ -129,14 +117,14 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-	function special_view_loaders() {
 
-	}
 
 	/**
 	 * Creates the single view template for tasks.
+	 *
+	 * @since 0.0.x
 	 */
-	function task_view( $view ) {
+	public function task_view( $view ) {
 		if ( get_query_var( 'taxonomy' ) === HT_DMS_TASK_POD_NAME ) {
 			return $this->view_cache( 'task', null );
 		}
@@ -147,10 +135,11 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Mobile-device detection
 	 *
-	 * @return bool True if phone view false if not
 	 * @since 0.0.2
+	 *
+	 * @return bool True if phone view false if not
 	 */
-	function mobile_detect() {
+	public function mobile_detect() {
 		if (  ( defined( 'HT_DEVICE' ) && HT_DEVICE === 'phone' ) || ( function_exists( 'is_phone' ) && is_phone() ) || wp_is_mobile() ) {
 
 			return true;
@@ -159,14 +148,11 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-	function inline_data() {
-
-
-	}
-
 
 	/**
 	 * Gets views from the view cache or gets view and caches it.
+	 *
+	 * @since 0.0.x
 	 *
 	 * @param        $context
 	 * @param string $cache_mode
@@ -174,7 +160,7 @@ class loaders implements \Hook_SubscriberInterface {
 	 *
 	 * @return bool|mixed|null|string|void
 	 */
-	function view_cache( $context, $post_type, $cache_mode = 'cache', $id = null ) {
+	public function view_cache( $context, $post_type, $cache_mode = 'cache', $id = null ) {
 		//bypass cache in dev mode
 		if ( HT_DEV_MODE ) {
 			return $this->view_get( $context, $post_type );
@@ -201,12 +187,13 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Loads the view based on context and post type
 	 *
+	 * @since 0.0.x
 	 * @param $context
 	 * @param $post_type
 	 *
 	 * @return string
 	 */
-	function view_get( $context, $post_type ) {
+	public function view_get( $context, $post_type ) {
 
 		if ( $context === 'home' ) {
 			return $this->content_wrap( include( trailingslashit( HT_DMS_VIEW_DIR ) . 'home.php' ), false, 'home' );
@@ -227,11 +214,11 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Determine view context for DMS
 	 *
-	 * @return 	null|string single|home|null
-	 *
 	 * @since 	0.0.1
+	 *
+	 * @return 	null|string single|home|null
 	 */
-	function view_context( $post_type ) {
+	public function view_context( $post_type ) {
 		if ( ! $post_type  ) {
 			$post_type = get_post_type();
 		}
@@ -268,15 +255,15 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Prepares content for output
 	 *
+	 * @since 0.0.2
+	 *
 	 * @param 	string  $content 	The content to wrap.
 	 * @param 	bool 	$task		Optional. If is task or not. Default is false.
 	 * @param   string  $post_type
 	 *
 	 * @return string
-	 *
-	 * @since 0.0.2
 	 */
-	function content_wrap( $content, $task = false, $post_type ) {
+	public function content_wrap( $content, $task = false, $post_type ) {
 		$id = $this->id();
 		$container_id = $id;
 		if ( $id == 00 ) {
@@ -338,16 +325,38 @@ class loaders implements \Hook_SubscriberInterface {
 		return $out;
 	}
 
-	function main_title( $id, $task = false ) {
+	/**
+	 * Get the main template element.
+	 *
+	 * @since 0.0.x
+	 * @param $id
+	 * @param bool $task
+	 *
+	 * @return string
+	 */
+	public function main_title( $id, $task = false ) {
+		/**
+		 * Show or nor show the main title section
+		 *
+		 * @since 0.0.x
+		 *
+		 * @param bool $show To show or not.
+		 */
 		if ( apply_filters( 'ht_dms_view_title', true ) ) {
 			return $this->ui()->output_elements()->breadcrumbs();
 
 		}
 
-
 	}
 
-	private function id() {
+	/**
+	 * Get the container ID for the main UI wrapping container
+	 *
+	 * @since 0.0.x
+	 *
+	 * @return int
+	 */
+	protected function id() {
 		if ( is_home() || is_front_page() ) {
 			$id = 00;
 		}
@@ -359,7 +368,19 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-	function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
+	/**
+	 * Load a "magic template" IE one that uses Pods Templates syntax, but is not a Pods Template, and parse with a Pods object.
+	 *
+	 * @since 0.x.x
+	 *
+	 * @param string $template_file The path to the template file.
+	 * @param \Pods $obj Pods object to parse with template.
+	 * @param int|bool $page Optional. Page of results from object to show. Default is false, which shows first
+	 * @param array|null $cache_args Optional. The cache args for caching.
+	 *
+	 * @return mixed|string|void
+	 */
+	public function magic_template( $template_file, $obj, $page = false, $cache_args = null ) {
 		$no_items = __( 'No items to display', 'ht_dms' );
 		if ( $obj->total() > 0 ) {
 			$view = pathinfo( $template_file );
@@ -436,7 +457,19 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-	function type_view( $type, $args ) {
+	/**
+	 * Get a view from the views class
+	 *
+	 * @todo rm?
+	 *
+	 * @since 0.x.x
+	 *
+	 * @param string $type The type of view to get
+	 * @param array $args
+	 *
+	 * @return mixed
+	 */
+	public function type_view( $type, $args ) {
 		$model = $this->ui()->models();
 
 		for ( $i = 0; $i < 7; $i++ ) {
@@ -451,7 +484,21 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
-	function template( $template_file, $obj, $view ) {
+
+	/**
+	 * Render template on an individual item
+	 *
+	 * @since 0.x.x
+	 *
+	 * @access protected
+	 *
+	 * @param string $template_file Template file's contents, not path.
+	 * @param \Pods $obj The Pods object, single row pre-fetch, to render with
+	 * @param string $view
+	 *
+	 * @return string
+	 */
+	protected function template( $template_file, $obj, $view ) {
 		$template = '<div class="ht_dms_template" style="">';
 		$id = $obj->id();
 		if ( HT_DEV_MODE ) {
@@ -470,6 +517,10 @@ class loaders implements \Hook_SubscriberInterface {
 	/**
 	 * Outputs an alert if 'dms-alert' get var is set and true.
 	 *
+	 * @since 0.0.2
+	 *
+	 * @acces private
+	 *
 	 * @uses get_option( 'ht_dms_action_message')
 	 *
 	 * @return string
@@ -479,25 +530,26 @@ class loaders implements \Hook_SubscriberInterface {
 	private function alert() {
 		if ( pods_v( 'dms-alert', 'get', false, true ) ) {
 			return ht_dms_ui()->elements()->alert( get_option( 'ht_dms_action_message', '' ), 'success' );
-		}
-	}
 
-
-	function after_group( $out, $view, $id ) {
-		if ( in_array( $view, array( 'group', 'group_preview' ) ) ) {
-
-			$js = $this->group_prepare( $id );
-			$class = 'small-block-grid-10 large-block-grid-20';
-			$template = $this->handlebars( 'user-mini', 'group-members-'.$id, $js, $class, 'ul' );
-			if ( is_string( $template ) ) {
-				$out .= $template;
-			}
 		}
 
-		return $out;
 	}
 
-	function handlebars( $file, $id = false, $js = false, $class='', $container_type = 'div', $partial = true ) {
+	/**
+	 * Load markup for Handlebars Template rendering
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param string $file Path to template file.
+	 * @param string|bool $id Optional. ID attribute to use.
+	 * @param string|bool $js Optional. Extra JS to add.
+	 * @param string $class Optional. Class attribute to use.
+	 * @param string $container_type Optional. Type of container to use. Default is "div".
+	 * @param bool $partial Optional. If it is a partial or not. Default is true, which is only way this will work currently.
+	 *
+	 * @return string
+	 */
+	public function handlebars( $file, $id = false, $js = false, $class='', $container_type = 'div', $partial = true ) {
 		$out = array();
 
 
@@ -524,21 +576,21 @@ class loaders implements \Hook_SubscriberInterface {
 
 	/**
 	 * Return a Handlebars template.
-
+	 *
 	 * @since 0.0.3
+	 *
 	 * @param string $file File name
 	 * @param bool $partial Optional. If is partial. Default is true.
 	 *
 	 * @return bool|string
 	 */
-	function handlebars_template( $file, $partial = true ) {
+	public function handlebars_template( $file, $partial = true ) {
 		$template = $this->handlebars_template_file_location( $file, $partial );
 		if ( is_string( $template ) ) {
 			$template = pods_view( $template, null, HOUR_IN_SECONDS, 'cache', true );
 
 			return $template;
 		}
-
 
 	}
 
@@ -553,7 +605,7 @@ class loaders implements \Hook_SubscriberInterface {
 	 *
 	 * @return bool|string
 	 */
-	function handlebars_template_file_location( $file, $partial = true ) {
+	public function handlebars_template_file_location( $file, $partial = true ) {
 		$template = trailingslashit( HT_DMS_VIEW_DIR ) . 'handlebars/';
 		if ( $partial ) {
 			$template .= 'partials/';
@@ -577,7 +629,7 @@ class loaders implements \Hook_SubscriberInterface {
 	 *
 	 * @return string
 	 */
-	function handlebars_container(  $id, $class='', $container_type = 'div' ) {
+	public function handlebars_container(  $id, $class='', $container_type = 'div' ) {
 		if( $class ) {
 			$class = 'class="'.esc_attr( $class).'"';
 		}
@@ -586,6 +638,15 @@ class loaders implements \Hook_SubscriberInterface {
 
 	}
 
+	/**
+	 * Prepare group members for output via JSON
+	 *
+	 * @since 0.x.x
+	 *
+	 * @param int $id Group ID
+	 *
+	 * @return bool|string
+	 */
 	function group_prepare( $id ) {
 		$key = "group_handlebars_prepare_{$id}";
 		if ( HT_DEV_MODE ) {
@@ -621,14 +682,11 @@ class loaders implements \Hook_SubscriberInterface {
 	 *
 	 * @since 	0.0.1
 	 */
-	function ui(){
+	public function ui(){
 		$ui = ht_dms_ui();
 
 		return $ui;
 
 	}
-
-
-
 
 } 
