@@ -217,7 +217,9 @@ class elements {
 
 
 		$out = sprintf( '<ul class="%1s" id="ht_dms-tabs" data-tab >', $class );
-		$out .=  '<li class="tab-title active"><a href="#'.$tab_prefix.'1">'.$tabs[ 0 ][ 'label' ].'</a></li>';
+		if ( isset( $tabs[0]) ) {
+			$out .= '<li class="tab-title active"><a href="#' . $tab_prefix . '1">' . $tabs[0]['label'] . '</a></li>';
+		}
 		$i = 2;
 		foreach ( $tabs as $key => $value ) {
 			if ( $key != 0 ) {

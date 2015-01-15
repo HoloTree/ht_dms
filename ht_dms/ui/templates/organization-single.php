@@ -62,7 +62,7 @@ else {
 
 	}
 	else {
-		$tabs = array(
+		$tabs[] = array(
 			'label'		=> get_the_title( $id ),
 			'content'	=> __( 'You must be a member of this organization to view it\'s content', 'ht_dms' ),
 		);
