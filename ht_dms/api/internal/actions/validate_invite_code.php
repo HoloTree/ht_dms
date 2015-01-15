@@ -11,8 +11,7 @@
 
 namespace ht_dms\api\internal\actions;
 
-
-class validate_invite_code {
+class update_decision_status extends action implements action_interface {
 
 	public static function act( $params ) {
 		$code = pods_v_sanitized( 'code', $params );

@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Get members of a group/organization
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -12,10 +12,10 @@
 namespace ht_dms\api\internal\actions;
 
 
-class members {
+class members extends action implements action_interface {
 
 	/**
-	 * Get members of a group/organixation
+	 * Get members of a group/organization
 	 *
 	 *
 	 * @since 0.1.0

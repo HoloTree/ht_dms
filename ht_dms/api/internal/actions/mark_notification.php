@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class mark_notification {
+class mark_notification extends action implements action_interface {
 
 	/**
 	 * Mark a notification viewed or unviewed

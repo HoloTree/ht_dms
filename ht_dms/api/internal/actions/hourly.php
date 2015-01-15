@@ -16,7 +16,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class hourly {
+class hourly extends action implements action_interface {
 
 	/**
 	 * Run hourly checks if the keys are right (IE the correct public key is set and its been more than 59 minutes and 42 seconds since this last ran. )

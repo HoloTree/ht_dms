@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class reload_membership {
+class reload_membership extends action implements action_interface {
 
 	/**
 	 * Refresh membership view

@@ -13,7 +13,7 @@ namespace ht_dms\api\internal\actions;
 
 use ht_dms\ui\output\elements;
 
-class comments {
+class comments extends action implements action_interface {
 
 	/**
 	 * Process output

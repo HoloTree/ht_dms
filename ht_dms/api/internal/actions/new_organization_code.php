@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Verify a organization creation code.
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class new_organization_code {
+class new_organization_code extends action implements action_interface {
 
 	/**
 	 * Check the code

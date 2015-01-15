@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Get consensus details JSON
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -13,7 +13,17 @@ namespace ht_dms\api\internal\actions;
 
 
 
-class consensus_details {
+class consensus_details extends action implements action_interface {
+
+	/**
+	 * Don't interpret POST data as JSON.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @var bool
+	 */
+	public static $data_json = false;
+
 
 	/**
 	 * Process and return
@@ -58,7 +68,5 @@ class consensus_details {
 		return 'POST';
 
 	}
-
-	public static $data_json = false;
 
 } 

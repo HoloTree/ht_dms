@@ -116,7 +116,7 @@ class access implements \Filter_Hook_SubscriberInterface {
 			}
 		}
 
-		if ( ! self::action_allowed( $action ) ) {
+		if ( ! $skip || ! self::action_allowed( $action )  || ! self::check_interface( $action )) {
 			return 501;
 
 		}
@@ -225,6 +225,36 @@ class access implements \Filter_Hook_SubscriberInterface {
 	private static function action_allowed( $action ) {
 
 		return ( in_array( $action, self::allowed_actions() ) );
+
+	}
+
+	/**
+	 * Check if a class implements the \ht_dms\api\internal\actions\action_interface interface
+	 *
+	 *
+	 * @since 0.3.0
+	 *
+	 * @access protected
+	 *
+	 * @param string $action The action, class name really, to check.
+	 *
+	 * @return bool
+	 */
+	protected static function check_interface( $action ) {
+
+		$namespace = __NAMESPACE__ . '\\actions\\';
+
+		$class = $namespace . $action;
+
+		if ( ! class_exists( $class ) ) {
+			return;
+		}
+
+		$interfaces = class_implements( $class, false );
+
+		if ( in_array( 'ht_dms\api\internal\actions\action_interface', $interfaces ) ) {
+			return true;
+		}
 
 	}
 

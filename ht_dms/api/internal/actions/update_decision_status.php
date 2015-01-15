@@ -11,8 +11,7 @@
 
 namespace ht_dms\api\internal\actions;
 
-
-class update_decision_status {
+class update_decision_status extends action implements action_interface {
 
 	/**
 	 * Update decision status

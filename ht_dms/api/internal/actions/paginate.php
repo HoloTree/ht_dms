@@ -14,7 +14,7 @@ namespace ht_dms\api\internal\actions;
 
 use ht_dms\api\internal\actions\paginate\decision;
 
-class paginate {
+class paginate extends action implements action_interface {
 
 	/**
 	 * Route paginated view request via internal api

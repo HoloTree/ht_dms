@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Paginated decisions
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      

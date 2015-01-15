@@ -1,46 +1,36 @@
 <?php
 /**
- * @TODO What this does.
+ * Abstract class that all internal API actions MUST extend
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
- * @copyright 2014 Josh Pollock
+ * @copyright 2015 Josh Pollock
  */
 
 namespace ht_dms\api\internal\actions;
 
 
-interface action {
+abstract class action {
 
 	/**
-	 * Will be called by API router. Must return the response.
+	 * Sets if POST data should be expected as JSON or not.
 	 *
-	 * @param array $params An array of params, defined by self::args()
-	 *
-	 * @return mixed
+	 * @var bool
 	 */
-	public static function act( $params );
-
-	/**
-	 * Params for this route
-	 *
-	 * Add an array of the names of GET or POST vars to pass into self::act()
-	 *
-	 * @return array
-	 */
-	public static function args();
+	public static $post_as_json = true;
 
 	/**
 	 * Define if this action should use GET or POST.
 	 *
-	 * This method should either be:
-	 *
-	 * return "GET"; or return "POST";
+	 * @since 0.3.0
 	 *
 	 * @return string
 	 */
-	public static function method();
+	public static function method() {
+		return 'get';
 
-} 
+	}
+
+}

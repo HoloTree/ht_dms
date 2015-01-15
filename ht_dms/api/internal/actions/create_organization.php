@@ -1,8 +1,8 @@
 <?php
 /**
- * @TODO What this does.
+ * Create an organization
  *
- * @package   @TODO
+ * @package   @ht_dms
  * @author    Josh Pollock <Josh@JoshPress.net>
  * @license   GPL-2.0+
  * @link      
@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class create_organization {
+class create_organization extends action implements action_interface {
 	/**
 	 * Check the code
 	 *

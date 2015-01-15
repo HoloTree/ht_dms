@@ -12,7 +12,10 @@
 namespace ht_dms\api\internal\actions\paginate;
 
 
-class no_org_modal {
+use ht_dms\api\internal\actions\action;
+use ht_dms\api\internal\actions\action_interface;
+
+class no_org_modal extends action implements action_interface {
 
 	/**
 	 * Respond

@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class load_notification {
+class load_notification extends action implements action_interface {
 
 	/**
 	 * Reload notification.
@@ -49,6 +49,15 @@ class load_notification {
 
 	}
 
+	/**
+	 * Prepare JSON
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param int $nID Notification ID.
+	 *
+	 * @return string|JSON
+	 */
 	private static function json( $nID ) {
 
 		$out = \ht_dms\helper\json::notification( $nID );

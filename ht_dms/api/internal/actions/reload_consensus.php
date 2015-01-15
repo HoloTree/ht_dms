@@ -12,7 +12,7 @@
 namespace ht_dms\api\internal\actions;
 
 
-class reload_consensus {
+class reload_consensus extends action implements action_interface {
 
 	public static function act( $params ) {
 		$dID = pods_v_sanitized( 'dID', $params );
