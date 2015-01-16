@@ -408,32 +408,31 @@ class fields extends forms implements \Hook_SubscriberInterface{
 	function process_invite_new_user( $data ) {
 		if ( $this->force_debug || HT_DEV_MODE ) {
 			if ( isset( $id ) ) {
-				$data[ 'id' ] = $id;
+				$data['id'] = $id;
 			}
 			update_option( __FUNCTION__, $data );
 
 		}
 
-		$email = $data[ 'email_address' ];
-		$oID = $data[ 'oid' ];
+		$email             = $data['email_address'];
+		$oID               = $data['oid'];
 		$organization_name = get_the_title( $oID );
-        $uID = email_exists( $email );
+		$uID               = email_exists( $email );
 		if ( $uID ) {
-            $new_user = false;
-			$name = get_userdata( $uID );
+			$new_user = false;
+			$name     = get_userdata( $uID );
 			if ( is_object( $name ) ) {
 				$name = $name->data->display_name;
 				$code = ht_dms_membership_class()->invite_existing( $oID, $oID, null, false );
 			}
 
+		} else {
+			$new_user = true;
+			$name     = $data['first_name'] . ' ' . $data['last_name'];
+			$code     = ht_dms_invite_code( true, $email, $oID );
 		}
-        else {
-            $new_user = true;
-            $name = $data[ 'first_name' ] . ' ' .$data[ 'last_name' ];
-	        $code = ht_dms_invite_code( true, $email, $oID );
-        }
 
-		$message = ht_dms_membership_class()->invite_message( $name, $oID, $organization_name, $email, $new_user, $code  );
+		$message = ht_dms_membership_class()->invite_message( $name, $oID, $organization_name, $email, $new_user, $code );
 
 		if ( $uID ) {
 			$subject = sprintf( __( 'You have been invited to join the organization %1s', $organization_name ), 'holotree' );
@@ -448,6 +447,5 @@ class fields extends forms implements \Hook_SubscriberInterface{
 		return wp_mail( $email, $subject, $message );
 
 	}
-
 
 }

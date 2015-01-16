@@ -44,6 +44,8 @@ class HT_DMS_WP_API_Registration {
 			//https://github.com/HoloTree/ht_dms/issues/99
 			//\ht_dms\helper\urls\add::init(),
 			//\ht_dms\helper\urls\permalinks::init()
+			ht_dms\helper\caldera\process_form\organization::init()
+
 		);
 	}
 

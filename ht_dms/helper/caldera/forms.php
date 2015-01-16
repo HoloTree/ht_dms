@@ -20,6 +20,15 @@ class forms {
 	public $invite_new_user_form_id = 'CF5441caf7dddf7';
 
 	/**
+	 * The ID for the new organization form.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @var string
+	 */
+	public $new_organization_form_id = 'CF54b747e8a3941';
+
+	/**
 	 * Get the ID for a form
 	 *
 	 * @param $form
