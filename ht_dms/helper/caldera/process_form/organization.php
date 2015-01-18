@@ -14,7 +14,7 @@ namespace ht_dms\helper\caldera\process_form;
 
 use ht_dms\helper\caldera\forms;
 
-class organization implements \Action_Hook_SubscriberInterface {
+class organization implements \Hook_SubscriberInterface {
 
 	/**
 	 * Set actions
@@ -27,8 +27,16 @@ class organization implements \Action_Hook_SubscriberInterface {
 		return array(
 			'ht_dms_new_organization_process' => array( 'process_organization', 10, 2 ),
 			'cf_geo_autocomplete_data' => array( 'organization_geo_code', 10, 3 ),
+			'ht_dms_organization_details_process' => array( 'process_organization', 10, 2 ),
 		);
 
+	}
+
+	public static function get_filters( ) {
+		return array(
+			'caldera_forms_render_get_field_type-text' => 'set_location',
+			'caldera_forms_render_get_field_type-hidden' => 'find_oid'
+		);
 	}
 
 	/**
@@ -44,8 +52,8 @@ class organization implements \Action_Hook_SubscriberInterface {
 	 * @return int|bool ID of item on success or false on fail.
 	 */
 	public static function process_organization( $data, $form ) {
-		if( ! wp_verify_nonce( pods_v_sanitized( '_cf_verify', 'post' ), 'caldera_forms_front' ) ) {
-			return;
+		if ( ! self::verify( $form, pods_v_sanitized( 'uid', $data ) ) ) {
+			return false;
 		}
 
 		$data = self::sanitize_data( $data );
@@ -66,6 +74,40 @@ class organization implements \Action_Hook_SubscriberInterface {
 		}
 
 		return $id;
+
+	}
+
+	/**
+	 * Verify submission
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param array $form  Form config.
+	 *
+	 * @return bool
+	 */
+	protected static function verify( $form, $uID ) {
+		//nonce
+		if( ! wp_verify_nonce( pods_v_sanitized( '_cf_verify', 'post' ), 'caldera_forms_front' ) ) {
+			return false;
+
+		}
+
+		//right ID
+		if ( is_null( $uID ) || get_current_user_id() != $uID ) {
+			return false;
+
+		}
+
+		if ( !  self::is_new( $form ) ) {
+			global $post;
+			if ( pods_v_sanitized( 'ID', $post ) != pods_v_sanitized( 'oid', 'post') ) {
+				return false;
+			}
+
+		}
+
+		return true;
 
 	}
 
@@ -140,7 +182,26 @@ class organization implements \Action_Hook_SubscriberInterface {
 			unset( $data [ 'invite' ] );
 		}
 
+		$name = false;
+		if ( isset( $data[ 'name' ] ) ) {
+			$name = $data[ 'post_title' ] = $data[ 'name' ];
+			unset( $data[ 'name' ] );
+		}
+
+		$fields_in_org = ht_dms_organization_class()->field_names();
+
+		foreach( $data as $field => $value  ) {
+			if ( ! in_array( $field, $fields_in_org ) ) {
+				unset( $data[ $field ] );
+			}
+
+		}
+
 		$data = self::process_geo_data( $data );
+
+		if ( $name ) {
+			$data['post_title'] = $name;
+		}
 
 		return $data;
 
@@ -171,6 +232,30 @@ class organization implements \Action_Hook_SubscriberInterface {
 			return true;
 		}
 
+	}
+
+	protected static $oID;
+
+	public static function find_oid( $field ) {
+		if ( 'fld_991940' === pods_v( 'ID', $field ) ) {
+
+		}
+	}
+
+	public static function set_location( $field ) {
+		if ( 'fld_8822261' == pods_v( 'ID', $field ) ) {
+			global $post;
+			$location = __( 'Enter a location', 'ht_dms' );
+			if ( is_a( $post, 'WP_Post' ) ) {
+				$obj = ht_dms_organization_class()->object( true, $post->ID );
+				$location = $obj->display( 'location' );
+			}
+
+			$field[ 'config' ][ 'placeholder' ] = $field[ 'value' ] = $location;
+
+		}
+
+		return $field;
 	}
 
 	/**
@@ -288,8 +373,8 @@ class organization implements \Action_Hook_SubscriberInterface {
 	 */
 	protected static function sanitize_data( $data ) {
 		$data                = pods_sanitize( $data );
-		if ( ! isset( $data[ 'description' ] ) ) {
-			$data['description'] = wp_kses_post( $data['description'] );
+		if ( isset( $data[ 'description' ] ) ) {
+			$data[ 'description' ] = wp_kses_post( $data['description'] );
 		}
 
 		$data                = self::fix_selects( $data );

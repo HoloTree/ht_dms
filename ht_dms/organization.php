@@ -431,7 +431,7 @@ class organization extends \ht_dms\dms\dms implements \Hook_SubscriberInterface{
 			);
 		}
 
-		$unset_fields = array( 'groups', 'decisions', 'tasks', 'invited_members' );
+		$unset_fields = array( 'groups', 'decisions', 'tasks', 'invited_members', 'location', 'geolocation', 'longitude', 'latitude', 'owner' );
 		foreach( $unset_fields as $field ) {
 
 			unset( $fields[ $field ] );

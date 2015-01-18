@@ -938,9 +938,9 @@ class elements {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param $oID
-	 * @param $uID
-	 * @param $oObj
+	 * @param int $oID The organization ID
+	 * @param int $uID The user editing organization.
+	 * @param \Pods $oObj Pods object for organization.
 	 *
 	 * @return array
 	 */
@@ -953,6 +953,10 @@ class elements {
 		$tabs[] = array(
 			'label'		=> ht_dms_add_icon( __( 'Edit Organization', 'ht_dms' ), array( 'edit', 'organization') ),
 			'content'	=> $ui->add_modify()->edit_organization( $oID, $uID, $oObj ),
+		);
+		$tabs[]  = array(
+			'label'		=> ht_dms_add_icon( __( 'Organization Location', 'ht_dms' ), array( 'edit', 'organization' ) ),
+			'content'   => $ui->add_modify()->organization_details(),
 		);
 		$tabs[] = array(
 			'label'		=> ht_dms_add_icon( __( 'Invite Members', 'ht_dms' ), array( 'new', 'user') ),

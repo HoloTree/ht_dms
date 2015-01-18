@@ -29,6 +29,15 @@ class forms {
 	public $new_organization_form_id = 'CF54b747e8a3941';
 
 	/**
+	 * The ID for the organization details editor form.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @var string
+	 */
+	public $organization_details_form_id = 'CF54bb176a217ad';
+
+	/**
 	 * Get the ID for a form
 	 *
 	 * @param $form

@@ -126,7 +126,7 @@ class addModify {
 	 * @since 	0.0.1
 	 */
 	function new_organization( $uID = null ) {
-		return ht_dms_caldera_loader( 'CF54b747e8a3941' );
+		return ht_dms_caldera_loader( $this->get_form_class()->new_organization_form_id );
 		/**
 		 * Filter to swap out new organization form.
 		 *
@@ -154,6 +154,43 @@ class addModify {
 
 		return $form;
 
+	}
+
+	/**
+	 * Form for editing organization details.
+	 *
+	 * Currently just location. Will do more later.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return string
+	 */
+	public function organization_details( ) {
+		return ht_dms_caldera_loader( $this->get_form_class()->organization_details_form_id );
+
+	}
+	/**
+	 * Holds an instance of the form class
+	 *
+	 * @var \ht_dms\helper\caldera\forms
+	 */
+	protected static $form_class;
+
+	/**
+	 * Get an instance of the form class.
+	 *
+	 * @since  0.3.0
+	 *
+	 * @access protected
+	 *
+	 * @return \ht_dms\helper\caldera\forms
+	 */
+	protected static function get_form_class() {
+		if ( is_null( self::$form_class ) ) {
+			self::$form_class = new \ht_dms\helper\caldera\forms();
+		}
+
+		return self::$form_class;
 	}
 
 	/**
