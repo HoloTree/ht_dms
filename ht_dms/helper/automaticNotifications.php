@@ -149,7 +149,10 @@ class automaticNotifications implements \Action_Hook_SubscriberInterface {
      */
 	function new_message( $to, $subject, $message  ) {
 
-		return ht_dms_notification_class()->new_notification( $to, $subject, $message );
+		if ( is_string( $message ) ) {
+			return ht_dms_notification_class()->new_notification( $to, $subject, $message );
+
+		}
 
 	}
 
