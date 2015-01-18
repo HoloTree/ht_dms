@@ -44,7 +44,11 @@ class organization implements \Action_Hook_SubscriberInterface {
 	 * @return int|bool ID of item on success or false on fail.
 	 */
 	public static function process_organization( $data, $form ) {
-		$data = pods_sanitize( $data );
+		if( ! wp_verify_nonce( pods_v_sanitized( '_cf_verify', 'post' ), 'caldera_forms_front' ) ) {
+			return;
+		}
+
+		$data = self::sanitize_data( $data );
 		$obj = $id = false;
 		if ( self::is_new( pods_v( 'ID', $form ) ) && self::verify_code( $data ) ) {
 			$obj = ht_dms_organization_class()->object();
@@ -62,6 +66,34 @@ class organization implements \Action_Hook_SubscriberInterface {
 		}
 
 		return $id;
+
+	}
+
+	/**
+	 * Reformat the 2 select fields
+	 *
+	 * @since 0.3.0
+	 *
+	 * @see https://github.com/Desertsnowman/Caldera-Forms/issues/58
+	 *
+	 * @param $data
+	 */
+	protected static function fix_selects( $data ) {
+		$open_access = pods_v( 'open_access', $data );
+		if (  ! is_null( $open_access ) ) {
+			if ( 'Membership Requires Invitation Or Approval' === $open_access ) {
+				$data['open_access'] = false;
+			} else {
+				$data['open_access'] = true;
+			}
+		}
+
+		$visibility = pods_v( 'visibility', $data );
+		if ( ! is_null( $visibility ) ) {
+			$data[ 'visibility' ] = strtolower( $visibility );
+		}
+
+		return $data;
 
 	}
 
@@ -242,6 +274,27 @@ class organization implements \Action_Hook_SubscriberInterface {
 		}
 
 		return self::$instance;
+
+	}
+
+	/**
+	 * Sanitize and validate data
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param array $data The submitted $_POST data
+	 *
+	 * @return array|mixed|object|string|void
+	 */
+	protected static function sanitize_data( $data ) {
+		$data                = pods_sanitize( $data );
+		if ( ! isset( $data[ 'description' ] ) ) {
+			$data['description'] = wp_kses_post( $data['description'] );
+		}
+
+		$data                = self::fix_selects( $data );
+
+		return $data;
 
 	}
 
