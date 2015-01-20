@@ -11,6 +11,8 @@
 
 namespace ht_dms;
 
+use ht_dms\groups\members;
+
 class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 
 	/**
@@ -85,8 +87,10 @@ class group extends \ht_dms\dms\dms implements \Hook_SubscriberInterface {
 	 */
 	public static function init() {
 
-		if ( !self::$instance )
+		if ( !self::$instance ) {
 			self::$instance = new self;
+		}
+
 
 		return self::$instance;
 

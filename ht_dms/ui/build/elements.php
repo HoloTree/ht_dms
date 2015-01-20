@@ -352,7 +352,7 @@ class elements {
 			}
 		}
 
-		if ( $g->is_public( $gID, $obj ) || $g->is_member( $gID, $uID, $obj ) || $g->is_facilitator( $gID, $uID, $obj ) ) {
+		if ( $g->is_public( $gID, $obj ) || \ht_dms\groups\members::is_member( $gID, $uID, $obj ) || $g->is_facilitator( $gID, $uID, $obj ) ) {
 			$out[] = $membership->view( $gID );
 		}
 
